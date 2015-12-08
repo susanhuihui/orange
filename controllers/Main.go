@@ -82,7 +82,7 @@ func (c *MainController) LoginUser() {
 	fmt.Println(jsonS)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsonS), &v)
-	fmt.Println(v)
+	//fmt.Println(v)
 	var vuser *models.Userinformation
 	fmt.Println("用户名，密码：")
 	fmt.Println(v.UserName, v.LoginPassword)
