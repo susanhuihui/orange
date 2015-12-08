@@ -1,0 +1,119 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+        <div class="modal fade" id="seepicdiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                       <img id="bigpic" src="" style ="width:100%;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div id="pagetopb">
+        <!--main-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row">
+                <div class="col-sm-3 col-md-2">
+                    <div class="probletable">
+                        <img src="{{.AvatarPath}}" />
+                        <p>ID {{.Id}}</p>
+                        <span>{{.UserName}}</span>
+                        <p>{{.SchoolName}}</p>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-md-10 leftdiv">
+                    <div class="porlink">
+                        <div class="col-sm-5 classfont">
+                            预约时间: {{.StartTime}} —— {{.EndTime}}:
+                           
+                        </div>
+                        <!--<div class="col-sm-5 classfont">
+                            <p>
+                                预约课时: 1课时                           
+                        </div>-->
+                    </div>
+                    <div class="row messright" id="fujiandiv">
+                        <div class="col-sm-2">
+                            <p>附件：</p>
+                        </div>
+                        <div class="col-sm-3">
+                            <img width="180" src="images/bao-2.png" /><br />
+                            <a onclick="seePic()">查看</a>
+                            <a style="margin-left: 80px;">删除</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p id="teacherid" style="display: none">{{.TeacherId}}</p>
+    <p id="bookid" style="display: none">{{.onbookid}}</p>
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript">
+        var userid = getCookie("userid")//获取登录用户主键id
+        window.onload = function () {
+            setTitleOnSelect(4);
+            getuser();
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            getfujina();
+        }
+        function getfujina() {
+            var orcid = document.getElementById("bookid").innerText;
+            var allClass = "http://{{.Website}}/orange/courseware/GetCoursewareByOCBID/" + orcid;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                var stryuye = '<div class="col-sm-12"><p>附件：</p></div>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var onetr = '<div class="col-sm-3">' +
+                                    '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
+                                    '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
+                                    '<a style="margin-left: 80px;" onclick="delFujian(' + data[i]["Id"] + ')">删除</a>' +
+                                    '</div>';
+                        stryuye += onetr;
+                    }
+                }
+                document.getElementById("fujiandiv").innerHTML = "";
+                $("#fujiandiv").append(stryuye);
+            });
+        }
+        function delFujian(fid) {
+            var del = "http://{{.Website}}/orange/courseware/DeleteCourseware/" + fid;
+            $.getJSON(del, function (data) {
+                if (data != null && data + "" == "OK") {
+                    alert("删除成功！");
+                    var orcid = document.getElementById("bookid").innerText;
+                    window.location.href = "http://{{.Website}}/orange/Main/GetOnlineCourseBooking/" + orcid;
+                }
+                else {
+                    alert("删除失败！");
+                }
+            });
+        }
+
+        function seePic(srcstr) {
+            //alert(srcstr);
+            document.getElementById("bigpic").src = srcstr;
+        }
+    </script>
+</body>
+</html>

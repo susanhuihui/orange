@@ -1,0 +1,143 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row problemmenu">
+                <div class="col-sm-12">
+                    <span>问答</span>
+                    <!--<a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/">
+                        <input type="button" class="probtn" value="我也要提问">
+                    </a>-->
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-sm-3">
+                    <div class="probletable">
+                        <img src="{{.HuiDaAvatarPath}}" />
+                        <p>ID {{.AnswerUserId}}</p>
+                        <p id="userid" style="display: none">{{.userid}}</p>
+                        <span>{{.Hname}}</span>
+                        <p>{{.SchoolName}}</p>
+                        <a id="selteacher" href="http://{{.Website}}/orange/Teacher/TeacherInformation/{{.userid}}">
+                            <input type="button" class="problembtn" value="查看详情"></a>
+                    </div>
+                </div>
+                <div class="col-sm-9 leftdiv">
+                    <div class="row rowbottom">
+                        <div class="col-sm-2 protable">
+                            <img src="{{.AvatarPath}}" />
+                        </div>
+                        <div class="col-sm-10 protable" style="padding-top: 20px;">
+                            <span>{{.UserName}}</span>
+                            <span>{{.BadeTime}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 promainfont">
+                        {{.Title}}                     
+                    </div>
+                    <div class="col-sm-12 promain">
+                        {{.Contents}} 
+                    </div>
+                    <div id="answercontent">
+                        <div class="col-sm-12 promainfont">
+                            回答内容：                  
+                        </div>
+                        <div class="col-sm-12 promain" id="contentvalue">
+                            <textarea id="huidacont" style="display: none; width: 780px; height: 200px"></textarea>
+                        </div>
+                        <input id="addanswer" onclick="addAnswerOne()" type="button" class="probtn" value="提交回答">
+                    </div>
+                </div>
+            </div>
+            <p id="AnswerId" style="display: none">{{.AnswerId}}</p>
+            <p id="QuestionId" style="display: none">{{.QuestionId}}</p>
+            <p id="HuiDaContents" style="display: none">{{.HuiDaContents}}</p>
+        </div>
+    </div>
+
+    {{template "footer.html" .}}    
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript">
+        //var userid = getCookie("userid")//获取登录用户主键id
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(3);
+            setistorf();
+        }
+        //设置回答是否显示
+        function setistorf() {
+            var answerid = document.getElementById("AnswerId").innerText;
+            if (answerid != null && answerid + "" != "" && answerid + "" != "undefined" && answerid > 0) {
+                document.getElementById("contentvalue").innerText = document.getElementById("HuiDaContents").innerText;
+                document.getElementById("addanswer").style.display = "none";
+            }
+            else {
+                document.getElementById("huidacont").style.display = "block";
+                document.getElementById("addanswer").style.display = "block";
+            }
+        }
+
+        //新增一条回答信息
+        function addAnswerOne() {
+            var qusid = document.getElementById("QuestionId").innerText;//问题主键id
+            var userid = getCookie("userid")//获取登录用户主键id
+            var showuserid = document.getElementById("userid").innerText;//提问学生id
+            var contents = document.getElementById("huidacont").value;
+            var nowtime = getNowFormatDate();
+            if (trim(contents) == "") { alert("回答内容不能为空，请填写回答内容！"); return; }
+            var adduser = '{"QAId":' + qusid +
+                                    ',"AnsUserId":' + userid +
+                                    ',"Contents":"' + contents +
+                                    '","AnsTime":"' + nowtime +
+                                    '"}';
+            $.post("http://{{.Website}}/orange/answers/AddAnswers/", adduser,
+                function (data) {
+                    if (data["id"] > 0) {
+                        //回答完解冻资金
+                        var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + showuserid + "/1/" + qusid;
+                        $.getJSON(userfrozen, function (datafrozen) {
+                            if (datafrozen != null) {
+                                var updongjie = '{"UserId":' + datafrozen["UserId"] +
+                                                     ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
+                                                     ',"FrozenType":' + datafrozen["FrozenType"] +
+                                                     ',"BusinessId":' + datafrozen["BusinessId"] +
+                                                     ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
+                                                     '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
+                                                     '","FrozenState":0' +
+                                                     '}';
+                                $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsByAnswer/" + datafrozen["Id"], updongjie,
+                                    function (data) {
+                                        if (data["id"] > 0) {
+
+                                        }
+                                    });
+                            }
+                        });
+                        alert("回答成功！");
+                        window.location.href = "http://{{.Website}}/orange/Teacher/ProblemAnswer/" + qusid;
+                    } else {
+                        alert("回答失败！");
+                    }
+                });
+        }
+    </script>
+</body>
+</html>

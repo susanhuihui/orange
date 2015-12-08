@@ -1,0 +1,659 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link href="b/css/carousel.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb" style="margin-top: 35px;">
+        <!--个人资料-->
+        <div class="container">
+            <div style="margin-top: 20px; background-color: #FFFFFF; padding-top: 20px;">
+                <div class="row teacherrow">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-1">
+                        所在年级：                         
+                    </div>
+                    <div class="col-sm-10">
+                        <ul class="teacherul" id="gradeSelList">
+                        </ul>
+                    </div>
+                </div>
+                <hr class="hrhr" />
+                <div class="row teacherrow">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-1">
+                        课程科目：                       
+                    </div>
+                    <div class="col-sm-9">
+                        <ul class="teacherul" id="courseSelList">
+                        </ul>
+                    </div>
+                </div>
+                <hr class="hrhr" />
+                <div class="row teacherrow">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-1">
+                        教师级别：                       
+                    </div>
+                    <div class="col-sm-9">
+                        <ul class="teacherul" id="levelSelList">
+                        </ul>
+                    </div>
+                </div>
+                <hr class="hrhr" />
+                <div class="row teacherrow">
+                    <div class="col-sm-1">&nbsp;</div>
+                    <div class="col-sm-1">
+                        所在位置：                       
+                    </div>
+                    <div class="col-sm-10" style="text-align: left;">
+                        <select class="teasel" id="selProvence" onchange="selcity()">
+                            <option value="0"></option>
+                        </select>
+                        <select class="teasel" id="selCitys" onchange="selcitys()">
+                            <option value="0"></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class='row teachermain'>
+                <div class="col-sm-9"><span style="font-size:7px;color:#808080;"></span>
+                    <!-- Nav tabs -->
+                    <ul class="ull nav nav-tabs" role="tablist">
+                        <li role="presentation" id="tap1" class="active"><a href="#home" onclick="clickTab(1)" aria-controls="home" role="tab" data-toggle="tab">在线排序</a></li>
+                        <li role="presentation" id="tap2"><a href="#profile" onclick="clickTab(2)" aria-controls="profile" role="tab" data-toggle="tab">人气排序</a></li>
+                        <li role="presentation" id="tap3"><a href="#messages" onclick="clickTab(3)" aria-controls="messages" role="tab" data-toggle="tab">授课经验排序</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                        </div>
+                        <!--分页层 -->
+                        <div id="Pagination" class="pagination"></div>
+                    </div>
+                </div>
+                <div class="col-sm-3" style="border-left: 10px solid #f5f5f5;" id="tuijiandiv">
+                    <div class="teahead">
+                        <img src="images/teacherhead.jpg" />
+                    </div>
+                    <div class="row teasrightbottom">
+                        <div class="col-sm-12 teaheadtab">
+                            辅导年级:                                                   
+                            <!--<input class="teaheadtext" type="text">-->
+                            <select class="teaheadtext" id="selGrade">
+                                <option value="0">高中一年级</option>
+                                <option value="1">高中二年级</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 teaheadtab">
+                            辅导科目:                                                   
+                            <!--<input class="teaheadtext" type="text">-->
+                            <select class="teaheadtext" id="selClass">
+                                <option value="0">高中数学</option>
+                                <option value="1">高中语文</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 teaheadtab">
+                            所在城市:                                                   
+                            <!--<input class="teaheadtext" type="text">-->
+                            <select class="teaheadtext" id="selCitysT">
+                                <option value="0">北京</option>
+                                <option value="1">石家庄</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-12 teaheadtab">
+                            留言:                                                   
+                            <textarea class="teaarea" id="txtBeizhu"></textarea>
+                        </div>
+                        <div class="col-sm-12 teaheadtab">
+                            <input type="button" class="teachersbtn" onclick="addGoodTeacher()" value="提交">
+                        </div>
+                    </div>
+                    <div class="tearightbottom" style="border-bottom: 2px solid #f5f5f5;" id="anserSee">
+                        <div class="rightbottomtab" style="text-align: left;">
+                            <img src="images/pjjl.png" /><span>最近浏览</span>
+                        </div>
+                        <div class="teaimgimg">
+                            <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
+                            <p>
+                                <a href="teacherlist.html">王老师 | 高中数学</a>
+                            </p>
+                            <p>
+                                <span>200</span> 元/小时                                               
+                            </p>
+                        </div>
+                        <div class="teaimgimg">
+                            <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
+                            <p>
+                                <a href="teacherlist.html">王老师 | 高中数学</a>
+                            </p>
+                            <p>
+                                <span>200</span> 元/小时                                               
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <p id="allcount" style="display: none">{{.allUserscount}}</p>
+            <p id="allteacherstr" style="display: none">{{.allteacherstr}}</p>
+            <p id="P1" style="display: none">{{.seltype}}</p>
+            <p id="P2" style="display: none">{{.nianji}}</p>
+            <p id="P3" style="display: none">{{.kecheng}}</p>
+            <p id="P4" style="display: none">{{.jibie}}</p>
+            <p id="P5" style="display: none">{{.shengfen}}</p>
+            <p id="P6" style="display: none">{{.shiqu}}</p>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+        <script type="text/javascript" src="js/teachertab.js"></script>
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/ecmascript">
+        var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10";
+        var userid = getCookie("userid")//获取登录用户主键id
+        //初始多条件查询项
+        var pubTab = 1;//当前tab页，1默认综合排序，2为按人气，3为按经验
+        var pubGrade = "";//年级
+        var pubCourse = "";//科目
+        var pubLevel = "";//级别
+        var pubPro = "";//省份
+        var pubCitys = "";//市区
+        var pubRows = 10;//每页显示行数
+        var allrowscount = 0;//总页数
+
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(2);
+            chushiSel();
+            getZuiJinSee();
+            chushinowsel();
+            var allteacherlist = document.getElementById("allteacherstr").innerText;
+            document.getElementById("home").innerHTML = "";
+            $("#home").append(allteacherlist);
+        }//设置menutop选择老师
+
+        //初始多条件（年级，课程，级别，省份）
+        function chushiSel() {
+            var identyit = getCookie("identityid");
+            if (identyit != null && identyit > 1) {
+                //document.getElementById("tuijiandiv").style.display = "block";
+                document.getElementById("anserSee").style.display = "block";
+            } else {
+                //document.getElementById("tuijiandiv").style.display = "none";
+                document.getElementById("anserSee").style.display = "none";
+            }
+            //查询全部年级
+            var allGrade = "http://{{.Website}}/orange/grade/GetAllGrade/1/100/";
+            var nianji = document.getElementById("P2").innerText; pubGrade = nianji;
+            $.getJSON(allGrade, function (data) {
+                var gradestr = '';
+                if (nianji == "") {
+                    gradestr = '<li><a href="#" class="listfont" id="grade0" onclick="clickgradeSel(0)">全部</a></li>';
+                } else {
+                    gradestr = '<li><a href="#" class="" id="grade0" onclick="clickgradeSel(0)">全部</a></li>';
+                }
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '';
+                    if (nianji == data[i]["GradeName"]) {
+                        items = '<li><a class="listfont" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')">' + data[i]["GradeName"] + '</a></li>';
+                    } else {
+                        items = '<li><a class="" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')">' + data[i]["GradeName"] + '</a></li>';
+                    }
+                    gradestr += items;
+                }
+                document.getElementById("gradeSelList").innerHTML = "";
+                $("#gradeSelList").append(gradestr);
+            });
+            //查询全部科目
+            var allClass = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            var kecheng = document.getElementById("P3").innerText; pubCourse = kecheng;
+            $.getJSON(allClass, function (data) {
+                var coursestr = '';
+                if (kecheng == "") { coursestr = '<li><a href="#" class="listfont" id="course0" onclick="clickcourseSel(0)"><span>全部</span></a></li>'; } else {
+                    coursestr = '<li><a href="#" class="" id="course0" onclick="clickcourseSel(0)"><span>全部</span></a></li>';
+                }
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '';
+                    if (kecheng == data[i]["CourseName"]) {
+                        items = '<li><a class="listfont" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')">' + data[i]["CourseName"] + '</a></li>';
+                    } else {
+                        items = '<li><a class="" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')">' + data[i]["CourseName"] + '</a></li>';
+                    }
+                    coursestr += items;
+                }
+                document.getElementById("courseSelList").innerHTML = "";
+                $("#courseSelList").append(coursestr);
+            });
+            //查询全部级别
+            var allLevel = "http://{{.Website}}/orange/userlevel/GetAllUserlevel/1/100/";
+            var jibie = document.getElementById("P4").innerText; pubLevel = jibie;
+            $.getJSON(allLevel, function (data) {
+                var levelstr = '';
+                if (jibie == "") {
+                    levelstr = '<li><a href="#" class="listfont" id="level0" onclick="clicklevelSel(0)"><span>全部</span></a></li>';
+                } else {
+                    levelstr = '<li><a href="#" class="" id="level0" onclick="clicklevelSel(0)"><span>全部</span></a></li>';
+                }
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '';
+                    if (jibie == data[i]["LevelName"]) {
+                        items = '<li><a class="listfont" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')">' + data[i]["LevelName"] + '</a></li>';
+                    } else {
+                        items = '<li><a class="" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')">' + data[i]["LevelName"] + '</a></li>';
+                    }
+                    levelstr += items;
+                }
+                document.getElementById("levelSelList").innerHTML = "";
+                $("#levelSelList").append(levelstr);
+            });
+            //查询全部省份
+            var allLevel = "http://{{.Website}}/orange/province/GetAllProvince/1/100/";
+            //var shengfen = document.getElementById("P5").innerText; pubPro = shengfen;
+            $.getJSON(allLevel, function (data) {
+                var levelstr = '<option value="0">请选择</option>';
+                var shengfen = document.getElementById("P5").innerText; pubPro = shengfen;
+                var selindex = 0;
+                for (var i = 0; i < data.length ; i++) {
+                    if (data[i]["ProName"] == shengfen) { selindex = i + 1; }
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["ProName"] + '</option>';//
+                    levelstr += items;
+                }
+                document.getElementById("selProvence").innerHTML = "";
+                $("#selProvence").append(levelstr);               
+                document.getElementById("selProvence").selectedIndex = selindex;
+                var selProvinceid = document.getElementById("selProvence").options[selindex].value;
+                getCity(selProvinceid);
+
+            });
+            //查询全部年级
+            var allGradet = "http://{{.Website}}/orange/grade/GetAllGrade/1/100/";
+            $.getJSON(allGradet, function (data) {
+                var gradestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["GradeName"] + '</option>';
+                    gradestr += items;
+                }
+                document.getElementById("selGrade").innerHTML = "";
+                $("#selGrade").append(gradestr);
+            });
+            //查询全部科目
+            var allClasst = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            $.getJSON(allClasst, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CourseName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selClass").innerHTML = "";
+                $("#selClass").append(coursestr);
+            });
+            //查询全部城市
+            var allCity1 = "http://{{.Website}}/orange/citys/GetAllCitys/1/500/";
+            $.getJSON(allCity1, function (data) {
+                var levelstr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CityName"] + '</option>';
+                    levelstr += items;
+                }
+                document.getElementById("selCitysT").innerHTML = "";
+                $("#selCitysT").append(levelstr);
+            });
+        }
+        //省份onchange事件级联市
+        function selcity() {
+            var selpid = document.getElementById("selProvence").value;
+            //alert(selpid);
+            getCity(selpid);
+            if (selpid > 0) {
+                var selectIndex = document.getElementById("selProvence").selectedIndex;
+                var selProvinceStr = document.getElementById("selProvence").options[selectIndex].text;
+                pubPro = selProvinceStr;
+            } else {
+                pubPro = "";//请选择
+                pubCitys = "";
+            }
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        }
+        //市区onchange事件级联市
+        function selcitys() {
+            var selpid = document.getElementById("selCitys").value;
+            //alert(selpid);
+            if (selpid > 0) {
+                var selectIndex = document.getElementById("selCitys").selectedIndex;
+                var selCityStr = document.getElementById("selCitys").options[selectIndex].text;
+                pubCitys = selCityStr;
+            } else {
+                pubCitys = "";
+            }
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        }
+        //根据省份查询市区
+        function getCity(pid) {
+            if (pid > 0) {
+                var allLevel = "http://{{.Website}}/orange/citys/GetCitysByPid/" + pid;
+                $.getJSON(allLevel, function (data) {
+                    var shiqu = document.getElementById("P6").innerText; pubCitys = shiqu;
+                    var levelstr = '<option value="0">请选择</option>';
+                    var selindex = 0;
+                    for (var i = 0; i < data.length ; i++) {
+                        if (shiqu == data[i]["CityName"]) { selindex = i + 1; }
+                        var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CityName"] + '</option>';
+                        levelstr += items;
+                    }
+                    document.getElementById("selCitys").innerHTML = "";
+                    $("#selCitys").append(levelstr);
+                    document.getElementById("selCitys").selectedIndex = selindex;
+                });
+            }
+            else {
+                var levelstr = '<option value="">请选择</option>';
+                document.getElementById("selCitys").innerHTML = "";
+                $("#selCitys").append(levelstr);
+            }
+            //getAllTeacher(1);
+        }
+
+        function chushinowsel() {
+            var tap = document.getElementById("P1").innerText; pubTab = tap;
+            //alert(tap);
+            document.getElementById("tap3").className = "";
+            document.getElementById("tap2").className = "";
+            document.getElementById("tap1").className = "";
+            document.getElementById("tap" + tap).className = "active";
+            //var shengfen = document.getElementById("P5").innerText; pubPro = shengfen;
+            //alert(shengfen);
+            //if (shengfen == "") {
+            //    document.getElementById("selProvence").value = "请选择";
+            //} else {
+            //    document.getElementById("selProvence").value = shengfen;
+            //}
+            //var shiqu = document.getElementById("P6").innerText; pubCitys = shiqu;
+            
+        }
+
+        //分页初始
+        $(document).ready(function () {
+            var allcountvalue = document.getElementById("allcount").innerText;
+            // 创建分页元素
+            $("#Pagination").pagination(allcountvalue, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
+            });
+        });
+
+
+        //根据页码获取老师列表信息
+        function getAllTeacher(nowpage) {
+            //alert("4");
+            var selGradeStr = pubGrade; //alert("1");
+            var selCourseStr = pubCourse; //alert("2");
+            var selLevelStr = pubLevel; //alert("3");
+            var selectIndex = document.getElementById("selProvence").selectedIndex;
+            var selProvinceStr = document.getElementById("selProvence").options[selectIndex].text;
+            var selp = "";
+            if (selProvinceStr != "请选择") {
+                selp = selProvinceStr;
+            } else {
+                selp = "";
+            }
+            var selectcityIndex = document.getElementById("selCitys").selectedIndex;
+            var selCitysStr = document.getElementById("selCitys").options[selectcityIndex].text;
+            var selc = "";
+            if (selCitysStr != "请选择") {
+                selc = selCitysStr;
+            } else {
+                selc = "";
+            }
+            var allteacherlist = "http://{{.Website}}/orange/userinformation/GetUserinformationAllTeacher/" + pubTab + "/" + selGradeStr + "/" + selCourseStr + "/" + selLevelStr + "/" + selp + "/" + selc + "/" + nowpage + "/" + pubRows;
+            //alert(allteacherlist);
+            $.getJSON(allteacherlist, function (data) {
+                var allteacherstr = '';
+                if (data != null) {
+                    //var identityid = getCookie("identityid");
+                    var btnstr = '';
+                    var btnhou = '';
+                    //if (identityid == null || identityid == 0 || identityid + "" == "" || identityid + "" == "undefined" || identityid == 1) {
+                    //    btnstr = '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/';
+                    //    btnhou = '" class="btn btn-warning messabtn" style="width: 100%;">查看信息</a>';
+                    //} else if (identityid > 1) {
+                    //    btnstr = '<a href="http://{{.Website}}/orange/Teacher/TeacherMessage/';
+                    //    btnhou = '" class="btn btn-warning messabtn" style="width: 100%;">给他留言</a>';
+                    //}
+                    for (var i = 0; i < data.length ; i++) {
+                        var onlinestate = data[i]["OnlineState"];
+                        var onlinestr = '<span style="font-size:8px;color:#666;">（离线）</span>';
+                        if (onlinestate > 0) {
+                            onlinestr = '<span style="font-size:7px;">（在线）</span>';
+                            btnstr = '<a onclick="trylisten(' + data[i]["Id"] + ')"';
+                            btnhou = ' class="btn btn-warning messabtn" style="width: 100%;">立即试听</a>';
+                        } else {
+                            btnstr = '<a onclick="setMessagetoT(' + data[i]["Id"] + ')"';
+                            btnhou = '" class="btn btn-warning messabtn" style="width: 100%;">给他留言</a>';
+                        }
+                        var itemse = '<div class="row" style="border-bottom: 1px solid #F1F1F1">' +
+                                     '<div class=" col-sm-2">' +
+                                     '<div class="teamainleft">' +
+                                     '<img class="listheadimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                     '</div>' +
+                                     '</div>' +
+                                     '<div class="col-sm-7 teamainmiddle">' +
+                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')"><span>' + data[i]["UserName"] + onlinestr + '</span></a>' +
+                                     '<p>' + data[i]["SchoolName"] + ' | ' + data[i]["DegreeName"] + ' | ' + data[i]["LevelYear"] + '级 | ' + data[i]["Professional"] + '</p>' +
+                                     '<p>主辅导课：' + data[i]["CourseNameZhu"] + ' | 辅辅导课：' + data[i]["CourseNameFu"] + '</p>' +
+                                     '</div>' +
+                                     '<div class="col-sm-3">' +
+                                     '<div class="teamainright">' +
+                                     '<p>' + data[i]["UnitPrice"] + '元/小时</p>' +
+                                     '<br />' + btnstr  + btnhou +
+                                     '</div>' +
+                                     '</div>' +
+                                     '</div>';
+                        allteacherstr += itemse;
+                    }
+                    document.getElementById("home").innerHTML = "";
+                    $("#home").append(allteacherstr);
+                }
+                else {
+                    document.getElementById("home").innerHTML = "";
+                }
+                getallCount();
+            });
+        }
+
+        //点击分页按钮事件，掉用获取列表方法
+        function pageselectCallback(page_id, jq) {
+            //alert((page_id + 1));
+           getAllTeacher((page_id + 1));
+            
+        }
+
+        //点击tab时根据条件查询第一页数据
+        function clickTab(indextab) {
+            pubTab = indextab;
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        }
+
+        //点击年级条件
+        function clickgradeSel(tapnum) {
+            for (var i = 0; i < 13; i++) {
+                document.getElementById("grade" + i).className = "";
+            }
+            document.getElementById("grade" + tapnum).className = "listfont";
+            //alert(document.getElementById("grade" + tapnum).innerText);
+            if (tapnum > 0) {
+                pubGrade = document.getElementById("grade" + tapnum).innerText;
+            } else {
+                pubGrade = "";
+            }
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        };
+        //点击科目条件
+        function clickcourseSel(tapnum) {
+            for (var i = 0; i < 12; i++) {
+                document.getElementById("course" + i).className = "";
+            }
+            document.getElementById("course" + tapnum).className = "listfont";
+            if (tapnum > 0) {
+                pubCourse = document.getElementById("course" + tapnum).innerText;
+            } else {
+                pubCourse = "";
+            }
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        };
+        //点击级别条件
+        function clicklevelSel(tapnum) {
+            for (var i = 0; i < 5; i++) {
+                document.getElementById("level" + i).className = "";
+            }
+            document.getElementById("level" + tapnum).className = "listfont";
+            if (tapnum > 0) {
+                pubLevel = document.getElementById("level" + tapnum).innerText;
+            } else {
+                pubLevel = "";
+            }
+            var hrefpub = "http://{{.Website}}/orange/Teacher/TeacherList/" + pubTab + "&" + pubGrade + "&" + pubCourse + "&" + pubLevel + "&" + pubPro + "&" + pubCitys + "&" + "1" + "&" + pubRows;
+            window.location.href = hrefpub;
+        };
+
+        //获取最近浏览信息
+        function getZuiJinSee() {
+            if (userid != null && userid > 0) {
+                var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByUidSee/" + userid + "/浏览/1/2";
+                //alert(allseestr);
+                $.getJSON(allseestr, function (data) {
+                    var allseelist = '<div class="rightbottomtab" style="text-align: left;">' +
+                                     '<img src="images/pjjl.png" /><span>最近浏览</span>' +
+                                     '</div>';
+                    if (data != null) {
+                        //alert(data);
+                        for (var i = 0; i < data.length ; i++) {
+                            var itemse = '<div class="teaimgimg">' +
+                                         '<img class="teaheadimgimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                         '<p><a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["FrontUserId"] + '">' + data[i]["UserName"] + ' | ' + data[i]["GradeName"] + data[i]["CourseName"] + '</a></p>' +
+                                         '<p><span>' + data[i]["UnitPrice"] + '</span> 元/小时</p>' +
+                                         '</div>';
+                            allseelist += itemse;
+                        }
+                        document.getElementById("anserSee").innerHTML = "";
+                        $("#anserSee").append(allseelist);
+                    }
+                    else {
+                        document.getElementById("anserSee").innerHTML = "";
+                    }
+                    getallkechengCount();
+                });
+            }
+            else {
+                document.getElementById("anserSee").innerHTML = "";
+            }
+        }
+
+        //添加帮我推荐好老师功能
+        function addGoodTeacher() {
+            var identyit = getCookie("identityid");
+            //alert(identyit);
+            if (identyit == null) {
+                alert("尚未登录，请登录后使用！");
+            } else if (identyit == 1) {
+                alert("您无权使用推荐好老师！");
+            } else if (identyit > 1) {
+                var selgradeid = document.getElementById("selGrade").options[document.getElementById("selGrade").selectedIndex].value;
+                var selclassid = document.getElementById("selClass").options[document.getElementById("selClass").selectedIndex].value;
+                var selcityid = document.getElementById("selCitysT").options[document.getElementById("selCitysT").selectedIndex].value;
+                var beizhu = document.getElementById("txtBeizhu").value;
+
+                var addrecodtea = '{"UserId":' + userid +
+                           ',"GradeId":' + selgradeid +
+                           ',"ClassId":' + selclassid +
+                           ',"StartPrice":0' +
+                           ',"EndPreice":0' +
+                           ',"CityId":' + selcityid +
+                           ',"RecommendTime":"' + getNowFormatDate() +
+                           '","MyName":"' +
+                           '","MyPhone":"' +
+                           '","Remarks":"' +
+                           '"}';
+                $.post("http://{{.Website}}/orange/recommendteacher/AddRecommendteacher/", addrecodtea,
+                        function (data) {
+                            //alert(data["id"]);
+                            if (data["id"] > 0) {
+                                alert("提交成功！");
+                                window.location.href = "http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10";
+                            } else {
+                                alert("提交失败！");
+                            }
+                        });
+            }
+        }
+
+        //添加学生浏览老师关系数据
+        function addliulan(teacherid) {
+            var sid = getCookie("userid");
+            var identityid = getCookie("identityid");
+            //alert(teacherid + ";" + identityid + ";" + sid);
+            if (identityid > 1) {
+                var tid = teacherid;
+                var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/浏览";
+                $.getJSON(addguanzhu, function (data) {
+
+                });
+            }
+        }
+        //试听该老师的课程
+        function trylisten(tid) {
+            var identityid = getCookie("identityid");
+            if (tid > 0) {
+                if (identityid > 1) {
+                    var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + tid;
+                    $.getJSON(getstate, function (data) {
+                        window.location.href = "http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"];
+                    });
+                } else {
+                    alert("老师不能试听！");
+                }                
+            } else {
+                alert("请先登录！");
+            }            
+        }
+
+        //给老师留言
+        function setMessagetoT(tid) {
+            var sid = getCookie("userid");
+            var identityid = getCookie("identityid");
+            if (sid > 0) {
+                if (identityid > 1) {
+                    window.location.href = "http://{{.Website}}/orange/Teacher/TeacherMessage/" + tid;
+                } else {
+                    alert("老师不能留言！");
+                }
+            } else {
+                alert("请先登录！");
+            }
+        }
+    </script>
+</body>
+</html>

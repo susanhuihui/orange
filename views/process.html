@@ -1,0 +1,51 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+    <link href="b/css/carousel.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div id="loginpop">
+                <div>
+                    <div>
+                        <div class="modal-header">
+                            <ul id="tags">
+                                <li id="li1" class="selectTag"><a onclick="selectTagpass('tagContent0',this)" href="javascript:void(0)">学习流程</a> </li>
+                                <li id="li2"><a onclick="selectTagpass('tagContent1',this)" href="javascript:void(0)">教学流程</a> </li>
+                            </ul>
+                        </div>
+                        <div class="modal-body" id="divcoutent">
+                            <div class="tagContents" id="tagContent0">
+                                <img style="width: 90%;" src="images/stuprocess.png" />
+                            </div>
+                            <div class="tagContents" id="tagContent1" style="display:none">
+                                <img style="width: 100%;" src="images/teacherprocess.png" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+
+    <div id="pagetopb">
+
+        <!--main-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row">
+                <div class="col-sm-3 col-md-2">
+                    <div class="probletable">
+                        <img src="{{.AvatarPath}}" />
+                        <p>ID {{.Id}}</p>
+                        <span>{{.UserName}}</span>
+                        <p>{{.SchoolName}}</p>
+                        <p id="usermessageid" style="display:none">{{.messid}}</p><!--第一条留言的主键id-->
+                        <p id="sid" style="display:none">{{.studentid}}</p><!--第一条老师主键id-->
+                        <p id="tid" style="display:none">{{.teacherid}}</p><!--第一条学生主键id-->
+                    </div>
+                </div>
+                <div class="col-sm-9 col-md-10 leftdiv">
+                    <div id="replaceContent">
+                        <div class="row messtext">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-8" style="color: red;">
+                                留言（王大全）: 我的留言                           
+                            </div>
+                        </div>
+                        <div class="row messtexts">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-8" style="color: green;">
+                                回复（张嘉佳）: 我的留言                           
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row messtextsn" style="margin-top: 40px;">
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-10">
+                            <textarea class="evaarea" id="messCounenttext"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row messtexts">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-10">
+                        <input type="button" class="evabtn" style="float: right;" onclick="addUsermessage()" value="提交">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--footer-->
+
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript">
+        var userid = getCookie("userid")//获取登录用户主键id
+        var identityid = getCookie("identityid");
+        window.onload = function () {
+            setTitleOnSelect(4);
+            getuser();
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            //绑定留言与回复内容
+            document.getElementById("replaceContent").innerHTML = "";
+            document.getElementById("replaceContent").innerHTML = "{{.stuTeaContents}}";
+        }
+
+        //添加一条回复信息
+        function addUsermessage() {
+            var uid1 = document.getElementById("sid").innerText;
+            var uid2 = document.getElementById("tid").innerText;
+            var messid = document.getElementById("usermessageid").innerText;
+            var messContent = document.getElementById("messCounenttext").value;
+            if (trim(messContent) + "" == "") {
+                alert("回复内容不能为空！");
+                return;
+            }
+            var addmessageModel = '';
+            if (identityid == 1) {//老师
+                addmessageModel = '{"ActiveUserId":' + uid2 +
+                                    ',"PassiveUserId":' + uid1 +
+                                    ',"MessageId":' + messid +
+                                    ',"Contents":"' + messContent +
+                                    '","States":0' + 
+                                    ',"MesTime":"' + getNowFormatDate() +
+                                    '"}';
+            } else {
+                addmessageModel = '{"ActiveUserId":' + uid1 +
+                                    ',"PassiveUserId":' + uid2 +
+                                    ',"MessageId":' + messid +
+                                    ',"Contents":"' + messContent +
+                                    '","States":0' +
+                                    ',"MesTime":"' + getNowFormatDate() +
+                                    '"}';
+            }
+            $.post("http://{{.Website}}/orange/usermessage/AddUsermessage/", addmessageModel,
+                    function (data) {
+                        //alert(data["id"]);
+                        if (data["id"] > 0) {
+                            alert("添加回复成功！");
+                            if (identityid == 1) {
+                                window.location.href = "http://{{.Website}}/orange/Main/GetUserMessageListTeacher/" + messid;
+                            } else {
+                                window.location.href = "http://{{.Website}}/orange/Main/GetUserMessageList/" + messid;
+                            }
+
+                        } else {
+                            alert("添加回复失败！");
+                        }
+                    });
+        }
+
+
+        </script>
+</body>
+</html>

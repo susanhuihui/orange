@@ -1,0 +1,83 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row problemmenu">
+                <div class="col-sm-12">
+                    <span>精彩问答</span>
+                    <a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/" id="setquestion">
+                        <input type="button" class="probtn" value="我也要提问">
+                    </a>
+                </div>
+            </div>
+            <div class='row'>
+                <div class="col-sm-3">
+                    <div class="probletable">
+                        <img src="{{.HuiDaAvatarPath}}" />
+                        <p>ID {{.AnswerUserId}}</p>
+                        <p id="userid" style="display: none">{{.userid}}</p>
+                        <span>{{.Hname}}</span>
+                        <p>{{.SchoolName}}</p>
+                        <a id="selteacher" href="http://{{.Website}}/orange/Teacher/TeacherInformation/{{.userid}}" ><input type="button" class="problembtn" value="查看详情"></a>
+                    </div>
+                </div>
+                <div class="col-sm-9 leftdiv">
+                    <div class="row rowbottom">
+                        <div class="col-sm-2 protable">
+                            <img src="{{.AvatarPath}}" />
+                        </div>
+                        <div class="col-sm-10 protable" style="padding-top: 20px;">
+                            <span>{{.UserName}}</span>
+                            <span>{{.BadeTime}}</span>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 promainfont">
+                        {{.Title}}                     
+                    </div>
+                    <div class="col-sm-12 promain">
+                        {{.Contents}} 
+                    </div>
+                    <div class="col-sm-12 promainfont">
+                        回答内容：                  
+                    </div>
+                    <div class="col-sm-12 promain">
+                        {{.HuiDaContents}} 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{template "footer.html" .}}    
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        //var userid = getCookie("userid")//获取登录用户主键id
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(3);
+            var identyit = getCookie("identityid");
+            if (identyit != null && identyit > 1) {
+                document.getElementById("setquestion").style.display = "block";
+            } else {
+                document.getElementById("setquestion").style.display = "none";
+            }
+        }
+      </script>
+</body>
+</html>

@@ -1,0 +1,885 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+
+<body>
+    {{template "menutop.html" .}}
+    <div class="modal fade" id="selschooldiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">选择学校</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop" style="text-align: left;">
+                        <tr>
+                            <td id="prolists"></td>
+                        </tr>
+                        <tr>
+                            <td id="citylists"></td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 1px solid #E7E7E7;" id="contLists"></td>
+                        </tr>
+                        <tr>
+                            <td id="schoollists"></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning" data-dismiss="modal" onclick="showSchoolname()">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="bg" class="bg" style="display: none;"></div>
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF; padding-top: 20px;">
+            <div>
+
+                <div class=" col-sm-3" style="background-color: #FFFFFF; float: left;">
+                    <ul id="tabnav">
+                        <li><a id="limenu1" class="active" onclick="qiehuantap(1)">基本信息</a></li>
+                        <li><a id="limenu2" class="" onclick="qiehuantap(2)">账号设置</a></li>
+                        <li><a id="limenu3" class="" onclick="qiehuantap(3)">修改密码</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9" id="tab_content" style="height: 1100px;">
+                    <div id="divtap1" class="content">
+                        <div class="row">
+                            <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                照片:
+                            </div>
+                            <div class="col-xs-8">
+                                <img id="userhead" src="{{.AvatarPath}}" style="width: 150px; height: 157px;" />
+                                <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" />
+                                <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
+                                <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
+                                <script type="text/javascript">
+                                    (function (W, D) {
+                                        var fileForm = document.getElementById("file_form");
+                                        var fileImage = document.getElementById("file_image");
+                                        function testAjax(files, i) {
+                                            if (i < 0) {
+                                                return;
+                                            }
+                                            var xhr = new XMLHttpRequest(),
+                                                 data = new FormData();
+                                            xhr.onload = function () {
+                                                // 递归
+                                                testAjax(files, --i);
+                                            };
+                                            data.append("file1", files[i]);
+                                            xhr.open("post", "http://{{.Website}}/orange/userinformation/UpdateUserimg/" + getCookie("userid"), true);
+                                            xhr.send(data);
+                                        }
+                                        fileForm.addEventListener("click", function (e) {
+                                            e.preventDefault();
+                                            var files = fileImage.files;
+                                            testAjax(files, --files.length);
+                                        }, false);
+                                    })(window, document);
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                姓名:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="username">{{.UserName}} </span>
+                                <input type="text" id="txtUserName" style="display: none;" value="{{.UserName}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                性别:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="usersex">{{.UserSex}}</span>
+                                <select id="selUserSex" style="display: none;">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                高中所在学校:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="txthighschoolname">{{.HighSchoolName}}</span>
+                                <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianjihigh">
+                                    <span style="color: red" onclick="getprovence(0)">编辑</span><!--中小学0，大学1-->
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                所在学校:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="txtschoolname">{{.SchoolName}}</span>
+                                <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
+                                    <span style="color: red" onclick="getprovence(1)">编辑</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                入学年份:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="ruxueyear">{{.LevelYear}}</span>
+                                <input type="text" id="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                用户邮箱:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="youxiang">{{.Mailbox}}</span>
+                                <input type="text" id="txtusermail" style="display: none;" value="{{.Mailbox}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学位:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="txtagename">{{.DegreeName}}</span>
+                                <select id="selDegree" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学习专业:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="Professional">{{.Professional}}</span>
+                                <input type="text" id="txtProfessional" style="display: none;" value="{{.Professional}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                补习年级:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="showgrid">{{.GradeName}}</span>
+                                <select id="selgrid" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                主辅导科目:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="txtzhucourse">{{.CourseName}}</span>
+                                <select id="selcourse" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                辅辅导科目:                                   
+                            </div>
+                            <div class="col-xs-8" id="selClass">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                个人简介:
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <textarea class="evaareass" id="txtjianjie">{{.BriefIntroduction}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                兴趣爱好:
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <textarea class="evaareass" id="txtaihao">{{.UserHobby}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input id="btnjiben" class="messagebtn" style="display: none;" type="button" value="保存信息" onclick="saveUserInfo()">
+                            </div>
+                        </div>
+
+                        <div>
+                        </div>
+                    </div>
+                    <div id="divtap2" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="olduserphone">{{.IphoneNum}}</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManager(this,'box')">更改手机号</a>
+                                <div id="box" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td class="odd">手机号：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="odd">验证码：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="yzmtext" id="upyanzhengma">
+                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" onclick="getYzCode()">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <!--<div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                邮箱绑定:
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                {{.Mailbox}}
+                                        	&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManagers(this,'boxs')">更改邮箱</a>
+                                <div id="boxs" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td class="odd">邮箱地址：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="regtext">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="odd">验证码：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="yzmtext">
+                                                <input type="button" class="yzmbtn" value="点击获取验证码">
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="messagebtn" type="button" value="保存信息" onclick="saveUserPhone()">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="divtap3" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                {{.IphoneNum}}                                     
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                原密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="logininput" type="password" id="oldpass">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="logininput" type="password" id="newpass1">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                再次输入新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="logininput" type="password" id="newpass2">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="messagebtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
+                            </div>
+                        </div>
+                    </div>
+                    <p id="userlistclass" style="display: none;">{{.userlistclass}}</p>
+                    <p id="UserDegree" style="display: none;">{{.UserDegree}}</p>
+                    <!--学位-->
+                    <p id="GradeId" style="display: none;">{{.GradeId}}</p>
+                    <!--补习年级id-->
+                    <p id="CourseNameId" style="display: none;">{{.CourseNameId}}</p>
+                    <!--主辅导课程id-->
+
+                    <p id="SchoolId" style="display: none;">{{.SchoolId}}</p>
+                    <!--将要被保存的学校id，没有选择时还保存最初值-->
+                    <p id="selSchoolId" style="display: none;">{{.SchoolId}}</p>
+                    <!--暂时存放选中的学校id，点击确定后从此取值放入上面，保存时取上方p值-->
+                    <p id="selSchoolName" style="display: none;">{{.SchoolName}}</p>
+                    <!--暂时存放选中的学校名称，点击确定后取值放入span,与保存无关-->
+
+                    <p id="highSchoolid" style="display: none;">{{.SeniorLocation}}</p>
+                    <p id="selHighSchoolid" style="display: none;">{{.SeniorLocation}}</p>
+                    <p id="selHighSchoolName" style="display: none;">{{.HighSchoolName}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/personal.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript">
+        var userid = getCookie("userid")//获取登录用户主键id
+        var identityid = getCookie("identityid");
+        window.onload = function () {
+            setTitleOnSelect(4);
+            getuser();
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            chushi();
+        }
+        //初始选择时的列表信息
+        function chushi() {
+            var allClass = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            $.getJSON(allClass, function (data) {
+                var classte = document.getElementById("userlistclass").innerText;
+                var usli = classte.split(',');
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var check = "";
+                    for (var j = 0; j < usli.length; j++) {
+                        if (usli[j] == data[i]["Id"]) {
+                            check = ' checked = "checked" ';
+                        }
+                    }
+                    var items = '<input type="checkbox" value="' + data[i]["Id"] + '" id="ckclass' + i + '" ' + check + '>' + data[i]["CourseName"] + '&nbsp;&nbsp;&nbsp; ';
+                    coursestr += items;
+                }
+                document.getElementById("selClass").innerHTML = "";
+                $("#selClass").append(coursestr);
+            });
+            var alldegree = "http://{{.Website}}/orange/degree/GetAllDegree/1/100/";
+            $.getJSON(alldegree, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["DegreeName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selDegree").innerHTML = "";
+                $("#selDegree").append(coursestr);
+            });
+            var allgrade = "http://{{.Website}}/orange/grade/GetAllGrade/1/100/";
+            $.getJSON(allgrade, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["GradeName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selgrid").innerHTML = "";
+                $("#selgrid").append(coursestr);
+            });
+            var allcourse = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            $.getJSON(allcourse, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CourseName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selcourse").innerHTML = "";
+                $("#selcourse").append(coursestr);
+            });
+        }
+        var hightypeid = 0;//查询高校，还是大学,中小学0，大学1
+        //初始省份信息
+        function getprovence(hightype) {
+            hightypeid = hightype;//设置查询学校类型
+            //查询全部省份
+            var allProvince = "http://{{.Website}}/orange/province/GetAllProvince/1/100/";
+            $.getJSON(allProvince, function (data) {
+                var levelstr = '<p style="color:red;">省份：</p>';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<a id="" onclick="getcity(' + data[i]["Id"] + ')">' + data[i]["ProName"] + '</a> &nbsp;&nbsp;';
+                    levelstr += items;
+                }
+                document.getElementById("prolists").innerHTML = "";
+                $("#prolists").append(levelstr);
+                getcity(data[0]["Id"]);
+            });
+        }
+
+        //根据省份id获取城市信息
+        function getcity(pid) {
+            if (pid > 0) {
+                var allCitys = "http://{{.Website}}/orange/citys/GetCitysByPid/" + pid;
+                $.getJSON(allCitys, function (data) {
+                    var levelstr = '<p style="color:red;">市：</p>';
+                    if (data != null && data.length > 0) {
+                        if (hightypeid == 0) {
+                            for (var i = 0; i < data.length ; i++) {
+                                var items = '<a id="" onclick="getcontry(' + data[i]["Id"] + ')">' + data[i]["CityName"] + '</a> &nbsp;&nbsp;';
+                                levelstr += items;
+                            }
+                            document.getElementById("citylists").innerHTML = "";
+                            $("#citylists").append(levelstr);
+                            getcontry(data[0]["Id"]);
+                        }
+                        else if (hightypeid == 1) {
+                            for (var i = 0; i < data.length ; i++) {
+                                var items = '<a id="" onclick="getSchool(' + data[i]["Id"] + ')">' + data[i]["CityName"] + '</a> &nbsp;&nbsp;';
+                                levelstr += items;
+                            }
+                            document.getElementById("citylists").innerHTML = "";
+                            $("#citylists").append(levelstr);
+                            document.getElementById("contLists").innerHTML = "";
+                            getSchool(data[0]["Id"]);
+                        }
+                    } else {
+                        document.getElementById("citylists").innerHTML = "";
+                        $("#citylists").append(levelstr);
+                        document.getElementById("contLists").innerHTML = "";
+                        $("#contLists").append('<p style="color:red;">区县：</p>');
+                        document.getElementById("schoollists").innerHTML = "";
+                        $("#schoollists").append('<p style="color:red;">学校：</p>');
+                    }
+                });
+            }
+            else {
+                var levelstr = '<option value="">请选择</option>';
+                document.getElementById("selCitys").innerHTML = "";
+                $("#selCitys").append(levelstr);
+            }
+        }
+        //根据市主键id获取之下的所有区县
+        function getcontry(cid) {
+            var allContry = "http://{{.Website}}/orange/countys/GetCountysByCid/" + cid;
+            $.getJSON(allContry, function (data) {
+                var levelstr = '<p style="color:red;">区县：</p>';
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var items = '<a id="" onclick="getSchool(' + data[i]["Id"] + ')">' + data[i]["CountyName"] + '</a> &nbsp;&nbsp;';
+                        levelstr += items;
+                    }
+                }
+                document.getElementById("contLists").innerHTML = "";
+                $("#contLists").append(levelstr);
+                getSchool(data[0]["Id"]);
+            });
+        }
+        //根据区获取学校
+        function getSchool(cid) {
+            var allschool = "http://{{.Website}}/orange/schools/GetSchoolsByCity/" + cid + "/" + hightypeid;
+            $.getJSON(allschool, function (data) {
+                var levelstr = '<p style="color:red;">学校：</p>';
+                //alert(data);
+                if (data != null && data.length > 0) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var items = '<a id="" onclick="getSchoolId(' + data[i]["Id"] + ',' + "'" + data[i]["SchoolName"] + "')" + '">' + data[i]["SchoolName"] + '</a> &nbsp;&nbsp;';
+                        levelstr += items;
+                    }
+                }
+                document.getElementById("schoollists").innerHTML = "";
+                $("#schoollists").append(levelstr);
+            });
+        }
+
+        //根据选择的学校id显示学校名称
+        function getSchoolId(sid, schoolname) {
+            if (hightypeid == 0) {//高中
+                document.getElementById("selHighSchoolid").innerText = sid;
+                document.getElementById("selHighSchoolName").innerText = schoolname;
+            } else {//大学
+                document.getElementById("selSchoolId").innerText = sid;
+                document.getElementById("selSchoolName").innerText = schoolname;
+            }
+        }
+
+        //点击确定后显示学校名字并绑定选择的学校主键
+        function showSchoolname() {
+            if (hightypeid == 0) {//高中
+                var hid = document.getElementById("selHighSchoolid").innerText;
+                var hname = document.getElementById("selHighSchoolName").innerText;
+                document.getElementById("highSchoolid").innerText = hid;
+                document.getElementById("txthighschoolname").innerText = hname;
+            } else {//大学
+                var id = document.getElementById("selSchoolId").innerText;
+                var name = document.getElementById("selSchoolName").innerText;
+                document.getElementById("SchoolId").innerText = id;
+                document.getElementById("txtschoolname").innerText = name;
+            }
+        }
+
+        //编辑按钮，修改为编辑状态
+        function bianji() {
+            document.getElementById("btnbianji").style.display = "block";//学校编辑按钮
+            document.getElementById("btnbianjihigh").style.display = "block";
+            document.getElementById("txtUserName").style.display = "block";//姓名
+            document.getElementById("username").style.display = "none";
+            var setsex = document.getElementById("usersex").innerText;//性别
+            if (setsex != "") {
+                document.getElementById("selUserSex").style.display = "block";
+                document.getElementById("usersex").style.display = "none";
+                document.getElementById("selUserSex").value = setsex;
+            } else {
+                document.getElementById("selUserSex").style.display = "block";
+                document.getElementById("usersex").style.display = "none";
+            }
+            var setage = document.getElementById("UserDegree").innerText;//学位id
+            if (setage != "") {
+                document.getElementById("selDegree").style.display = "block";
+                document.getElementById("txtagename").style.display = "none";
+                document.getElementById("selDegree").value = setage;
+            }
+            document.getElementById("ruxueyear").style.display = "none"; //入学年份
+            document.getElementById("txtruxueyear").style.display = "block";
+            document.getElementById("youxiang").style.display = "none";//邮箱
+            document.getElementById("txtusermail").style.display = "block";
+            document.getElementById("Professional").style.display = "none";//专业
+            document.getElementById("txtProfessional").style.display = "block";
+            var gradeid = document.getElementById("GradeId").innerText;//年级id
+            if (gradeid != "") {
+                document.getElementById("selgrid").style.display = "block";
+                document.getElementById("showgrid").style.display = "none";
+                document.getElementById("selgrid").value = gradeid;
+            }
+            var zhucourseid = document.getElementById("CourseNameId").innerText;//主辅导课程id
+            if (zhucourseid != "") {
+                document.getElementById("selcourse").style.display = "block";
+                document.getElementById("txtzhucourse").style.display = "none";
+                document.getElementById("selcourse").value = zhucourseid;
+            }
+            document.getElementById("file_image").style.display = "block";//更改头像按钮
+            document.getElementById("file_form").style.display = "block";//更改头像按钮
+            document.getElementById("btnjiben").style.display = "block";//保存信息按钮
+        }
+
+        //保存用户基本信息
+        function saveUserInfo() {
+            var username = trim(document.getElementById("txtUserName").value);
+            var usersex = document.getElementById("selUserSex").value;
+            var userheighschoolid = document.getElementById("highSchoolid").innerText;//高中id
+            var userschoolid = document.getElementById("SchoolId").innerText;//大学id
+            var useryear = document.getElementById("txtruxueyear").value;
+            var usermail = document.getElementById("txtusermail").value;
+            var userdegree = document.getElementById("selDegree").value;//学位
+            var userprofess = document.getElementById("txtProfessional").value;//学习专业
+            var usergrade = document.getElementById("selgrid").value;//辅导年级
+            var userZhuCourse = document.getElementById("selcourse").value;//主辅导科目--需要另外的方法保存
+            var userjianjie = document.getElementById("txtjianjie").value;
+            var userhobby = document.getElementById("txtaihao").value;
+            var userhead = "";
+            var head = document.getElementById("userheadpath").innerText;
+            if (head + "" != "" && head + "" != "undefined") {
+                userhead = head;
+            }
+            var yanzhengpass = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
+            $.getJSON(yanzhengpass, function (datauser) {
+                var upuser = '{' +
+                    '"UserName":"' + username + '",' +
+                    '"IphoneNum":"' + datauser["IphoneNum"] + '",' +
+                    '"LoginPassword":"' + datauser["LoginPassword"] + '",' +
+                    '"PayPassword":"' + datauser["PayPassword"] + '",' +
+                    '"UserSex":"' + usersex + '",' +
+                    '"SchoolId":' + userschoolid + ',' +
+                    '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
+                    '"UserDegree":' + userdegree + ',' +
+                    '"UserLocation":' + datauser["UserLocation"] + ',' +
+                    '"SeniorLocation":' + userheighschoolid + ',' +
+                    '"UserLevelId":' + datauser["UserLevelId"] + ',' +
+                    '"LevelYear":' + useryear + ',' +
+                    '"IdentityId":' + datauser["IdentityId"] + ',' +
+                    '"GradeId":' + usergrade + ',' +
+                    '"UnitPrice":' + datauser["UnitPrice"] + ',' +
+                    '"Professional":"' + userprofess + '",' +
+                    '"Mailbox":"' + usermail + '",' +
+                    '"ParentMailbox":"' + datauser["ParentMailbox"] + '",' +
+                    '"StudyDifficult":"' + datauser["StudyDifficult"] + '",' +
+                    '"AvatarPath":"' + userhead + '",' +
+                    '"UserHobby":"' + userhobby + '",' +
+                    '"Remarks":"' + datauser["Remarks"] + '",' +
+                    '"BriefIntroduction":"' + userjianjie + '",' +
+                    '"RegisteredTime":"' + getInsertDate(datauser["RegisteredTime"]) +
+                '"}';
+                $.post("http://{{.Website}}/orange/userinformation/UpdateUserinformationById/" + userid, upuser,
+                   function (data) {
+                       if (data == "OK") {
+                           alert("修改成功！");
+                           //-------------保存主辅导课程
+                           if (userZhuCourse > 0) {
+                               var uerzhucourse = "http://{{.Website}}/orange/remedialcourses/GetRemedialcoursesMain/" + userid + "/1";//查询这个老师是否有主辅导课程
+                               $.getJSON(uerzhucourse, function (datacourse) {
+                                   if (datacourse == null || datacourse.length < 0) {//不存在，需添加一条主辅导课程
+                                       var addremed = '{"UserId":' + userid +
+                                                    ',"CoursesId":' + userZhuCourse +
+                                                    ',"IsMain":' + 1 +
+                                                    '}';
+                                       $.post("http://{{.Website}}/orange/remedialcourses/AddRemedialcourses/", addremed,
+                                           function (dataadd) {
+                                               if (dataadd["id"] > 0) {
+                                               } else { alert("辅助信息保存失败！"); }
+                                           });
+                                   }
+                                   else {//存在，修改一条主辅导课程
+                                       var upremed = '{"UserId":' + datacourse[0]["UserId"] +
+                                                    ',"CoursesId":' + userZhuCourse +
+                                                    ',"IsMain":' + datacourse[0]["IsMain"] +
+                                                    '}';
+                                       $.post("http://{{.Website}}/orange/remedialcourses/UpdateRemedialcoursesById/" + datacourse[0]["Id"], upremed,
+                                           function (dataup) {
+                                               if (dataup == "OK") {
+                                               } else { alert("辅助信息保存失败！"); }
+                                           });
+                                   }
+                               });
+                           }
+                           //------------保存主辅导课程结束
+                           //------------保存辅辅导课程开始
+                           var allselclassid = "";
+                           for (var i = 0; i < 12; i++) {
+                               var items = document.getElementById("ckclass" + i);
+                               if (items != null) {
+                                   if (items.checked) {
+                                       allselclassid = allselclassid + items.value + ",";
+                                   }
+                               }
+                           }
+                           allselclassid = allselclassid.substring(0, allselclassid.length - 1);
+                           //alert(allselclassid);
+                           var allContry = "http://{{.Website}}/orange/remedialcourses/UpdateStudentClass/" + userid + "/" + allselclassid;
+                           $.getJSON(allContry, function (data) {
+                               
+                           });
+                           //------------保存辅辅导课程结束
+                           window.location.href = "http://{{.Website}}/orange/Main/UpdateTeacher/";
+                           document.getElementById("btnsaveuser").style.display = "none";
+                       } else {
+                           alert("修改失败！");
+                       }
+                   });
+
+            });
+        }
+
+        //保存用户密码
+        function saveUserPass() {
+            var oldpass = trim(document.getElementById("oldpass").value);
+            var newpass1 = trim(document.getElementById("newpass1").value);
+            var newpass2 = trim(document.getElementById("newpass2").value);
+            if (oldpass == "") { alert("请输入原始密码！"); return; }
+            if (newpass1 == "") { alert("请输入新密码！"); return; }
+            if (newpass2 == "") { alert("请再次输入重复新密码！"); return; }
+            if (newpass1 != newpass2) { alert("两次输入的新密码不一样！"); return; }
+            var yanzhengpass = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
+            $.getJSON(yanzhengpass, function (datauser) {
+                if (datauser["LoginPassword"] == oldpass) {
+                    //alert(datauser);
+                    var upuser = '{' +
+                        '"UserName":"' + datauser["UserName"] + '",' +
+                        '"IphoneNum":"' + datauser["IphoneNum"] + '",' +
+                        '"LoginPassword":"' + newpass1 + '",' +
+                        '"PayPassword":"' + datauser["PayPassword"] + '",' +
+                        '"UserSex":"' + datauser["UserSex"] + '",' +
+                        '"SchoolId":' + datauser["SchoolId"] + ',' +
+                        '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
+                        '"UserDegree":' + datauser["UserDegree"] + ',' +
+                        '"UserLocation":' + datauser["UserLocation"] + ',' +
+                        '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                        '"UserLevelId":' + datauser["UserLevelId"] + ',' +
+                        '"LevelYear":' + datauser["LevelYear"] + ',' +
+                        '"IdentityId":' + datauser["IdentityId"] + ',' +
+                        '"GradeId":' + datauser["GradeId"] + ',' +
+                        '"UnitPrice":' + datauser["UnitPrice"] + ',' +
+                        '"Professional":"' + datauser["Professional"] + '",' +
+                        '"Mailbox":"' + datauser["Mailbox"] + '",' +
+                        '"ParentMailbox":"' + datauser["ParentMailbox"] + '",' +
+                        '"StudyDifficult":"' + datauser["StudyDifficult"] + '",' +
+                        '"AvatarPath":"' + datauser["AvatarPath"] + '",' +
+                        '"UserHobby":"' + datauser["UserHobby"] + '",' +
+                        '"Remarks":"' + datauser["Remarks"] + '",' +
+                        '"BriefIntroduction":"' + datauser["BriefIntroduction"] + '",' +
+                        '"RegisteredTime":"' + getInsertDate(datauser["RegisteredTime"]) +
+                    '"}';
+                    $.post("http://{{.Website}}/orange/userinformation/UpdateUserinformationById/" + userid, upuser,
+                       function (data) {
+                           if (data == "OK") {
+                               alert("修改成功！");
+                               window.location.href = "http://{{.Website}}/orange/Main/UpdateTeacher/";
+                           } else {
+                               alert("修改失败！");
+                           }
+                       });
+                } else {
+                    alert("原始密码输入错误，请重新输入！");
+                    document.getElementById("oldpass").value = "";
+                    document.getElementById("newpass1").value = "";
+                    document.getElementById("newpass2").value = "";
+                }
+            });
+        }
+
+        var phoneistorf = 0;//false
+        var xianColor = "#fe9627";
+        var yinColor = "#c4c4c4";
+        function yanzheng() {
+            var oldphone = document.getElementById("olduserphone").innerText;
+            var phone = document.getElementById("upuserphone").value;
+            if (trim(oldphone) == trim(phone)) { alert("修改的手机不能与旧手机号一样！"); return; }
+        }
+        //验证手机号码，并且改变获取验证码按钮的颜色
+        function upColor() {
+            var phone = document.getElementById("upuserphone").value;
+            var re = /^1\d{10}$/;
+            if (re.test(phone)) {
+                document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
+                phoneistorf = 1;
+            } else {
+                document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
+                phoneistorf = 0;
+            }
+        }
+        function getYzCode() {
+            var oldphone = document.getElementById("olduserphone").innerText;
+            var phone = document.getElementById("upuserphone").value;
+            if (trim(oldphone) == trim(phone)) {
+                alert("修改的手机不能与旧手机号一样！");
+                return;
+            }
+            //验证这个手机是否已经有人注册使用了
+            var getphoneuser = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
+            $.getJSON(getphoneuser, function (datas) {
+                if (datas != null && datas["result"] == 1) {
+                    alert("此手机号已经注册，不能重复使用！");
+                } else {
+                    //发送验证码
+                    if (phoneistorf == 1) {
+                        $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
+                            alert("发送成功");
+                        });
+                    } else {
+                        alert("手机号输入不正确！请输入正确手机号码！");
+                    }
+                }
+            });
+        }
+
+        //确认修改手机号码
+        function saveUserPhone() {
+            var oldphone = document.getElementById("olduserphone").innerText;
+            var phone = document.getElementById("upuserphone").value;
+            var useryanzheng = document.getElementById("upyanzhengma").value;
+            if (trim(useryanzheng) + "" == "") {
+                alert("验证码不能为空");
+                return;
+            }
+            if (trim(oldphone) == trim(phone)) {
+                alert("修改的手机不能与旧手机号一样！");
+                return;
+            }//先验证验证码是否正确
+            var allCode = "http://{{.Website}}/orange/verification/GetVerificationByPhone/" + phone;
+            $.getJSON(allCode, function (data) {
+                if (data["VerCode"] == "") {
+                    alert("暂无验证码！");
+                } else if (useryanzheng == data["VerCode"]) {
+                    var upphone = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
+                    $.getJSON(upphone, function (datauser) {
+                        //alert(datauser);
+                        var upuser = '{' +
+                            '"UserName":"' + datauser["UserName"] + '",' +
+                            '"IphoneNum":"' + trim(phone) + '",' +
+                            '"LoginPassword":"' + datauser["LoginPassword"] + '",' +
+                            '"PayPassword":"' + datauser["PayPassword"] + '",' +
+                            '"UserSex":"' + datauser["UserSex"] + '",' +
+                            '"SchoolId":' + datauser["SchoolId"] + ',' +
+                            '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
+                            '"UserDegree":' + datauser["UserDegree"] + ',' +
+                            '"UserLocation":' + datauser["UserLocation"] + ',' +
+                            '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                            '"UserLevelId":' + datauser["UserLevelId"] + ',' +
+                            '"LevelYear":' + datauser["LevelYear"] + ',' +
+                            '"IdentityId":' + datauser["IdentityId"] + ',' +
+                            '"GradeId":' + datauser["GradeId"] + ',' +
+                            '"UnitPrice":' + datauser["UnitPrice"] + ',' +
+                            '"Professional":"' + datauser["Professional"] + '",' +
+                            '"Mailbox":"' + datauser["Mailbox"] + '",' +
+                            '"ParentMailbox":"' + datauser["ParentMailbox"] + '",' +
+                            '"StudyDifficult":"' + datauser["StudyDifficult"] + '",' +
+                            '"AvatarPath":"' + datauser["AvatarPath"] + '",' +
+                            '"UserHobby":"' + datauser["UserHobby"] + '",' +
+                            '"Remarks":"' + datauser["Remarks"] + '",' +
+                            '"BriefIntroduction":"' + datauser["BriefIntroduction"] + '",' +
+                            '"RegisteredTime":"' + getInsertDate(datauser["RegisteredTime"]) +
+                        '"}';
+                        $.post("http://{{.Website}}/orange/userinformation/UpdateUserinformationById/" + userid, upuser,
+                           function (data) {
+                               if (data == "OK") {
+                                   alert("修改成功！");
+                                   window.location.href = "http://{{.Website}}/orange/Main/UpdateStudent/";
+                               } else {
+                                   alert("修改失败！");
+                               }
+                           });
+                    });
+                }
+            });
+        }
+        //显示选择照片
+        function setImagePreview() {
+            var docObj = document.getElementById("file_image");
+            var imgObjPreview = document.getElementById("userhead");
+            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+            return true;
+        }
+    </script>
+</body>
+</html>

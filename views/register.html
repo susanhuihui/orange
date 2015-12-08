@@ -1,0 +1,183 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row registerimg">
+                <div class="rol-sm-10">
+                    <img style="width: 80%;" src="images/Register.jpg" />
+                </div>
+            </div>
+            <div class="row" style="margin-top: 30px;">
+                <div class=" col-sm-1"></div>
+                <div class="col-sm-10 regtab">
+                    <img src="images/zcimg.png" />
+                    <span>学生/家长注册</span>
+                </div>
+                <div class=" col-sm-1"></div>
+            </div>
+            <div class=" row registertab">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 odd">
+                    &nbsp;&nbsp;&nbsp;手机号：                         	
+                    <input type="text" class="regtext" id="userphone" onblur="upColor()">
+                </div>
+                <div class=" col-sm-2">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2">&nbsp;</div>
+                <div class=" col-sm-8 odd">
+                    &nbsp;&nbsp;&nbsp;验证码：                           	
+                    <input type="text" class="yzmtext" id="useryanzheng">
+                    <input type="button" id="getyanzheng" class="yzmbtn" onclick="getYzCode()" value="点击获取验证码">
+                </div>
+                <div class=" col-sm-2">&nbsp;</div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 odd">
+                    注册身份：                            	
+                <input type="radio" name="identityname" value="学生" checked="checked">
+                    学生 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            
+                <input type="radio" name="identityname" value="家长">
+                    家长                       
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 odd">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;昵称：                           	
+                    <input type="text" class="regtext" id="usernicheng">
+                </div>
+                <div class=" col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 odd">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：                          	
+                    <input type="password" class="regtext" id="userpasword">
+                </div>
+                <div class=" col-sm-2"></div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 even">
+                    <input type="checkbox" checked="checked" id="yueducheck">
+                    我已阅读并接受<a class="rega" href="#">网站服务条款</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class=" col-sm-2"></div>
+                <div class=" col-sm-8 even" style="margin-bottom: 35px;">
+                    <input type="button" class="regbtn" onclick="UserRegistered()" value="立即注册" />
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript">
+        window.onload = function () { setTitleOnSelect(4); }//
+        var xianColor = "#fe9627";
+        var yinColor = "#c4c4c4";
+        var identityS = 2;
+        var identityJ = 3;
+        var phoneistorf = 0;//false
+        //验证手机号码，并且改变获取验证码按钮的颜色
+        function upColor() {
+            var phone = document.getElementById("userphone").value;
+            var re = /^1\d{10}$/;
+            if (re.test(phone)) {
+                document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
+                phoneistorf=1;
+            } else {
+                document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
+                phoneistorf =0;
+            }
+        }
+        function getYzCode() {
+            var phone = document.getElementById("userphone").value;
+            if (phoneistorf == 1) {
+                $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
+                    alert("发送成功");
+                    //alert(data.state);
+                });
+            } else {
+                alert("手机号输入不正确！请输入正确手机号码！");
+            }
+        }
+        //注册方法
+        function UserRegistered() {
+            var userphone = document.getElementById("userphone").value;
+            var useryanzheng = document.getElementById("useryanzheng").value;
+            var identyityvalue = identityS;
+            if (document.getElementsByName("identityname")[0].checked) {
+                identyityvalue = identityS;
+            } else {
+                identyityvalue = identityJ;
+            }
+            var usernicheng = document.getElementById("usernicheng").value;
+            var userpasword = document.getElementById("userpasword").value;
+            if (trim(userphone) == "" || phoneistorf == 0) {
+                alert("请正确输入手机号码！");
+            } else if (trim(useryanzheng) + "" == "") {
+                alert("请正确输入验证码！");
+            } else if (trim(usernicheng) + "" == "" || trim(userpasword) + "" == "") {
+                alert("请正确输入用户名和密码！");
+            } else if (document.getElementById("yueducheck").checked == false) {
+                alert("请选择是否同意网站服务条款！");
+            } else {
+                //先验证验证码是否正确
+                var allCode = "http://{{.Website}}/orange/verification/GetVerificationByPhone/" + userphone;
+                //alert(allCode);
+                $.getJSON(allCode, function (data) {
+                    if (data["VerCode"] == "") {
+                        alert("暂无验证码！");
+                    } else if (useryanzheng == data["VerCode"]) {
+                        //alert("验证码正确开始注册！");
+                        //开始注册用户
+                        var adduser = '{"UserName":"' + usernicheng +
+                                    '","IphoneNum":"' + userphone +
+                                    '","LoginPassword":"' + userpasword +
+                                    '","IdentityId":' + identyityvalue +
+                                    ',"RegisteredTime":"' + getNowFormatDate() +
+                                    '"}';
+                        $.post("http://{{.Website}}/orange/userinformation/AddUserinformation/", adduser,
+                            function (data) {
+                                //alert(data["id"]);
+                                if (data["id"] > 0) {
+                                    alert("注册成功！请去首页登录！");
+                                    window.location.href = "http://{{.Website}}/";
+                                } else {
+                                    alert("注册失败！");
+                                }
+                            });
+                        //结束注册用户
+                    } else {
+                        alert("验证码不正确，请重新获取验证码！");
+                    }                                       
+                });
+            }
+        }
+    </script>
+</body>
+</html>

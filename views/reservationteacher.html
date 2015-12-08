@@ -1,0 +1,1324 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <!--弹出层-->
+    <!--预约弹出层-->
+    <div class="modal fade" id="setMeetdiv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">设置预约</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop">
+                        <tr>
+                            <td>将此时段设置为：
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="reserpoptabsss" cellspacing="0">
+                        <tr id="showtext">
+                            <td>
+                                <input type="radio" name="torf" id="rdoyes" aria-readonly="true">可约</td>
+                            <td>
+                                <input type="radio" name="torf" id="rdono" aria-readonly="true">不可约</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="setMeetTrueorFalse()" data-dismiss="modal">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bg" class="bg" style="display: none;"></div>
+    <!--弹出层结束-->
+    <div id="pagetopb">
+        <div class="Navigation">
+            <!--个人资料-->
+            <div class='container'>
+                <div style="margin-top: 20px; background-color: #FFFFFF; padding-top: 20px;">
+                    <table class="resermain" style="margin-top: 15px;">
+                        <tr>
+                            <td style="width: 50%; text-align: left;">授课时间表
+                            </td>
+                            <td>
+                                <div class="arrow-upyys"></div>
+                            </td>
+                            <td style="text-align: left;">&nbsp;&nbsp;可约
+                            </td>
+                            <td>
+                                <div class="arrow-upyy"></div>
+                            </td>
+                            <td style="text-align: left;">&nbsp;&nbsp;已约
+                            </td>
+                            <td>
+                                <div class="arrow-upzys"></div>
+                            </td>
+                            <td style="text-align: left;">&nbsp;&nbsp;不可约
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="reaervationtable" cellspacing="0" id="tableone">
+                        <tr>
+                            <td>&nbsp;                                	
+                            </td>
+                            <td>星期一<p id="onedate0">09-01</p>
+                            </td>
+                            <td>星期二<p id="onedate1">09-02</p>
+                            </td>
+                            <td>星期三<p id="onedate2">09-03</p>
+                            </td>
+                            <td>星期四<p id="onedate3">09-04</p>
+                            </td>
+                            <td>星期五<p id="onedate4">09-05</p>
+                            </td>
+                            <td>星期六<p id="onedate5">09-06</p>
+                            </td>
+                            <td>星期日<p id="onedate6">09-07</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9:00—10:00
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                            <td style="text-align: center;">
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                            <td>
+                                <a data-toggle="modal" data-target="#setMeetdiv">
+                                    <div id="" class="arrow-upno"></div>
+                                    <span id="">不可约</span>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10:00—11:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 2px solid #fe9627;">11:00——12:00
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13:00—14:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14:00—15:00
+                            </td>
+                            <td>
+                                <div class="arrow-ups"></div>
+                                <span>可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15:00—16:00
+                            </td>
+                            <td>
+                                <div class="arrow-ups"></div>
+                                <span>可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 3px solid #fe9627;">16:00—17:00
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-ups"></div>
+                                <span>可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>18:00—19:00
+                            </td>
+                            <td>
+                                <div class="arrow-ups"></div>
+                                <span>可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19:00—20:00
+                            </td>
+                            <td>
+                                <div class="arrow-ups"></div>
+                                <span>可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="resermain">
+                        <tr>
+                            <td style="width: 70%; text-align: left;" id="tabletwotitle"></td>
+                        </tr>
+                    </table>
+                    <table class="reaervationtable" cellspacing="0" id="tabletwo">
+                        <tr>
+                            <td>&nbsp;
+                                	
+                            </td>
+                            <td>星期日<p>09-08</p>
+                            </td>
+                            <td>星期六<p>09-09</p>
+                            </td>
+                            <td>星期五<p>09-10</p>
+                            </td>
+                            <td>星期四<p>09-11</p>
+                            </td>
+                            <td>星期三<p>09-12</p>
+                            </td>
+                            <td>星期二<p>09-13</p>
+                            </td>
+                            <td>星期一<p>09-14</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9:0—10:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <a type="Submit" class="menuinput" onclick="javascript:showzcDiv()">
+                                    <div class="arrow-upno"></div>
+                                    <span>不可约</span></a>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10:00—11:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 2px solid #fe9627;">11:00—12:00
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13:00—14:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14:00—15:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15:00—16:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 3px solid #fe9627;">16:00—17:00
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>18:00—19:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19:00—20:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="resermain">
+                        <tr>
+                            <td style="width: 70%; text-align: left;" id="tablethteetitle"></td>
+                        </tr>
+                    </table>
+                    <table class="reaervationtable" cellspacing="0" id="tablethree">
+                        <tr>
+                            <td>&nbsp;                                	
+                            </td>
+                            <td>星期日<p>09-08</p>
+                            </td>
+                            <td>星期六<p>09-09</p>
+                            </td>
+                            <td>星期五<p>09-10</p>
+                            </td>
+                            <td>星期四<p>09-11</p>
+                            </td>
+                            <td>星期三<p>09-12</p>
+                            </td>
+                            <td>星期二<p>09-13</p>
+                            </td>
+                            <td>星期一<p>09-14</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>9:00—10:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <a href='' type="Submit" class="menuinput" onclick="javascript:showzcDiv()">
+                                    <div class="arrow-upno"></div>
+                                    <span>不可约</span></a>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>10:00—11:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 2px solid #fe9627;">11:00—12:00
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 2px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>13:00—14:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>14:00—15:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>15:00—16:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border-bottom: 3px solid #fe9627;">16:00—17:00
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="border-bottom: 3px solid #fe9627;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>18:00—19:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>19:00—20:00
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                            <td>
+                                <div class="arrow-upno"></div>
+                                <span>不可约</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <div class="profonts">
+                        <p class="proknow">预约一对一辅导须知:</p>
+                        <p class="konwfont">
+                            1. 预约在线课程按照预约课时冻结费用（每课时50分钟）。课时费将按实际上课时间计费（以分钟为单位计费，可以为您省去不必要的花销），剩余课时费将及时转入您的账户。                   
+                        </p>
+                        <p class="konwfont">
+                            2. 您可以在课程开始时间24小时之前随时取消预约课（不收取任何额外费用）。                 
+                        </p>
+                        <p class="konwfont">
+                            3. 为了您能选择合适的老师请在预约前多与老师沟通。                 
+                        </p>
+                        <p class="konwfont">
+                            4.为了提高您的学习效率，请一定将您需要学习的内容以文字或者附件形式上传给老师，以便老师提前进行备课。                   
+                        </p>
+                        <p class="konwfont">
+                            5. 课程结束后请及时给予评价和建议，我们将根据您的建议来提高为您服务的水平。              
+                        </p>
+                        <p class="konwfont">
+                            6. 其它不确定事宜请联系客服。                   
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/personal.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/ecmascript">
+        var userid = getCookie("userid")//获取登录用户主键id
+        //var userid = 1;
+        window.onload = function () {
+            setTitleOnSelect(4);
+            getuser();
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            setMeetState();
+            settable1();
+        }
+        var week = "7123456".split("")[new Date().getDay()];//获取今天是周几
+        var timeone1 = '09:00';
+        var timeone2 = '10:00';
+        var timetwo1 = '10:00';
+        var timetwo2 = '11:00';
+        var timethree1 = '11:00';
+        var timethree2 = '12:00';
+        var timefour1 = '13:00';
+        var timefour2 = '14:00';
+        var timefive1 = '14:00';
+        var timefive2 = '15:00';
+        var timesex1 = '15:00';
+        var timesex2 = '16:00';
+        var timeseven1 = '16:00';
+        var timeseven2 = '17:00';
+        var timeeight1 = '18:00';
+        var timeeight2 = '19:00';
+        var timenine1 = '19:00';
+        var timenine2 = '20:00';
+        var timelist1 = [timeone1, timetwo1, timethree1, timefour1, timefive1, timesex1, timeseven1, timeeight1, timenine1];
+        var timelist2 = [timeone2, timetwo2, timethree2, timefour2, timefive2, timesex2, timeseven2, timeeight2, timenine2];
+
+        //设置预约状态
+        function setMeetState() {
+            var list1 = getdate(7 - ((7 - week) + 1));
+            var list2 = getdate2(0, (7 - (week - 1)));
+            for (var i = 0; i < list2.length; i++) {
+                list1.push(list2[i]);
+            }
+            //--------------设置第一个table------------------------------------
+            var tableonehtml = "<tr><td>&nbsp;</td>";
+            tableonehtml += '<td>星期一<p>' + getmonthday(list1[0]) + '</p></td>';
+            tableonehtml += '<td>星期二<p>' + getmonthday(list1[1]) + '</p></td>';
+            tableonehtml += '<td>星期三<p>' + getmonthday(list1[2]) + '</p></td>';
+            tableonehtml += '<td>星期四<p>' + getmonthday(list1[3]) + '</p></td>';
+            tableonehtml += '<td>星期五<p>' + getmonthday(list1[4]) + '</p></td>';
+            tableonehtml += '<td>星期六<p>' + getmonthday(list1[5]) + '</p></td>';
+            tableonehtml += '<td>星期日<p>' + getmonthday(list1[6]) + '</p></td></td>';
+            var classstyle = "arrow-upno";
+            for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
+                tableonehtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                for (var i = 0; i < list1.length; i++) {//循环第一周
+                    var itemdd = '';
+                    itemdd = '<td style="text-align: center;">' +
+                             '<a data-toggle="modal" data-target="#setMeetdiv"  onclick="getvalue(' + "'" + "txtvalueone" + i + j + "'" + ',' + "'" + list1[i] + "'," + j + ')">' +
+                             '<div id="divtableone' + i + '' + j + '" class="' + classstyle + '"></div>' +
+                             '<span id="txtvalueone' + i + '' + j + '">不可约</span></a></td>';
+                    tableonehtml += itemdd;
+                }
+                tableonehtml += '</tr>';
+            }
+            document.getElementById("tableone").innerHTML = "";
+            document.getElementById("tableone").innerHTML = tableonehtml;
+            //--------------设置第一个table结束-------------------------------------
+
+            //--------------设置第二个table开始------------------------------------
+            var list3 = getdate2((7 - week + 1), 7);
+            var title = list3[0] + "—" + list1[6] + "课程安排表";
+            document.getElementById("tabletwotitle").innerText = title;
+            var tabletwohtml = "<tr><td>&nbsp;</td>";
+            tabletwohtml += '<td>星期一<p>' + getmonthday(list3[0]) + '</p></td>';
+            tabletwohtml += '<td>星期二<p>' + getmonthday(list3[1]) + '</p></td>';
+            tabletwohtml += '<td>星期三<p>' + getmonthday(list3[2]) + '</p></td>';
+            tabletwohtml += '<td>星期四<p>' + getmonthday(list3[3]) + '</p></td>';
+            tabletwohtml += '<td>星期五<p>' + getmonthday(list3[4]) + '</p></td>';
+            tabletwohtml += '<td>星期六<p>' + getmonthday(list3[5]) + '</p></td>';
+            tabletwohtml += '<td>星期日<p>' + getmonthday(list3[6]) + '</p></td></td>';
+            for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
+                tabletwohtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                for (var i = 0; i < list3.length; i++) {//循环第二周
+                    //alert(list3[i]);
+                    var itemtt = '<td style="text-align: center;">' +
+                                '<a data-toggle="modal" data-target="#setMeetdiv" onclick="getvalue(' + "'" + "txtvaluetwo" + i + j + "'" + ',' + "'" + list3[i] + "'," + j + ')">' +
+                                '<div id="divtabletwo' + i + '' + j + '" class="arrow-upno"></div>' +
+                                '<span id="txtvaluetwo' + i + '' + j + '">不可约</span></a></td>';
+                    tabletwohtml += itemtt;
+                }
+                tabletwohtml += '</tr>';
+            }
+            document.getElementById("tabletwo").innerHTML = "";
+            document.getElementById("tabletwo").innerHTML = tabletwohtml;
+
+            //--------------设置第二个table结束------------------------------------
+
+            //--------------设置第三个table开始------------------------------------
+            var list4 = getdate2((7 - week + 1) + 7, 7);
+            var title = list4[0] + "—" + list4[6] + "课程安排表";
+            document.getElementById("tablethteetitle").innerText = title;
+            var tablethreehtml = "<tr><td>&nbsp;</td>";
+            tablethreehtml += '<td>星期一<p>' + getmonthday(list4[0]) + '</p></td>';
+            tablethreehtml += '<td>星期二<p>' + getmonthday(list4[1]) + '</p></td>';
+            tablethreehtml += '<td>星期三<p>' + getmonthday(list4[2]) + '</p></td>';
+            tablethreehtml += '<td>星期四<p>' + getmonthday(list4[3]) + '</p></td>';
+            tablethreehtml += '<td>星期五<p>' + getmonthday(list4[4]) + '</p></td>';
+            tablethreehtml += '<td>星期六<p>' + getmonthday(list4[5]) + '</p></td>';
+            tablethreehtml += '<td>星期日<p>' + getmonthday(list4[6]) + '</p></td></td>';
+            for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
+                tablethreehtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                for (var i = 0; i < list4.length; i++) {//循环第三周
+                    //alert(list4[i]);
+                    var itemrr = '<td style="text-align: center;">' +
+                                '<a data-toggle="modal" data-target="#setMeetdiv" onclick="getvalue(' + "'" + "txtvaluethree" + i + j + "'" + ',' + "'" + list4[i] + "'," + j + ')">' +
+                                '<div id="divtablethree' + i + '' + j + '" class="arrow-upno"></div>' +
+                                '<span id="txtvaluethree' + i + '' + j + '">不可约</span></a></td>';
+                    tablethreehtml += itemrr;
+                }
+                tablethreehtml += '</tr>';
+            }
+            document.getElementById("tablethree").innerHTML = "";
+            document.getElementById("tablethree").innerHTML = tablethreehtml;
+            //--------------设置第三个table结束------------------------------------
+        }
+        function settable1() {
+            var list1 = getdate(7 - ((7 - week) + 1));
+            var list2 = getdate2(0, (7 - (week - 1)));
+            var list3 = getdate2((7 - week + 1), 7);
+            var list4 = getdate2((7 - week + 1) + 7, 7);
+            for (var i = 0; i < list2.length; i++) {
+                list1.push(list2[i]);
+            }
+            var allteacherlist = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingByTidTime/" + userid + "/" + list1[0] + ' 00:00:00';
+            //alert(allteacherlist);
+            $.getJSON(allteacherlist, function (data) {
+                if (data != null) {
+                    for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
+                        for (var i = 0; i < list1.length; i++) {//循环第一周
+                            for (var a = 0; a < data.length; a++) {
+                                var texttime = getInsertDate(data[a]["StartTime"]);
+                                var nowstarttime = getInsertDate((list1[i] + " " + timelist1[j] + ":00").replace(/-/g, "/"));//第一周第一个日期
+                                var nowstartimetwotable = getInsertDate((list3[i] + ' ' + timelist1[j] + ':00').replace(/-/g, "/"));//第二周第一个日期
+                                var nowstartimethreetable = getInsertDate((list4[i] + " " + timelist1[j] + ":00").replace(/-/g, "/"));//第三周第一个日期
+                                if (texttime == nowstarttime) {
+                                    if (data[a]["UserIdActive"] == null || data[a]["UserIdActive"] + "" == "0") {
+                                        document.getElementById("divtableone" + i + j).className = "arrow-ups";
+                                        document.getElementById("txtvalueone" + i + j).innerText = "可约";
+                                        document.getElementById("txtvalueone" + i + j).tag = data[a]["Id"];
+                                    } else if (data[a]["UserIdActive"] > 0) {
+                                        document.getElementById("divtableone" + i + j).className = "arrow-upyiyue";
+                                        document.getElementById("txtvalueone" + i + j).innerText = "已约";
+                                        document.getElementById("txtvalueone" + i + j).tag = data[a]["Id"];
+                                    }
+                                    else {
+                                        document.getElementById("divtableone" + i + j).className = "arrow-upno";
+                                        document.getElementById("txtvalueone" + i + j).innerText = "不可约";
+                                        document.getElementById("txtvalueone" + i + j).tag = 0;
+                                    }
+                                }
+                                if (texttime == nowstartimetwotable) {
+                                    //alert(data[a]["UserIdActive"]);
+                                    if (data[a]["UserIdActive"] == null || data[a]["UserIdActive"] + "" == "0") {
+                                        document.getElementById("divtabletwo" + i + j).className = "arrow-ups";
+                                        document.getElementById("txtvaluetwo" + i + j).innerText = "可约";
+                                        document.getElementById("txtvaluetwo" + i + j).tag = data[a]["Id"];
+                                    } else {
+                                        document.getElementById("divtabletwo" + i + j).className = "arrow-upyiyue";
+                                        document.getElementById("txtvaluetwo" + i + j).innerText = "已约";
+                                        document.getElementById("txtvaluetwo" + i + j).tag = data[a]["Id"];
+                                    }
+                                }
+                                if (texttime == nowstartimethreetable) {
+                                    if (data[a]["UserIdActive"] == null || data[a]["UserIdActive"] + "" == "0") {
+                                        document.getElementById("divtablethree" + i + j).className = "arrow-ups";
+                                        document.getElementById("txtvaluethree" + i + j).innerText = "可约";
+                                        document.getElementById("txtvaluethree" + i + j).tag = data[a]["Id"];
+                                    } else {
+                                        document.getElementById("divtablethree" + i + j).className = "arrow-upyiyue";
+                                        document.getElementById("txtvaluethree" + i + j).innerText = "已约";
+                                        document.getElementById("txtvaluethree" + i + j).tag = data[a]["Id"];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        var nowName = "";//点中文本
+        var nowTagid = 0;//有数据的数据主键id
+        var nowDate = "";//年月日：2015-11-23
+        var timeListIndex = 0;//第一个时间段索引：0-8
+        function getvalue(txtname, yearmd, timelistindex) {
+            var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
+            var now = new Date();
+            if (now <= datetime) {
+                //alert("dianji:" + txtname + document.getElementById(txtname).innerText + document.getElementById(txtname).tag + yearmd + "," + timelistindex);
+                var name = document.getElementById(txtname).innerText;
+                var tagid = document.getElementById(txtname).tag;
+                nowName = name;
+                nowTagid = tagid;
+                nowDate = yearmd;
+                timeListIndex = timelistindex;
+                if (name == "已约") {
+                    document.getElementById("showtext").innerHTML = "<td><span>用户已约，不能再修改状态！</span></td>";
+                } else if (name == "不可约") {
+                    var showhtml = '<td><input type="radio" name="torf" id="rdoyes" checked="checked" disabled readonly="true">可约</td><td><input type="radio" name="torf" id="rdono"disabled readonly="true">不可约</td>'
+                    document.getElementById("showtext").innerHTML = showhtml;
+                } else if (name == "可约") {
+                    var showhtml = '<td><input type="radio" name="torf" id="rdoyes" disabled readonly="true">可约</td><td><input type="radio" name="torf" id="rdono" checked="checked" disabled readonly="true">不可约</td>'
+                    document.getElementById("showtext").innerHTML = showhtml;
+                }
+            }
+            else {
+                document.getElementById("showtext").innerHTML = "<td><span>此时段不可操作！</span></td>";
+            }
+        }
+
+        //设置是否可约
+        function setMeetTrueorFalse() {
+            if (nowName == "已约") {
+                //alert("不做操作");
+            } else if (nowName == "不可约") {
+                //alert("不可约改可约");//新增一条数据                
+                var stime = getInsertDate((nowDate + ' ' + timelist1[timeListIndex] + ':00').replace(/-/g, "/"));
+                var etime = getInsertDate((nowDate + ' ' + timelist2[timeListIndex] + ':00').replace(/-/g, "/"));
+                var addonlinebook = '{"UserIdActive":0,"UserIdPassive":' + userid +
+                      ',"ReservationState":0' +
+                      ',"Payment":0' +
+                      ',"Leaming":0' +
+                      ',"PayWay":0' +
+                      ',"StartTime":"' + stime +
+                      '","EndTime":"' + etime +
+                      '","AppointTime":"' + getInsertNowDate() +
+                      '"}';
+                $.post("http://{{.Website}}/orange/onlinecoursebooking/AddOnlinecoursebooking/", addonlinebook,
+                        function (data) {
+                            //alert(data["id"]);
+                            if (data["id"] > 0) {
+                                alert("修改成功！");
+                                window.location.href = "http://{{.Website}}/orange/Teacher/TeacherSetMeet/";
+                            } else {
+                                alert("修改失败！");
+                            }
+                        });
+
+            } else if (nowName == "可约") {
+                //alert("可约改不可约");//删除一条数据
+                var delonline = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebooking/" + nowTagid;
+                $.getJSON(delonline, function (deldata) {
+                    if (deldata != null && deldata + "" == "OK") {
+                        alert("修改成功！");
+                        window.location.href = "http://{{.Website}}/orange/Teacher/TeacherSetMeet/";
+                    }
+                    else {
+                        alert("修改失败！");
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

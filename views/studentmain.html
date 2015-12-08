@@ -1,0 +1,1370 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <!--弹出层-->
+    <!--推荐好老师弹出层-->
+    <div class="modal fade" id="goodteacher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">推荐好老师</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop">
+                        <tr>
+                            <td>年级：
+                             </td>
+                            <td>
+                                <select class="stusel" id="selGrade">
+                                    <option value="0">高中一年级</option>
+                                    <option value="1">高中二年级</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>科目：
+                             </td>
+                            <td>
+                                <select class="stusel" id="selClass">
+                                    <option value="0">高中数学</option>
+                                    <option value="1">高中语文</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>价格：
+                             </td>
+                            <td>
+                                <select class="" style="width: 180px; margin-left: 14px;" id="selstartmoney">
+                                    <option value="0">10.00</option>
+                                    <option value="1">20.00</option>
+                                    <option value="2">30.00</option>
+                                    <option value="3">40.00</option>
+                                    <option value="4">50.00</option>
+                                    <option value="5">60.00</option>
+                                    <option value="6">70.00</option>
+                                    <option value="7">80.00</option>
+                                    <option value="8">90.00</option>
+                                </select>
+                                <select class="" style="width: 180px;" id="selendmoney">
+                                    <option value="0">20.00</option>
+                                    <option value="1">30.00</option>
+                                    <option value="2">40.00</option>
+                                    <option value="3">50.00</option>
+                                    <option value="4">60.00</option>
+                                    <option value="5">70.00</option>
+                                    <option value="6">80.00</option>
+                                    <option value="7">90.00</option>
+                                    <option value="8">100.00</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>手机：
+                             </td>
+                            <td>
+                                <input class="stuimput" type="text" id="txtPhone">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>城市：
+                             </td>
+                            <td>
+                                <select class="stusel" id="selCitys">
+                                    <option value="0">北京</option>
+                                    <option value="1">石家庄</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>姓名：
+                             </td>
+                            <td>
+                                <input class="stuimput" type="text" id="txtName">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>备注：
+                             </td>
+                            <td>
+                                <textarea class="stuarea" id="txtBeizhu"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>&nbsp;</td>
+                            <td>
+                                <input type="button" style="width: 80%;" class="btn btn-warning" onclick="addGoodTeacher()" value="提交">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--充值弹出层-->
+    <div class="modal fade" id="addmoney" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">充值</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop">
+                        <tr>
+                            <td>支付方式：
+                              </td>
+                            <td style="text-align: left;">
+                                <input type="radio">
+                                支付宝
+                             </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning">去充值</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--提现弹出层-->
+    <div class="modal fade" id="takemoney" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">提现</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop">
+                        <tr>
+                            <td>余额：
+                              </td>
+                            <td>￥100.00</td>
+                        </tr>
+                        <tr>
+                            <td>提现金额：
+                              </td>
+                            <td>
+                                <input class="stuimput" type="text">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>支付宝账户：
+                              </td>
+                            <td>
+                                <input class="stuimput" type="text">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--删除弹出层-->
+    <div class="modal fade" id="delmain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">删除</h3>
+                </div>
+                <div class="modal-body" style="text-align: center; font-size: 18px;">
+                    确认删除此项？    
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <p id="delid" style="display: none;"></p>
+                    <!--要删除的主键id-->
+                    <p id="typeid" style="display: none;"></p>
+                    <!--删除那个表类型（1：我的问题，2：我的评价，3：我的留言）-->
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="delRows()">删除</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--取消关注弹出层-->
+    <div class="modal fade" id="dellook" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">取消关注</h3>
+                </div>
+                <div class="modal-body" style="text-align: center; font-size: 18px;">
+                    确认取消关注此老师？
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="delRows()">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--退约弹出层-->
+    <div class="modal fade" id="tuiyuediv" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">退约</h3>
+                </div>
+                <div class="modal-body">
+                    <table class="stutablepop">
+                        <tr>
+                            <td>确认退掉此次预约么？
+                              </td>
+                        </tr>
+                    </table>
+                    <table class="reserpoptab" cellspacing="0">
+                        <tr>
+                            <td>老师
+                                    </td>
+                            <td>预约日期
+                                    </td>
+                            <td>预约时间
+                                    </td>
+                        </tr>
+                        <tr>
+                            <p id="onlinebookid" style="display: none;"></p>
+                            <td id="tuiUserName">张嘉佳
+                                    </td>
+                            <td id="tuiDate">2015-09-08
+                                    </td>
+                            <td id="tuiTime">19：00——20：00 
+                                    </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="tuiyueBooking()">确认</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="bg" class="bg" style="display: none;"></div>
+    <!--弹出层结束-->
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row">
+                <div class="col-sm-9" style="border-right: 15px solid #f5f5f5;">
+                    <div class='row lefttop'>
+                        <div class="col-sm-3">
+                            <img id="userhead" />
+                            <p>ID:{{.StudentUserid}}</p>
+                        </div>
+                        <div class="col-sm-8 lefttopfont">
+                            {{.UserName}} 
+                            <a href="#">{{.IdentityName}} | {{.StuSex}} | {{.SchoolName}}</a>
+                            <a href="http://{{.Website}}/orange/Main/UpdateStudent/">
+                                <input type="button" class="stubtns" value="修改资料"></a>
+                            <table class="stutab" cellspacing="0">
+                                <tr>
+                                    <td><span>{{.AllDate}}</span>小时</td>
+                                    <td><span id="tiwenallcount">{{.AllCount}}</span>个</td>
+                                    <td><span>{{.AllPerson}}</span>位</td>
+                                </tr>
+                                <tr>
+                                    <td><p>累计课时</p></td>
+                                    <td><p>提问总数</p></td>
+                                    <td><p>辅导老师总数</p></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="righttop">
+                        <a data-toggle="modal" class="menuinput" data-target="#goodteacher">
+                            <img style="height: 180px;" src="images/stuimg.jpg" /></a>
+                    </div>
+                </div>
+            </div>
+            <hr style="margin-left: -15px; margin-right: -15px; border-top: 15px solid #f5f5f5; margin-top: -0px;" color="#f5f5f5">
+            <div class='col-sm-9 leftbottom' style="border-right: 15px solid #f5f5f5; margin-top: -20px;">
+                <div id="menu">
+                    <!--tag标题-->
+                    <ul class="ull nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">个人资料</a></li>
+                        <li role="presentation"><a href="#allclass" aria-controls="profile" role="tab" data-toggle="tab">全部课程</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">资金账户</a></li>
+                        <li role="presentation"><a href="#settings" aria-controls="messages" role="tab" data-toggle="tab">我的问题</a></li>
+                        <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab">我的评价</a></li>
+                        <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab">我的留言</a></li>
+                        <li role="presentation"><a href="#look" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
+                        <li role="presentation"><a href="#divtui" aria-controls="messages" role="tab" data-toggle="tab">我的退约</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <table class="stutabtop">
+                                <tr>
+                                    <td>
+                                        <img src="images/pjjl.png" />
+                                    </td>
+                                    <td>
+                                        <span>预约课程</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--预约课程-->
+                            <div class="table-responsive">
+                                <table class="stutable" cellspacing="0" id="onlineBooking">
+                                    <!-- <tr class="stuth">
+                                        <th>课程类型
+                                                </th>
+                                        <th>预约老师
+                                                </th>
+                                        <th>上课日期
+                                                </th>
+                                        <th>上课时间
+                                                </th>
+                                        <th>操作</th>
+                                    </tr>-->
+                                </table>
+                                <div id="Paginationcourse" class="pagination"></div>
+                            </div>
+                            <hr color="#ccc" size="1">
+                            <table class="stutabtop">
+                                <tr>
+                                    <td>
+                                        <img src="images/jbzl.png" />
+                                    </td>
+                                    <td>
+                                        <span>基本资料</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <table class="stutabbottom">
+                                <tr>
+                                    <td class="oddtea" style="width: 20%;">学校：
+                                                </td>
+                                    <td>{{.SchoolName}}
+                                                </td>
+                                </tr>
+                                <tr>
+                                    <td class="oddtea">学龄段：
+                                                </td>
+                                    <td>{{.AgeName}}
+                                                </td>
+                                </tr>
+                                <tr>
+                                    <td class="oddtea">入学年份：
+                                                </td>
+                                    <td>{{.LevelYear}}
+                                                </td>
+                                </tr>
+                                <tr>
+                                    <td class="oddtea">补习课目：
+                                                </td>
+                                    <td>{{.CourseName}}
+                                                </td>
+                                </tr>
+                                <tr>
+                                    <td class="oddtea">学习难点：
+                                                </td>
+                                    <td>{{.StudyDifficult}}
+                                                </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <!--全部课程-->
+                        <div role="tabpanel" class="tab-pane" id="allclass">
+                            <table class="stutable" cellspacing="0" id="allStudentClass">
+                                <!--<tr class="stuth">
+                                    <th>课程类型</th>
+                                    <th>辅导老师</th>
+                                    <th>上课日期</th>
+                                    <th>上课时间</th>
+                                    <th>课时费</th>
+                                    <th>操作</th>
+                                </tr>-->
+                                <!--<tr>
+                                    <td>高中数学</td>
+                                    <td>张嘉佳</td>
+                                    <td>2015-09-19</td>
+                                    <td>19:00---20:00</td>
+                                    <td>￥45.00</td>
+                                    <td>
+                                        <a href="evaluation.html" class="btn btn-warning radsty">待评价</a>
+                                    </td>
+                                </tr> -->
+                            </table>
+                            <div id="Pagination2" class="pagination"></div>
+                        </div>
+                        <!--资金账户-->
+                        <div role="tabpanel" class="tab-pane" id="messages">
+                            <table class="moneytable">
+                                <tr>
+                                    <td>现金余额：<span>￥{{.Balance}}</span>
+                                        冻结金额：<span>￥{{.FrozenMoney}}</span>
+                                    </td>
+                                    <td>
+                                        <a data-toggle="modal" class="btn btn-warning moneybtn" data-target="#addmoney">充值</a>
+                                    </td>
+                                    <td>
+                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#takemoney">提现</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <ul class="uldiv">
+                                <li><a id="limenu1" class="select" onclick="qiehuantap(1)">交易记录</a></li>
+                                <li><a id="limenu2" onclick="qiehuantap(2)">提现记录</a></li>
+                                <li><a id="limenu3" onclick="qiehuantap(3)">充值记录</a></li>
+                            </ul>
+                            <div id="divtap1">
+                                <table class="stutable" cellspacing="0" id="myjiaoyidiv">
+                                    <tr class="stuth">
+                                        <th>被支付方
+                                                </th>
+                                        <th>支付时间
+                                                </th>
+                                        <th>支付方式
+                                                </th>
+                                        <th>支付费用
+                                                </th>
+                                    </tr>
+                                </table>
+
+                                <div id="Pagination4" class="pagination"></div>
+                            </div>
+                            <div id="divtap2" style="display: none;">
+                                <table class="stutable" cellspacing="0" id="tixianlist">
+                                    <tr class="stuth">
+                                        <th>提现时间
+                                                </th>
+                                        <th>提现金额
+                                                </th>
+                                        <th>提现方式
+                                                </th>
+                                        <th>余额
+                                                </th>
+                                    </tr>
+                                </table>
+                                <div id="Pagination5" class="pagination"></div>
+                            </div>
+                            <div id="divtap3" style="display: none;">
+                                <table class="stutable" cellspacing="0" id="chongzhilist">
+                                    <tr class="stuth">
+                                        <th>充值时间
+                                                </th>
+                                        <th>充值金额
+                                                </th>
+                                        <th>充值方式
+                                                </th>
+                                        <th>余额
+                                                </th>
+                                    </tr>
+                                </table>
+                                <div id="Pagination6" class="pagination"></div>
+                            </div>
+                        </div>
+                        <!--我的问题-->
+                        <div role="tabpanel" class="tab-pane" id="settings">
+                            <table class="stutable" cellspacing="0" id="myquestion">
+                                <tr class="stuth">
+                                    <th>被提问人
+                                                </th>
+                                    <th>内容
+                                                </th>
+                                    <th>提问时间
+                                                </th>
+                                    <th>问题奖励
+                                                </th>
+                                    <th>操作
+                                                </th>
+                                </tr>
+                                <tr>
+                                    <td>张嘉佳
+                                                </td>
+                                    <td>老师好！我想请....
+                                                </td>
+                                    <td>2015-10-10 19:30:00
+                                                </td>
+                                    <td>5元
+                                                </td>
+                                    <td>
+                                        <a href="problem_main.html" class="btn btn-warning radsty">查看</a>&nbsp;
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="Pagination3" class="pagination"></div>
+                        </div>
+                        <!--我的评价-->
+                        <div role="tabpanel" class="tab-pane" id="pingjia">
+                            <table class="stutable" cellspacing="0" id="pingjialist">
+                                <tr class="stuth">
+                                    <th>被评价人
+                                                </th>
+                                    <th>内容
+                                                </th>
+                                    <th>评价星级
+                                                </th>
+                                    <th>评价时间
+                                                </th>
+                                    <th>操作
+                                                </th>
+                                </tr>
+                                <tr>
+                                    <td>张嘉佳
+                                                </td>
+                                    <td>特别细心，特别全面
+                                                </td>
+                                    <td>
+                                        <img style="height: 25px;" src="images/star.png" />
+                                    </td>
+                                    <td>2015-10-10 19:30:00
+                                                </td>
+                                    <td>
+                                        <a href="evaluationmainstudents.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
+                                       
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>张嘉佳
+                                                </td>
+                                    <td>特别细心，特别全面
+                                                </td>
+                                    <td>
+                                        <img style="height: 25px;" src="images/star.png" />
+                                    </td>
+                                    <td>2015-10-10 19:30:00
+                                                </td>
+                                    <td>
+                                        <a href="evaluationmainstudents.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
+                                       
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="Pagination7" class="pagination"></div>
+                        </div>
+                        <!--我的留言-->
+                        <div role="tabpanel" class="tab-pane" id="messagetable">
+                            <table class="stutable" cellspacing="0" id="liuyanlist">
+                                <tr class="stuth">
+                                    <th>被留言人
+                                                </th>
+                                    <th>内容
+                                                </th>
+                                    <th>评价时间
+                                                </th>
+                                    <th>状态
+                                                </th>
+                                    <th>操作
+                                                </th>
+                                </tr>
+                                <tr>
+                                    <td>张嘉佳
+                                                </td>
+                                    <td>特别细心，特别全面
+                                                </td>
+                                    <td>2015-10-10 19:30:00
+                                                </td>
+                                    <td>未查看
+                                                </td>
+                                    <td>
+                                        <a href="messagemain.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
+                                       
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>王大全
+                                                </td>
+                                    <td>特别细心，特别全面
+                                                </td>
+                                    <td>2015-10-10 19:30:00
+                                                </td>
+                                    <td>未查看</td>
+                                    <td>
+                                        <a href="messagemain.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
+                                       
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="Pagination8" class="pagination"></div>
+                        </div>
+                        <!--我的关注-->
+                        <div role="tabpanel" class="tab-pane" id="look">
+                            <table class="stutable" cellspacing="0" id="guanzhulist">
+                                <tr class="stuth">
+                                    <th>老师
+                                    </th>
+                                    <th>主辅导课
+                                    </th>
+                                    <th>所在学校
+                                    </th>
+                                    <th>总课时
+                                    </th>
+                                    <th>操作
+                                    </th>
+                                </tr>
+                                <!--                                <tr>
+                                    <td>张嘉佳
+                                                </td>
+                                    <td>高中数学
+                                                </td>
+                                    <td>清华大学
+                                                </td>
+                                    <td>20
+                                                </td>
+                                    <td>
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#dellook">取消关注</a>
+                                    </td>
+                                </tr>-->
+                            </table>
+                            <div id="Pagination9" class="pagination"></div>
+                        </div>
+                        <!--我的退约-->
+                        <div role="tabpanel" class="tab-pane" id="divtui">
+                            <table class="stutable" cellspacing="0" id="tbTui">
+                                <tr class="stuth">
+                                    <th>课程
+                                    </th>
+                                    <th>预约老师
+                                    </th>
+                                    <th>上课日期
+                                    </th>
+                                    <th>上课时间
+                                    </th>
+                                    <th>操作
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td>语文
+                                    </td>
+                                    <td>杨艳
+                                    </td>
+                                    <td>2015-12-18
+                                    </td>
+                                    <td>15：00-16：00
+                                    </td>
+                                    <td>
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#dellook">退约</a>
+                                    </td>
+                                </tr>
+                            </table>
+                            <div id="Pagination10" class="pagination"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-sm-3 rightbottom">
+                <div>
+                    <table class="rightbottomtab">
+                        <tr>
+                            <td style="width: 15%;">
+                                <img src="images/stutabimg.png" />
+                            </td>
+                            <td style="text-align: left;">
+                                <span>课程记录</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="rightbottab" cellspacing="0" id="allclasslist">
+                    </table>
+                    <p id="yuyuecount" style="display: none">{{.yuyuecount}}</p>
+                    <p id="quanbucount" style="display: none">{{.quanbucount}}</p>
+                    <p id="jiaoyicount" style="display: none">{{.jiaoyicount}}</p>
+                    <p id="tixiancount" style="display: none">{{.tixiancount}}</p>
+                    <p id="chongzhicount" style="display: none">{{.chongzhicount}}</p>
+                    <p id="tiwencount" style="display: none">{{.tiwencount}}</p>
+                    <p id="pingjiacount" style="display: none">{{.pingjiacount}}</p>
+                    <p id="liuyancount" style="display: none">{{.liuyancount}}</p>
+                    <p id="guanzhucount" style="display: none">{{.guanzhucount}}</p>
+                    <p id="tuiyuecount" style="display: none">{{.tuiyuecount}}</p>
+                    <p id="tapSowNum" style="display: none">{{.tapNum}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{template "footer.html" .}}
+    <script src="js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script src="js/teachertab.js"></script>
+    <script src="js/orange.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript">
+
+        var userid = getCookie("userid")//获取登录用户主键id
+
+        var pubRows = 10;//每页显示行数
+        var nowTabNum = 0;//当前显示的第几个选项卡
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(4);
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            var getstudents = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
+            $.getJSON(getstudents, function (data) {
+                if (data != null) {
+                    if (data["AvatarPath"] != null && data["AvatarPath"] + "" != "") {
+                        document.getElementById("userhead").src = data["AvatarPath"];
+                    } else { document.getElementById("userhead").src = "images/PersonHeadImg/moren.png"; }
+                }
+                else { document.getElementById("userhead").src = "images/PersonHeadImg/moren.png"; }
+            });
+            chushiyuyue(1);
+            chushiallClass(1);
+            chushiMyQuestion(1);
+            chushijiaoyi(1);
+            chushitixian(1);
+            chushichongzhi(1);
+            chushipingjia(1);
+            chushiliuyan(1);
+            chushiguanzhu(1);
+            chushituiyue(1);
+            chushiallClass2();
+            showtap();
+            chushituijiandiv();
+        }
+        //设置显示tap页
+        function showtap() {
+            var tapnum = document.getElementById("tapSowNum").innerText;
+            //alert(tapnum);
+        }
+
+        //点击预约分页
+        function pageselectCallback(page_id, jq) {
+            chushiyuyue((page_id + 1));
+        }
+
+        //点击全部课程分页
+        function pageselectCallback2(page_id, jq) {
+            chushiallClass((page_id + 1));
+            //alert(page_id + 1);
+        }
+
+        //点击我的提问
+        function pageselectCallback3(page_id, jq) {
+            chushiMyQuestion((page_id + 1));
+        }
+        //点击交易记录
+        function pageselectCallback4(page_id, jq) {
+            chushijiaoyi((page_id + 1));
+        }
+        //点击提现记录
+        function pageselectCallback5(page_id, jq) {
+            chushitixian((page_id + 1));
+        }
+        //点击充值记录
+        function pageselectCallback6(page_id, jq) {
+            chushizhongzhi((page_id + 1));
+        }
+        //点击评价记录
+        function pageselectCallback7(page_id, jq) {
+            chushipingjia((page_id + 1));
+        }
+        //点击留言记录
+        function pageselectCallback8(page_id, jq) {
+            chushiliuyan((page_id + 1));
+        }
+        //点击关注记录
+        function pageselectCallback9(page_id, jq) {
+            chushiguanzhu((page_id + 1));
+        }
+        //点击退约
+        function pageselectCallback10(page_id, jq) {
+            chushituiyue((page_id + 1));
+        }
+
+        $(document).ready(function () {
+            // 创建预约课程分页元素
+            $("#Paginationcourse").pagination(document.getElementById("yuyuecount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
+            });
+            // 创建全部课程分页元素
+            $("#Pagination2").pagination(document.getElementById("quanbucount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback2  //回调函数
+            });
+            // 创建我的问题分页元素
+            $("#Pagination3").pagination(document.getElementById("tiwencount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback3  //回调函数
+            });
+            // 创建交易记录分页元素----------------
+            $("#Pagination4").pagination(document.getElementById("jiaoyicount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback4  //回调函数
+            });
+            // 创建提现记录分页元素----------------
+            $("#Pagination5").pagination(document.getElementById("tixiancount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback5  //回调函数
+            });
+            // 创建充值记录分页元素----------------
+            $("#Pagination6").pagination(document.getElementById("chongzhicount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback6  //回调函数
+            });
+            // 创建分页元素
+            $("#Pagination7").pagination(document.getElementById("pingjiacount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback7  //回调函数
+            });
+            // 创建分页元素
+            $("#Pagination8").pagination(document.getElementById("liuyancount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback8  //回调函数
+            });
+            // 创建分页元素
+            $("#Pagination9").pagination(document.getElementById("guanzhucount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback9  //回调函数
+            });
+            // 创建退约课程分页元素
+            $("#Pagination10").pagination(document.getElementById("tuiyuecount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback10  //回调函数
+            });
+        });
+
+        //获取预约列表信息
+        function chushiyuyue(page) {
+            var allClass = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingByUid/" + userid + "/" + page + "/" + pubRows;
+            $.getJSON(allClass, function (data) {
+                var stryuye = '<tr class="stuth"><th>课程类型</th><th>预约老师</th><th>上课日期</th><th>上课时间</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var uid = data[i]["Id"];
+                        var uname = data[i]["UserName"];
+                        var udate = getSimpDate(data[i]["StartTime"]);
+                        var utime = getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]);
+                        var onetr = "<tr><td>" + data[i]["CourseName"] + "</td>" +
+                                    '<td id="yuyueUname' + i + '">' + data[i]["UserName"] + "</td>" +
+                                    '<td id="yuyuedate' + i + '">' + getSimpDate(data[i]["StartTime"]) + "</td>" +
+                                    '<td id="yuyuetime' + i + '">' + getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]) + "</td>" +
+                                    '<td><a class="btn btn-warning radsty" onclick="gotoListen(' + data[i]["Id"] + ')">立即听课</a>&nbsp;' +
+                                    '<a data-toggle="modal" ' +
+                                    'onclick="bandBookingOne(' + uid + ',' + "'" + uname + "'" + ',' + "'" + udate + "'" + ',' + "'" + utime + "'" + ')"' +
+                                    ' class="btn btn-warning radsty" data-target="#tuiyuediv"' +
+                                    '>退约</a>&nbsp;' +
+                                    '<a href="http://{{.Website}}/orange/Main/GetOnlineCourseBooking/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a></td></tr>';
+                        stryuye += onetr;
+                    }
+                }
+                document.getElementById("onlineBooking").innerHTML = "";
+                $("#onlineBooking").append(stryuye);
+            });
+        }
+        //立即听课
+        function gotoListen(onlineid) {
+            //alert(onlineid);
+            //验证是否可以开始讲课
+            var getone = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + onlineid;
+            $.getJSON(getone, function (datao) {
+                if (datao["Leaming"] == 0) {
+                    //var myDate = new Date("2015-11-25 11:00:00"); //获取
+                    var myDate = new Date(datao["StartTime"]); //获取
+                    myDate.setMinutes(myDate.getMinutes() - 10);
+                    //var myDate2 = new Date("2015-11-25 12:00:00"); //获取
+                    var myDate2 = new Date(datao["EndTime"]); //获取
+                    myDate2.setMinutes(myDate2.getMinutes() - 10);
+                    var onliendate = new Date();
+                    if (onliendate >= myDate) {
+                        if (onliendate >= myDate2) {
+                            alert("您已错过讲课时间！此课程已作废！请去退约");
+                        }
+                        else {
+                            alert("进入课堂");
+                            window.location.href = "http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid;
+                        }
+                    }
+                    else {
+                        alert("上课时间还没到，请上课前十分钟进入课堂！");
+                    }
+                } else {
+                    alert("此课程已讲过！");
+                }
+            });
+            //window.location.href = "http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid;
+        }
+
+        //获取全部课程列表信息
+        function chushiallClass(page) {
+            var allClass = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByUid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                var allclassstr = '<tr class="stuth"><th>课程类型</th><th>辅导老师</th><th>上课日期</th><th>上课时间</th><th>课时费</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var btnstr = "待评价";
+                        var btnhtml = '<a href="http://{{.Website}}/orange/Main/AddOnLineEvaluation/' + data[i]["Id"] + '" class="btn btn-warning radsty">';
+                        if (data[i]["RecordId"] > 0) {
+                            btnstr = "查看评价";
+                            btnhtml = '<a href="http://{{.Website}}/orange/Main/GetOnLineEvaluation/' + data[i]["RecordId"] + '" class="btn btn-warning radsty">';
+                        }
+                        var onetr = "<tr><td>" + data[i]["CourseName"] + "</td>" +
+                                    "<td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["StartTime"]) + "</td>" +
+                                    "<td>" + getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]) + "</td>" +
+                                    "<td>" + data[i]["UnitPrice"] + "</td>" +
+                                    '<td>' + btnhtml + btnstr + '</a></td></tr>';
+                        allclassstr += onetr;
+                    }
+                }
+                document.getElementById("allStudentClass").innerHTML = "";
+                $("#allStudentClass").append(allclassstr);
+            });
+        }
+        //获取全部我的问题列表信息
+        function chushiMyQuestion(page) {
+            var allClass = "http://{{.Website}}/orange/questionask/GetQuestionaskBySid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var myaskstr = '<tr class="stuth"><th>被提问人</th><th>内容</th><th>提问时间</th><th>问题奖励</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["Contents"] + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["BadeTime"]) +" "+ getSimpTime(data[i]["BadeTime"]) + "</td>" +
+                                    "<td>" + data[i]["AmountMoney"] + "</td>" +
+                                    '<td><a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>' +
+                                    '&nbsp;<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delQuestion(' + data[i]["Id"] + ')">删除</a></td></tr>';
+                        myaskstr += itmes
+                    }
+                }
+                document.getElementById("myquestion").innerHTML = "";
+                $("#myquestion").append(myaskstr);
+            });
+        }
+        //获取交易记录列表信息
+        function chushijiaoyi(page) {
+            var allClass = "http://{{.Website}}/orange/transactionrecords/GetTransactionrecordsBySid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var myjiaoyistr = '<tr class="stuth"><th>被支付方</th><th>支付时间</th><th>支付方式</th><th>支付费用</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
+                                    "<td>" + data[i]["TradingName"] + "</td>" +
+                                    '<td>' + data[i]["RecordMoney"] + '</td></tr>';
+                        myjiaoyistr += itmes
+                    }
+                }
+                document.getElementById("myjiaoyidiv").innerHTML = "";
+                $("#myjiaoyidiv").append(myjiaoyistr);
+            });
+        }
+        //获取提现记录列表信息
+        function chushitixian(page) {
+            var allClass = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsByUserid/1/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var mytixianstr = '<tr class="stuth"><th>提现时间</th><th>提现金额</th><th>提现方式</th><th>余额</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
+                                    "<td>" + data[i]["RecordMoney"] + "</td>" +
+                                    "<td>" + data[i]["TradingName"] + "</td>" +
+                                    '<td>' + data[i]["Balance"] + '</td></tr>';
+                        mytixianstr += itmes
+                    }
+                }
+                document.getElementById("tixianlist").innerHTML = "";
+                $("#tixianlist").append(mytixianstr);
+            });
+        }
+        //获取充值记录列表信息
+        function chushichongzhi(page) {
+            var allClass = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsByUserid/0/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var mychongzhistr = '<tr class="stuth"><th>提现时间</th><th>提现金额</th><th>提现方式</th><th>余额</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
+                                    "<td>" + data[i]["RecordMoney"] + "</td>" +
+                                    "<td>" + data[i]["TradingName"] + "</td>" +
+                                    '<td>' + data[i]["Balance"] + '</td></tr>';
+                        mychongzhistr += itmes
+                    }
+                }
+                document.getElementById("chongzhilist").innerHTML = "";
+                $("#chongzhilist").append(mychongzhistr);
+            });
+        }
+        //获取评价列表信息
+        function chushipingjia(page) {
+            var allClass = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlineCourseEvaluationBySid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var mychongzhistr = '<tr class="stuth"><th>被评价人</th><th>内容</th><th>评价星级</th><th>评价时间</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var starimg = '';
+                        var starcount = data[i]["StartClear"] + data[i]["StartEfficiency"];
+                        for (var a = 0; a < starcount; a++) {
+                            starimg += '<img style="height: 25px;" src="images/look.png" />';
+                        }
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["ReviewContent"] + "</td>" +
+                                    "<td>" + starimg + "</td>" +
+                                   "<td>" + getSimpDate(data[i]["ReviewTime"]) + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
+                                    '<td><a href="http://{{.Website}}/orange/Main/GetOnLineEvaluation/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>&nbsp;  ' +
+                                    '<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delPingjia(' + data[i]["Id"] + ')">删除</a></td></tr>';
+                        mychongzhistr += itmes
+                    }
+                }
+                document.getElementById("pingjialist").innerHTML = "";
+                $("#pingjialist").append(mychongzhistr);
+            });
+        }
+        //获取留言列表信息
+        function chushiliuyan(page) {
+            var allClass = "http://{{.Website}}/orange/usermessage/GetUsermessageBySid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>评价时间</th><th>评价状态</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["Contents"] + "</td>" +
+                                   "<td>" + getSimpDate(data[i]["MesTimeNew"]) + getSimpTime(data[i]["MesTimeNew"]) + "</td>" +
+                                    "<td>" + data[i]["States"] + "</td>" +
+                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>&nbsp;  ' +
+                                    '<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delLiuyan(' + data[i]["Id"] + ')">删除</a></td></tr>';
+                        myliuyanstr += itmes
+                    }
+                }
+                document.getElementById("liuyanlist").innerHTML = "";
+                $("#liuyanlist").append(myliuyanstr);
+            });
+        }
+        //获取关注列表信息
+        function chushiguanzhu(page) {
+            var allClass = "http://{{.Website}}/orange/relations/GetRelationsByUid/" + userid + "/关注/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var myguanzhustr = '<tr class="stuth"><th>关注老师</th><th>主辅导课</th><th>所在学校</th><th>总课时</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["CourseName"] + "</td>" +
+                                    "<td>" + data[i]["SchoolName"] + "</td>" +
+                                    "<td>" + data[i]["AllDate"] + "</td>" +
+                                    '<td><a data-toggle="modal" class="btn btn-warning radsty" data-target="#dellook" onclick="delGuanzhu(' + data[i]["Id"] + ')">取消关注</a></td></tr>';
+                        myguanzhustr += itmes
+                    }
+                }
+                document.getElementById("guanzhulist").innerHTML = "";
+                $("#guanzhulist").append(myguanzhustr);
+            });
+        }
+        //获取全部课程列表信息
+        function chushiallClass2() {
+            var allClass = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByUid/" + userid + "/" + 1 + "/" + 5;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                var allclassstr = '';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var onetr = '<tr><td><img src="images/teacherjl.png" /></td>' +
+                                    '<td><p>' + getSimpDate(data[i]["StartTime"]) + '</p>' +
+                                    '<p>' + data[i]["CourseName"] + '&nbsp;' + data[i]["UserName"] + '&nbsp;' + data[i]["ClassNumber"] + '课时</p>' +
+                                    '</td></tr>';
+                        allclassstr += onetr;
+                    }
+                }
+                document.getElementById("allclasslist").innerHTML = "";
+                $("#allclasslist").append(allclassstr);
+            });
+        }
+
+        //获取退约列表信息
+        function chushituiyue(page) {
+            var allClass = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingBySidNotOn/" + userid + "/" + page + "/" + pubRows;
+            $.getJSON(allClass, function (data) {
+                var strtuiyue = '<tr class="stuth"><th>课程类型</th><th>预约老师</th><th>上课日期</th><th>上课时间</th><th>操作</th></tr>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var uid = data[i]["Id"];
+                        var uname = data[i]["UserName"];
+                        var udate = getSimpDate(data[i]["StartTime"]);
+                        var utime = getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]);
+                        var onetr = "<tr><td>" + data[i]["CourseName"] + "</td>" +
+                                    '<td id="yuyueUname' + i + '">' + data[i]["UserName"] + "</td>" +
+                                    '<td id="yuyuedate' + i + '">' + getSimpDate(data[i]["StartTime"]) + "</td>" +
+                                    '<td id="yuyuetime' + i + '">' + getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]) + "</td>" +
+                                    '<td><a data-toggle="modal" ' +
+                                    'onclick="bandBookingOne(' + uid + ',' + "'" + uname + "'" + ',' + "'" + udate + "'" + ',' + "'" + utime + "'" + ')"' +
+                                    ' class="btn btn-warning radsty" data-target="#tuiyuediv"' +
+                                    '>退约</a></td></tr>';
+                        strtuiyue += onetr;
+                    }
+                }
+                document.getElementById("tbTui").innerHTML = "";
+                $("#tbTui").append(strtuiyue);
+            });
+        }
+        //------------------------------------------------列表功能开始-------------------------------------------------
+        //退约时层内容显示设置
+        function bandBookingOne(id, username, date, time) {
+            document.getElementById("onlinebookid").innerText = id;
+            document.getElementById("tuiUserName").innerText = username;
+            document.getElementById("tuiDate").innerText = date;
+            document.getElementById("tuiTime").innerText = time;
+        }
+        //预约课程退约方法
+        function tuiyueBooking() {
+            var bookid = document.getElementById("onlinebookid").innerText;
+            if (bookid > 0) {
+                var yanzhengpass = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + bookid;
+                $.getJSON(yanzhengpass, function (dataon) {
+                    var uponlike = '{"UserIdActive":0,"UserIdPassive":' + dataon["UserIdPassive"] +
+                                      ',"ReservationState":' + dataon["ReservationState"] +
+                                      ',"Payment":' + dataon["Payment"] +
+                                      ',"Leaming":' + dataon["Leaming"] +
+                                      ',"PayWay":' + dataon["PayWay"] +
+                                      ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
+                                      '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
+                                      '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
+                                      '","AppointMessage":"' + dataon["AppointMessage"] +
+                                      '","ClassroomId":"' + dataon["ClassroomId"] +
+                                      '","StudentInId":"' + dataon["StudentInId"] +
+                                      '","TeacherInId":"' + dataon["TeacherInId"] +
+                                      '"}';
+                    $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + bookid, uponlike,
+                           function (data) {
+                               if (data == "OK") {
+                                   var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
+                                   $.getJSON(userfrozen, function (datafrozen) {
+                                       if (datafrozen != null) {
+                                           var updongjie = '{"UserId":' + datafrozen["UserId"] +
+                                                                ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
+                                                                ',"FrozenType":' + datafrozen["FrozenType"] +
+                                                                ',"BusinessId":' + datafrozen["BusinessId"] +
+                                                                ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
+                                                                '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
+                                                                '","FrozenState":0' +
+                                                                '}';
+                                           $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
+                                               function (data) {
+                                                   if (data["id"] > 0) {
+
+                                                   }
+                                               });
+                                       }
+                                   });
+                                   alert("修改成功！");
+                                   window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
+                               } else {
+                                   alert("修改失败！");
+                               }
+                           });
+                    
+                });
+            }
+        }
+
+        //设置删除一条我的提问的主键和类型
+        function delQuestion(qid) {
+            document.getElementById("delid").innerText = qid;
+            document.getElementById("typeid").innerText = 1;
+        }
+        //设置删除一条我的评价的主键和类型
+        function delPingjia(pid) {
+            document.getElementById("delid").innerText = pid;
+            document.getElementById("typeid").innerText = 2;
+        }
+        //设置删除一条我的留言的主键和类型
+        function delLiuyan(lid) {
+            document.getElementById("delid").innerText = lid;
+            document.getElementById("typeid").innerText = 3;
+        }
+        //设置删除一条我的关注的主键和类型
+        function delGuanzhu(gid) {
+            document.getElementById("delid").innerText = gid;
+            document.getElementById("typeid").innerText = 4;
+        }
+        //删除一行数据
+        function delRows() {
+            var id = document.getElementById("delid").innerText;
+            var typeid = document.getElementById("typeid").innerText;
+            //alert("id:" + id + ",typeid:" + typeid);
+            if (id > 0) {
+                if (typeid == 1) { //删除一条我的问题
+                    //alert("删除我的问题");
+                    var del = "http://{{.Website}}/orange/questionask/DeleteQuestionask/" + id;
+                    //alert(allClass);
+                    $.getJSON(del, function (data) {
+                        if (data != null && data + "" == "OK") {
+                            alert("删除成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/UserStudent/3";
+                        }
+                        else {
+                            alert("删除失败！");
+                        }
+                    });
+                } else if (typeid == 2) {//删除一条我的评价
+                    //alert("删除我的评价");
+                    var del = "http://{{.Website}}/orange/onlinecourseevaluation/DeleteOnlinecourseevaluation/" + id;
+                    //alert(allClass);
+                    $.getJSON(del, function (data) {
+                        if (data != null && data + "" == "OK") {
+                            alert("删除成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/UserStudent/4";
+                        }
+                        else {
+                            alert("删除失败！");
+                        }
+                    });
+                } else if (typeid == 3) {//删除一条我的留言
+                    //alert("删除我的留言");
+                    var del = "http://{{.Website}}/orange/usermessage/DeleteUsermessage/" + id;
+                    //alert(allClass);
+                    $.getJSON(del, function (data) {
+                        if (data != null && data + "" == "OK") {
+                            alert("删除成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/UserStudent/5";
+                        }
+                        else {
+                            alert("删除失败！");
+                        }
+                    });
+                } else if (typeid == 4) {//删除一条我的关注
+                    //alert("删除我的关注");
+                    var del = "http://{{.Website}}/orange/relations/DeleteRelations/" + id;
+                    //alert(allClass);
+                    $.getJSON(del, function (data) {
+                        if (data != null && data + "" == "OK") {
+                            alert("取消关注成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/UserStudent/6";
+                        }
+                        else {
+                            alert("取消关注失败！");
+                        }
+                    });
+                }
+            }
+        }
+
+        //------------------------------------------------列表功能结束-------------------------------------------------
+        //初始帮我推荐好老师层的选项内容
+        function chushituijiandiv() {
+            //查询全部年级
+            var allGrade = "http://{{.Website}}/orange/grade/GetAllGrade/1/100/";
+            $.getJSON(allGrade, function (data) {
+                var gradestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["GradeName"] + '</option>';
+                    gradestr += items;
+                }
+                document.getElementById("selGrade").innerHTML = "";
+                $("#selGrade").append(gradestr);
+            });
+            //查询全部科目
+            var allClass = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            $.getJSON(allClass, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CourseName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selClass").innerHTML = "";
+                $("#selClass").append(coursestr);
+            });
+            //查询全部城市
+            var allLevel = "http://{{.Website}}/orange/citys/GetAllCitys/1/500/";
+            $.getJSON(allLevel, function (data) {
+                var levelstr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["CityName"] + '</option>';
+                    levelstr += items;
+                }
+                document.getElementById("selCitys").innerHTML = "";
+                $("#selCitys").append(levelstr);
+            });
+        }
+        //添加帮我推荐好老师功能
+        function addGoodTeacher() {
+            var selgradeid = document.getElementById("selGrade").options[document.getElementById("selGrade").selectedIndex].value;
+            var selclassid = document.getElementById("selClass").options[document.getElementById("selClass").selectedIndex].value;
+            var selcityid = document.getElementById("selCitys").options[document.getElementById("selCitys").selectedIndex].value;
+            var price1 = document.getElementById("selstartmoney").options[document.getElementById("selstartmoney").selectedIndex].innerText;
+            var price2 = document.getElementById("selendmoney").options[document.getElementById("selendmoney").selectedIndex].innerText;
+            var phone = document.getElementById("txtPhone").value;
+            var xingming = document.getElementById("txtName").value;
+            var beizhu = document.getElementById("txtBeizhu").value;
+            if (trim(phone) == "") {
+                alert("请填写您的手机号码，方便我们日后与您联系！");
+                return;
+            }
+            if (trim(xingming) == "") {
+                alert("请填写您的姓名，方便我们日后与您联系！");
+                return;
+            }
+            var addrecodtea = '{"UserId":' + userid +
+                       ',"GradeId":' + selgradeid +
+                       ',"ClassId":' + selclassid +
+                       ',"StartPrice":' + price1 +
+                       ',"EndPreice":' + price2 +
+                       ',"CityId":' + selcityid +
+                       ',"RecommendTime":"' + getNowFormatDate() +
+                       '","MyName":"' + xingming +
+                       '","MyPhone":"' + phone +
+                       '","Remarks":"' + beizhu +
+                       '"}';
+            $.post("http://{{.Website}}/orange/recommendteacher/AddRecommendteacher/", addrecodtea,
+                    function (data) {
+                        //alert(data["id"]);
+                        if (data["id"] > 0) {
+                            alert("添加回复成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
+                        } else {
+                            alert("添加回复失败！");
+                        }
+                    });
+        }
+
+    </script>
+</body>
+</html>

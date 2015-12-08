@@ -1,0 +1,601 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container">
+            <div class="row topbottomdivs">
+                <div class="col-sm-2 floatleft">
+                    <img src="{{.AvatarPath}}" />
+                    <p>ID:{{.userid}}</p>
+                    <p id="userid" style="display: none">{{.Teacheruserid}}</p>
+                </div>
+                <div class="col-sm-7">
+                    <div class="row teachername">
+                        <div class="col-xs-4">
+                            <span>{{.UserName}}</span>
+                        </div>
+                        <div class="col-xs-8" id="guanzhuTeacher">
+                            <a href="#" onclick="guanzhuTeacher()">关注</a>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row teamain">
+                            <div class=" col-xs-4">
+                                <span>{{.AllPerson}}</span>个                             
+                            </div>
+                            <div class=" col-xs-4">
+                                <span>{{.AllTime}}</span>小时                             
+                            </div>
+                            <div class=" col-xs-4">
+                                <span>{{.AllTimeMouth}}</span>小时                              
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="row teamain">
+                            <div class=" col-xs-4">
+                                <p>学生总数</p>
+                            </div>
+                            <div class=" col-xs-4">
+                                <p>累计课时</p>
+                            </div>
+                            <div class=" col-xs-4">
+                                <p>月总课时</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 teachmen">
+                    <div class="row">
+                        <span>{{.UnitPrice}}</span>元/小时
+                     
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <a id="listenNow">
+                            <input id="btnlisten" type="button" class="teacbtn" value="立即试听" onclick="trylisten()"></a>
+                    </div>
+                    <div class="row" style="margin-top: 10px;">
+                        <a href="http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}" id="yuyuelist">
+                            <input id="btnyuyue" type="button" class="teacbtn" value="预约课程"></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class='row teachermain'>
+                <div class="col-sm-9" style="border-right: 10px solid #f5f5f5;">
+                    <ul class="ull nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a>个人资料</a></li>
+                        <li role="presentation"><a href="#divtap2">全部课程</a></li>
+                        <li role="presentation"><a href="#divtap3">综合评价</a></li>
+                    </ul>
+
+                    <div id="menu">
+                        <!--二级菜单-->
+                        <div id="menu_con">
+                            <div id="divtap1" style="display: block;">
+                                <table class="stutabtop">
+                                    <tr>
+                                        <td>
+                                            <img src="images/jbzl.png" />
+                                        </td>
+                                        <td>
+                                            <span>基本资料</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <table class="stutabbottom">
+                                    <tr>
+                                        <td class="odd" style="width: 20%;">学习资历：
+                                        </td>
+                                        <td>{{.SchoolName}} | {{.DegreeName}} | {{.LevelYear}}级
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="odd">学习专业：
+                                        </td>
+                                        <td>{{.Professional}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="odd">主辅导课：
+                                        </td>
+                                        <td>{{.CourseName}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="odd">主辅导课：
+                                        </td>
+                                        <td>{{.CourseNameFu}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="odd" style="padding-top: 20px;">教师简介：</td>
+                                        <td style="padding-top: 20px;">{{.BriefIntroduction}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="odd" style="padding-top: 25px;">兴趣爱好：</td>
+                                        <td style="padding-top: 25px;">{{.UserHobby}}
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div id="divtap2">
+                                    <table class="stutabtop">
+                                        <tr>
+                                            <td>
+                                                <img src="images/pjjl.png" />
+                                            </td>
+                                            <td>
+                                                <span>教学记录</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                    <table class="stutable" cellspacing="0" id="TeacherAllClass">
+                                    </table>
+                                    <div id="Paginationcourse" class="pagination"></div>
+                                </div>
+                            </div>
+                            <div id="divtap3" style="display: block;">
+                                <table class="stutabtop">
+                                    <tr>
+                                        <td>
+                                            <img src="images/jxjl.png" />
+                                        </td>
+                                        <td>
+                                            <span>教师评价</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+
+
+                            <div id="xfjl1">
+                                <table class="teamesstab" cellspacing="0" id="TeacherAllPingjia">
+                                </table>
+                                <div id="Pagination2" class="pagination"></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 tearightbottom">
+                    <div>
+<!--                        <table class="rightbottomtab">
+                            <tr>
+                                <td style="width: 15%;">
+                                    <img src="images/stutabimg.png" />
+                                </td>
+                                <td style="text-align: left;">
+                                    <span>授课日程</span>
+                                </td>
+                            </tr>
+                        </table>-->
+                        <!--<table class="tearightbottab" cellspacing="0">
+                            <tr>
+                                <td>日
+                                </td>
+                                <td>一
+                                </td>
+                                <td>二
+                                </td>
+                                <td>三
+                                </td>
+                                <td>四
+                                </td>
+                                <td>五
+                                </td>
+                                <td>六
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                            </tr>
+                        </table>-->
+                        <!--<table class="teatabbottom">
+                            <tr>
+                                <td>
+                                    <img src="images/noyyimg.png" />
+                                </td>
+                                <td>可约课时
+                                </td>
+                                <td>
+                                    <img src="images/yyimg.png" />
+                                </td>
+                                <td>可约课时
+                                </td>
+                            </tr>
+                        </table>-->
+                    </div>
+
+                    <div class="tearightbottom" style="margin-top: 29px;" id="setTeacherLiuyan">
+                        <table class="rightbottomtab">
+                            <tr>
+                                <td style="width: 15%;">
+                                    <img src="images/messageimg.png" />
+                                </td>
+                                <td style="text-align: left;">
+                                    <span>给他留言</span>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="teamessage">
+                            <p>
+                                您可以在输入框里填写您想学的课程，目前的学习状况等信息，老师看到会第一时间进行回复。                        
+                            </p>
+                            <textarea class="teaarea" id="messcount"></textarea>
+                            <input type="button" class="teachersbtn" value="提交" onclick="addmessage()">
+                        </div>
+                    </div>
+                </div>
+                <div class="tearightbottom" style="border-bottom: 2px solid #f5f5f5;" id="anserSee">
+                    <div class="rightbottomtab" style="text-align: left;">
+                        <img src="images/pjjl.png" /><span>最近浏览</span>
+                    </div>
+                    <div class="teaimgimg">
+                        <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
+                        <p>
+                            <a href="teacherlist.html">王老师 | 高中数学</a>
+                        </p>
+                        <p>
+                            <span>200</span> 元/小时                                               
+                        </p>
+                    </div>
+                    <div class="teaimgimg">
+                        <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
+                        <p>
+                            <a href="teacherlist.html">王老师 | 高中数学</a>
+                        </p>
+                        <p>
+                            <span>200</span> 元/小时                                               
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{template "footer.html" .}}    
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript">
+        var pubRows = 10;//每页显示行数
+        var allrowscount = 0;//总课程总页数
+        var allrowscount2 = 0;//总评价页数
+        var userid = document.getElementById("userid").innerHTML;//当前显示的老师的主键id
+
+        window.onload = function () { getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate(); }
+
+        //查询此老师是否在线
+        function getonlinestate() {
+            var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+            $.getJSON(getstate, function (data) {
+                if (data != null && data["Tid"] == userid) {
+                    document.getElementById("btnlisten").className = "teacbtn";
+                } else {
+                    document.getElementById("btnlisten").className = "teacbtn2";
+                }
+            });
+        }
+
+        function setListenYuyuebtn() {
+            var identityid = getCookie("identityid");
+            if (identityid == null || identityid == 0 || identityid + "" == "" || identityid + "" == "undefined" || identityid == 1) {
+                document.getElementById("listenNow").style.display = "none";
+                document.getElementById("yuyuelist").style.display = "none";
+                //document.getElementById("setTeacherLiuyan").style.display = "none";
+                document.getElementById("guanzhuTeacher").style.display = "none";
+            } else if (identityid > 1) {
+                document.getElementById("listenNow").style.display = "block";
+                document.getElementById("yuyuelist").style.display = "block";
+                //document.getElementById("setTeacherLiuyan").style.display = "block";
+                document.getElementById("guanzhuTeacher").style.display = "block";
+            }
+        }
+
+        //教学记录
+        function pageselectCallback(page_id, jq) {
+            getallCourse((page_id + 1));
+            //alert(page_id + 1);
+        }
+        //评价
+        function pageselectCallback2(page_id, jq) {
+            //alert(page_id + 1);
+        }
+        $(document).ready(function () {
+
+            // 创建分页元素
+            $("#Paginationcourse").pagination(215, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
+            });
+
+            // 创建分页元素
+            $("#Pagination2").pagination(215, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback2  //回调函数
+            });
+        });
+
+        //获取教学记录总页数
+        function getallkechengCount() {
+            var allteachercount = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTidCount/" + userid + "/";
+            $.getJSON(allteachercount, function (data) {
+                allrowscount = data;
+                // 创建分页元素
+                $("#Paginationcourse").pagination(allrowscount, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback  //回调函数
+                });
+                return data;
+            });
+        }
+
+        //获取评价总页数
+        function getallPingjiaCount() {
+            var allteachercount = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTidCount/" + userid + "/";
+            $.getJSON(allteachercount, function (data) {
+                allrowscount2 = data;
+                // 创建分页元素
+                $("#Pagination2").pagination(allrowscount2, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback2  //回调函数
+                });
+                return data;
+            });
+        }
+
+        //获取课程列表信息
+        function getallCourse(page) {
+            var allteacherlist = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allteacherlist);
+            $.getJSON(allteacherlist, function (data) {
+                var allteacherstr = '<tr class="stuth"><th>课程号</th><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时</th></tr>';
+                if (data != null) {
+                    //alert(data);
+                    for (var i = 0; i < data.length ; i++) {
+                        var itemse = '<tr>' +
+                                     '<td>' + data[i]["Id"] + '</td>' +
+                                     '<td>' + data[i]["CourseName"] + '</td>' +
+                                     '<td>' + data[i]["UserName"] + '</td>' +
+                                     '<td>' + data[i]["AgeName"] + '</td>' +
+                                     '<td>' + data[i]["ClassNumber"] + '</td>' +
+                                     '</tr>';
+                        allteacherstr += itemse;
+                    }
+                    document.getElementById("TeacherAllClass").innerHTML = "";
+                    $("#TeacherAllClass").append(allteacherstr);
+                }
+                else {
+                    document.getElementById("TeacherAllClass").innerHTML = "";
+                }
+                getallkechengCount();
+            });
+        }
+
+        //获取评价列表信息
+        function getallPingjia(page) {
+            var allteacherlist = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTid/" + userid + "/" + page + "/" + pubRows;
+            //alert(allteacherlist);
+            $.getJSON(allteacherlist, function (data) {
+                var allpingjia = '';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var startcount = "";//星星图片个数
+                        var count = data[i]["StartClear"] + data[i]["StartEfficiency"];
+                        for (var a = 0; a < count; a++) {
+                            startcount += '<img class="starimg" src="images/look.png" />';
+                        }
+                        var itemse = '<tr>' +
+                                     '<td rowspan="2" class="teamesstd">' +
+                                     '<img class="headimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                     '</td>' +
+                                     '<td>' + data[i]["UserName"] + '</td>' +
+                                     '<td>' + startcount + '</td>' +
+                                     '<td>' + data[i]["ReviewTime"] + '</td>' +
+                                     '</tr>' +
+                                     '<tr>' +
+                                     '<td colspan="3" class="teamesstd">' + data[i]["ReviewContent"] + '</td>' +
+                                     '</tr>';
+                        allpingjia += itemse;
+                    }
+                    document.getElementById("TeacherAllPingjia").innerHTML = "";
+                    $("#TeacherAllPingjia").append(allpingjia);
+                }
+                else {
+                    document.getElementById("TeacherAllPingjia").innerHTML = "";
+                }
+                getallPingjiaCount();
+            });
+        }
+
+        function guanzhuTeacher() {
+            var sid = getCookie("userid");
+            var tid = userid;
+            var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/关注";
+            $.getJSON(addguanzhu, function (data) {
+                if (data["id"] > 0) { alert("关注成功！"); }
+                else if (data["id"] == 0) { alert("关注失败！"); }
+                else if (data["id"] == -1) { alert("您已关注此人！"); }
+            });
+        }
+
+
+        function addmessage() {
+            var sid = getCookie("userid");
+            var identityid = getCookie("identityid");
+            var tid = document.getElementById("userid").innerHTML;
+            //alert(sid + tid + identityid);
+            return;
+            if (sid > 0) {
+                if (identityid > 1) {
+                    var mess = document.getElementById("messcount").value;
+                    //alert(sid + "" + tid + mess);
+                    var addmess = '{"ActiveUserId":' + sid +
+                                            ',"PassiveUserId":' + tid +
+                                            ',"MessageId":' + 0 +
+                                            ',"Contents":"' + mess +
+                                            '","States":' + 0 +
+                                            ',"MesTime":"' + getInsertNowDate() +
+                                            '"}';
+                    $.post("http://{{.Website}}/orange/usermessage/AddUsermessage/", addmess,
+                        function (data) {
+                            if (data["id"] > 0) {
+                                alert("留言成功！");
+                                document.getElementById("messcount").value = "";
+                            } else {
+                                alert("留言失败！");
+                            }
+                        });
+                } else {
+                    alert("老师不允许留言！");
+                }
+            } else {
+                alert("请先登录在留言！");
+            }
+        }
+
+        //试听该老师的课程
+        function trylisten() {
+            var btntry = document.getElementById("btnlisten").className;
+            if (btntry == "teacbtn") {
+                var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+                $.getJSON(getstate, function (data) {
+                    window.location.href = "http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"];
+                });
+            }   
+        }
+
+        //获取最近浏览信息
+        function getZuiJinSee() {
+            if (userid != null && userid > 0) {
+                var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByTid/" + userid + "/浏览/1/4";
+                //alert(allseestr);
+                $.getJSON(allseestr, function (data) {
+                    var allseelist = '<div class="rightbottomtab" style="text-align: left;">' +
+                                     '<img src="images/pjjl.png" /><span>谁浏览过</span>' +
+                                     '</div>';
+                    if (data != null) {
+                        //alert(data);
+                        for (var i = 0; i < data.length ; i++) {
+                            var itemse = '<div class="teaimgimg">' +
+                                         '<img class="teaheadimgimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                         '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + data[i]["AgeName"] + '</a></p>' +
+                                         '</div>';
+                            allseelist += itemse;
+                        }
+                        document.getElementById("anserSee").innerHTML = "";
+                        $("#anserSee").append(allseelist);
+                    }
+                    else {
+                        document.getElementById("anserSee").innerHTML = "";
+                    }
+                    getallkechengCount();
+                });
+            }
+            else {
+                document.getElementById("anserSee").innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

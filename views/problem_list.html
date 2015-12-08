@@ -1,0 +1,158 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb" style="margin-top: 35px;">
+        <!--精彩问答-->
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;" id="allAskDiv">
+            <!--<div class="row">
+                <div class=" col-sm-3 problemmenu">
+                    <span style="margin-left: 20px;">精彩问答</span>
+                </div>
+                <div class=" col-sm-9 problemmenu">
+                    <a href="problem.html">
+                        <input type="button" class="problemsbtn" value="我要提问">
+                    </a>
+                </div>
+            </div>-->
+
+            <!--<div class="row prorow">
+                <div class="col-sm-4 col-md-3">
+                    <img style="width: 250px; margin-left: 2px;" src="images/three1.jpg" />
+                </div>
+
+                <div class="col-sm-8 col-md-9 listmenu">
+                    <a href="problem_main.html">
+                        <p class="listtop">问题：题目题目题目</p>
+                        <p class="listmain">相关答案相关答案相关答案相关答案相关答案相关答案相关答案</p>
+                    </a>
+
+                    <div class="col-sm-6 ">
+                        <table class="listicon">
+                            <tr>
+                                <td>
+                                    <img src="images/eye.png" />
+                                </td>
+                                <td style="width: 60px;">369
+                                </td>
+                                <td>
+                                    <img src="images/looked.png" />
+                                </td>
+                                <td>79
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>-->
+            <!--分页层 -->
+        </div>
+        <div id="Pagination" class="pagination" style="margin-left: 40%;"></div>
+        <p id="wendacount" style="display: none">{{.wendacount}}</p>
+    </div>
+
+    {{template "footer.html" .}}
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/ecmascript">
+        var pubRows = 10;//每页显示行数
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(3);
+            getallAskLists(1)
+        }
+        //精彩问答
+        function pageselectCallback(page_id, jq) {
+            getallAskLists((page_id + 1));
+        }
+
+        $(document).ready(function () {
+            // 创建分页元素
+            $("#Pagination").pagination(document.getElementById("wendacount").innerText, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
+            });
+        });
+
+        //获取精彩问答总页数
+        function getallAskCount() {
+            var allteachercount = "http://{{.Website}}/orange/questionask/GetQuestionaskByJingCaiCount";
+            $.getJSON(allteachercount, function (data) {
+                return data;
+            });
+        }
+
+        //获取精彩问答列表信息
+        function getallAskLists(page) {
+            var allasklist = "http://{{.Website}}/orange/questionask/GetQuestionaskByJingCai/" + page + "/" + pubRows;
+            $.getJSON(allasklist, function (data) {
+                if (data != null) {
+                    var allask = '<div class="row">' +
+                                     '<div class=" col-sm-3 problemmenu">' +
+                                     '<span style="margin-left: 20px;">精彩问答</span>' +
+                                     '</div>' +
+                                     '<div class=" col-sm-9 problemmenu">' +
+                                     '' +
+                                     '<input id="mytiwen" type="button" class="problemsbtn" onclick="tiwen()" value="我要提问">' +
+                                     '' +
+                                     '</div>' +
+                                     '</div>';
+                    for (var i = 0; i < data.length ; i++) {
+                        var srcimg = '';
+                        if (i % 2 > 0) {
+                            srcimg = '<img style="width: 250px; margin-left: 2px;" src="images/three1.jpg" />';
+                        } else {
+                            srcimg = '<img style="width: 250px; margin-left: 2px;" src="images/three3.jpg" />';
+                        }
+                        var itemse = '<div class="row prorow"><div class="col-sm-4 col-md-3">' + srcimg + '</div>' +
+                                     '<div class="col-sm-8 col-md-9 listmenu">' +
+                                     '<a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '">' +
+                                     '<p class="listtop">问题：' + data[i]["Title"] + '</p>' +
+                                     '<p class="listmain">' + data[i]["Contents"] + '</p></a>' +
+                                     '<div class="col-sm-6 "><table class="listicon"><tr><td><img src="images/eye.png" /></td>' +
+                                     '<td style="width: 60px;">' + data[i]["Numbers"] + '</td>' +
+                                     '<td><img src="images/looked.png" /></td>' +
+                                     '<td>' + data[i]["Count"] + '</td></tr></table></div></div></div>';
+                        allask += itemse;
+                    }
+                    document.getElementById("allAskDiv").innerHTML = "";
+                    $("#allAskDiv").append(allask);
+                    var identityid = getCookie("identityid");
+                    if (identityid == null || identityid == 0 || identityid + "" == "" || identityid + "" == "undefined" || identityid == 1) {
+                        document.getElementById("mytiwen").style.display = "none";
+                    } else if (identityid > 1) {
+                        document.getElementById("mytiwen").style.display = "block";
+                    }
+                }
+                else {
+                    document.getElementById("allAskDiv").innerHTML = "";
+                }
+            });
+        }
+
+        function tiwen() {
+            var userid = getCookie("userid")//获取登录用户主键id
+            if (userid == null || userid <= 0 || userid+"" == "undefined") {
+                alert("未登录用户无法提问，请先登录！");
+            } else {
+                    window.location.href = "http://{{.Website}}/orange/Teacher/UserAskQuestion/";                
+            }
+        }
+        </script>
+</body>
+</html>
