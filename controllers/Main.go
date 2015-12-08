@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"orange/models"
@@ -62,6 +63,60 @@ func (c *MainController) Logins() {
 			c.TplNames = "404.html"
 		}
 	}
+}
+
+// 登录方法
+// @Title LoginUser
+// @Description LoginUser the TbUser
+// @Param			"The id you want to LoginUser"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /LoginUser/ [post]
+func (c *MainController) LoginUser() {
+	var jsonS string
+	for k, v := range c.Ctx.Request.Form {
+		fmt.Printf("k=%v, v=%v\n", k, v)
+		jsonS = k
+	}
+	fmt.Println("接到信息为：")
+	fmt.Println(jsonS)
+	var v models.Userinformation
+	json.Unmarshal([]byte(jsonS), &v)
+	fmt.Println(v)
+	var vuser *models.Userinformation
+	fmt.Println("用户名，密码：")
+	fmt.Println(v.UserName, v.LoginPassword)
+	vuser, err := models.GetUserinformationLogin(v.UserName, v.LoginPassword)
+	if err == nil && vuser != nil {
+		fmt.Println(vuser)
+		c.Data["Website"] = OnlineUrl
+		c.Ctx.SetCookie("username", vuser.UserName)
+		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
+		c.Ctx.SetCookie("identityid", strconv.Itoa(vuser.IdentityId))
+		c.Ctx.SetCookie("AvatarPath", vuser.AvatarPath)
+		fmt.Println(vuser.AvatarPath)
+		//c.TplNames = "index.tpl"
+		c.Data["json"] = "OK"
+	} else {
+		vphoneuser, errph := models.GetUserinformationLoginPhone(v.UserName, v.LoginPassword)
+		if errph == nil && vphoneuser != nil {
+			fmt.Println(vphoneuser)
+			c.Data["Website"] = OnlineUrl
+			c.Ctx.SetCookie("username", vphoneuser.UserName)
+			c.Ctx.SetCookie("userid", strconv.Itoa(vphoneuser.Id))
+			c.Ctx.SetCookie("identityid", strconv.Itoa(vphoneuser.IdentityId))
+			c.Ctx.SetCookie("AvatarPath", vphoneuser.AvatarPath)
+			fmt.Println(vphoneuser.AvatarPath)
+			//c.TplNames = "index.tpl"
+			c.Data["json"] = "OK"
+		} else {
+			fmt.Println(err)
+			c.Data["blockdiv"] = "none"
+			//c.TplNames = "404.html"
+			c.Data["json"] = "NO"
+		}
+	}
+	c.ServeJson()
 }
 
 // 登录方法

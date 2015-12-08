@@ -320,12 +320,13 @@
     <script src="b/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/personal.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         var identityid = getCookie("identityid");
         window.onload = function () {
-            setTitleOnSelect(4);
             getuser();
+            setTitleOnSelect(4);
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }

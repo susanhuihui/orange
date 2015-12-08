@@ -673,6 +673,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
 		beego.ControllerComments{
+			"LoginUser",
+			`/LoginUser/`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
 			"OutLogins",
 			`/OutLogins/`,
 			[]string{"get"},
