@@ -7,10 +7,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <!-- Bootstrap core CSS -->
-    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="b/css/bootstrap.min.css" rel="stylesheet">-->
     <link href="b/css/carousel.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css" />
 </head>
@@ -29,14 +29,14 @@
                         <p style="font-size: 14px; line-height: 30px; color: #fff;">业内领先的互联网教育平台，高品质、更专业</p>
                     </div>
                     <div class="obj-f">
-                        <img style="width: 46%;" src="images/slide3p2.png" />
+                        <img style="width: 28%;" src="images/slide3p2.png" />
                     </div>
                 </a>
             </div>
             <div class="slide" id="bgstylea">
                 <a stat="sslink-1">
                     <div class="obj-b">
-                        <img style="width: 90%;" src="images/bao.png" />
+                        <img style="width: 55%;" src="images/bao.png" />
                         <h2 style="color: #fff; margin-top: -20px;">·高效 ·智能 ·专业</h2>
                     </div>
                 </a>
@@ -44,11 +44,11 @@
             <div class="slide" id="bgstyleb">
                 <a stat="sslink-2" >
                     <div class="obj-c">
-                        <img style="width: 70%;" src="images/bao-2.png" />
+                        <img style="width: 35%;" src="images/bao-2.png" />
                     </div>
                     <div class="obj-d carousel-caption">
-                        <h3 style="color: #fff;">安全保障、服务第一</h3>
-                        <h3 style="color: #fff;">利用互联网的优势，不再受空间的限制</h3>
+                        <h3 style="color: #fff; font-size:30px; line-height:60px;">安全保障、服务第一</h3>
+                        <h3 style="color: #fff; font-size:25px;">利用互联网的优势，不再受空间的限制</h3>
                     </div>
                 </a>
             </div>
@@ -63,7 +63,7 @@
         <!-- Three columns of text below the carousel -->
         <div class="row">
             <div class="col-lg-12 threefont">
-                <p class="threefontbig"><a href="http://{{.Website}}/orange/Main/AboutMe/" style="color: #666">了解泛鲲教育平台</a><br/></p>
+                <p class="threefontbig"><a href="http://{{.Website}}/orange/Main/AboutMe/" style="color: #fe9627">了解泛鲲教育平台</a><br/></p>
                 <p class="threefontsmall">最高性价比学习平台</p>
             </div>
         </div>
@@ -71,22 +71,22 @@
             <div class="col-sm-4" style="text-align: center;">
                 <img src="images/three1.jpg" />
                 <p class="tablefonttop">
-                    <a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10">一对一专业辅导</a>
+                    <a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10">找老师</a>
 
                 </p>
-                <p>在线即时聊天,专业老师辅导,针对性学习!</p>
+                <p>如果您想得到专业的系统的一对一授课请点这里！</p>
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-sm-4" style="text-align: center;">
                 <img src="images/three2.jpg" />
-                <p class="tablefonttop"><a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/">老师实时在线问答</a></p>
-                <p>百名名校学霸在线,随时随地解决任何学科问题!</p>
+                <p class="tablefonttop"><a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/">问难题</a></p>
+                <p>如果您有难题请点这里！</p>
             </div>
             <!-- /.col-lg-4 -->
             <div class="col-sm-4" style="text-align: center;">
                 <img src="images/three3.jpg" />
-                <p class="tablefonttop"><a href="http://{{.Website}}/orange/Main/QuestionsCenter/">精彩问答、学霸秘籍应有尽有</a></p>
-                <p>师生在线精彩问答、学霸学习秘籍汇总,我们还可以提供更多!</p>
+                <p class="tablefonttop"><a href="http://{{.Website}}/orange/Main/QuestionsCenter/">精彩呈现</a></p>
+                <p>如果您想看精彩问答、学霸秘籍请点这里！</p>
             </div>
             <!-- /.col-lg-4 -->
         </div>
@@ -276,8 +276,8 @@
             <img id="dian4" src="images/leve.png" onclick="setDetailMsgRowText('row4','dian4')" />
         </div>
     </div>
-    <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
@@ -288,7 +288,7 @@
             $.getJSON(getpicurl, function (data) {
                 for (var i = 0; i < data.length ; i++) {
                     document.getElementById("imgTeacher" + (i + 1)).src = data[i]["AvatarPath"];//头像
-                    document.getElementById("nameText" + (i + 1)).innerText = data[i]["UserName"] + "|" + data[i]["GradeName"] + data[i]["CourseName"];//姓名加年级主辅导课
+                    document.getElementById("nameText" + (i + 1)).innerHTML = "<span>" + data[i]["UserName"] + "|" + data[i]["GradeName"] + data[i]["CourseName"] + "</span>";//姓名加年级主辅导课
                     document.getElementById("nameText" + (i + 1)).href = "http://{{.Website}}/orange/Teacher/TeacherInformation/" + data[i]["Id"];
                 }
             });

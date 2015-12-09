@@ -266,6 +266,19 @@ func GetUserinformationByPhone(phone string) (v *Userinformation, err error) {
 	return nil, err
 }
 
+//	根据姓名昵称查询一条用户信息
+//	2015-12-09
+func GetUserinformationByUserName(username string) (v *Userinformation, err error) {
+	o := orm.NewOrm()
+	var user Userinformation
+	err = o.QueryTable("userinformation").Filter("UserName", username).One(&user)
+	v = &user
+	if err == nil {
+		return v, nil
+	}
+	return nil, err
+}
+
 //	1.查询首页老师图片轮换
 //	2015-11-03
 func GetUserinformationPicMove(count int) (userlist []UserinformationPic, err error) {

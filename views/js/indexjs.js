@@ -57,50 +57,40 @@ function selectTag(showContent, selfObj) {
 function setTitleOnSelect(titleindex) {
     if (titleindex == 1) { //选中首页
         document.getElementById("shouye").className = "menuasty";
-        document.getElementById("laoshi").className = "";
-        document.getElementById("wenda").className = "";
-        document.getElementById("lizhuce").className = "";
-        //document.getElementById("liusername").className = "";
         document.getElementById("fontshouye").style.color = "#FF9A3A";
-        document.getElementById("fontlaoshi").style.color = "#9d9d9d";
-        document.getElementById("fontwenda").style.color = "#9d9d9d";
-        document.getElementById("lizhuce").style.color = "#9d9d9d";
     } else if (titleindex == 2) {//选中老师
-        document.getElementById("shouye").className = "";
         document.getElementById("laoshi").className = "menuasty";
-        document.getElementById("wenda").className = "";
-        document.getElementById("lizhuce").className = "";
-        document.getElementById("fontshouye").style.color = "#9d9d9d";
         document.getElementById("fontlaoshi").style.color = "#FF9A3A";
-        document.getElementById("fontwenda").style.color = "#9d9d9d";
-        document.getElementById("lizhuce").style.color = "#9d9d9d";
     } else if (titleindex == 3) {//选中问答中心
-        document.getElementById("shouye").className = "";
-        document.getElementById("laoshi").className = "";
         document.getElementById("wenda").className = "menuasty";
-        document.getElementById("lizhuce").className = "";
-        document.getElementById("fontshouye").style.color = "#9d9d9d";
-        document.getElementById("fontlaoshi").style.color = "#9d9d9d";
         document.getElementById("fontwenda").style.color = "#FF9A3A";
-        document.getElementById("lizhuce").style.color = "#9d9d9d";
     } else if (titleindex == 4) {//选中注册/用户姓名
-        document.getElementById("shouye").className = "";
-        document.getElementById("laoshi").className = "";
-        document.getElementById("wenda").className = "";
         document.getElementById("lizhuce").className = "menuasty";
-        document.getElementById("fontshouye").style.color = "#9d9d9d";
-        document.getElementById("fontlaoshi").style.color = "#9d9d9d";
-        document.getElementById("fontwenda").style.color = "#9d9d9d";
         document.getElementById("lizhuce").children[0].style.color = "#FF9A3A";
     } else if (titleindex == 0) {//什么都不选
-        document.getElementById("shouye").className = "";
-        document.getElementById("laoshi").className = "";
-        document.getElementById("wenda").className = "";
-        document.getElementById("lizhuce").className = "";
-        document.getElementById("fontshouye").style.color = "#9d9d9d";
-        document.getElementById("fontlaoshi").style.color = "#9d9d9d";
-        document.getElementById("fontwenda").style.color = "#9d9d9d";
-        document.getElementById("lizhuce").style.color = "#9d9d9d";
+        //document.getElementById("shouye").className = "";
+        //document.getElementById("laoshi").className = "";
+        //document.getElementById("wenda").className = "";
+        //document.getElementById("lizhuce").className = "";
+        //document.getElementById("fontshouye").style.color = "#9d9d9d";
+        //document.getElementById("fontlaoshi").style.color = "#9d9d9d";
+        //document.getElementById("fontwenda").style.color = "#9d9d9d";
+        //document.getElementById("lizhuce").style.color = "#9d9d9d";
+    }
+    getUserInfo();
+}
+
+function getUserInfo() {
+    var userid = getCookie("userid");
+    if (userid > 0) {
+        var website = getCookie("OnlineUrl");
+        var getstudent = "http://" + website + "/orange/userinformation/GetUserinformationById/" + userid;
+        $.getJSON(getstudent, function (data) {
+            if (data != null && data["Id"] > 0) {
+                document.getElementById("loginusername").innerHTML = data["UserName"];
+                return data["UserName"];
+            }
+        });
     }
 }
 
@@ -146,5 +136,11 @@ function selectTagpass(showContent, selfObj) {
                             '</div>';
         document.getElementById("divcoutent").innerHTML = tupian;
     }
-
 };
+
+//密码验证方法
+function isPasswd(s) {
+    var patrn = /^(\w){6,20}$/;
+    if (!patrn.exec(s)) return false
+    return true
+}

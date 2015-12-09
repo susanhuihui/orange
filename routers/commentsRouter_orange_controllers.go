@@ -1828,6 +1828,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
 		beego.ControllerComments{
+			"GetUserinformationByUserName",
+			`/GetUserinformationByUserName/:name`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
+		beego.ControllerComments{
 			"GetUserinformationPhone",
 			`/GetUserinformationPhone/:phone`,
 			[]string{"get"},

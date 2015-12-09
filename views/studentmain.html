@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
@@ -1042,6 +1042,10 @@
                         var starcount = data[i]["StartClear"] + data[i]["StartEfficiency"];
                         for (var a = 0; a < starcount; a++) {
                             starimg += '<img style="height: 25px;" src="images/look.png" />';
+                        }
+                        var outcount = 10 - (data[i]["StartClear"] + data[i]["StartEfficiency"]);
+                        for (var b = 0; b < outcount; b++) {
+                            starimg += '<img style="height: 25px;" src="images/looked.png" />';
                         }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["ReviewContent"] + "</td>" +

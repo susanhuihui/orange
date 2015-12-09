@@ -8,7 +8,7 @@
 
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
 
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
@@ -38,7 +38,7 @@
                     &nbsp;&nbsp;&nbsp;手机号：                         	
                     <input type="text" class="regtext" id="userphone" onblur="upColor()">
                 </div>
-                <div class=" col-sm-2">&nbsp;</div>
+                <div class=" col-sm-2 odder"><span id="errphone"></span></div>
             </div>
             <div class="row">
                 <div class=" col-sm-2">&nbsp;</div>
@@ -63,17 +63,17 @@
                 <div class=" col-sm-2"></div>
                 <div class=" col-sm-8 odd">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;昵称：                           	
-                    <input type="text" class="regtext" id="usernicheng">
+                    <input type="text" class="regtext" id="usernicheng" onblur="checkName()">
                 </div>
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-2 odder"><span id="errnicheng"></span></div>
             </div>
             <div class="row">
                 <div class=" col-sm-2"></div>
                 <div class=" col-sm-8 odd">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：                          	
-                    <input type="password" class="regtext" id="userpasword">
+                    <input type="password" class="regtext" id="userpasword"  onblur="checkPass()">
                 </div>
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-2 odder"><span id="errpass"></span></div>
             </div>
             <div class="row">
                 <div class=" col-sm-2"></div>
@@ -96,35 +96,89 @@
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
-        window.onload = function () { setTitleOnSelect(4); }//
+        window.onload = function () { getuser();setTitleOnSelect(4); }//
         var xianColor = "#fe9627";
         var yinColor = "#c4c4c4";
         var identityS = 2;
         var identityJ = 3;
-        var phoneistorf = 0;//false
+        var phoneistorf = 0;//false 是否发送验证码
         //验证手机号码，并且改变获取验证码按钮的颜色
         function upColor() {
-            var phone = document.getElementById("userphone").value;
+            var phone = trim(document.getElementById("userphone").value);
             var re = /^1\d{10}$/;
-            if (re.test(phone)) {
-                document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
-                phoneistorf=1;
+            if (phone != "") {
+                if (re.test(phone)) {
+                    //格式验证成功后验证数据库是否已有人注册此手机号了
+                    var geturlphont = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
+                    $.getJSON(geturlphont, function (data) {
+                        if (data != null && data["result"] > 0) {
+                            document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
+                            seterrMessage("errphone", "*此手机号已注册！");
+                            phoneistorf = 0;
+                        } else {
+                            document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
+                            phoneistorf = 1;
+                            seterrMessage("errphone", "");
+                        }
+                    });
+                } else {
+                    document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
+                    seterrMessage("errphone", "*手机号输入有误！");
+                    phoneistorf = 0;
+                }
             } else {
-                document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
-                phoneistorf =0;
+                seterrMessage("errphone", "*手机号不能为空！");
             }
         }
+
+        //检查姓名是否已被注册
+        function checkName() {
+            var usernicheng = trim(document.getElementById("usernicheng").value);
+            if (usernicheng != "") {
+                var geturlname = "http://{{.Website}}/orange/userinformation/GetUserinformationByUserName/" + usernicheng;
+                $.getJSON(geturlname, function (data) {
+                    if (data != null && data["result"] > 0) {
+                        seterrMessage("errnicheng", "*此昵称已有人使用！");
+                    } else {
+                        seterrMessage("errnicheng", "");
+                    }
+                });
+            } else {
+                seterrMessage("errnicheng", "*用户名不能为空！");
+            }
+        }
+
+        //检查密码是否已被注册
+        function checkPass() {
+            var userpasword = trim(document.getElementById("userpasword").value);
+            if (userpasword != "") {
+                if (isPasswd(trim(userpasword)) == false) {
+                    seterrMessage("errpass", "*密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！！");
+                } else {
+                    seterrMessage("errpass", "");
+                }
+            } else {
+                seterrMessage("errpass", "*密码不能为空！");
+            }
+        }
+
         function getYzCode() {
             var phone = document.getElementById("userphone").value;
             if (phoneistorf == 1) {
                 $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
                     alert("发送成功");
-                    //alert(data.state);
                 });
             } else {
                 alert("手机号输入不正确！请输入正确手机号码！");
             }
         }
+
+        //控制错误控件显示内容,参数：控件名称，要显示的文字
+        function seterrMessage(errdoname,showMessage) {
+            document.getElementById(errdoname).innerHTML = "";
+            document.getElementById(errdoname).innerHTML = showMessage;
+        }
+
         //注册方法
         function UserRegistered() {
             var userphone = document.getElementById("userphone").value;
@@ -137,14 +191,19 @@
             }
             var usernicheng = document.getElementById("usernicheng").value;
             var userpasword = document.getElementById("userpasword").value;
+            var errname = document.getElementById("errnicheng").innerHTML;
             if (trim(userphone) == "" || phoneistorf == 0) {
-                alert("请正确输入手机号码！");
+                alert("请正确输入手机号码！"); return;
             } else if (trim(useryanzheng) + "" == "") {
-                alert("请正确输入验证码！");
+                alert("请正确输入验证码！"); return;
             } else if (trim(usernicheng) + "" == "" || trim(userpasword) + "" == "") {
-                alert("请正确输入用户名和密码！");
+                alert("请正确输入用户名和密码！"); return;
+            } else if (isPasswd(trim(userpasword)) == false) {
+                alert("密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return;
             } else if (document.getElementById("yueducheck").checked == false) {
-                alert("请选择是否同意网站服务条款！");
+                alert("请选择是否同意网站服务条款！"); return;
+            } else if (errname != "") {
+                alert("此昵称已有人使用！"); return;
             } else {
                 //先验证验证码是否正确
                 var allCode = "http://{{.Website}}/orange/verification/GetVerificationByPhone/" + userphone;

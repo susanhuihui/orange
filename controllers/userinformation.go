@@ -98,6 +98,24 @@ func (c *UserinformationController) GetUserinformationByPhone() {
 	c.ServeJson()
 }
 
+// @Title GetUserinformationByUserName
+// @Description GetUserinformationByUserName Userinformation by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Userinformation
+// @Failure 403 :id is empty
+// @router /GetUserinformationByUserName/:name [get]
+func (c *UserinformationController) GetUserinformationByUserName() {
+	nameStr := c.Ctx.Input.Params[":name"]
+	fmt.Println(nameStr)
+	v, err := models.GetUserinformationByUserName(nameStr)
+	if err != nil && v == nil {
+		c.Data["json"] = map[string]int64{"result": 0}
+	} else {
+		c.Data["json"] = map[string]int64{"result": 1}
+	}
+	c.ServeJson()
+}
+
 // @Title GetUserinformationPhone
 // @Description GetUserinformationPhone Userinformation by id
 // @Param	id		path 	string	true		"The key for staticblock"

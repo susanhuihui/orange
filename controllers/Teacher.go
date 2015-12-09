@@ -212,7 +212,8 @@ func (c *TeacherController) ProblemModel() {
 	fmt.Println(vask)
 	c.Data["Title"] = vask.Title
 	c.Data["Contents"] = vask.Contents
-	c.Data["BadeTime"] = vask.BadeTime
+	var timez string = vask.BadeTime.Format("2006-01-02")
+	c.Data["BadeTime"] = timez
 	c.Data["UserName"] = vask.UserName
 	c.Data["Hname"] = vask.Hname
 	c.Data["HuiDaContents"] = vask.HuiDaContents
@@ -222,6 +223,7 @@ func (c *TeacherController) ProblemModel() {
 	c.Data["AnswerUserId"] = "00000" + strconv.Itoa(vask.AnswerUserId)
 	c.Data["userid"] = vask.AnswerUserId
 	c.Data["SchoolName"] = vask.SchoolName
+
 	c.TplNames = "problem_main.html" //
 }
 

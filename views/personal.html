@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
@@ -176,15 +176,17 @@
                             <div class="col-xs-4 perfont">
                                 补习课目:                                   
                             </div>
-                            <div class="col-xs-8" id="selClass">
-                            </div><!--<input type="button" value="ceshi" onclick="text()" />-->
+                            <span id="showclass">{{.userclassstr}}</span>
+                            <div class="col-xs-8" id="selClass" style="display:none;">
+                            </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
                                 学习难点:                                   
                             </div>
                             <div class="col-xs-8">
-                                <textarea class="evaareass" id="txtnandian">{{.StudyDifficult}}</textarea>
+                                <span id="shownandian">{{.StudyDifficult}}</span>
+                                <textarea class="evaareass" id="txtnandian" style="display:none;">{{.StudyDifficult}}</textarea>
                             </div>
                         </div>
                         <div class="row message">
@@ -494,7 +496,12 @@
             document.getElementById("useremal").style.display = "none";
             document.getElementById("file_image").style.display = "block";//更改头像按钮
             document.getElementById("file_form").style.display = "block";//更改头像按钮
-            document.getElementById("btnsaveuser").style.display = "block";
+            document.getElementById("btnsaveuser").style.display = "block"; 
+
+            document.getElementById("showclass").style.display = "none";//补习课目文字隐藏
+            document.getElementById("selClass").style.display = "block";//补习科目选项checkbox显示 
+            document.getElementById("shownandian").style.display = "none";//文字隐藏
+            document.getElementById("txtnandian").style.display = "block";//显示可编辑
         }
         //保存用户信息
         function saveUserInfo() {

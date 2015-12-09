@@ -15,6 +15,7 @@ type MainController struct {
 //首页展示
 func (c *MainController) Get() {
 	c.Data["Website"] = OnlineUrl
+	c.Ctx.SetCookie("OnlineUrl", OnlineUrl)
 	c.TplNames = "index.tpl" //首页
 }
 
@@ -119,7 +120,7 @@ func (c *MainController) LoginUser() {
 	c.ServeJson()
 }
 
-// 登录方法
+// 退出方法
 // @Title OutLogins
 // @Description OutLogins the TbUser
 // @Param			"The id you want to OutLogins"
@@ -657,12 +658,15 @@ func (c *MainController) UpdateStudent() {
 	}
 	userclass, clerr := models.GetRemedialcoursesMain(stuuserid, 0)
 	var userlistclass string = ""
+	var userclassstr string = "" //名称集合
 	if userclass != nil && clerr == nil {
 		for i := 0; i < len(userclass); i++ {
 			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
+			userclassstr += userclass[i].CourseName + "  "
 		}
 	}
 	c.Data["userlistclass"] = userlistclass
+	c.Data["userclassstr"] = userclassstr
 
 	c.TplNames = "personal.html" //跳到
 }
@@ -703,13 +707,16 @@ func (c *MainController) UpdateTeacher() {
 		c.Data["Mailbox"] = userinfo.Mailbox
 	}
 	userclass, clerr := models.GetRemedialcoursesMain(stuuserid, 0)
-	var userlistclass string = ""
+	var userlistclass string = "" //主键集合
+	var userclassstr string = ""  //名称集合
 	if userclass != nil && clerr == nil {
 		for i := 0; i < len(userclass); i++ {
 			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
+			userclassstr += userclass[i].CourseName + "  "
 		}
 	}
 	c.Data["userlistclass"] = userlistclass
+	c.Data["userclassstr"] = userclassstr
 
 	c.TplNames = "personalteacher.html" //跳到
 }

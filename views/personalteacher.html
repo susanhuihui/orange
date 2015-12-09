@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
@@ -205,16 +205,17 @@
                             <div class="col-xs-4 perfont">
                                 辅辅导科目:                                   
                             </div>
-                            <div class="col-xs-8" id="selClass">
+                            <span id="txtfucourse">{{.userclassstr}}</span>
+                            <div class="col-xs-8" id="selClass" style ="display:none;">
                             </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
-                                个人简介:
-                                   
+                                个人简介:                                   
                             </div>
                             <div class="col-xs-8">
-                                <textarea class="evaareass" id="txtjianjie">{{.BriefIntroduction}}</textarea>
+                                <span id="showjianjie">{{.BriefIntroduction}}</span>
+                                <textarea class="evaareass" id="txtjianjie" style="display:none;">{{.BriefIntroduction}}</textarea>
                             </div>
                         </div>
                         <div class="row message">
@@ -223,7 +224,8 @@
                                    
                             </div>
                             <div class="col-xs-8">
-                                <textarea class="evaareass" id="txtaihao">{{.UserHobby}}</textarea>
+                                <span id="showaihao">{{.UserHobby}}</span>
+                                <textarea class="evaareass" id="txtaihao" style="display:none;">{{.UserHobby}}</textarea>
                             </div>
                         </div>
                         <div class="row message">
@@ -602,6 +604,13 @@
             document.getElementById("file_image").style.display = "block";//更改头像按钮
             document.getElementById("file_form").style.display = "block";//更改头像按钮
             document.getElementById("btnjiben").style.display = "block";//保存信息按钮
+
+            document.getElementById("txtfucourse").style.display = "none";//辅辅导课程文字隐藏
+            document.getElementById("selClass").style.display = "block";//辅辅导课程checkbox选项显示
+            document.getElementById("showjianjie").style.display = "none";//文字隐藏
+            document.getElementById("txtjianjie").style.display = "block";//选项显示
+            document.getElementById("showaihao").style.display = "none";//文字隐藏
+            document.getElementById("txtaihao").style.display = "block";//选项显示             
         }
 
         //保存用户基本信息

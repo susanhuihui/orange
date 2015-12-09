@@ -9,13 +9,18 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <!-- Bootstrap core CSS -->
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link href="b/css/carousel.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/index.css" />    
+
+    
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+    <link rel="stylesheet" href="css/jquery.range.css">
+    <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 <!-- NAVBAR
 ================================================== -->
@@ -57,7 +62,7 @@
     <div class="modal fade" id="loginpop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form action="http://{{.Website}}/orange/Main/Logins/" method="post">
+                <!--<form action="http://{{.Website}}/orange/Main/Logins/" method="post">-->
                     <div class="modal-body">
                         <div id="tagContent">
                             <div class="tagContents selectTag" id="tagContent0">
@@ -71,16 +76,17 @@
                                 </div>
                                 <div class="form-group">
                                     <a href="http://{{.Website}}/orange/Main/RetrievePassword/">忘记密码</a>
-                                    <a href="http://{{.Website}}/orange/Main/Registered/" method="get" style="float: right;">注册新用户</a>
+                                    <a href="http://{{.Website}}/orange/Main/Registered/" style="float: right;">注册新用户</a>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer" style="text-align: center;">
-                        <button type="submit" style="width: 50%; display:none;" class="btn btn-warning">登录</button><button type="button" style="width: 50%;" onclick="loginbtn()" class="btn btn-warning">登录</button>
+                        <button type="button" style="width: 50%;" onclick="loginbtn()" class="btn btn-warning">登录</button>
+                        <!--<button type="submit" style="width: 50%; display:none;" class="btn btn-warning">登录</button>-->
                         <!--<button type="button" style="width:30%;"  class="btn btn-default" data-dismiss="modal">关闭</button>-->
                     </div>
-                </form>
+                <!--</form>-->
             </div>
         </div>
     </div>
@@ -97,13 +103,13 @@
                 <a class="logoa" href="http://{{.Website}}">泛鲲教育</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav menumaintable">
-                    <li class="menuasty" id="shouye"><a href="http://{{.Website}}" style="color: #FF9A3A;" id="fontshouye">首页</a></li>
-                    <li class="" id="laoshi"><a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10" id="fontlaoshi">老师</a></li>
+                <ul class="nav navbar-nav menumaintable" style="min-height:57px;">
+                    <li class="" id="shouye"><a href="http://{{.Website}}" style="" id="fontshouye">首页</a></li>
+                    <li class="" id="laoshi"><a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10" id="fontlaoshi">找老师</a></li>
                     <li class="" id="wenda"><a href="http://{{.Website}}/orange/Main/QuestionsCenter/" id="fontwenda">问答中心</a></li>
                     <li><input class="findtext" type="text"></li>
-                    <li style="display: block" id="lilogin"></li>
-                    <li style="display: block" id="lizhuce"></li>
+                    <li class="" id="lilogin"></li>
+                    <li class="" id="lizhuce"></li>
                     <li style="display: none" id="outuser"><a onclick="outLoging()">退出登录</a></li>
                     <!--<li style="display: none" id="litupian"></li>
                     <li style="display: none" id="liusername"></li>-->
@@ -118,6 +124,10 @@
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript">
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(1);
+        }
         function getuser() {
             var username = "";
             var userid = getCookie("userid"); 
@@ -134,7 +144,7 @@
                     } else if (identityid == 2 || identityid == 3) {//学生|家长
                         stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
                     }
-                    document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername">' + username + '</a>';
+                    document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
                     if (AvatarPath != null && AvatarPath + "" != "") {
                         document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="' + AvatarPath + '" /></a>';
                     } else {
@@ -146,12 +156,11 @@
                     document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" data-target=".bs-example-modal-lg" id="fontzhuce"><img style="height: 23px;" src="images/zhuce.png" />注册</a>';
                 }
             } else {
-                document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop"id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
+                document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop" id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" data-target=".bs-example-modal-lg" id="fontzhuce"><img style="height: 23px;" src="images/zhuce.png" />注册</a>';
             }
             //});           
         }
-        window.onload = function () { getuser(); }
 
         //退出登录
         function outLoging() {

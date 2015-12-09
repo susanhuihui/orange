@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="http://v3.bootcss.com/favicon.ico">
+    <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
@@ -42,10 +42,13 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <div class="col-sm-9 tjfj">
-                                    <img style="height: 15px;" src="images/fj.png" />
-                                    <a href="#" style="">添加附件</a>
+                                <div class="col-sm-3 tjfj">
+                                    <img style="height: 20px;" src="images/fj.png" />
+                                    <a href="#" style="">添加附件</a></div>
+                                <div class="col-sm-5 tjfj">
                                     <input type="file" accept="image/*" id="file_image" name="file_image" style="display: block;" onchange="setImagePreview()" />
+                                </div>
+                                <div class="col-sm-4 tjfj">
                                     <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: block;" />
                                     
                                 </div>
@@ -53,12 +56,12 @@
                         </tr>
                         <tr>
                             <td colspan="3">
-                                <div class="col-sm-3 tjfj" id="fujianlist">
-                                    <img id="Img1" src ="" style="display:none;"/>
-                                    <img id="Img2" src ="" style="display:none;"/>
-                                    <img id="Img3" src ="" style="display:none;"/>
-                                    <img id="Img4" src ="" style="display:none;"/>
-                                    <img id="Img5" src ="" style="display:none;"/>
+                                <div class="col-sm-12" id="fujianlist">
+                                    <img id="Img1" src ="" style="display:none; float:left; height:100px; width:100px;"/>
+                                    <img id="Img2" src ="" style="display:none; float:left; height:100px; width:100px;"/>
+                                    <img id="Img3" src ="" style="display:none; float:left; height:100px; width:100px;"/>
+                                    <img id="Img4" src ="" style="display:none; float:left; height:100px; width:100px;"/>
+                                    <img id="Img5" src ="" style="display:none; float:left; height:100px; width:100px;"/>
                                 </div>
                             </td>
                         </tr>
@@ -67,7 +70,9 @@
                                 <a href="#" style="">留言</a>
                             </td>
                             <td id="Td2" colspan="2">
-                                <input type="text" style="width: 420px; margin-left: 0px;" id="txtyuyuemessage" />
+                                <!--<input type="text" style="width: 420px; margin-left: 0px;" />-->
+
+                                <textarea class="form-control" rows="3" id="txtyuyuemessage"></textarea>
                             </td>
                         </tr>
                     </table>
@@ -1157,6 +1162,6 @@
                 testAjax(files, --files.length);
             }, false);
         })(window, document);
-                                </script>
+    </script>
 </body>
 </html>
