@@ -1602,6 +1602,13 @@ func init() {
 			[]string{"get"},
 			nil})
 
+	beego.GlobalControllerRouter["orange/controllers:TeacherController"] = append(beego.GlobalControllerRouter["orange/controllers:TeacherController"],
+		beego.ControllerComments{
+			"ClassOverHtml",
+			`/ClassOverHtml/`,
+			[]string{"get"},
+			nil})
+
 	beego.GlobalControllerRouter["orange/controllers:TradingwayController"] = append(beego.GlobalControllerRouter["orange/controllers:TradingwayController"],
 		beego.ControllerComments{
 			"Post",

@@ -906,8 +906,26 @@
                             alert("您已错过讲课时间！此课程已作废！请去退约");
                         }
                         else {
-                            alert("进入课堂");
-                            window.location.href = "http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid;
+                            //alert("进入课堂");
+                            var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBstudent/" + onlineid;
+                            $.getJSON(getblack, function (data) {
+                                alert(data);
+                                var resulturl = data;
+                                if (resulturl == "-1") {//-1:预约信息不存在 -2:用户不存在 -4:创建课堂失败 -5:老师不在 1:已有人在上课
+                                    alert("预约信息不存在");
+                                } else if (resulturl == "-2") {
+                                    alert("用户不存在");
+                                } else if (resulturl == "-4") {
+                                    alert("创建课堂失败");
+                                } else if (resulturl == "-5") {
+                                    alert("老师还没上线，请稍后重试！");
+                                } else if (resulturl == "1") {
+                                    alert("已有人在上课");
+                                } else {
+                                    window.open(resulturl);
+                                }
+                            });
+                            //window.location.href = "http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid;
                         }
                     }
                     else {

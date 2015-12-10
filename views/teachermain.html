@@ -550,8 +550,20 @@
                             alert("您已错过讲课时间！此课程已作废！");
                         }
                         else {
-                            alert("进入课堂");
-                            window.location.href = "http://{{.Website}}/orange/Teacher/TeacherOnlineClass/" + onlineid;
+                            var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBHtecher/" + onlineid;
+                            $.getJSON(getblack, function (data) {
+                                //alert(data["url"]);
+                                var resulturl = data["url"];
+                                if (resulturl == "-1") {//-1:预约信息不存在 -2:用户不存在 -3:创建课堂失败
+                                    alert("预约信息不存在");
+                                } else if (resulturl == "-2") {
+                                    alert("用户不存在");
+                                } else if (resulturl == "-3") {
+                                    alert("创建课堂失败");
+                                } else {
+                                    window.open(resulturl);
+                                }
+                            });
                         }
                     }
                     else {
@@ -561,7 +573,6 @@
                     alert("此课程已讲过！");
                 }
             });
-            //window.location.href = "http://{{.Website}}/orange/Teacher/TeacherOnlineClass/" + onlineid;
         }
 
         //获取全部课程列表信息
@@ -787,12 +798,18 @@
                 });
             }
         }
+
         //进入试听课堂
         function inClass() {
             if (document.getElementById("txtlistenState").innerText == "已开启") {
                 var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
                 $.getJSON(getstate, function (data) {
-                    window.location.href = "http://{{.Website}}/orange/Teacher/TeacherTryListenClass/" + data["Id"];
+                    if (data != null && data["Id"] > 0) {
+                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenTecher/" + data["Id"];
+                        $.getJSON(getblack, function (dataurl) {
+                            window.open(dataurl["url"]);
+                        });
+                    }                    
                 }); 
             } else {
                 alert("请先开启试听课堂！");

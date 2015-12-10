@@ -1,4 +1,4 @@
-﻿<!--<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -15,7 +15,7 @@
     <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 
-<body>-->
+<body>
 {{template "menutop.html" .}}
     <!--删除弹出层-->
 <div class="modal fade" id="delmain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
@@ -43,20 +43,24 @@
     <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
         <div class=''>
             <div class="row problemtab">
-                <div class="col-sm-3 problemtables">
+                <div class="col-sm-1 problemtablesspan">
                     <span>老师:</span>
-                    <select class="sel" id="selteacher">
+                </div>
+                <div class="col-sm-2 problemtables">
+                    <select class="form-control" id="Select1">
                     </select>
                 </div>
-                <div class="col-sm-3 problemtables">
-                    学科:                               
-                        <select class="sel" id="selClass">
+                <div class="col-sm-1 problemtablesspan">
+                    学科:           
+                </div>
+                <div class="col-sm-2 problemtables">                           
+                        <select class="form-control" id="Select2">
                         </select>
                 </div>
-                <div class="col-sm-3 problemtables">
+                <!--<div class="col-sm-3 problemtables">
                     截止日期:                               
                         <input type="date" class="datestyle" id="txtdate">
-                </div>
+                </div>-->
 
 
                 <div class="col-sm-1 problemtablesspan">
@@ -78,7 +82,7 @@
                     标题:                   
                 </div>
                 <div class="col-sm-11">
-                    <input type="text" class="protexts" id="txtTitle">
+                    <input type="text" class="form-control protexts" id="txtTitle">
                 </div>
             </div>
             <div class="row problemtable">
@@ -86,7 +90,7 @@
                     内容:                    
                 </div>
                 <div class="col-sm-11">
-                    <textarea class="proarea" id="txtContents"></textarea>
+                    <textarea class="form-control proarea" id="txtContents"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -110,8 +114,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-12" style="margin-top: 15px; height: 70px;">
-                    <span>问题奖励:</span>
+                <div class="col-sm-2" style="margin-top: 30px; height: 70px; text-align:right; color:#fc8b00; font-weight:bold; font-size:16px;">
+                    <span>问题奖励: </span>
+                </div>
+                <div class="col-sm-10" style="margin-top:35px;">
                     <!--<img style="width: 190px;" src="images/gdt.png" />
                         <span style="font-size: 18px; color: #F9AE26;">3元 </span>-->
                     <input type="hidden" class="single-slider" value="5" />

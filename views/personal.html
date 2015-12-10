@@ -71,7 +71,7 @@
                                 照片:
                             </div>
                             <div class="col-xs-8">
-                                <img id="userhead" src="{{.AvatarPath}}" style="width: 150px; height: 157px;" />
+                                <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
                                 <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" />
                                 <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
                                 <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
@@ -107,18 +107,18 @@
                                 学生昵称:
                                    
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="username">{{.UserName}} </span>
-                                <input type="text" id="txtUserName" style="display: none;" value="{{.UserName}}" />
+                                <input class="form-control" type="text" id="txtUserName" style="display: none;" value="{{.UserName}}" />
                             </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
                                 学生性别:
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="usersex">{{.UserSex}}</span>
-                                <select id="selUserSex" style="display: none">
+                                <select class="form-control" id="selUserSex" style="display: none">
                                     <option value="男">男</option>
                                     <option value="女">女</option>
                                 </select>
@@ -139,9 +139,9 @@
                             <div class="col-xs-4 perfont">
                                 学龄段:                                   
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="txtagename">{{.AgeName}}</span>
-                                <select id="selage" style="display: none">
+                                <select class="form-control" id="selage" style="display: none">
                                 </select>
                             </div>
                         </div>
@@ -149,27 +149,27 @@
                             <div class="col-xs-4 perfont">
                                 入学年份:                                   
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="ruxueyear">{{.LevelYear}}</span>
-                                <input type="text" id="txtruxueyear" style="display: none; width: 200px;" value="{{.LevelYear}}" />
+                                <input class="form-control" type="text" id="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
                             </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
                                 学生邮箱:                                    
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="useremal">{{.Mailbox}}</span>
-                                <input type="text" id="txtmail" style="display: none; width: 200px;" value="{{.Mailbox}}" />
+                                <input class="form-control" type="text" id="txtmail" style="display: none;" value="{{.Mailbox}}" />
                             </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
                                 家长邮箱:                                    
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="parentmail">{{.ParentMailbox}}</span>
-                                <input type="text" id="txtuseremal" style="display: none; width: 200px;" value="{{.ParentMailbox}}" />
+                                <input class="form-control" type="text" id="txtuseremal" style="display: none;" value="{{.ParentMailbox}}" />
                             </div>
                         </div>
                         <div class="row message">
@@ -177,16 +177,16 @@
                                 补习课目:                                   
                             </div>
                             <span id="showclass">{{.userclassstr}}</span>
-                            <div class="col-xs-8" id="selClass" style="display:none;">
+                            <div class="col-xs-6" id="selClass" style="display:none;">
                             </div>
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
                                 学习难点:                                   
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="shownandian">{{.StudyDifficult}}</span>
-                                <textarea class="evaareass" id="txtnandian" style="display:none;">{{.StudyDifficult}}</textarea>
+                                <textarea class="form-control evaareass" id="txtnandian" style="display:none;">{{.StudyDifficult}}</textarea>
                             </div>
                         </div>
                         <div class="row message">
@@ -194,7 +194,7 @@
                                 &nbsp;                                   
                             </div>
                             <div class="col-xs-8">
-                                <input id="btnsaveuser" class="messagebtn" style="display: none;" type="button" value="保存信息" onclick="saveUserInfo()">
+                                <input id="btnsaveuser" class="evabtn messagebtn" style="display: none;" type="button" value="保存信息" onclick="saveUserInfo()">
                             </div>
                         </div>
                     </div>
@@ -259,7 +259,7 @@
                                 &nbsp;
                             </div>
                             <div class="col-xs-8">
-                                <input class="messagebtn" type="button" value="保存信息" onclick="saveUserPhone()">
+                                <input class="messagebtn evabtn" type="button" value="保存信息" onclick="saveUserPhone()">
                             </div>
                         </div>
                     </div>
@@ -273,27 +273,27 @@
                             </div>
                         </div>
                         <div class="row messagesss">
-                            <div class="col-xs-4 perfont">
+                            <div class="col-xs-4 perfonts">
                                 原密码:                                   
                             </div>
                             <div class="col-xs-8">
-                                <input class="logininput" type="password" id="oldpass">
+                                <input class="form-control " type="password" id="oldpass">
                             </div>
                         </div>
                         <div class="row messagesss">
-                            <div class="col-xs-4 perfont">
+                            <div class="col-xs-4 perfonts">
                                 新密码:                                   
                             </div>
                             <div class="col-xs-8">
-                                <input class="logininput" type="password" id="newpass1">
+                                <input class="form-control " type="password" id="newpass1">
                             </div>
                         </div>
                         <div class="row messagesss">
-                            <div class="col-xs-4 perfont">
+                            <div class="col-xs-4 perfonts">
                                 再次输入新密码:                                   
                             </div>
                             <div class="col-xs-8">
-                                <input class="logininput" type="password" id="newpass2">
+                                <input class="form-control" type="password" id="newpass2">
                             </div>
                         </div>
                         <div class="row message">
@@ -301,7 +301,7 @@
                                 &nbsp;                                   
                             </div>
                             <div class="col-xs-8">
-                                <input class="messagebtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
+                                <input class="messagebtn evabtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
                             </div>
                         </div>
                     </div>

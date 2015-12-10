@@ -19,7 +19,7 @@ a{cursor:pointer;}
 .threebtn{ border:none; border-radius:20px; background-color:#F90; padding:10px 35px 10px 35px; color:#FFF; font-size:18px;}
 .findtext{border:#CCC 1px solid; margin-top:13px; margin-left:30px; height:25px; border-radius:5px; width:200px; background:url(../images/find.jpg) no-repeat 170px 2px;}
 .threemain{ margin-left:auto; margin-right:auto; width:1024px; height:auto;}
-.threefont{ text-align:center; margin-top:55px;}
+.threefont{ text-align:center; margin-top:30px;}
 .threefontbig{ font-size:28px; color:#F60;}
 .threefontsmall{ font-size:16px; color:#999; padding-top:10px;}
 .threetable{ margin-top:30px;}

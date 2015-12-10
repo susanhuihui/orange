@@ -366,3 +366,16 @@ func (c *TeacherController) StudentTryListenClass() {
 	c.Data["listenid"] = listenid
 	c.TplNames = "listenstudent.html" //
 }
+
+// 在线课堂结束后进入的页面
+// @Title ClassOverHtml
+// @Description ClassOverHtml the TbUser
+// @Param			"The id you want to ClassOverHtml"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /ClassOverHtml/ [get]
+func (c *TeacherController) ClassOverHtml() {
+	c.Data["Website"] = OnlineUrl
+
+	c.TplNames = "classover.html" //
+}

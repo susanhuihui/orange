@@ -363,12 +363,12 @@ func (c *OnlinecoursebookingController) GetOss() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
 	fmt.Println(onlineid)
-	l, err := models.Getecherlession(onlineid)
+	teacherinurl, err := models.Getecherlession2(onlineid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
-		fmt.Println(l)
-		c.Data["json"] = map[string]string{"url": l}
+		fmt.Println(teacherinurl)
+		c.Data["json"] = map[string]string{"url": teacherinurl} //-1:预约信息不存在 -2:用户不存在 -3:创建课堂失败
 	}
 	c.ServeJson()
 }
@@ -382,7 +382,7 @@ func (c *OnlinecoursebookingController) GetOss() {
 func (c *OnlinecoursebookingController) GetOe() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
-	l, err := models.Getstudentlession(onlineid)
+	l, err := models.Getstudentlession2(onlineid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {

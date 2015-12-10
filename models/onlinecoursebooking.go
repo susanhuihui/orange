@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MsloveDl/bbb4go"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -494,4 +495,163 @@ func b(data string) string {
 	t := sha1.New()
 	io.WriteString(t, data)
 	return fmt.Sprintf("%x", t.Sum(nil))
+}
+
+// 老师开始讲课重写，如果房间已建立直接进入，否则重建
+// onlineid:当前预约课程主键id
+func Getecherlession2(onlineid int) (urlse string, err error) {
+	//获取预约信息
+	onlinenow, onlineerr := GetOnlinecoursebookingById(onlineid)
+	//获取老师信息
+	userinfo, useerr := GetUserinformationTeacher(onlinenow.UserIdPassive)
+	if onlineerr == nil {
+		if useerr == nil && userinfo.Id > 0 {
+			if onlinenow.ClassroomId+"" != "" {
+				//判断白板教室内是否有人
+				meetroom := bbb4go.MeetingRoom{}
+				meetroom.MeetingID_ = onlinenow.ClassroomId
+				meetroom.ModeratorPW_ = onlinenow.TeacherInId
+				meetroom.GetMeetingInfo()
+				var pcount = meetroom.MeetingInfo.ParticipantCount
+				if pcount >= 2 { //进入重复课堂
+					//重新建立课堂并保存到数据库
+					urlse = CreateMeeting(onlineid, userinfo)
+				} else if pcount <= 1 {
+					//创建白板成功后创建一个老师并生成老师进入课堂的URL
+					partTeacher := bbb4go.Participants{}
+					partTeacher.IsAdmin_ = 1
+					partTeacher.FullName_ = userinfo.UserName + "老师"
+					partTeacher.MeetingID_ = onlinenow.ClassroomId //教室id
+					partTeacher.Password_ = onlinenow.TeacherInId  //老师进入密码
+					//partTeacher.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM") //
+					partTeacher.UserID = strconv.Itoa(userinfo.Id)
+					partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath //http://www.fankunedu.com/images/PersonHeadImg/yanyan.png
+					partTeacher.GetJoinURL()
+					urlse = partTeacher.JoinURL
+				}
+
+			} else {
+				//新建课堂并进入
+				var meetingID string = getcode("1")
+				var attendeePW string = getcode("2")  //学生进入密码
+				var moderatorPW string = getcode("3") //老师进入密码
+				meetingroom := bbb4go.MeetingRoom{}
+				meetingroom.Name_ = "泛鲲教育第一教室"
+				meetingroom.MeetingID_ = meetingID
+				meetingroom.AttendeePW_ = attendeePW
+				meetingroom.ModeratorPW_ = moderatorPW
+				meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+				meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入课程结束页面
+				meetingroom.Duration = 50
+				meetingroom.AllowStartStopRecording = false
+				num, _ := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
+				fmt.Println(num)
+				meetingroom.CreateMeeting()
+				if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+					fmt.Println("新建课堂成功:")
+					//创建白板成功后创建一个老师并生成老师进入课堂的URL
+					partTeacher := bbb4go.Participants{}
+					partTeacher.IsAdmin_ = 1
+					partTeacher.FullName_ = userinfo.UserName + "老师"
+					partTeacher.MeetingID_ = meetingID                                    //教室id
+					partTeacher.Password_ = moderatorPW                                   //老师进入密码
+					partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
+					partTeacher.UserID = strconv.Itoa(userinfo.Id)
+					partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+					partTeacher.GetJoinURL()
+					urlse = partTeacher.JoinURL
+				} else {
+					urlse = "-3" //创建课堂失败
+				}
+				//新建课堂
+				//urlse = CreateMeeting(onlineid, userinfo)
+			}
+		} else {
+			urlse = "-2" //用户不存在
+		}
+	} else {
+		urlse = "-1" //预约信息不存在
+	}
+	return
+}
+
+//新建课堂方法
+func CreateMeeting(onlineid int, userinfo UserinformationTeacher) (urlse string) {
+	var meetingID string = getcode("1")
+	var attendeePW string = getcode("2")  //学生进入密码
+	var moderatorPW string = getcode("3") //老师进入密码
+	meetingroom := bbb4go.MeetingRoom{}
+	meetingroom.Name_ = "泛鲲教育第一教室"
+	meetingroom.MeetingID_ = meetingID
+	meetingroom.AttendeePW_ = attendeePW
+	meetingroom.ModeratorPW_ = moderatorPW
+	meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+	meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入课程结束页面
+	meetingroom.Duration = 50
+	meetingroom.AllowStartStopRecording = false
+	num, _ := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
+	fmt.Println(num)
+	meetingroom.CreateMeeting()
+	if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+		//创建白板成功后创建一个老师并生成老师进入课堂的URL
+		partTeacher := bbb4go.Participants{}
+		partTeacher.IsAdmin_ = 1
+		partTeacher.FullName_ = userinfo.UserName + "老师"
+		partTeacher.MeetingID_ = meetingID                                    //教室id
+		partTeacher.Password_ = moderatorPW                                   //老师进入密码
+		partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
+		partTeacher.UserID = strconv.Itoa(userinfo.Id)
+		partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+		partTeacher.GetJoinURL()
+		urlse = partTeacher.JoinURL
+	} else {
+		urlse = "-3" //创建课堂失败
+	}
+	return
+}
+
+//重新学生进入课堂的方法---------学生查询在线白板的密码并进入课堂
+func Getstudentlession2(onlineid int) (urlse string, err error) {
+	//获取预约课程信息
+	onlinenow, onerr := GetOnlinecoursebookingById(onlineid)
+	//获取老师信息
+	userinfo, usererr := GetUserinformationStudent(onlinenow.UserIdPassive)
+	if onerr == nil && onlinenow.Id > 0 {
+		if usererr == nil && userinfo.Id > 0 {
+			pardStudent := bbb4go.Participants{}
+			pardStudent.IsAdmin_ = 0
+			pardStudent.FullName_ = userinfo.UserName
+			pardStudent.MeetingID_ = onlinenow.ClassroomId //教室id
+			pardStudent.Password_ = onlinenow.StudentInId  //学生进入密码
+			//pardStudent.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardStudent.UserID = strconv.Itoa(userinfo.Id)
+			pardStudent.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+			//判断此教室现在是否有老师
+			meetroom := bbb4go.MeetingRoom{}
+			meetroom.MeetingID_ = onlinenow.ClassroomId
+			meetroom.ModeratorPW_ = onlinenow.TeacherInId
+			meetroom.GetMeetingInfo()
+			var pcount = meetroom.MeetingInfo.ParticipantCount
+			if pcount == 0 { //老师不在
+				urlse = "-5"
+			} else if pcount >= 2 { //已有人在上课
+				urlse = "1"
+			} else if pcount == 1 {
+				attent := meetroom.MeetingInfo.Attendees
+				onlinetid := attent.Attendees[0].UserID
+				if onlinetid == strconv.Itoa(onlinenow.UserIdPassive) {
+					//进入前添加学生进入记录
+					pardStudent.GetJoinURL()
+					urlse = pardStudent.JoinURL
+				} else {
+					urlse = "-4" //不是自己的老师
+				}
+			}
+		} else {
+			urlse = "-2"
+		}
+	} else {
+		urlse = "-1"
+	}
+	return
 }

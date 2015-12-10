@@ -268,12 +268,13 @@ func (c *OnlinetrylistenController) Delete() {
 func (c *OnlinetrylistenController) GetOss() {
 	idStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(idStr)
-	l, err := models.GeListentecherlession(listenid)
+
+	joinurl, err := models.GeListentecherlession2(listenid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
-		fmt.Println(l)
-		c.Data["json"] = map[string]string{"url": l}
+		fmt.Println(joinurl)
+		c.Data["json"] = map[string]string{"url": joinurl}
 	}
 	c.ServeJson()
 }
@@ -287,12 +288,14 @@ func (c *OnlinetrylistenController) GetOss() {
 func (c *OnlinetrylistenController) GetOe() {
 	idStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(idStr)
-	l, err := models.GetListenStudentlession(listenid)
+	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	joinurl, err := models.GetListenStudentlession2(listenid, stuuserid)
+	fmt.Println("路径是：")
+	fmt.Println(joinurl)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
-		fmt.Println(l)
-		c.Data["json"] = l
+		c.Data["json"] = joinurl
 	}
 	c.ServeJson()
 }

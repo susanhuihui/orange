@@ -9,9 +9,11 @@ import (
 	"math/rand"
 	"net/http"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
+	"github.com/MsloveDl/bbb4go"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -321,4 +323,107 @@ func bs(data string) string {
 	t := sha1.New()
 	io.WriteString(t, data)
 	return fmt.Sprintf("%x", t.Sum(nil))
+}
+
+// 重新编写--------------------------------------老师为试听创建房间--------------------------------------
+// trylistenid:当前试听课程主键id
+func GeListentecherlession2(trylistenid int) (urlse string, err error) {
+	//生成三个随机数
+	var meetingID string = getcode("1")
+	var attendeePW string = getcode("2")  //学生进入密码
+	var moderatorPW string = getcode("3") //老师进入密码
+	//获取试听信息
+	onlinetryclass, tryerr := GetOnlinetrylistenById(trylistenid)
+
+	if onlinetryclass != nil && tryerr == nil {
+		//每次老师开启试听进入课堂时都要建立一个新的课堂
+		meetingroom := bbb4go.MeetingRoom{}
+		meetingroom.Name_ = "泛鲲教育第一教室"
+		meetingroom.MeetingID_ = meetingID
+		meetingroom.AttendeePW_ = attendeePW
+		meetingroom.ModeratorPW_ = moderatorPW
+		meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+		meetingroom.LogoutURL = "http://" + OnlineUrl //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+		meetingroom.Duration = 0
+		meetingroom.AllowStartStopRecording = false
+		//将白板信息保存到数据库试听信息中
+		onlinetryclass.StartTime = time.Now()
+		onlinetryclass.ClassroomId = meetingID
+		onlinetryclass.StudentInId = attendeePW
+		onlinetryclass.TeacherInId = moderatorPW
+		uperr := UpdateOnlinetrylistenById(onlinetryclass) //预约信息中添加密码
+		if uperr == nil {
+			meetingroom.CreateMeeting()
+			if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+				//获取老师信息
+				userinfo, gerr := GetUserinformationTeacher(onlinetryclass.Tid)
+				if gerr == nil && userinfo.Id > 0 {
+					//创建白板成功后创建一个老师并生成老师进入课堂的URL
+					partTeacher := bbb4go.Participants{}
+					partTeacher.IsAdmin_ = 1
+					partTeacher.FullName_ = userinfo.UserName + "老师"
+					partTeacher.MeetingID_ = meetingID                                    //教室id
+					partTeacher.Password_ = moderatorPW                                   //老师进入密码
+					partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
+					partTeacher.UserID = strconv.Itoa(userinfo.Id)
+					partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath //http://www.fankunedu.com/images/PersonHeadImg/yanyan.png
+					partTeacher.GetJoinURL()
+					urlse = partTeacher.JoinURL
+				}
+			}
+		}
+	}
+	return
+}
+
+//重写学生进入课堂--------------学生查询在线白板的密码并进入课堂
+func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
+	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
+	if geterr == nil && onlinetrylisten.Id > 0 {
+		//获取学生信息
+		userinfo, gerr := GetUserinformationTeacher(sid)
+		fmt.Println(userinfo)
+		if gerr == nil {
+			urlse = "0"
+			pardStudent := bbb4go.Participants{}
+			pardStudent.IsAdmin_ = 0
+			pardStudent.FullName_ = userinfo.UserName
+			pardStudent.MeetingID_ = onlinetrylisten.ClassroomId //教室id
+			pardStudent.Password_ = onlinetrylisten.StudentInId  //学生进入密码
+			//pardStudent.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardStudent.UserID = strconv.Itoa(userinfo.Id)
+			pardStudent.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+			//判断此教室现在是否有老师
+			meetroom := bbb4go.MeetingRoom{}
+			meetroom.MeetingID_ = onlinetrylisten.ClassroomId
+			meetroom.ModeratorPW_ = onlinetrylisten.TeacherInId
+			meetroom.GetMeetingInfo()
+			var pcount = meetroom.MeetingInfo.ParticipantCount
+			if pcount == 0 { //老师不在
+				urlse = "0"
+			} else if pcount >= 2 { //已有人在试听
+				urlse = "1"
+			} else if pcount == 1 {
+				//获取当前在线人的主键id
+				attent := meetroom.MeetingInfo.Attendees
+				onlinetid := attent.Attendees[0].UserID
+				if onlinetid == strconv.Itoa(onlinetrylisten.Tid) {
+					//添加学生一条试听信息
+					var addonlinetry Onlinetrylisten
+					addonlinetry.Tid = onlinetrylisten.Tid
+					addonlinetry.Sid = userinfo.Id
+					addonlinetry.StartTime = onlinetrylisten.StartTime
+					addonlinetry.StuStartTime = time.Now()
+					addonlinetry.ClassroomId = onlinetrylisten.ClassroomId
+					addonlinetry.StudentInId = onlinetrylisten.StudentInId
+					addid, adderr := AddOnlinetrylisten(&addonlinetry)
+					if addid > 0 && adderr == nil {
+						pardStudent.GetJoinURL()
+						urlse = pardStudent.JoinURL
+					}
+				}
+			}
+		}
+	}
+	return
 }

@@ -424,7 +424,19 @@
             if (btntry == "teacbtn") {
                 var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
                 $.getJSON(getstate, function (data) {
-                    window.location.href = "http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"];
+                    if (data != null && data["Id"] > 0) {
+                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
+                        $.getJSON(getblack, function (dataurl) {
+                            if (dataurl == "0") {
+                                alert("老师暂时离开不在线，请稍后重试！");
+                            } else if (dataurl == "1") {
+                                alert("正在其他人试听，请稍后重试！");
+                            }
+                            else {
+                                window.open(dataurl);
+                            }
+                        });
+                    }
                 });
             }   
         }
