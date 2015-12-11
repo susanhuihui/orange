@@ -451,11 +451,13 @@
                         var itemse = '<div class="row" style="border-bottom: 1px solid #F1F1F1">' +
                                      '<div class=" col-sm-2">' +
                                      '<div class="teamainleft">' +
-                                     '<img class="listheadimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">' +
+                                     '<img class="listheadimg" src="' + data[i]["AvatarPath"] + '" /></a>' +
                                      '</div>' +
                                      '</div>' +
                                      '<div class="col-sm-7 teamainmiddle">' +
-                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')"><span>' + data[i]["UserName"] + onlinestr + '</span></a>' +
+                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">'+
+                                     '<span>' + data[i]["UserName"] + onlinestr + '</span></a>' +
                                      '<p>' + data[i]["SchoolName"] + ' | ' + data[i]["DegreeName"] + ' | ' + data[i]["LevelYear"] + '级 | ' + data[i]["Professional"] + '</p>' +
                                      '<p>主辅导课：' + data[i]["CourseNameZhu"] + ' | 辅辅导课：' + data[i]["CourseNameFu"] + '</p>' +
                                      '</div>' +

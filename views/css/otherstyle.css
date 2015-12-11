@@ -409,6 +409,10 @@ a:active, a:focus{outline:none;}
 button::-moz-focus-inner{padding:0;border:0;}
 *html{background-image:url(about:blank);background-attachment:fixed;} /* 修正IE6振动bug */
 
+.aboutul{ height:auto; width:200px; float:left; text-align:center; border-bottom:none;}
+.aboutul li{ font-size:14px; height:60px;}
+
+
 
 
 

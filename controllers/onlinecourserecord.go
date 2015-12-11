@@ -192,6 +192,27 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUid() {
 	c.ServeJson()
 }
 
+//40.查询给我上过课的老师们
+// @Title GetOnlinecourserecordTeacherByUCid
+// @Description GetOnlinecourserecordTeacherByUCid Onlinecourserecord by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.GetOnlinecourserecordTeacherByUCid
+// @Failure 403 :id is empty
+// @router /GetOnlinecourserecordTeacherByUCid/:userid/:classid [get]
+func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUCid() {
+	idStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(idStr)
+	classidStr := c.Ctx.Input.Params[":classid"]
+	classid, _ := strconv.Atoi(classidStr)
+	v, err := models.GetOnlinecourserecordTeacherByUCid(userid, classid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title Get All
 // @Description get Onlinecourserecord
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."

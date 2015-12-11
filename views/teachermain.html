@@ -83,7 +83,7 @@
                         </div>
                         <div class="col-sm-8 lefttopfont">
                             {{.UserName}}                         
-                            <a href="#">{{.IdentityName}} | {{.StuSex}} | {{.SchoolName}}</a>
+                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
                             <a href="http://{{.Website}}/orange/Main/UpdateTeacher/">
                                 <input type="button" class="stubtns" value="修改资料"></a>
                             <a href="http://{{.Website}}/orange/Teacher/TeacherSetMeet/">
@@ -561,7 +561,9 @@
                                 } else if (resulturl == "-3") {
                                     alert("创建课堂失败");
                                 } else {
-                                    window.open(resulturl);
+                                    //alert(resulturl);
+                                    //window.open(resulturl); 
+                                    window.open("http://{{.Website}}/orange/Teacher/TeacherOnlineClass/" + onlineid);
                                 }
                             });
                         }

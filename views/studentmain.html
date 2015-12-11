@@ -277,7 +277,7 @@
                         </div>
                         <div class="col-sm-8 lefttopfont">
                             {{.UserName}} 
-                            <a href="#">{{.IdentityName}} | {{.StuSex}} | {{.SchoolName}}</a>
+                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
                             <a href="http://{{.Website}}/orange/Main/UpdateStudent/">
                                 <input type="button" class="stubtns" value="修改资料"></a>
                             <table class="stutab" cellspacing="0">
@@ -909,7 +909,6 @@
                             //alert("进入课堂");
                             var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBstudent/" + onlineid;
                             $.getJSON(getblack, function (data) {
-                                alert(data);
                                 var resulturl = data;
                                 if (resulturl == "-1") {//-1:预约信息不存在 -2:用户不存在 -4:创建课堂失败 -5:老师不在 1:已有人在上课
                                     alert("预约信息不存在");
@@ -922,7 +921,9 @@
                                 } else if (resulturl == "1") {
                                     alert("已有人在上课");
                                 } else {
-                                    window.open(resulturl);
+                                    //window.open(resulturl);
+                                    window.open("http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid);
+
                                 }
                             });
                             //window.location.href = "http://{{.Website}}/orange/Teacher/StudentOnlineClass/" + onlineid;

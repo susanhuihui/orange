@@ -507,15 +507,49 @@ func Getecherlession2(onlineid int) (urlse string, err error) {
 	if onlineerr == nil {
 		if useerr == nil && userinfo.Id > 0 {
 			if onlinenow.ClassroomId+"" != "" {
+				fmt.Println("判断是否有人：")
 				//判断白板教室内是否有人
 				meetroom := bbb4go.MeetingRoom{}
 				meetroom.MeetingID_ = onlinenow.ClassroomId
 				meetroom.ModeratorPW_ = onlinenow.TeacherInId
 				meetroom.GetMeetingInfo()
 				var pcount = meetroom.MeetingInfo.ParticipantCount
+				fmt.Println("判断是否有人：")
+				fmt.Println(pcount)
 				if pcount >= 2 { //进入重复课堂
 					//重新建立课堂并保存到数据库
-					urlse = CreateMeeting(onlineid, userinfo)
+					//新建课堂并进入
+					var meetingID string = getcode("1")
+					var attendeePW string = getcode("2")  //学生进入密码
+					var moderatorPW string = getcode("3") //老师进入密码
+					meetingroom := bbb4go.MeetingRoom{}
+					meetingroom.Name_ = "泛鲲教育第一教室"
+					meetingroom.MeetingID_ = meetingID
+					meetingroom.AttendeePW_ = attendeePW
+					meetingroom.ModeratorPW_ = moderatorPW
+					meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+					meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入课程结束页面
+					meetingroom.Duration = 50
+					meetingroom.AllowStartStopRecording = false
+					num, _ := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
+					fmt.Println(num)
+					meetingroom.CreateMeeting()
+					if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+						fmt.Println("新建课堂成功:")
+						//创建白板成功后创建一个老师并生成老师进入课堂的URL
+						partTeacher := bbb4go.Participants{}
+						partTeacher.IsAdmin_ = 1
+						partTeacher.FullName_ = userinfo.UserName + "老师"
+						partTeacher.MeetingID_ = meetingID                                    //教室id
+						partTeacher.Password_ = moderatorPW                                   //老师进入密码
+						partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
+						partTeacher.UserID = strconv.Itoa(userinfo.Id)
+						partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+						partTeacher.GetJoinURL()
+						urlse = partTeacher.JoinURL
+					} else {
+						urlse = "-3" //创建课堂失败
+					}
 				} else if pcount <= 1 {
 					//创建白板成功后创建一个老师并生成老师进入课堂的URL
 					partTeacher := bbb4go.Participants{}
@@ -615,7 +649,7 @@ func Getstudentlession2(onlineid int) (urlse string, err error) {
 	//获取预约课程信息
 	onlinenow, onerr := GetOnlinecoursebookingById(onlineid)
 	//获取老师信息
-	userinfo, usererr := GetUserinformationStudent(onlinenow.UserIdPassive)
+	userinfo, usererr := GetUserinformationStudent(onlinenow.UserIdActive)
 	if onerr == nil && onlinenow.Id > 0 {
 		if usererr == nil && userinfo.Id > 0 {
 			pardStudent := bbb4go.Participants{}

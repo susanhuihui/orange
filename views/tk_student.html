@@ -9,54 +9,18 @@
     <meta name="author" content="">
     <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
-    <link href="b/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
 </head>
 <body>
-    {{template "menutop.html" .}}
-    <!--弹出层-->
-    <div id="popzcDiv" class="mydiv5" style="display: none;">
-        <a class="zcclosebtn" href="javascript:closezcDiv()">
-            <img src="images/CLOSE.png" />
-        </a>
-        <div>
-            <table class="stutablepop">
-                <tr>
-                    <td>您已完成学习
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>1小时20分</span>
-                    </td>
-                </tr>
-            </table>
-            <table class="stutablepop">
-                <tr>
-                    <td>
-                        <a href="evaluation.html">
-                            <input type="button" class="studentsbtn" value="去评价"></a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="bg" class="bg" style="display: none;"></div>
-    <!--弹出层结束-->
-    <div id="pagetopb">
-        <iframe id="myframe" width="100%" height="1400"></iframe>
-    </div>
+        <iframe id="myframe" style="width:100%" height="1000" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+
     <p id="onlinenowid" style="display: none">{{.onlineid}}</p>
-    {{template "footer.html" .}}
-    <script type="text/javascript" src="js/jquery.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
+
+    <script type="text/javascript" src="b/js/jquery.min.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         window.onload = function () {
-            getuser();
-            setTitleOnSelect(4);
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
@@ -67,7 +31,6 @@
             var onlineid = document.getElementById("onlinenowid").innerText;
             var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBstudent/" + onlineid;
             $.getJSON(getblack, function (data) {
-                //alert(data);
                 ifrsrc(data);
             });
         }
@@ -76,13 +39,13 @@
         window.onunload = onunload_handler;
         function onbeforeunload_handler() {
             var warning = "课程会结束";
-            return warning;
+            //alert("jieshu");
         }
 
         function onunload_handler() {
             var warning = "谢谢光临";
             //调用结束方法
-            setOverTime();//添加一条课程信息
+            //setOverTime();//添加一条课程信息
             //uponlinebookstate();//修改预约信息为已上课
             //alert(warning);
             //zhifuClass();//解冻资金，将钱转入老师账户

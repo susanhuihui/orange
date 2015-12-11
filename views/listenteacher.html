@@ -50,7 +50,7 @@
         var userid = getCookie("userid")//获取登录用户主键id
         var listenid = document.getElementById("listenid").innerText;
         window.onload = function () {
-            alert(userid);
+            //alert(userid);
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
@@ -59,9 +59,9 @@
 
         function chushi() {
             var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenTecher/" + listenid;
-            alert(getblack);
+            //alert(getblack);
             $.getJSON(getblack, function (data) {
-                alert(data["url"]);
+                //alert(data["url"]);
                 ifrsrc(data["url"]);
 
             });

@@ -15,9 +15,9 @@
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link href="b/css/carousel.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/index.css" />    
+    <link rel="stylesheet" type="text/css" href="css/index.css" />
 
-    
+
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
     <link rel="stylesheet" href="css/jquery.range.css">
     <link href="../css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
@@ -39,7 +39,7 @@
                         <a>我是<span>学生</span></a>
                         <p>名师学霸就在你身边</p>
                         <p>赶快注册与他们零距离交流吧!</p>
-                        <a href="http://{{.Website}}/orange/Main/Registered/" method="get">
+                        <a href="http://{{.Website}}/orange/Main/Registered/">
                             <input type="button" class="registeredbtn" value="学生注册">
                         </a>
                     </div>
@@ -50,7 +50,9 @@
                         <a>我是<span>名校学霸</span></a>
                         <p>用你的知识开店</p>
                         <p>课外辅导必备赚钱神器!</p>
-                        <input type="button" class="tearegisteredbtn" value="老师注册">
+                        <a href="http://{{.Website}}/orange/Main/TechnoRegister/">
+                            <input type="button" class="tearegisteredbtn" value="老师注册">
+                        </a>
                     </div>
                     <div class="col-lg-2"></div>
                 </div>
@@ -63,29 +65,29 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <!--<form action="http://{{.Website}}/orange/Main/Logins/" method="post">-->
-                    <div class="modal-body">
-                        <div id="tagContent">
-                            <div class="tagContents selectTag" id="tagContent0">
-                                <div class="form-group">
-                                    <label for="recipient-name" class="control-label">用户名:</label>
-                                    <input type="text" class="form-control" id="recipient-name" name="username">
-                                </div>
-                                <div class="form-group">
-                                    <label for="message-text" class="control-label">密码:</label>
-                                    <input type="password" class="form-control" id="recipient-pass" name="password">
-                                </div>
-                                <div class="form-group">
-                                    <a href="http://{{.Website}}/orange/Main/RetrievePassword/">忘记密码</a>
-                                    <a href="http://{{.Website}}/orange/Main/Registered/" style="float: right;">注册新用户</a>
-                                </div>
+                <div class="modal-body">
+                    <div id="tagContent">
+                        <div class="tagContents selectTag" id="tagContent0">
+                            <div class="form-group">
+                                <label for="recipient-name" class="control-label">用户名:</label>
+                                <input type="text" class="form-control" id="recipient-name" name="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="control-label">密码:</label>
+                                <input type="password" class="form-control" id="recipient-pass" name="password">
+                            </div>
+                            <div class="form-group">
+                                <a href="http://{{.Website}}/orange/Main/RetrievePassword/">忘记密码</a>
+                                <a href="http://{{.Website}}/orange/Main/Registered/" style="float: right;">注册新用户</a>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer" style="text-align: center;">
-                        <button type="button" style="width: 50%;" onclick="loginbtn()" class="btn btn-warning">登录</button>
-                        <!--<button type="submit" style="width: 50%; display:none;" class="btn btn-warning">登录</button>-->
-                        <!--<button type="button" style="width:30%;"  class="btn btn-default" data-dismiss="modal">关闭</button>-->
-                    </div>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <button type="button" style="width: 50%;" onclick="loginbtn()" class="btn btn-warning">登录</button>
+                    <!--<button type="submit" style="width: 50%; display:none;" class="btn btn-warning">登录</button>-->
+                    <!--<button type="button" style="width:30%;"  class="btn btn-default" data-dismiss="modal">关闭</button>-->
+                </div>
                 <!--</form>-->
             </div>
         </div>
@@ -100,14 +102,18 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="logoa" href="http://{{.Website}}">泛鲲教育</a>
+                <a class="logoa" href="http://{{.Website}}">
+                    <img width="150px" src="images/toplogo.jpg" />
+
+                </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
-                <ul class="nav navbar-nav menumaintable" style="min-height:57px;">
+                <ul class="nav navbar-nav menumaintable" style="min-height: 57px;">
                     <li class="" id="shouye"><a href="http://{{.Website}}" style="" id="fontshouye">首页</a></li>
                     <li class="" id="laoshi"><a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10" id="fontlaoshi">找老师</a></li>
                     <li class="" id="wenda"><a href="http://{{.Website}}/orange/Main/QuestionsCenter/" id="fontwenda">问答中心</a></li>
-                    <li><input class="form-control findtext" type="text"></li>
+                    <li>
+                        <input class="form-control findtext" type="text"></li>
                     <li class="" id="lilogin"></li>
                     <li class="" id="lizhuce"></li>
                     <li style="display: none" id="outuser"><a onclick="outLoging()">退出登录</a></li>
@@ -118,79 +124,90 @@
         </nav>
     </div>
 </body>
-    <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
-    <script type="text/javascript" src="js/indexjs.js"></script>
-    <script type="text/javascript" src="js/orange.js"></script>
-    <script type="text/javascript">
-        window.onload = function () {
-            getuser();
-            setTitleOnSelect(1);
-        }
-        function getuser() {
-            var username = "";
-            var userid = getCookie("userid"); 
-            //var getstudent = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
-            //$.getJSON(getstudent, function (data) {
-            if (userid != null && userid > 0 && userid != "undefined") {
-                username = getCookie("username");
-                var identityid = getCookie("identityid");
-                var AvatarPath = getCookie("AvatarPath");//data["AvatarPath"];
-                if (username + "" != "" && username + "" != "undefined") {
-                    var stuorteacher = "";
-                    if (identityid == 1) { //老师
-                        stuorteacher = "http://{{.Website}}/orange/Main/UserTeacher/0";
-                    } else if (identityid == 2 || identityid == 3) {//学生|家长
-                        stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
-                    }
-                    document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
-                    if (AvatarPath != null && AvatarPath + "" != "") {
-                        document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="' + AvatarPath + '" /></a>';
-                    } else {
-                        document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="images/denglu.png" /></a>';
-                    }
-                    document.getElementById("outuser").style.display = "block";
-                } else {
-                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop"id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
-                    document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" data-target=".bs-example-modal-lg" id="fontzhuce"><img style="height: 23px;" src="images/zhuce.png" />注册</a>';
+<script src="b/js/jquery.min.js"></script>
+<script src="b/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+<script type="text/javascript" src="js/indexjs.js"></script>
+<script type="text/javascript" src="js/orange.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        getuser();
+        setTitleOnSelect(1);
+    }
+    function getuser() {
+        var username = "";
+        var userid = getCookie("userid");
+        //var getstudent = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
+        //$.getJSON(getstudent, function (data) {
+        if (userid != null && userid > 0 && userid != "undefined") {
+            username = getCookie("username");
+            var identityid = getCookie("identityid");
+            var AvatarPath = getCookie("AvatarPath");//data["AvatarPath"];
+            if (username + "" != "" && username + "" != "undefined") {
+                var stuorteacher = "";
+                if (identityid == 1) { //老师
+                    stuorteacher = "http://{{.Website}}/orange/Main/UserTeacher/0";
+                } else if (identityid == 2 || identityid == 3) {//学生|家长
+                    stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
                 }
+                document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
+                if (AvatarPath != null && AvatarPath + "" != "") {
+                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="' + AvatarPath + '" /></a>';
+                } else {
+                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="images/denglu.png" /></a>';
+                }
+                document.getElementById("outuser").style.display = "block";
             } else {
-                document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop" id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
+                document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop"id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" data-target=".bs-example-modal-lg" id="fontzhuce"><img style="height: 23px;" src="images/zhuce.png" />注册</a>';
             }
-            //});           
+        } else {
+            document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" data-target="#loginpop" id="fontdenglu"><img style="height: 23px;" src="images/denglu.png" />登录</a>';
+            document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" data-target=".bs-example-modal-lg" id="fontzhuce"><img style="height: 23px;" src="images/zhuce.png" />注册</a>';
         }
+        //});           
+    }
 
-        //退出登录
-        function outLoging() {
-            clearCookie("userid");
-            var outurl = "http://{{.Website}}/orange/Main/OutLogins/";
-            $.getJSON(outurl, function (data) {
+    //退出登录
+    function outLoging() {
+        clearCookie("userid");
+        var outurl = "http://{{.Website}}/orange/Main/OutLogins/";
+        $.getJSON(outurl, function (data) {
+            if (data == "OK") {
+                window.location.href = "http://{{.Website}}/";
+            } else {
+                window.location.href = "http://{{.Website}}/";
+            }
+        });
+    }
+
+    function loginbtn() {
+        var loginurl = "";
+        var name = trim(document.getElementById("recipient-name").value);
+        var pass = trim(document.getElementById("recipient-pass").value);
+        if (name == "") { alert("用户名不能为空！"); return; }
+        if (pass == "") { alert("密码不能为空！"); return; }
+        if (!name.match(/^[\u4E00-\u9FA5a-zA-Z0-9_]{2,20}$/)) {
+            alert("用户名只能为汉字 英文字母 数字 下划线组成，长度为2-20位！"); return;
+        } else if (isPasswd(pass) == false) {
+            alert("密码有误（密码必须由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return;
+        }
+        var logouser = '{"UserName":"' + name +
+                                '","IphoneNum":"' + name +
+                                '","LoginPassword":"' + pass +
+                                '"}';
+        $.post("http://{{.Website}}/orange/Main/LoginUser/", logouser,
+            function (data) {
                 if (data == "OK") {
                     window.location.href = "http://{{.Website}}/";
-                } else {
-                    window.location.href = "http://{{.Website}}/";
-                }                
+                } else if (data == "0") {//0获取用户失败 密码输入错误 -1用户名不存在
+                    alert("登录失败！");
+                } else if (data == "1") {
+                    alert("密码输入错误！");
+                } else if (data == "-1") {
+                    alert("用户名不存在！");
+                }
             });
-        }
-
-        function loginbtn() {
-            var loginurl = "";
-            var name = document.getElementById("recipient-name").value;
-            var pass = document.getElementById("recipient-pass").value;
-            var logouser = '{"UserName":"' + name +
-                                    '","IphoneNum":"' + name +
-                                    '","LoginPassword":"' + pass +
-                                    '"}';
-            $.post("http://{{.Website}}/orange/Main/LoginUser/", logouser,
-                function (data) {
-                    if (data == "OK") {
-                        window.location.href = "http://{{.Website}}/";
-                    } else if (data == "NO"){
-                        alert("登录失败！");
-                    }
-                });
-        }
-    </script>
+    }
+</script>
 </html>

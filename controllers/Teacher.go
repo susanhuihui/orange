@@ -118,10 +118,14 @@ func (c *TeacherController) TeacherList() {
 				var items string = `<div class="row" style="border-bottom: 1px solid #F1F1F1">
 									<div class=" col-sm-2">
 									<div class="teamainleft">
-									<img class="listheadimg" src="` + v[i].AvatarPath + `" />
+									<a href="http://` + OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+										<img class="listheadimg" src="` + v[i].AvatarPath + `" />
+									</a>
 									</div></div>
 									<div class="col-sm-7 teamainmiddle">
-									<a href="http://` + OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)"><span>` + v[i].UserName + onlinestr + `</span></a>
+									<a href="http://` + OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+										<span>` + v[i].UserName + onlinestr + `</span>
+									</a>
 									<p>` + v[i].SchoolName + ` | ` + v[i].DegreeName + ` | ` + strconv.Itoa(v[i].LevelYear) + `级 | ` + v[i].Professional + `</p>
 									<p>主辅导课：` + v[i].CourseNameZhu + ` | 辅辅导课：` + v[i].CourseNameFu + `</p></div>
 									<div class="col-sm-3"><div class="teamainright"><p>` + strconv.FormatFloat(v[i].UnitPrice, 'f', -1, 64) + `元/小时</p><br />` + btnstr + btnhou + `

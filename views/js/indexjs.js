@@ -126,7 +126,7 @@ function selectTagpass(showContent, selfObj) {
     if (showContent == "tagContent0") {
         document.getElementById("divcoutent").innerHTML = "";
         var tupian = '<div class="tagContents" id="tagContent1">' +
-                                '<img style="width: 90%;" src="images/stuprocess.png" />' +
+                                '<img style="width: 100%;" src="images/stuprocess.png" />' +
                             '</div>';
         document.getElementById("divcoutent").innerHTML = tupian;
     } else if (showContent = "tagContent1") {

@@ -786,14 +786,14 @@ func init() {
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
 		beego.ControllerComments{
 			"AboutMe",
-			`/AboutMe/`,
+			`/AboutMe/:tapid`,
 			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
 		beego.ControllerComments{
-			"TechnologicalProcess",
-			`/TechnologicalProcess/`,
+			"TechnoRegister",
+			`/TechnoRegister/`,
 			[]string{"get"},
 			nil})
 
@@ -1018,6 +1018,13 @@ func init() {
 		beego.ControllerComments{
 			"GetOnlinecourserecordTeacherByUid",
 			`/GetOnlinecourserecordTeacherByUid/:userid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinecourserecordController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecourserecordController"],
+		beego.ControllerComments{
+			"GetOnlinecourserecordTeacherByUCid",
+			`/GetOnlinecourserecordTeacherByUCid/:userid/:classid`,
 			[]string{"get"},
 			nil})
 

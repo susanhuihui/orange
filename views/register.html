@@ -178,7 +178,6 @@
             document.getElementById(errdoname).innerHTML = "";
             document.getElementById(errdoname).innerHTML = showMessage;
         }
-
         //注册方法
         function UserRegistered() {
             var userphone = document.getElementById("userphone").value;
@@ -189,17 +188,19 @@
             } else {
                 identyityvalue = identityJ;
             }
-            var usernicheng = document.getElementById("usernicheng").value;
-            var userpasword = document.getElementById("userpasword").value;
+            var usernicheng = trim(document.getElementById("usernicheng").value);
+            var userpasword = trim(document.getElementById("userpasword").value);
             var errname = document.getElementById("errnicheng").innerHTML;
             if (trim(userphone) == "" || phoneistorf == 0) {
                 alert("请正确输入手机号码！"); return;
             } else if (trim(useryanzheng) + "" == "") {
                 alert("请正确输入验证码！"); return;
-            } else if (trim(usernicheng) + "" == "" || trim(userpasword) + "" == "") {
+            } else if (usernicheng + "" == "" || userpasword + "" == "") {
                 alert("请正确输入用户名和密码！"); return;
-            } else if (isPasswd(trim(userpasword)) == false) {
-                alert("密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return;
+            } else if (!usernicheng.match(/^[\u4E00-\u9FA5a-zA-Z0-9_]{2,20}$/)) {
+                alert("用户名只能为汉字 英文字母 数字 下划线组成，长度为2-20位！"); return;
+            }else if (isPasswd(userpasword) == false) {
+                alert("密码有误（密码必须由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return;
             } else if (document.getElementById("yueducheck").checked == false) {
                 alert("请选择是否同意网站服务条款！"); return;
             } else if (errname != "") {
@@ -217,6 +218,7 @@
                         var adduser = '{"UserName":"' + usernicheng +
                                     '","IphoneNum":"' + userphone +
                                     '","LoginPassword":"' + userpasword +
+                                    '","UserSex":"' + "男" +
                                     '","IdentityId":' + identyityvalue +
                                     ',"RegisteredTime":"' + getNowFormatDate() +
                                     '"}';

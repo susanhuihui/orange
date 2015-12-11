@@ -362,6 +362,9 @@ func (c *OnlinecoursebookingController) DeleteOnlinecoursebooking() {
 func (c *OnlinecoursebookingController) GetOss() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
+	if onlineid > 0 {
+		c.Ctx.SetCookie("onlinebookid", strconv.Itoa(onlineid))
+	}
 	fmt.Println(onlineid)
 	teacherinurl, err := models.Getecherlession2(onlineid)
 	if err != nil {
@@ -382,6 +385,9 @@ func (c *OnlinecoursebookingController) GetOss() {
 func (c *OnlinecoursebookingController) GetOe() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
+	if onlineid > 0 {
+		c.Ctx.SetCookie("onlinebookid", strconv.Itoa(onlineid))
+	}
 	l, err := models.Getstudentlession2(onlineid)
 	if err != nil {
 		c.Data["json"] = err.Error()

@@ -83,7 +83,6 @@ func (c *MainController) LoginUser() {
 	fmt.Println(jsonS)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsonS), &v)
-	//fmt.Println(v)
 	var vuser *models.Userinformation
 	fmt.Println("用户名，密码：")
 	fmt.Println(v.UserName, v.LoginPassword)
@@ -95,26 +94,37 @@ func (c *MainController) LoginUser() {
 		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
 		c.Ctx.SetCookie("identityid", strconv.Itoa(vuser.IdentityId))
 		c.Ctx.SetCookie("AvatarPath", vuser.AvatarPath)
-		fmt.Println(vuser.AvatarPath)
-		//c.TplNames = "index.tpl"
 		c.Data["json"] = "OK"
 	} else {
 		vphoneuser, errph := models.GetUserinformationLoginPhone(v.UserName, v.LoginPassword)
 		if errph == nil && vphoneuser != nil {
-			fmt.Println(vphoneuser)
 			c.Data["Website"] = OnlineUrl
 			c.Ctx.SetCookie("username", vphoneuser.UserName)
 			c.Ctx.SetCookie("userid", strconv.Itoa(vphoneuser.Id))
 			c.Ctx.SetCookie("identityid", strconv.Itoa(vphoneuser.IdentityId))
 			c.Ctx.SetCookie("AvatarPath", vphoneuser.AvatarPath)
-			fmt.Println(vphoneuser.AvatarPath)
-			//c.TplNames = "index.tpl"
 			c.Data["json"] = "OK"
 		} else {
-			fmt.Println(err)
-			c.Data["blockdiv"] = "none"
-			//c.TplNames = "404.html"
-			c.Data["json"] = "NO"
+			var usertrue string = "0" //0获取用户失败 1用户名昵称存在密码不正确 -1用户名昵称不存在
+			getuserbyname, nameerr := models.GetUserinformationByUserName(v.UserName)
+			if nameerr == nil && getuserbyname != nil {
+				usertrue = "1" //用户名昵称存在密码不正确
+			} else if getuserbyname == nil {
+				usertrue = "-1" //用户名昵称不存在
+			} else if nameerr != nil {
+				usertrue = "0" //获取用户失败
+			}
+			if usertrue != "1" {
+				getuserbyphone, phoneerr := models.GetUserinformationByPhone(v.IphoneNum)
+				if phoneerr == nil && getuserbyphone != nil {
+					usertrue = "1" //用户名昵称存在密码不正确
+				} else if getuserbyphone == nil {
+					usertrue = "-1" //用户名昵称不存在
+				} else if phoneerr != nil {
+					usertrue = "0" //获取用户失败
+				}
+			}
+			c.Data["json"] = usertrue
 		}
 	}
 	c.ServeJson()
@@ -184,8 +194,16 @@ func (c *MainController) UserTeacher() {
 		c.Data["UserName"] = showTeacher.UserName
 		c.Data["StudentUserid"] = "00000" + strconv.Itoa(showTeacher.Id)
 		c.Data["AvatarPath"] = showTeacher.AvatarPath
-		c.Data["StuSex"] = showTeacher.UserSex
-		c.Data["SchoolName"] = showTeacher.SchoolName
+		if showTeacher.UserSex == "" {
+			c.Data["StuSex"] = ""
+		} else {
+			c.Data["StuSex"] = "|" + showTeacher.UserSex
+		}
+		if showTeacher.SchoolName == "" {
+			c.Data["SchoolName"] = ""
+		} else {
+			c.Data["SchoolName"] = "|" + showTeacher.SchoolName
+		}
 		c.Data["IdentityName"] = showTeacher.IdentityName
 		c.Data["AllDate"] = strconv.Itoa(showTeacher.AllDate)
 		c.Data["AllCount"] = strconv.Itoa(showTeacher.AllCount)
@@ -264,8 +282,16 @@ func (c *MainController) UserStudent() {
 		c.Data["AllCount"] = strconv.Itoa(showStudent.AllCount)
 		c.Data["AllPerson"] = strconv.Itoa(showStudent.AllPerson)
 		c.Data["IdentityName"] = showStudent.IdentityName
-		c.Data["StuSex"] = showStudent.UserSex
-		c.Data["SchoolName"] = showStudent.SchoolName
+		if showStudent.UserSex == "" {
+			c.Data["StuSex"] = ""
+		} else {
+			c.Data["StuSex"] = "|" + showStudent.UserSex
+		}
+		if showStudent.SchoolName == "" {
+			c.Data["SchoolName"] = ""
+		} else {
+			c.Data["SchoolName"] = "|" + showStudent.SchoolName
+		}
 		c.Data["AgeName"] = showStudent.AgeName
 		c.Data["LevelYear"] = strconv.Itoa(showStudent.LevelYear)
 		c.Data["StudyDifficult"] = showStudent.StudyDifficult //学习难点
@@ -739,20 +765,22 @@ func (c *MainController) RetrievePassword() {
 // @Param			"The id you want to AboutMe"
 // @Success 200 {object} models.TbUser
 // @Failure 403
-// @router /AboutMe/ [get]
+// @router /AboutMe/:tapid [get]
 func (c *MainController) AboutMe() {
 	c.Data["Website"] = OnlineUrl
-	c.TplNames = "introduction.html" //跳到关于我们
+	tapid := c.Ctx.Input.Params[":tapid"]
+	c.Data["NowTapid"] = tapid
+	c.TplNames = "aboutme.html" //跳到关于我们
 }
 
-// 学习流程，教学流程
+// 老师注册进入页面
 // @Title TechnologicalProcess
 // @Description TechnologicalProcess the TbUser
 // @Param			"The id you want to TechnologicalProcess"
 // @Success 200 {object} models.TbUser
 // @Failure 403
-// @router /TechnologicalProcess/ [get]
-func (c *MainController) TechnologicalProcess() {
+// @router /TechnoRegister/ [get]
+func (c *MainController) TechnoRegister() {
 	c.Data["Website"] = OnlineUrl
-	c.TplNames = "process.html" //跳到流程页面
+	c.TplNames = "teacherregister.html" //
 }

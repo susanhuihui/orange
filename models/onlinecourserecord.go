@@ -169,6 +169,22 @@ func GetOnlinecourserecordTeacherByUid(userid int) (onlinecourse []Onlinecourser
 	return
 }
 
+//   43.查询给我上过课的某个学科的老师们
+//   2015-12-11
+func GetOnlinecourserecordTeacherByUCid(userid int, classid int) (onlinecourse []OnlinecourserecordByU, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlOnlineCourseRecordTByUCid, userid, classid)
+	num, qs := rs.QueryRows(&onlinecourse)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return onlinecourse, qs
+	}
+	return
+}
+
 // AddOnlinecourserecord insert a new Onlinecourserecord into database and returns
 // last inserted Id on success.
 func AddOnlinecourserecord(m *Onlinecourserecord) (id int64, err error) {

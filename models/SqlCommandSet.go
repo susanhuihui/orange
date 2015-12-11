@@ -609,3 +609,9 @@ var SqlOnlinetrylistenOn = `select *
 						from onlinetrylisten as ontry 
 						where tid = ? and (sid is null or sid = 0)
 						limit 1 `
+
+/**43.查询给我上过课的某个学科的老师们(参数：学生id,课程id)**/
+var SqlOnlineCourseRecordTByUCid = `select oncour.*,(select username from userinformation as userinfo where userinfo.pkid = oncour.useridpassive)as UserName
+						from onlinecourserecord as oncour
+						where oncour.useridactive = ? and (select CoursesId from remedialcourses as remec where remec.UserId=oncour.useridpassive and IsMain=1 limit 1)=?
+						group by oncour.useridpassive`

@@ -16,303 +16,330 @@
 </head>
 
 <body>
-{{template "menutop.html" .}}
+    {{template "menutop.html" .}}
     <!--删除弹出层-->
-<div class="modal fade" id="delmain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">提示</h3>
-            </div>
-            <div class="modal-body" style="text-align: center; padding: 30px; font-size: 15px;">
-                对不起，您还没有建立授课关系的老师，不能进行提问！
+    <div class="modal fade" id="delmain" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">提示</h3>
+                </div>
+                <div class="modal-body" style="text-align: center; padding: 30px; font-size: 15px;">
+                    对不起，您还没有建立授课关系的老师，不能进行提问！
              
-            </div>
-            <div class="modal-footer" style="text-align: center;">
-                <a href="teacher.html" style="width: 30%;" class="btn btn-warning">去找老师</a>
-                <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
+                <div class="modal-footer" style="text-align: center;">
+                    <a href="teacher.html" style="width: 30%;" class="btn btn-warning">去找老师</a>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div id="bg" class="bg" style="display: none;"></div>
-<!--弹出层结束-->
-<div id="pagetopb">
-    <!--个人资料-->
-    <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
-        <div class=''>
-            <div class="row problemtab">
-                <div class="col-sm-1 problemtablesspan">
-                    <span>老师:</span>
-                </div>
-                <div class="col-sm-2 problemtables">
-                    <select class="form-control" id="Select1">
-                    </select>
-                </div>
-                <div class="col-sm-1 problemtablesspan">
-                    学科:           
-                </div>
-                <div class="col-sm-2 problemtables">                           
-                        <select class="form-control" id="Select2">
+    <div id="bg" class="bg" style="display: none;"></div>
+    <!--弹出层结束-->
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class=''>
+                <div class="row problemtab">
+                    <div class="col-sm-1 problemtablesspan">
+                        <span>学科:</span>
+                    </div>
+                    <div class="col-sm-2 problemtables">
+                        <select class="form-control" id="selClass"  onchange="getTeacher()">
                         </select>
-                </div>
-                <!--<div class="col-sm-3 problemtables">
-                    截止日期:                               
+                    </div>
+                    <div class="col-sm-1 problemtablesspan">
+                        老师:           
+                    </div>
+                    <div class="col-sm-2 problemtables">
+                        <select class="form-control" id="selteacher">
+                        </select>
+                    </div>
+                    <div class="col-sm-3 problemtables">
+                        截止日期:                               
                         <input type="date" class="datestyle" id="txtdate">
-                </div>-->
-
-
-                <div class="col-sm-1 problemtablesspan">
-                    截止日期:
-                </div>
-                <div class="problemtables input-group date form_date col-md-2 col-xs-2" data-date="" data-date-format="" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
-                    <input style="background-color: #ffffff;" class="form-control" size="16" type="text" value="" readonly="true">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
-                </div>
-
-
-                <!--<div class="col-sm-3 problemtables">
-                        截止时间:                               
-                        <input type="time" class="datestyle" id="txttime">
+                    </div>
+                    <!--<div class="col-sm-1 problemtablesspan">
+                        截止日期:
+                    </div>
+                    <div class="problemtables input-group date form_date col-md-2 col-xs-2" data-date="" data-date-format="" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                        <input style="background-color: #ffffff;" class="form-control" size="16" type="text" value="" readonly="true">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                     </div>-->
-            </div>
-            <div class="row problemtable">
-                <div class="col-sm-1" style="text-align: center;">
-                    标题:                   
                 </div>
-                <div class="col-sm-11">
-                    <input type="text" class="form-control protexts" id="txtTitle">
+                <div class="row problemtable">
+                    <div class="col-sm-1" style="text-align: center;">
+                        标题:                   
+                    </div>
+                    <div class="col-sm-11">
+                        <input type="text" class="form-control protexts" id="txtTitle">
+                    </div>
                 </div>
-            </div>
-            <div class="row problemtable">
-                <div class="col-sm-1" style="text-align: center;">
-                    内容:                    
+                <div class="row problemtable">
+                    <div class="col-sm-1" style="text-align: center;">
+                        内容:                    
+                    </div>
+                    <div class="col-sm-11">
+                        <textarea class="form-control proarea" id="txtContents"></textarea>
+                    </div>
                 </div>
-                <div class="col-sm-11">
-                    <textarea class="form-control proarea" id="txtContents"></textarea>
+                <div class="row">
+                    <div class="col-sm-2 tjfj">
+                        <img style="height: 20px;" src="images/fj.png" /><a href="#" style="">添加附件</a>
+                    </div>
+                    <div class="col-sm-2 tjfj">
+                        <input type="file" accept="image/*" id="file_image" name="file_image" style="display: block;" onchange="setImagePreview()" />
+                    </div>
+                    <div class="col-sm-8 tjfj">
+                        <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: block;" />
+                    </div>
+                    <div class="col-sm-12" style="border-bottom: 1px solid #ccc;">
+                        <!--<div class="col-sm-3 tjfj" id="fujianlist">-->
+                        <img id="Img1" src="" style="display: none; width: 100px; height: 100px; float: left;" />
+                        <img id="Img2" src="" style="display: none; width: 100px; height: 100px; float: left;" />
+                        <img id="Img3" src="" style="display: none; width: 100px; height: 100px; float: left;" />
+                        <img id="Img4" src="" style="display: none; width: 100px; height: 100px; float: left;" />
+                        <img id="Img5" src="" style="display: none; width: 100px; height: 100px; float: left;" />
+                        <!--</div>-->
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 tjfj">
-                    <img style="height: 20px;" src="images/fj.png" /><a href="#" style="">添加附件</a>
-                </div>
-                <div class="col-sm-2 tjfj">
-                    <input type="file" accept="image/*" id="file_image" name="file_image" style="display: block;" onchange="setImagePreview()" />
-                </div>
-                <div class="col-sm-8 tjfj">
-                    <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: block;" />
-                </div>
-                <div class="col-sm-12" style="border-bottom:1px solid #ccc;">
-                    <!--<div class="col-sm-3 tjfj" id="fujianlist">-->
-                        <img id="Img1" src="" style="display: none;width:100px;height:100px;float:left;" />
-                        <img id="Img2" src="" style="display: none;width:100px;height:100px;float:left;" />
-                        <img id="Img3" src="" style="display: none;width:100px;height:100px;float:left;" />
-                        <img id="Img4" src="" style="display: none;width:100px;height:100px;float:left;" />
-                        <img id="Img5" src="" style="display: none;width:100px;height:100px;float:left;" />
-                    <!--</div>-->
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2" style="margin-top: 30px; height: 70px; text-align:right; color:#fc8b00; font-weight:bold; font-size:16px;">
-                    <span>问题奖励: </span>
-                </div>
-                <div class="col-sm-10" style="margin-top:35px;">
-                    <!--<img style="width: 190px;" src="images/gdt.png" />
+                <div class="row">
+                    <div class="col-sm-2" style="margin-top: 30px; height: 70px; text-align: right; color: #fc8b00; font-weight: bold; font-size: 16px;">
+                        <span>问题奖励: </span>
+                    </div>
+                    <div class="col-sm-10" style="margin-top: 35px;">
+                        <!--<img style="width: 190px;" src="images/gdt.png" />
                         <span style="font-size: 18px; color: #F9AE26;">3元 </span>-->
-                    <input type="hidden" class="single-slider" value="5" />
+                        <input type="hidden" class="single-slider" value="5" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12" style="text-align: center;">
+                        <a data-toggle="modal" class="btn btn-warning" style="width: 30%; margin-bottom: 15px;" onclick="submitQuestion()">提交</a>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-12" style="text-align: center;">
-                    <a data-toggle="modal" class="btn btn-warning" style="width: 30%; margin-bottom: 15px;" onclick="submitQuestion()">提交</a>
-                </div>
+            <div class=" row profont">
+                <p class="proknow">提问须知:</p>
+                <p class="konwfont">
+                    1.为了达到更好的效果，我们只提供为您讲过课的老师供您选择。        
+                </p>
+                <p class="konwfont">
+                    2.请将您的问题以附件形式或文字形式提供给老师，以便老师能够更好的为您作答。              
+                </p>
+                <p class="konwfont">
+                    3.问题结束后请及时给予评价，我们将根据您的建议来提高为您服务的水平。               
+                </p>
+                <p class="konwfont">
+                    4.其它不确定事宜或者投诉请联系客服。                 
+                </p>
             </div>
-        </div>
-        <div class=" row profont">
-            <p class="proknow">提问须知:</p>
-            <p class="konwfont">
-                1.为了达到更好的效果，我们只提供为您讲过课的老师供您选择。        
-            </p>
-            <p class="konwfont">
-                2.请将您的问题以附件形式或文字形式提供给老师，以便老师能够更好的为您作答。              
-            </p>
-            <p class="konwfont">
-                3.问题结束后请及时给予评价，我们将根据您的建议来提高为您服务的水平。               
-            </p>
-            <p class="konwfont">
-                4.其它不确定事宜或者投诉请联系客服。                 
-            </p>
         </div>
     </div>
-</div>
-{{template "footer.html" .}}   
+    {{template "footer.html" .}}   
     <script src="b/js/jquery.min.js"></script>
-<script src="b/js/bootstrap.min.js"></script>
-<script type="text/javascript" src="js/personal.js"></script>
-<script type="text/javascript" src="js/orange.js"></script>
-<script type="text/javascript" src="js/indexjs.js"></script>
-<script src="js/jquery.range.js"></script>
-<script src="jquery.range.js"></script>
-<script type="text/javascript" src="b/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-<script type="text/javascript" src="b/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
-<script type="text/javascript">
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/personal.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script src="js/jquery.range.js"></script>
+    <script src="jquery.range.js"></script>
+    <script type="text/javascript" src="b/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="b/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script type="text/javascript">
+        $('.single-slider').jRange({
+            from: 0,
+            to: 20,
+            step: 0.5,
+            scale: [0, 5, 10, 15, 20],
+            format: '%s',
+            width: 400,
+            showLabels: true,
+            showScale: true
+        });
+        $("#g1").click(function () {
+            var aa = $(".single-slider").val();
+            //alert(aa);
+        });
+        $('.form_date').datetimepicker({
+            language: 'zh-CN',
+            weekStart: 1,
+            todayBtn: 1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        });
 
-    $('.single-slider').jRange({
-        from: 0,
-        to: 20,
-        step: 0.5,
-        scale: [0, 5, 10, 15, 20],
-        format: '%s',
-        width: 400,
-        showLabels: true,
-        showScale: true
-    });
-    $("#g1").click(function () {
-        var aa = $(".single-slider").val();
-        //alert(aa);
-    });
-    $('.form_date').datetimepicker({
-        language: 'zh-CN',
-        weekStart: 1,
-        todayBtn: 1,
-        autoclose: 1,
-        todayHighlight: 1,
-        startView: 2,
-        minView: 2,
-        forceParse: 0
-    });
-
-    var userid = getCookie("userid")//获取登录用户主键id
-    window.onload = function () {
-        getuser();
-        setTitleOnSelect(3);
-        if (userid == null || userid <= 0) {
-            window.location.href = "http://{{.Website}}/";
+        var userid = getCookie("userid")//获取登录用户主键id
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(3);
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            chushi();
         }
-        chushi();
-    }
-    function chushi() {
-        var allteacher = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordTeacherByUid/" + userid;
-        $.getJSON(allteacher, function (datateacher) {
-            var teachername = '<option value=0">请选择</option>';
-            if (datateacher != null) {
-                for (var i = 0; i < datateacher.length ; i++) {
-                    var itmeop = '<option value="' + datateacher[i]["UserIdPassive"] + '">' + datateacher[i]["UserName"] + '</option>';
-                    teachername = teachername + itmeop;
+        function chushi() {
+            //var allteacher = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordTeacherByUid/" + userid;
+            //$.getJSON(allteacher, function (datateacher) {
+            //    var teachername = '<option value=0">请选择</option>';
+            //    if (datateacher != null) {
+            //        for (var i = 0; i < datateacher.length ; i++) {
+            //            var itmeop = '<option value="' + datateacher[i]["UserIdPassive"] + '">' + datateacher[i]["UserName"] + '</option>';
+            //            teachername = teachername + itmeop;
+            //        }
+            //        document.getElementById("selteacher").innerHTML = "";
+            //        $("#selteacher").append(teachername);
+            //    } else {
+            //        document.getElementById("selteacher").innerHTML = "";
+            //    }
+            //});
+            var allClass = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
+            $.getJSON(allClass, function (datacour) {
+                var allclassstr = '<option value=0">请选择</option>';
+                for (var j = 0; j < datacour.length; j++) {
+                    var itmecour = '<option value="' + datacour[j]["Id"] + '">' + datacour[j]["CourseName"] + '</option>';
+                    allclassstr = allclassstr + itmecour;
                 }
+                document.getElementById("selClass").innerHTML = "";
+                $("#selClass").append(allclassstr);
+            });
+        }
+
+        //根据学科选择教过自己的老师
+        function getTeacher() {
+            var selectIndex = document.getElementById("selClass").selectedIndex;
+            var selClassid = document.getElementById("selClass").options[selectIndex].value;
+            if (selClassid == "0") {
                 document.getElementById("selteacher").innerHTML = "";
                 $("#selteacher").append(teachername);
             } else {
-                document.getElementById("selteacher").innerHTML = "";
+                var allteacher = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordTeacherByUCid/" + userid + "/" + selClassid;
+                $.getJSON(allteacher, function (datateacher) {
+                    var teachername = '';//'<option value=0">请选择</option>';
+                    if (datateacher != null) {
+                        for (var i = 0; i < datateacher.length ; i++) {
+                            var itmeop = '<option value="' + datateacher[i]["UserIdPassive"] + '">' + datateacher[i]["UserName"] + '</option>';
+                            teachername = teachername + itmeop;
+                        }
+                        document.getElementById("selteacher").innerHTML = "";
+                        $("#selteacher").append(teachername);
+                    } else {
+                        document.getElementById("selteacher").innerHTML = "";
+                    }
+                });
             }
-        });
-        var allClass = "http://{{.Website}}/orange/course/GetAllCourse/1/100/";
-        $.getJSON(allClass, function (datacour) {
-            var allclassstr = '<option value=0">请选择</option>';
-            for (var j = 0; j < datacour.length; j++) {
-                var itmecour = '<option value="' + datacour[j]["Id"] + '">' + datacour[j]["CourseName"] + '</option>';
-                allclassstr = allclassstr + itmecour;
-            }
-            document.getElementById("selClass").innerHTML = "";
-            $("#selClass").append(allclassstr);
-        });
-    }
-    //提交提问信息
-    function submitQuestion() {
-        var tiwenuserid = userid;//学生id
-        var laoshiid = document.getElementById("selteacher").value;
-        var classid = document.getElementById("selClass").value;
-        var title = trim(document.getElementById("txtTitle").value);
-        var contents = document.getElementById("txtContents").value;
-        var money = $(".single-slider").val();
-        var date = document.getElementById("txtdate").value;
-        //var time = document.getElementById("txttime").value;
-        //获取余额是否足够支付问题
-        var getyue = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
-        $.getJSON(getyue, function (getdate) {
-            if (getdate != null) {
-                if (getdate["Balance"] >= money) {
-                    var time = new Date(getInsertDate(date + " " + "00:00:00"));
-                    var str = "";
-                    if (time != null) { str = getInsertDate(date + " " + "00:00:00"); } else { str = getInsertNowDate(); }
-                    var addquestion = '{"AskUserId":' + tiwenuserid +
-                                      ',"AnswerUserId":' + laoshiid +
-                                      ',"GCId":' + classid +
-                                      ',"Title":"' + title +
-                                      '","Contents":"' + contents +
-                                      '","BadeTime":"' + getInsertNowDate() +
-                                      '","EndTime":"' + str +
-                                      '","AmountMoney":' + money +
-                                      ',"IsSee":0' +
-                                      '}';
-                    $.post("http://{{.Website}}/orange/questionask/AddQuestionask/", addquestion,
-                        function (data) {
-                            if (data["id"] > 0) {
-                                var adddongjie = '{"UserId":' + tiwenuserid +
-                                                            ',"FrozenMoney":' + money +
-                                                            ',"FrozenType":1' +
-                                                            ',"BusinessId":' + data["id"] +
-                                                            ',"FrozenTime":"' + getInsertNowDate() +
-                                                            '","FrozenState":1' +
-                                                            '}';
-                                $.post("http://{{.Website}}/orange/frozenfunds/AddUserFrozenfunds/", adddongjie,
-                                    function (data) {
-                                        if (data["id"] > 0) {
-                                        }
-                                    });
-                                alert("提问成功！");
-                                window.location.href = "http://{{.Website}}/orange/Teacher/UserAskQuestion/";
-                            } else {
-                                alert("提问失败！");
-                            }
-                        });
-                } else {
-                    alert("账户余额不足，不能满足此次提问消费，请先充值！");
-                }
-            } else {
-                alert("没有账户信息！");
-            }
-        });
-    }
-    var nowpiccount = 1;
-    function setImagePreview() {
-        var docObj = document.getElementById("file_image");
-        if (window.URL.createObjectURL(docObj.files[0]) != null) {
-            var imgObjPreview = document.getElementById("Img" + nowpiccount);
-            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
-            document.getElementById("Img" + nowpiccount).style.display = "block";
-            nowpiccount = nowpiccount + 1;
-            return true;
         }
-    }
-</script>
 
-<script type="text/javascript">
-    (function (W, D) {
-        var fileForm = document.getElementById("file_form");
-        var fileImage = document.getElementById("file_image");
-        function testAjax(files, i) {
-            if (i < 0) {
+        //提交提问信息
+        function submitQuestion() {
+            var tiwenuserid = userid;//学生id
+            var laoshiid = document.getElementById("selteacher").value;
+            var classid = document.getElementById("selClass").value;
+            var title = trim(document.getElementById("txtTitle").value);
+            var contents = trim(document.getElementById("txtContents").value);
+            var money = $(".single-slider").val();
+            var date = document.getElementById("txtdate").value;
+            //var time = document.getElementById("txttime").value;
+            //获取余额是否足够支付问题
+            if (laoshiid == null || laoshiid == "" || laoshiid <= 0) {
+                alert("请选择要提问的老师！");
                 return;
             }
-            var xhr = new XMLHttpRequest(),
-                 data = new FormData();
-            xhr.onload = function () {
-                // 递归
-                testAjax(files, --i);
-            };
-            //alert(files[i]);
-            data.append("file1", files[i]);
-            xhr.open("post", "http://{{.Website}}/orange/courseware/AddCoursewareOnbook/" + nowTagid, true);
-            xhr.send(data);
+            if (date == "") { alert("请正确输入提问截止日期！"); return; }
+            var timesave = new Date(getInsertDate(date + " " + "00:00:00"));
+            var timenows = new Date();
+            if (timesave < timenows) { alert("提问截止日期必须大于当前日期！"); return;}
+            if (title == "") { alert("提问标题不能为空，请输入提问标题！"); return; }
+            if (contents == "") { alert("提问内容不能为空，请输入提问内容！"); return; }
+            var getyue = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
+            $.getJSON(getyue, function (getdate) {
+                if (getdate != null) {
+                    if (getdate["Balance"] >= money) {
+                        var time = new Date(getInsertDate(date + " " + "00:00:00"));
+                        var str = "";
+                        if (time != null) { str = getInsertDate(date + " " + "00:00:00"); } else { str = getInsertNowDate(); }
+                        var addquestion = '{"AskUserId":' + tiwenuserid +
+                                          ',"AnswerUserId":' + laoshiid +
+                                          ',"GCId":' + classid +
+                                          ',"Title":"' + title +
+                                          '","Contents":"' + contents +
+                                          '","BadeTime":"' + getInsertNowDate() +
+                                          '","EndTime":"' + str +
+                                          '","AmountMoney":' + money +
+                                          ',"IsSee":0' +
+                                          '}';
+                        $.post("http://{{.Website}}/orange/questionask/AddQuestionask/", addquestion,
+                            function (data) {
+                                if (data["id"] > 0) {
+                                    var adddongjie = '{"UserId":' + tiwenuserid +
+                                                                ',"FrozenMoney":' + money +
+                                                                ',"FrozenType":1' +
+                                                                ',"BusinessId":' + data["id"] +
+                                                                ',"FrozenTime":"' + getInsertNowDate() +
+                                                                '","FrozenState":1' +
+                                                                '}';
+                                    $.post("http://{{.Website}}/orange/frozenfunds/AddUserFrozenfunds/", adddongjie,
+                                        function (data) {
+                                            if (data["id"] > 0) {
+                                            }
+                                        });
+                                    alert("提问成功！");
+                                    window.location.href = "http://{{.Website}}/orange/Teacher/UserAskQuestion/";
+                                } else {
+                                    alert("提问失败！");
+                                }
+                            });
+                    } else {
+                        alert("账户余额不足，不能满足此次提问消费，请先充值！");
+                    }
+                } else {
+                    alert("没有账户信息！");
+                }
+            });
         }
-        fileForm.addEventListener("click", function (e) {
-            e.preventDefault();
-            var files = fileImage.files;
-            testAjax(files, --files.length);
-        }, false);
-    })(window, document);
-</script>
-<!--</body>
-</html>-->
+        var nowpiccount = 1;
+        function setImagePreview() {
+            var docObj = document.getElementById("file_image");
+            if (window.URL.createObjectURL(docObj.files[0]) != null) {
+                var imgObjPreview = document.getElementById("Img" + nowpiccount);
+                imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
+                document.getElementById("Img" + nowpiccount).style.display = "block";
+                nowpiccount = nowpiccount + 1;
+                return true;
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        (function (W, D) {
+            var fileForm = document.getElementById("file_form");
+            var fileImage = document.getElementById("file_image");
+            function testAjax(files, i) {
+                if (i < 0) {
+                    return;
+                }
+                var xhr = new XMLHttpRequest(),
+                     data = new FormData();
+                xhr.onload = function () {
+                    // 递归
+                    testAjax(files, --i);
+                };
+                //alert(files[i]);
+                data.append("file1", files[i]);
+                xhr.open("post", "http://{{.Website}}/orange/courseware/AddCoursewareOnbook/" + nowTagid, true);
+                xhr.send(data);
+            }
+            fileForm.addEventListener("click", function (e) {
+                e.preventDefault();
+                var files = fileImage.files;
+                testAjax(files, --files.length);
+            }, false);
+        })(window, document);
+    </script>
+</body>
+</html>
