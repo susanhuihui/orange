@@ -412,6 +412,9 @@ button::-moz-focus-inner{padding:0;border:0;}
 .aboutul{ height:auto; width:200px; float:left; text-align:center; border-bottom:none;}
 .aboutul li{ font-size:14px; height:60px;}
 
+.ull li {
+ float:left;}
+
 
 
 
