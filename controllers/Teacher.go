@@ -14,7 +14,7 @@ type TeacherController struct {
 
 //展示
 func (c *TeacherController) Get() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.Data["allUserscount"] = 200
 
 	c.TplNames = "teacher_Model.html" //
@@ -34,7 +34,7 @@ func (c *TeacherController) Get() {
 // @Failure 403
 // @router /TeacherList/:seltype [get]
 func (c *TeacherController) TeacherList() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	allsel := c.Ctx.Input.Params[":seltype"]
 	sellist := strings.Split(allsel, "&") //总长度为8
 	for i := 0; i < len(sellist); i++ {
@@ -52,7 +52,13 @@ func (c *TeacherController) TeacherList() {
 		c.Data["nianji"] = sellist[1]
 		fmt.Println(nianji)
 		if nianji != "" {
-			newnianji = nianji
+			//根据学龄段名称查询此学龄段主键id
+			schoolage, errage := models.GetSchoolagesByName(nianji)
+			if errage == nil && schoolage != nil {
+				newnianji = `%` + strconv.Itoa(schoolage.Id) + `%`
+			} else {
+				newnianji = `%%`
+			}
 		} else if nianji == "" {
 			newnianji = `%%`
 		}
@@ -118,12 +124,12 @@ func (c *TeacherController) TeacherList() {
 				var items string = `<div class="row" style="border-bottom: 1px solid #F1F1F1">
 									<div class=" col-sm-2">
 									<div class="teamainleft">
-									<a href="http://` + OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+									<a href="http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
 										<img class="listheadimg" src="` + v[i].AvatarPath + `" />
 									</a>
 									</div></div>
 									<div class="col-sm-7 teamainmiddle">
-									<a href="http://` + OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+									<a href="http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
 										<span>` + v[i].UserName + onlinestr + `</span>
 									</a>
 									<p>` + v[i].SchoolName + ` | ` + v[i].DegreeName + ` | ` + strconv.Itoa(v[i].LevelYear) + `级 | ` + v[i].Professional + `</p>
@@ -150,7 +156,7 @@ func (c *TeacherController) TeacherList() {
 // @Failure 403
 // @router /TeacherInformation/:tid [get]
 func (c *TeacherController) TeacherInformation() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":tid"]
 	userid, _ := strconv.Atoi(idStr) //获取点击的老师主键id
 	var vuser models.UserinformationTeacherModu
@@ -185,7 +191,7 @@ func (c *TeacherController) TeacherInformation() {
 // @Failure 403
 // @router /TeacherMessage/:tid [get]
 func (c *TeacherController) TeacherMessage() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":tid"]
 	userid, _ := strconv.Atoi(idStr)
 	var vuser models.UserinformationTeacher
@@ -208,7 +214,7 @@ func (c *TeacherController) TeacherMessage() {
 // @Failure 403
 // @router /ProblemModel/:adkid [get]
 func (c *TeacherController) ProblemModel() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":adkid"]
 	askid, _ := strconv.Atoi(idStr)
 	var vask models.QuestionaskJingCaiOne
@@ -239,7 +245,7 @@ func (c *TeacherController) ProblemModel() {
 // @Failure 403
 // @router /ProblemAnswer/:adkid [get]
 func (c *TeacherController) ProblemAnswer() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":adkid"]
 	askid, _ := strconv.Atoi(idStr)
 	var vask models.QuestionaskJingCaiOne
@@ -270,7 +276,7 @@ func (c *TeacherController) ProblemAnswer() {
 // @Failure 403
 // @router /UserAskQuestion/ [get]
 func (c *TeacherController) UserAskQuestion() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 
 	c.TplNames = "problem.html" //
 }
@@ -283,7 +289,7 @@ func (c *TeacherController) UserAskQuestion() {
 // @Failure 403
 // @router /TeacherSetMeet/ [get]
 func (c *TeacherController) TeacherSetMeet() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "reservationteacher.html" //
 }
 
@@ -295,7 +301,7 @@ func (c *TeacherController) TeacherSetMeet() {
 // @Failure 403
 // @router /StudentSetTeacherMeet/:tid [get]
 func (c *TeacherController) StudentSetTeacherMeet() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":tid"]
 	tid, _ := strconv.Atoi(idStr)
 	c.Data["Teacherid"] = tid
@@ -318,7 +324,7 @@ func (c *TeacherController) StudentSetTeacherMeet() {
 // @Failure 403
 // @router /TeacherOnlineClass/:onlineid [get]
 func (c *TeacherController) TeacherOnlineClass() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	onlineidStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(onlineidStr)
 	c.Data["onlineid"] = onlineid
@@ -333,7 +339,7 @@ func (c *TeacherController) TeacherOnlineClass() {
 // @Failure 403
 // @router /StudentOnlineClass/:onlineid [get]
 func (c *TeacherController) StudentOnlineClass() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
 	c.Data["onlineid"] = onlineid
@@ -349,7 +355,7 @@ func (c *TeacherController) StudentOnlineClass() {
 // @Failure 403
 // @router /TeacherTryListenClass/:listenid [get]
 func (c *TeacherController) TeacherTryListenClass() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	onlineidStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(onlineidStr)
 	c.Data["listenid"] = listenid
@@ -364,7 +370,7 @@ func (c *TeacherController) TeacherTryListenClass() {
 // @Failure 403
 // @router /StudentTryListenClass/:listenid [get]
 func (c *TeacherController) StudentTryListenClass() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	idStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(idStr)
 	c.Data["listenid"] = listenid
@@ -379,7 +385,7 @@ func (c *TeacherController) StudentTryListenClass() {
 // @Failure 403
 // @router /ClassOverHtml/ [get]
 func (c *TeacherController) ClassOverHtml() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 
 	c.TplNames = "classover.html" //
 }

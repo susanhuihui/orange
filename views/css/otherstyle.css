@@ -105,7 +105,7 @@ body{ background-color:#f5f5f5;}
 
 
 /*提问样式*/
-.datestyle{ border-radius:3px; height:26px; width:145px; padding:0 15px 0 15px; border:1px solid #E6E6E6;}
+.datestyle{ border-radius:3px; height:36px; width:165px; padding:0 15px 0 15px; border:1px solid #E6E6E6;}
 .tjfj{padding-top:8px; padding-bottom:8px; text-align:left; background-color:#F2F2F2;}
 .tjfj a{text-decoration:none; color:#FF9103; font-weight:bold; margin-left:10px;}
 
@@ -201,13 +201,22 @@ body{ background-color:#f5f5f5;}
 .stutabtop td{ width:60px;}
 .stutabtop span{ font-size:14px; }
 .stutabtop img{ height:23px;}
+.stutabtops{ margin-left:3px; margin-top:65px;text-align:center;}
+.stutabtops td{ width:80px;}
+.stutabtops span{ font-size:14px; }
+.stutabtops img{ height:23px;}
 .stutabbottom{ margin-top:6px; margin-bottom:20px; margin-left:auto; margin-right:auto; color:#A9A9A9; padding-bottom:10px; width:100%;}
 .stutabbottom td{ height:30px;}
+.stutabbottoms{ margin-top:16px; margin-bottom:20px; margin-left:auto; margin-right:auto; color:#A9A9A9; padding-bottom:10px; width:80%;}
+.stutabbottoms td{ height:40px;}
 .tagmain{ width:90%; margin-left:auto; padding-bottom:20px; margin-right:auto; border-bottom:1px solid #F3F3F3;}
 .stuth{ background-color:#F4F4F4;}
 .stutable{ width:100%; margin-left:auto; margin-right:auto; text-align:center; margin-top:10px; margin-bottom:20px; color:#8D8D8D;}
 .stutable th{border-top:1px solid #fe9627; height:40px; text-align:center;  font-size:13px; color:#555555;}
 .stutable td{ height:40px; border-bottom:1px solid #F4F4F4;}
+.stutables{ width:90%; margin-left:auto; margin-right:auto; text-align:center; margin-top:10px; margin-bottom:20px; color:#8D8D8D;}
+.stutables th{border-top:1px solid #fe9627; height:40px; text-align:center;  font-size:13px; color:#555555;}
+.stutables td{ height:40px; border-bottom:1px solid #F4F4F4;}
 .stutabbtn{ border:none; border-radius:20px; padding:5px 15px 5px 15px; background-color:#fe9627; color:#FFFFFF;}
 .stutabbtns{ border:none; border-radius:20px; padding:5px 15px 5px 15px; background-color:#D0D0D0; color:#FFFFFF;}
 .rightbottomtab{ border-bottom:1px solid #F3F3F3; width:100%; text-align:center; margin-left:auto; margin-right:auto; height:30px;}
@@ -299,6 +308,9 @@ body{ background-color:#f5f5f5;}
 .teamesstab td{ height:30px;}
 .teamesstd{border-bottom:1px solid #EDEDED;}
 
+.teamesstabs{ border-top:1px solid #EDEDED; width:90%; margin-left:auto; margin-right:auto; padding-top:15px; text-align:left; color:#8D8D8D;}
+.teamesstabs td{ height:45px;}
+
 
 /*教师列表*/
 .teacherlistlefttop{width:99%; height:auto; margin-top:10px; float:left; background-color:#FFF; color:#8D8D8D;}
@@ -314,7 +326,7 @@ body{ background-color:#f5f5f5;}
 .listheadimg{ border-radius:10px; height:100px; margin-bottom:10px;}
 .tealisttd{border-bottom:1px solid #EDEDED; width:120px;}
 .teamainleft{ padding:25px 0px 10px 0px; text-align:center;}
-.teamainmiddle{float:left;padding:35px 0px 10px 20px;}
+.teamainmiddle{ text-align:left; padding:35px 0px 10px 20px;}
 .teamainmiddle a{ text-decoration:none;}
 .teamainmiddle p{ line-height:30px; }
 .teamainmiddle span{ font-size:18px; color:#fe9627;}
@@ -326,11 +338,17 @@ body{ background-color:#f5f5f5;}
 .teaheadtab td{ height:20px; padding-top:5px; padding-bottom:5px;}
 .teaheadtext{border:#CCC 1px solid; height:25px; border-radius:5px; width:100%; margin-top:15px; }
 .teasrightbottom{width:100%; height:auto; margin-left:2%; float:left; background-color:#fff; margin-top:10px;}
-.teaimgimg{ width:90%; padding:15px; margin-left:auto; margin-right:auto; text-align:center;}
+.teaimgimg{ width:100%; padding:15px; margin-left:auto; margin-right:auto; text-align:center;}
 .teaimgimg p{ line-height:35px;}
 .teaimgimg span{ font-size:18px; color:#fe9627;}
 .teaimgimg a{ text-decoration:none;}
 .teaheadimgimg{ border-radius:70px; height:80px;}
+
+.liulan{  width:100%; text-align:center; margin-left:10px; margin-right:10px;}
+.liulan span{ font-size:14px; color:#818181;}
+.liulan img{ height:20px;}
+
+
 
 /*预约*/
 .resertable{ width:90%; margin-left:auto; margin-right:auto; text-align:center; margin-top:10px; border-bottom:1px solid #EBEBEB;}
@@ -365,7 +383,7 @@ body{ background-color:#f5f5f5;}
 .pagea a{text-decoration:none; padding:5px 10px 5px 10px; background-color:#FF9D00; color:#fff; border:1px solid #FF9D00;}
 
 /* 分页样式pagination */
-.pagination{font-size:80%;}    
+.pagination{font-size:80%; float:right; margin-right:10%;}    
 .pagination a{text-decoration:none;border:solid 1px #E9E9E9;color:#FF9D00;padding:5px 10px 5px 10px;}
 .pagination a, .pagination span{display:inline-block;float:left;padding:0.3em 0.5em;margin-right:5px;margin-bottom:5px;padding:5px 10px 5px 10px;}
 .pagination .current{background:#FF9D00;color:#fff;border:solid 1px #E9E9E9;padding:5px 10px 5px 10px;}

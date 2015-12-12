@@ -129,7 +129,7 @@
                             <div class="col-xs-6">
                                 <span id="txthighschoolname">{{.HighSchoolName}}</span>
                                 <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianjihigh">
-                                    <span style="color: red" onclick="getprovence(0)">编辑</span><!--中小学0，大学1-->
+                                    <span style="color: red" onclick="getprovence(3)">编辑</span><!--中小学0，大学1-->
                                 </a>
                             </div>
                         </div>
@@ -189,6 +189,16 @@
                                 <span id="showgrid">{{.GradeName}}</span>
                                 <select class="form-control" id="selgrid" style="display: none;">
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                补习学龄段:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtsage">{{.AgeNames}}</span>
+                                <div class="col-xs-8" id="selSchoolage" style ="display:none;">
+                            </div>
                             </div>
                         </div>
                         <div class="row message">
@@ -263,7 +273,29 @@
                                             </td>
                                             <td class="even">
                                                 <input type="text" class="yzmtext" id="upyanzhengma">
-                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" onclick="getYzCode()">
+                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
+                                                <script type="text/javascript">
+                                                    var wait = 60;
+                                                    function time(o) {
+                                                        if (wait == 0) {
+                                                            o.removeAttribute("disabled");
+                                                            o.value = "点击获取验证码";
+                                                            wait = 60;
+                                                        } else {
+                                                            o.setAttribute("disabled", true);
+                                                            o.value = "重新发送(" + wait + ")";
+                                                            wait--;
+                                                            if (wait == 0) {
+                                                                delPhoneVerifica();
+                                                            }
+                                                            setTimeout(function () {
+                                                                time(o)
+                                                            },
+                                                            1000)
+                                                        }
+                                                    }
+                                                    document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                </script>
                                             </td>
                                         </tr>
                                     </table>
@@ -353,6 +385,7 @@
                         </div>
                     </div>
                     <p id="userlistclass" style="display: none;">{{.userlistclass}}</p>
+                    <p id="schoolagelist" style="display: none;">{{.schoolagelist}}</p>
                     <p id="UserDegree" style="display: none;">{{.UserDegree}}</p>
                     <!--学位-->
                     <p id="GradeId" style="display: none;">{{.GradeId}}</p>
@@ -376,7 +409,7 @@
     </div>
     {{template "footer.html" .}}
     <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/personal.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
@@ -411,6 +444,24 @@
                 }
                 document.getElementById("selClass").innerHTML = "";
                 $("#selClass").append(coursestr);
+            }); 
+            var allSccage = "http://{{.Website}}/orange/schoolages/GetAllSchoolages/1/100/";
+            $.getJSON(allSccage, function (dataage) {
+                var classte = document.getElementById("schoolagelist").innerText;
+                var usli = classte.split(',');
+                var courseagestr = '';
+                for (var i = 0; i < dataage.length ; i++) {
+                    var check = "";
+                    for (var j = 0; j < usli.length; j++) {
+                        if (usli[j] == dataage[i]["Id"]) {
+                            check = ' checked = "checked" ';
+                        }
+                    }
+                    var items = '<input type="checkbox" value="' + dataage[i]["Id"] + '" id="ckage' + i + '" ' + check + '>' + dataage[i]["AgeName"] + '&nbsp;&nbsp;&nbsp; ';
+                    courseagestr += items;
+                }
+                document.getElementById("selSchoolage").innerHTML = "";
+                $("#selSchoolage").append(courseagestr);
             });
             var alldegree = "http://{{.Website}}/orange/degree/GetAllDegree/1/100/";
             $.getJSON(alldegree, function (data) {
@@ -468,7 +519,7 @@
                 $.getJSON(allCitys, function (data) {
                     var levelstr = '<p style="color:red;">市：</p>';
                     if (data != null && data.length > 0) {
-                        if (hightypeid == 0) {
+                        if (hightypeid == 3) {
                             for (var i = 0; i < data.length ; i++) {
                                 var items = '<a id="" onclick="getcontry(' + data[i]["Id"] + ')">' + data[i]["CityName"] + '</a> &nbsp;&nbsp;';
                                 levelstr += items;
@@ -538,7 +589,7 @@
 
         //根据选择的学校id显示学校名称
         function getSchoolId(sid, schoolname) {
-            if (hightypeid == 0) {//高中
+            if (hightypeid == 3) {//高中
                 document.getElementById("selHighSchoolid").innerText = sid;
                 document.getElementById("selHighSchoolName").innerText = schoolname;
             } else {//大学
@@ -549,7 +600,7 @@
 
         //点击确定后显示学校名字并绑定选择的学校主键
         function showSchoolname() {
-            if (hightypeid == 0) {//高中
+            if (hightypeid == 3) {//高中
                 var hid = document.getElementById("selHighSchoolid").innerText;
                 var hname = document.getElementById("selHighSchoolName").innerText;
                 document.getElementById("highSchoolid").innerText = hid;
@@ -588,7 +639,9 @@
             document.getElementById("youxiang").style.display = "none";//邮箱
             document.getElementById("txtusermail").style.display = "block";
             document.getElementById("Professional").style.display = "none";//专业
-            document.getElementById("txtProfessional").style.display = "block";
+            document.getElementById("txtProfessional").style.display = "block"; 
+            document.getElementById("txtsage").style.display = "none";//补习学龄段
+            document.getElementById("selSchoolage").style.display = "block";
             var gradeid = document.getElementById("GradeId").innerText;//年级id
             if (gradeid != "") {
                 document.getElementById("selgrid").style.display = "block";
@@ -632,6 +685,18 @@
             if (head + "" != "" && head + "" != "undefined") {
                 userhead = head;
             }
+            //获取选取选中的补习学龄段
+            var allselageid = "";
+            for (var i = 0; i < 3; i++) {
+                var items = document.getElementById("ckage" + i);
+                if (items != null) {
+                    if (items.checked) {
+                        allselageid = allselageid + items.value + ",";
+                    }
+                }
+            }
+            allselageid = allselageid.substring(0, allselageid.length - 1);
+            
             var yanzhengpass = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
             $.getJSON(yanzhengpass, function (datauser) {
                 var upuser = '{' +
@@ -649,6 +714,7 @@
                     '"LevelYear":' + useryear + ',' +
                     '"IdentityId":' + datauser["IdentityId"] + ',' +
                     '"GradeId":' + usergrade + ',' +
+                    '"SchoolAgeIdT":"' + allselageid + '",' +
                     '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                     '"Professional":"' + userprofess + '",' +
                     '"Mailbox":"' + usermail + '",' +
@@ -748,6 +814,7 @@
                         '"LevelYear":' + datauser["LevelYear"] + ',' +
                         '"IdentityId":' + datauser["IdentityId"] + ',' +
                         '"GradeId":' + datauser["GradeId"] + ',' +
+                        '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
                         '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                         '"Professional":"' + datauser["Professional"] + '",' +
                         '"Mailbox":"' + datauser["Mailbox"] + '",' +
@@ -790,44 +857,49 @@
             var phone = document.getElementById("upuserphone").value;
             var re = /^1\d{10}$/;
             if (re.test(phone)) {
-                document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
-                phoneistorf = 1;
+                var oldphone = document.getElementById("olduserphone").innerText;
+                if (trim(oldphone) == trim(phone)) {
+                    alert("修改的手机不能与旧手机号一样！");
+                    return;
+                }
+                var getphoneuser = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
+                $.getJSON(getphoneuser, function (datas) {
+                    if (datas != null && datas["result"] == 1) {
+                        alert("此手机号已经注册，不能重复使用！");
+                    } else {
+                        document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
+                        document.getElementById("getyanzheng").disabled = false;
+                        phoneistorf = 1;
+                    }
+                });
             } else {
                 document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
                 phoneistorf = 0;
             }
         }
+        var nowPhone = "";//为了保证删除时删除的是发送时的手机号
         function getYzCode() {
-            var oldphone = document.getElementById("olduserphone").innerText;
             var phone = document.getElementById("upuserphone").value;
-            if (trim(oldphone) == trim(phone)) {
-                alert("修改的手机不能与旧手机号一样！");
-                return;
+            nowPhone = phone;
+            //发送验证码
+            if (phoneistorf == 1) {
+                $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
+                    alert("发送成功");
+                });
+            } else {
+                alert("手机号输入不正确！请输入正确手机号码！");
             }
-            //验证这个手机是否已经有人注册使用了
-            var getphoneuser = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
-            $.getJSON(getphoneuser, function (datas) {
-                if (datas != null && datas["result"] == 1) {
-                    alert("此手机号已经注册，不能重复使用！");
-                } else {
-                    //发送验证码
-                    if (phoneistorf == 1) {
-                        $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
-                            alert("发送成功");
-                        });
-                    } else {
-                        alert("手机号输入不正确！请输入正确手机号码！");
-                    }
-                }
-            });
         }
 
         //确认修改手机号码
         function saveUserPhone() {
             var oldphone = document.getElementById("olduserphone").innerText;
-            var phone = document.getElementById("upuserphone").value;
+            var phone = trim(document.getElementById("upuserphone").value);
             var useryanzheng = document.getElementById("upyanzhengma").value;
-            if (trim(useryanzheng) + "" == "") {
+            if (phone + "" == "") {
+                alert("请先填写您要修改的手机号");
+                return;
+            } if (trim(useryanzheng) + "" == "") {
                 alert("验证码不能为空");
                 return;
             }
@@ -858,6 +930,7 @@
                             '"LevelYear":' + datauser["LevelYear"] + ',' +
                             '"IdentityId":' + datauser["IdentityId"] + ',' +
                             '"GradeId":' + datauser["GradeId"] + ',' +
+                            '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
                             '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                             '"Professional":"' + datauser["Professional"] + '",' +
                             '"Mailbox":"' + datauser["Mailbox"] + '",' +
@@ -873,6 +946,7 @@
                            function (data) {
                                if (data == "OK") {
                                    alert("修改成功！");
+                                   delPhoneVerifica();
                                    window.location.href = "http://{{.Website}}/orange/Main/UpdateStudent/";
                                } else {
                                    alert("修改失败！");
@@ -888,6 +962,12 @@
             var imgObjPreview = document.getElementById("userhead");
             imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
             return true;
+        }
+        //验证码倒计时结束后删除此手机下的所有验证信息
+        function delPhoneVerifica() {
+            $.getJSON("http://{{.Website}}/orange/verification/DeleteVerificationByPhone/" + nowPhone, function (data) {
+
+            });
         }
     </script>
 </body>

@@ -41,6 +41,19 @@ func GetSchoolagesById(id int) (v *Schoolages, err error) {
 	return nil, err
 }
 
+//	根据学龄段名称查询一条学龄段信息
+//	2015-12-12
+func GetSchoolagesByName(agename string) (schoolages *Schoolages, err error) {
+	o := orm.NewOrm()
+	var ages Schoolages
+	err = o.QueryTable("schoolages").Filter("AgeName", agename).One(&ages)
+	schoolages = &ages
+	if err == nil {
+		return schoolages, nil
+	}
+	return nil, err
+}
+
 // GetAllSchoolages retrieves all Schoolages matches certain condition. Returns empty list if
 // no records exist
 func GetAllSchoolages(query map[string]string, fields []string, sortby []string, order []string,

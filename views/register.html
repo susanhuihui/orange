@@ -33,26 +33,50 @@
                 <div class=" col-sm-1"></div>
             </div>
             <div class=" row registertab">
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-1 odd"> &nbsp;&nbsp;&nbsp;手机号： </div>
                 <div class=" col-sm-8 odd">
-                    &nbsp;&nbsp;&nbsp;手机号：                         	
-                    <input type="text" class="regtext" id="userphone" onblur="upColor()">
+                    <input type="text" class="form-control regtext" id="userphone" onblur="upColor()">
                 </div>
                 <div class=" col-sm-2 odder"><span id="errphone"></span></div>
             </div>
             <div class="row">
-                <div class=" col-sm-2">&nbsp;</div>
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-1 odd">&nbsp;&nbsp;&nbsp;验证码：</div>
                 <div class=" col-sm-8 odd">
-                    &nbsp;&nbsp;&nbsp;验证码：                           	
+                                               	
                     <input type="text" class="yzmtext" id="useryanzheng">
-                    <input type="button" id="getyanzheng" class="yzmbtn" onclick="getYzCode()" value="点击获取验证码">
+                    <input type="button" id="getyanzheng" class="yzmbtn" value="点击获取验证码">
+                    <script type="text/javascript">                       
+                        var wait = 60;
+                        function time(o) {
+                            if (wait == 0) {
+                                o.removeAttribute("disabled");
+                                o.value = "点击获取验证码";
+                                wait = 60;
+                            } else {
+                                o.setAttribute("disabled", true);
+                                o.value = "重新发送(" + wait + ")";
+                                wait--;
+                                if (wait == 0) {
+                                    delPhoneVerifica();
+                                }
+                                setTimeout(function () {
+                                    time(o)
+                                },
+                                1000)
+                            }
+                        }
+                        document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                    </script>
                 </div>
                 <div class=" col-sm-2">&nbsp;</div>
             </div>
             <div class="row">
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-1 odd">注册身份：</div>
                 <div class=" col-sm-8 odd">
-                    注册身份：                            	
+                                                	
                 <input type="radio" name="identityname" value="学生" checked="checked">
                     学生 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;                            
                 <input type="radio" name="identityname" value="家长">
@@ -60,18 +84,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-1 odd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;昵称： </div>
                 <div class=" col-sm-8 odd">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;昵称：                           	
-                    <input type="text" class="regtext" id="usernicheng" onblur="checkName()">
+                                              	
+                    <input type="text" class="form-control regtext" id="usernicheng" onblur="checkName()">
                 </div>
                 <div class=" col-sm-2 odder"><span id="errnicheng"></span></div>
             </div>
             <div class="row">
-                <div class=" col-sm-2"></div>
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-1 odd">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：</div>
                 <div class=" col-sm-8 odd">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;密码：                          	
-                    <input type="password" class="regtext" id="userpasword"  onblur="checkPass()">
+                                              	
+                    <input type="password" class="form-control regtext" id="userpasword"  onblur="checkPass()">
                 </div>
                 <div class=" col-sm-2 odder"><span id="errpass"></span></div>
             </div>
@@ -85,14 +111,14 @@
             <div class="row">
                 <div class=" col-sm-2"></div>
                 <div class=" col-sm-8 even" style="margin-bottom: 35px;">
-                    <input type="button" class="regbtn" onclick="UserRegistered()" value="立即注册" />
+                    <input type="button" class="regbtn evabtn" onclick="UserRegistered()" value="立即注册" />
                 </div>
             </div>
         </div>
     </div>
     {{template "footer.html" .}}
     <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
     <script type="text/javascript">
@@ -162,8 +188,10 @@
             }
         }
 
+        var nowPhone = "";//为了保证删除时删除的是发送时的手机号
         function getYzCode() {
             var phone = document.getElementById("userphone").value;
+            nowPhone = phone;
             if (phoneistorf == 1) {
                 $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
                     alert("发送成功");
@@ -171,6 +199,13 @@
             } else {
                 alert("手机号输入不正确！请输入正确手机号码！");
             }
+        }
+
+        //验证码倒计时结束后删除此手机下的所有验证信息
+        function delPhoneVerifica() {
+            $.getJSON("http://{{.Website}}/orange/verification/DeleteVerificationByPhone/" + nowPhone, function (data) {
+               
+            });            
         }
 
         //控制错误控件显示内容,参数：控件名称，要显示的文字
@@ -227,6 +262,7 @@
                                 //alert(data["id"]);
                                 if (data["id"] > 0) {
                                     alert("注册成功！请去首页登录！");
+                                    delPhoneVerifica();//删除注册号码的验证码
                                     window.location.href = "http://{{.Website}}/";
                                 } else {
                                     alert("注册失败！");

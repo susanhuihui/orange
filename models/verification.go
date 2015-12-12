@@ -61,6 +61,19 @@ func GetVerificationByPhone(phone string) (ver Verification, err error) {
 	return ver, qs
 }
 
+//	查询手机号下的所有验证码信息
+//	2015-12-12
+func GetVerificationListByPhone(phone string) (verif []Verification, err error) {
+	o := orm.NewOrm()
+	var allver []Verification
+	_, errget := o.QueryTable("verification").Filter("UserPhone", phone).All(&allver)
+	verif = allver
+	if errget == nil {
+		return verif, nil
+	}
+	return nil, err
+}
+
 // GetAllVerification retrieves all Verification matches certain condition. Returns empty list if
 // no records exist
 func GetAllVerification(query map[string]string, fields []string, sortby []string, order []string,

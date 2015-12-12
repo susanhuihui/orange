@@ -97,39 +97,39 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <table class="stutabbottom">
+                                <table class="stutabbottoms">
                                     <tr>
-                                        <td class="odd" style="width: 20%;">学习资历：
+                                        <td style="width: 30%;">学习资历：
                                         </td>
                                         <td>{{.SchoolName}} | {{.DegreeName}} | {{.LevelYear}}级
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="odd">学习专业：
+                                        <td>学习专业：
                                         </td>
                                         <td>{{.Professional}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="odd">主辅导课：
+                                        <td>主辅导课：
                                         </td>
                                         <td>{{.CourseName}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="odd">主辅导课：
+                                        <td>主辅导课：
                                         </td>
                                         <td>{{.CourseNameFu}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="odd" style="padding-top: 20px;">教师简介：</td>
-                                        <td style="padding-top: 20px;">{{.BriefIntroduction}}
+                                        <td style="padding-top: 15px;">教师简介：</td>
+                                        <td style="padding-top: 15px;">{{.BriefIntroduction}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td class="odd" style="padding-top: 25px;">兴趣爱好：</td>
-                                        <td style="padding-top: 25px;">{{.UserHobby}}
+                                        <td style="padding-top: 15px;">兴趣爱好：</td>
+                                        <td style="padding-top: 5px;">{{.UserHobby}}
                                         </td>
                                     </tr>
                                 </table>
@@ -144,13 +144,13 @@
                                             </td>
                                         </tr>
                                     </table>
-                                    <table class="stutable" cellspacing="0" id="TeacherAllClass">
+                                    <table class="stutables" cellspacing="0" id="TeacherAllClass">
                                     </table>
                                     <div id="Paginationcourse" class="pagination"></div>
                                 </div>
                             </div>
                             <div id="divtap3" style="display: block;">
-                                <table class="stutabtop">
+                                <table class="stutabtops">
                                     <tr>
                                         <td>
                                             <img src="images/jxjl.png" />
@@ -164,7 +164,7 @@
 
 
                             <div id="xfjl1">
-                                <table class="teamesstab" cellspacing="0" id="TeacherAllPingjia">
+                                <table class="teamesstabs" cellspacing="0" id="TeacherAllPingjia">
                                 </table>
                                 <div id="Pagination2" class="pagination"></div>
 
@@ -192,12 +192,15 @@
                             <p>
                                 您可以在输入框里填写您想学的课程，目前的学习状况等信息，老师看到会第一时间进行回复。                        
                             </p>
-                            <textarea class="teaarea" id="messcount"></textarea>
+                            <textarea class="form-control teaarea" id="messcount"></textarea>
                             <input type="button" class="teachersbtn" value="提交" onclick="addmessage()">
                         </div>
                     </div>
                 </div>
-                <div class="tearightbottom" style="border-bottom: 2px solid #f5f5f5;" id="anserSee">
+                <div class="liulan" style="text-align: left;">
+                    <img src="images/pjjl.png" width="25" /><span>&nbsp;谁浏览过我</span>
+                </div>
+                <div class="" id="anserSee" style="">
                     
                 </div>
             </div>
@@ -206,7 +209,7 @@
 
     {{template "footer.html" .}}    
     <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
@@ -447,14 +450,20 @@
                 var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByTid/" + userid + "/浏览/1/4";
                 //alert(allseestr);
                 $.getJSON(allseestr, function (data) {
-                    var allseelist = '<div class="rightbottomtab" style="text-align: left;">' +
-                                     '<img src="images/pjjl.png" /><span>谁浏览过我</span>' +
-                                     '</div>';
+                    var allseelist = "";//'<div class="rightbottomtab" style="text-align: left;">' +
+                                     //'<img src="images/pjjl.png" /><span>谁浏览过我</span>' +
+                                     //'</div>';
                     if (data != null) {
                         //alert(data);
                         for (var i = 0; i < data.length ; i++) {
-                            var itemse = '<div class="teaimgimg">' +
-                                         '<img class="teaheadimgimg" src="' + data[i]["AvatarPath"] + '" />' +
+                            var userhead = "";
+                            if (data[i]["AvatarPath"] == null || data[i]["AvatarPath"]+"" == "") {
+                                userhead = "images/PersonHeadImg/moren.png";
+                            } else {
+                                userhead = data[i]["AvatarPath"]
+                            }
+                            var itemse = '<div class="teaimgimg" style=" padding-top:20px;">' +
+                                         '<img class="teaheadimgimg" src="' + userhead + '" />' +
                                          '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + data[i]["AgeName"] + '</a></p>' +
                                          '</div>';
                             allseelist += itemse;

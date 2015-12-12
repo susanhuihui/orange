@@ -22,22 +22,21 @@
                     <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">选择学校</h3>
                 </div>
                 <div class="modal-body">
-                    <table class="stutablepop" style="text-align: left;">
+                    <table class="stutablepop" style="text-align: left;" id="selSchooldiv">
                         <tr>
-                            <td id="prolists">省：河北省 河南省 黑龙江省 吉林省 辽宁省 云南省 山东省 陕西省 山西省 湖南省 湖北省
-                                广东省 广西省 福建省 
+                            <td id="prolists"> 
                             </td>
                         </tr>
                         <tr>
-                            <td id="citylists">市：石家庄 唐山 邢台 廊坊 保定 秦皇岛 邯郸 张家口 沧州
+                            <td id="citylists">
                             </td>
                         </tr>
                         <tr>
-                            <td style="border-bottom: 1px solid #E7E7E7;" id="contLists">区：桥西区 新华区 裕华区 长安区 
+                            <td style="border-bottom: 1px solid #E7E7E7;" id="contLists">
                             </td>
                         </tr>
                         <tr>
-                            <td id="schoollists">学校：经贸大学 师范大学 政法大学 经济学院 体育学院 传媒学院 科技大学
+                            <td id="schoollists">
                             </td>
                         </tr>
                     </table>
@@ -126,6 +125,16 @@
                         </div>
                         <div class="row message">
                             <div class="col-xs-4 perfont">
+                                学龄段:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtagename">{{.AgeName}}</span>
+                                <select class="form-control" id="selage" style="display: none">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
                                 所在学校:                                   
                             </div>
                             <div class="col-xs-8">
@@ -133,16 +142,6 @@
                                 <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
                                     <span style="color: red" onclick="getprovence()">编辑</span>
                                 </a>
-                            </div>
-                        </div>
-                        <div class="row message">
-                            <div class="col-xs-4 perfont">
-                                学龄段:                                   
-                            </div>
-                            <div class="col-xs-6">
-                                <span id="txtagename">{{.AgeName}}</span>
-                                <select class="form-control" id="selage" style="display: none">
-                                </select>
                             </div>
                         </div>
                         <div class="row message">
@@ -219,7 +218,29 @@
                                             <td class="odd">验证码：</td>
                                             <td class="even">
                                                 <input type="text" class="yzmtext" id="upyanzhengma">
-                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" onclick="getYzCode()">
+                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
+                                                <script type="text/javascript">
+                                                    var wait = 60;
+                                                    function time(o) {
+                                                        if (wait == 0) {
+                                                            o.removeAttribute("disabled");
+                                                            o.value = "点击获取验证码";
+                                                            wait = 60;
+                                                        } else {
+                                                            o.setAttribute("disabled", true);
+                                                            o.value = "重新发送(" + wait + ")";
+                                                            wait--;
+                                                            if (wait == 0) {
+                                                                delPhoneVerifica();
+                                                            }
+                                                            setTimeout(function () {
+                                                                time(o)
+                                                            },
+                                                            1000)
+                                                        }
+                                                    }
+                                                    document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                </script>
                                             </td>
                                         </tr>
                                     </table>
@@ -319,7 +340,7 @@
     </div>
     {{template "footer.html" .}}
     <script src="b/js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/personal.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
@@ -373,22 +394,29 @@
                 $("#selage").append(coursestr);
             });
 
-            getprovence();
+            //getprovence();
         }
         //初始省份信息
         function getprovence() {
-            //查询全部省份
-            var allProvince = "http://{{.Website}}/orange/province/GetAllProvince/1/100/";
-            $.getJSON(allProvince, function (data) {
-                var levelstr = '<p style="color:red;">省份：</p>';
-                for (var i = 0; i < data.length ; i++) {
-                    var items = '<a id="" onclick="getcity(' + data[i]["Id"] + ')">' + data[i]["ProName"] + '</a> &nbsp;&nbsp;';
-                    levelstr += items;
-                }
-                document.getElementById("prolists").innerHTML = "";
-                $("#prolists").append(levelstr);
-                getcity(data[0]["Id"]);
-            });
+            var userageid = document.getElementById("selage").value;
+            if (userageid > 0) {
+                //查询全部省份
+                var allProvince = "http://{{.Website}}/orange/province/GetAllProvince/1/100/";
+                $.getJSON(allProvince, function (data) {
+                    var levelstr = '<p style="color:red;">省份：</p>';
+                    for (var i = 0; i < data.length ; i++) {
+                        var items = '<a id="" onclick="getcity(' + data[i]["Id"] + ')">' + data[i]["ProName"] + '</a> &nbsp;&nbsp;';
+                        levelstr += items;
+                    }
+                    document.getElementById("prolists").innerHTML = "";
+                    $("#prolists").append(levelstr);
+                    getcity(data[0]["Id"]);
+                });
+            }
+            else {
+                document.getElementById("selSchooldiv").innerHTML = "";
+                document.getElementById("selSchooldiv").innerHTML = "请先选择学龄段";
+            }
         }
 
         //根据省份id获取城市信息
@@ -440,7 +468,17 @@
         }
         //根据区获取学校
         function getSchool(cid) {
-            var allContry = "http://{{.Website}}/orange/schools/GetSchoolsByCity/" + cid + "/0";
+            var schooltypeid = 0;
+            var userageid = document.getElementById("selage").value;
+            if (userageid + "" == "1") {//小学
+                schooltypeid = 0;
+            } else if (userageid + "" == "2") {//初中
+                schooltypeid = 2;
+            } else if (userageid + "" == "3") {//高中
+                schooltypeid = 3;
+            }
+            //alert(cid + "ddd" + schooltypeid);
+            var allContry = "http://{{.Website}}/orange/schools/GetSchoolsByCity/" + cid + "/" + schooltypeid;
             $.getJSON(allContry, function (data) {
                 var levelstr = '<p style="color:red;">学校：</p>';
                 if (data != null && data.length > 0) {
@@ -461,10 +499,15 @@
 
         //点击确定后显示学校名字并绑定选择的学校主键
         function showSchoolname() {
-            var id = document.getElementById("selSchoolId").innerText;
-            var name = document.getElementById("selSchoolName").innerText;
-            document.getElementById("SchoolId").innerText = id;
-            document.getElementById("txtschoolname").innerText = name;
+            var userageid = document.getElementById("selage").value;
+            if (userageid > 0) {
+                var id = document.getElementById("selSchoolId").innerText;
+                var name = document.getElementById("selSchoolName").innerText;
+                document.getElementById("SchoolId").innerText = id;
+                document.getElementById("txtschoolname").innerText = name;
+            } else {
+                //alert("BUZUO");
+            }
         }
 
         //编辑按钮，修改为编辑状态
@@ -535,6 +578,7 @@
                     '"LevelYear":' + useryear + ',' +
                     '"IdentityId":' + datauser["IdentityId"] + ',' +
                     '"GradeId":' + datauser["GradeId"] + ',' +
+                    '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
                     '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                     '"Professional":"' + datauser["Professional"] + '",' +
                     '"Mailbox":"' + usermail + '",' +
@@ -626,6 +670,7 @@
                         '"LevelYear":' + datauser["LevelYear"] + ',' +
                         '"IdentityId":' + datauser["IdentityId"] + ',' +
                         '"GradeId":' + datauser["GradeId"] + ',' +
+                        '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
                         '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                         '"Professional":"' + datauser["Professional"] + '",' +
                         '"Mailbox":"' + datauser["Mailbox"] + '",' +
@@ -663,36 +708,39 @@
             var phone = document.getElementById("upuserphone").value;
             var re = /^1\d{10}$/;
             if (re.test(phone)) {
-                document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
-                phoneistorf = 1;
+                var oldphone = document.getElementById("olduserphone").innerText;
+                if (trim(oldphone) == trim(phone)) {
+                    alert("修改的手机不能与旧手机号一样！");
+                    return;
+                }
+                var getphoneuser = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
+                $.getJSON(getphoneuser, function (datas) {
+                    if (datas != null && datas["result"] == 1) {
+                        alert("此手机号已经注册，不能重复使用！");
+                    } else {
+                        document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
+                        document.getElementById("getyanzheng").disabled = false;
+                        phoneistorf = 1;
+                    }
+                });
             } else {
                 document.getElementById("getyanzheng").style.backgroundColor = yinColor;//手机号码输入错误获取验证码按钮不显色
                 phoneistorf = 0;
             }
         }
+
+        var nowPhone = "";//为了保证删除时删除的是发送时的手机号
         function getYzCode() {
-            var oldphone = document.getElementById("olduserphone").innerText;
             var phone = document.getElementById("upuserphone").value;
-            if (trim(oldphone) == trim(phone)) {
-                alert("修改的手机不能与旧手机号一样！");
-                return;
+            nowPhone = phone;
+            if (phoneistorf == 1) {
+                $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
+                    alert("发送成功");
+                });
+            } else {
+                alert("手机号输入不正确！请输入正确手机号码！");
             }
-            //验证这个手机是否已经有人注册使用了
-            var getphoneuser = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + phone;
-            $.getJSON(getphoneuser, function (datas) {
-                if (datas != null && datas["result"] == 1) {
-                    alert("此手机号已经注册，不能重复使用！");
-                } else {
-                    //发送验证码
-                    if (phoneistorf == 1) {
-                        $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
-                            alert("发送成功");
-                        });
-                    } else {
-                        alert("手机号输入不正确！请输入正确手机号码！");
-                    }
-                }
-            });
+
         }
 
         //确认修改手机号码
@@ -700,7 +748,7 @@
             var oldphone = document.getElementById("olduserphone").innerText;
             var phone = document.getElementById("upuserphone").value;
             var useryanzheng = document.getElementById("upyanzhengma").value;
-            if (trim(phone) == "") { alert("手机号不能为空！"); return; }
+            if (trim(phone) == "") { alert("请先填写您要修改的手机号！"); return; }
             if (trim(useryanzheng) + "" == "") {
                 alert("验证码不能为空");
                 return;
@@ -733,6 +781,7 @@
                             '"LevelYear":' + datauser["LevelYear"] + ',' +
                             '"IdentityId":' + datauser["IdentityId"] + ',' +
                             '"GradeId":' + datauser["GradeId"] + ',' +
+                            '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
                             '"UnitPrice":' + datauser["UnitPrice"] + ',' +
                             '"Professional":"' + datauser["Professional"] + '",' +
                             '"Mailbox":"' + datauser["Mailbox"] + '",' +
@@ -748,6 +797,7 @@
                            function (data) {
                                if (data == "OK") {
                                    alert("修改成功！");
+                                   delPhoneVerifica();
                                    window.location.href = "http://{{.Website}}/orange/Main/UpdateStudent/";
                                } else {
                                    alert("修改失败！");
@@ -762,6 +812,12 @@
             var imgObjPreview = document.getElementById("userhead");
             imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
             return true;
+        }
+        //验证码倒计时结束后删除此手机下的所有验证信息
+        function delPhoneVerifica() {
+            $.getJSON("http://{{.Website}}/orange/verification/DeleteVerificationByPhone/" + nowPhone, function (data) {
+
+            });
         }
     </script>
 </body>

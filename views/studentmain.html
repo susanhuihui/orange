@@ -30,7 +30,7 @@
                             <td>年级：
                              </td>
                             <td>
-                                <select class="stusel" id="selGrade">
+                                <select class="form-control" id="selGrade">
                                     <option value="0">高中一年级</option>
                                     <option value="1">高中二年级</option>
                                 </select>
@@ -40,7 +40,7 @@
                             <td>科目：
                              </td>
                             <td>
-                                <select class="stusel" id="selClass">
+                                <select class="form-control" id="selClass">
                                     <option value="0">高中数学</option>
                                     <option value="1">高中语文</option>
                                 </select>
@@ -50,7 +50,7 @@
                             <td>价格：
                              </td>
                             <td>
-                                <select class="" style="width: 180px; margin-left: 14px;" id="selstartmoney">
+                                <select class="form-control" style="width: 50%;  float:left;" id="selstartmoney">
                                     <option value="0">10.00</option>
                                     <option value="1">20.00</option>
                                     <option value="2">30.00</option>
@@ -61,7 +61,7 @@
                                     <option value="7">80.00</option>
                                     <option value="8">90.00</option>
                                 </select>
-                                <select class="" style="width: 180px;" id="selendmoney">
+                                <select class="form-control" style="width: 49%;" id="selendmoney">
                                     <option value="0">20.00</option>
                                     <option value="1">30.00</option>
                                     <option value="2">40.00</option>
@@ -78,14 +78,14 @@
                             <td>手机：
                              </td>
                             <td>
-                                <input class="stuimput" type="text" id="txtPhone">
+                                <input class="form-control" type="text" id="txtPhone">
                             </td>
                         </tr>
                         <tr>
                             <td>城市：
                              </td>
                             <td>
-                                <select class="stusel" id="selCitys">
+                                <select class="form-control" id="selCitys">
                                     <option value="0">北京</option>
                                     <option value="1">石家庄</option>
                                 </select>
@@ -95,20 +95,20 @@
                             <td>姓名：
                              </td>
                             <td>
-                                <input class="stuimput" type="text" id="txtName">
+                                <input class="form-control" type="text" id="txtName">
                             </td>
                         </tr>
                         <tr>
                             <td>备注：
                              </td>
                             <td>
-                                <textarea class="stuarea" id="txtBeizhu"></textarea>
+                                <textarea class="form-control" id="txtBeizhu"></textarea>
                             </td>
                         </tr>
                         <tr>
                             <td>&nbsp;</td>
                             <td>
-                                <input type="button" style="width: 80%;" class="btn btn-warning" onclick="addGoodTeacher()" value="提交">
+                                <input type="button" style="width: 80%;" class="evabtn btn btn-warning" onclick="addGoodTeacher()" value="提交">
                             </td>
                         </tr>
                     </table>
@@ -705,7 +705,7 @@
     </div>
     {{template "footer.html" .}}
     <script src="js/jquery.min.js"></script>
-    <script src="b/js/bootstrap.min.js"></script>
+    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script src="js/teachertab.js"></script>
     <script src="js/orange.js"></script>
     <script type="text/javascript" src="js/jquery-1.3.1.js"></script>

@@ -211,7 +211,7 @@ _top:       expression(eval(document.compatMode &&
 .tagContents{ padding:10px;}
 .navbar-header a{ text-decoration:none;} 
 .navbar-header a:hover{ color:#DF6D00;} 
-.logoa{float:left;height:50px;padding:5px 15px;font-size:26px;line-height:20px; color:#fe9627;}
+.logoa{float:left;height:50px;padding:10px 15px;font-size:26px;line-height:20px; color:#fe9627;}
 
 /*登录选显卡样式*/
 OL li { margin: 0px }

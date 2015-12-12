@@ -2031,6 +2031,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:VerificationController"] = append(beego.GlobalControllerRouter["orange/controllers:VerificationController"],
 		beego.ControllerComments{
+			"GetVerificationListByPhone",
+			`/GetVerificationListByPhone/:phone`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:VerificationController"] = append(beego.GlobalControllerRouter["orange/controllers:VerificationController"],
+		beego.ControllerComments{
 			"GetAll",
 			`/GetAllVerification/:page/:size`,
 			[]string{"get"},
@@ -2047,6 +2054,13 @@ func init() {
 		beego.ControllerComments{
 			"DeleteVerification",
 			`/DeleteVerification/:id`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:VerificationController"] = append(beego.GlobalControllerRouter["orange/controllers:VerificationController"],
+		beego.ControllerComments{
+			"DeleteVerificationByPhone",
+			`/DeleteVerificationByPhone/:phone`,
 			[]string{"get"},
 			nil})
 

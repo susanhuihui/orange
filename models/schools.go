@@ -24,22 +24,21 @@ func init() {
 	orm.RegisterModel(new(Schools))
 }
 
-//    12.查询学校
+//    12.根据类型查询相应类型的学校（0小学，2初中，3高中，大学1）
 //    2015-11-06
-func GetSchoolsByCity (cityid int,schooltype int) (list []Schools, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlSchoolByCityType,cityid,schooltype)
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return list, qs
-    }
-    return
+func GetSchoolsByCity(cityid int, schooltype int) (list []Schools, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlSchoolByCityType, cityid, schooltype)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
 }
-
 
 // AddSchools insert a new Schools into database and returns
 // last inserted Id on success.

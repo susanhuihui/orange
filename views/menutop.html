@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="message-text" class="control-label">密码:</label>
-                                <input type="password" class="form-control" id="recipient-pass" name="password">
+                                <input type="password" class="form-control" id="recipient-pass" name="password" onkeypress="huichelogin()">
                             </div>
                             <div class="form-group">
                                 <a href="http://{{.Website}}/orange/Main/RetrievePassword/">忘记密码</a>
@@ -103,7 +103,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="logoa" href="http://{{.Website}}">
-                    <img width="150px" src="images/toplogo.jpg" />
+                    <img width="150px" src="images/logo.png" />
 
                 </a>
             </div>
@@ -181,7 +181,13 @@
         });
     }
 
-    function loginbtn() {
+    function huichelogin() {
+        if (event.keyCode == 13) {
+            loginbtn();
+        }
+    }
+
+    function loginbtn() {        
         var loginurl = "";
         var name = trim(document.getElementById("recipient-name").value);
         var pass = trim(document.getElementById("recipient-pass").value);

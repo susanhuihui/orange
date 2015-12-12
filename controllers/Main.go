@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"orange/models"
 	"strconv"
+	"strings"
 )
 
 type MainController struct {
@@ -14,8 +15,8 @@ type MainController struct {
 
 //首页展示
 func (c *MainController) Get() {
-	c.Data["Website"] = OnlineUrl
-	c.Ctx.SetCookie("OnlineUrl", OnlineUrl)
+	c.Data["Website"] = models.OnlineUrl
+	c.Ctx.SetCookie("OnlineUrl", models.OnlineUrl)
 	c.TplNames = "index.tpl" //首页
 }
 
@@ -40,7 +41,7 @@ func (c *MainController) Logins() {
 	vuser, err := models.GetUserinformationLogin(textname, textpass)
 	if err == nil && vuser != nil {
 		fmt.Println(vuser)
-		c.Data["Website"] = OnlineUrl
+		c.Data["Website"] = models.OnlineUrl
 		c.Ctx.SetCookie("username", textname)
 		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
 		c.Ctx.SetCookie("identityid", strconv.Itoa(vuser.IdentityId))
@@ -51,7 +52,7 @@ func (c *MainController) Logins() {
 		vphoneuser, errph := models.GetUserinformationLoginPhone(textname, textpass)
 		if errph == nil && vphoneuser != nil {
 			fmt.Println(vphoneuser)
-			c.Data["Website"] = OnlineUrl
+			c.Data["Website"] = models.OnlineUrl
 			c.Ctx.SetCookie("username", textname)
 			c.Ctx.SetCookie("userid", strconv.Itoa(vphoneuser.Id))
 			c.Ctx.SetCookie("identityid", strconv.Itoa(vphoneuser.IdentityId))
@@ -89,7 +90,7 @@ func (c *MainController) LoginUser() {
 	vuser, err := models.GetUserinformationLogin(v.UserName, v.LoginPassword)
 	if err == nil && vuser != nil {
 		fmt.Println(vuser)
-		c.Data["Website"] = OnlineUrl
+		c.Data["Website"] = models.OnlineUrl
 		c.Ctx.SetCookie("username", vuser.UserName)
 		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
 		c.Ctx.SetCookie("identityid", strconv.Itoa(vuser.IdentityId))
@@ -98,7 +99,7 @@ func (c *MainController) LoginUser() {
 	} else {
 		vphoneuser, errph := models.GetUserinformationLoginPhone(v.UserName, v.LoginPassword)
 		if errph == nil && vphoneuser != nil {
-			c.Data["Website"] = OnlineUrl
+			c.Data["Website"] = models.OnlineUrl
 			c.Ctx.SetCookie("username", vphoneuser.UserName)
 			c.Ctx.SetCookie("userid", strconv.Itoa(vphoneuser.Id))
 			c.Ctx.SetCookie("identityid", strconv.Itoa(vphoneuser.IdentityId))
@@ -138,7 +139,7 @@ func (c *MainController) LoginUser() {
 // @Failure 403
 // @router /OutLogins/ [get]
 func (c *MainController) OutLogins() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.Ctx.SetCookie("username", "")
 	c.Ctx.SetCookie("userid", "")
 	c.Ctx.SetCookie("identityid", "")
@@ -156,7 +157,7 @@ func (c *MainController) OutLogins() {
 // @Failure 403
 // @router /Registered/ [get]
 func (c *MainController) Registered() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "register.html" //跳到注册页面
 }
 
@@ -168,7 +169,7 @@ func (c *MainController) Registered() {
 // @Failure 403
 // @router /QuestionsCenter/ [get]
 func (c *MainController) QuestionsCenter() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	wendalist, _ := models.GetQuestionaskByJingCaiCount()
 	c.Data["wendacount"] = wendalist
 	c.TplNames = "problem_list.html" //跳到问答中心
@@ -182,7 +183,7 @@ func (c *MainController) QuestionsCenter() {
 // @Failure 403
 // @router /UserTeacher/:tapid [get]
 func (c *MainController) UserTeacher() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	tapidStr := c.Ctx.Input.Params[":tapid"]
 	tapid, _ := strconv.Atoi(tapidStr) //获取tapid
@@ -267,7 +268,7 @@ func (c *MainController) UserTeacher() {
 // @Failure 403
 // @router /UserStudent/:tapid [get]
 func (c *MainController) UserStudent() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	tapidStr := c.Ctx.Input.Params[":tapid"]
 	tapid, _ := strconv.Atoi(tapidStr) //获取tapid
@@ -361,7 +362,7 @@ func (c *MainController) UserStudent() {
 // @Failure 403
 // @router /GetOnLineEvaluation/:evalid [get]
 func (c *MainController) GetOnLineEvaluation() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	evalidStr := c.Ctx.Input.Params[":evalid"]
 	evalid, _ := strconv.Atoi(evalidStr)
 	c.Data["seeOradd"] = 1
@@ -424,7 +425,7 @@ func (c *MainController) GetOnLineEvaluation() {
 // @Failure 403
 // @router /GetOnLineEvaluationTeacher/:evalid [get]
 func (c *MainController) GetOnLineEvaluationTeacher() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	evalidStr := c.Ctx.Input.Params[":evalid"]
 	evalid, _ := strconv.Atoi(evalidStr)
 	c.Data["seeOradd"] = 1
@@ -487,7 +488,7 @@ func (c *MainController) GetOnLineEvaluationTeacher() {
 // @Failure 403
 // @router /AddOnLineEvaluation/:classid [get]
 func (c *MainController) AddOnLineEvaluation() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	classidStr := c.Ctx.Input.Params[":classid"]
 	classid, _ := strconv.Atoi(classidStr)
 	c.Data["seeOradd"] = 0
@@ -514,7 +515,7 @@ func (c *MainController) AddOnLineEvaluation() {
 // @Failure 403
 // @router /GetOnlineCourseBooking/:bookid [get]
 func (c *MainController) GetOnlineCourseBooking() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	bookidStr := c.Ctx.Input.Params[":bookid"]
 	bookid, _ := strconv.Atoi(bookidStr)
 
@@ -543,7 +544,7 @@ func (c *MainController) GetOnlineCourseBooking() {
 // @Failure 403
 // @router /GetOnlineCourseBookingByTeacher/:bookid [get]
 func (c *MainController) GetOnlineCourseBookingByTeacher() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	bookidStr := c.Ctx.Input.Params[":bookid"]
 	bookid, _ := strconv.Atoi(bookidStr)
 
@@ -572,7 +573,7 @@ func (c *MainController) GetOnlineCourseBookingByTeacher() {
 // @Failure 403
 // @router /GetUserMessageList/:msgid [get]
 func (c *MainController) GetUserMessageList() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	msgidStr := c.Ctx.Input.Params[":msgid"]
 	msgid, _ := strconv.Atoi(msgidStr)
 
@@ -617,7 +618,7 @@ func (c *MainController) GetUserMessageList() {
 // @Failure 403
 // @router /GetUserMessageListTeacher/:msgid [get]
 func (c *MainController) GetUserMessageListTeacher() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	msgidStr := c.Ctx.Input.Params[":msgid"]
 	msgid, _ := strconv.Atoi(msgidStr)
 
@@ -662,7 +663,7 @@ func (c *MainController) GetUserMessageListTeacher() {
 // @Failure 403
 // @router /UpdateStudent/ [get]
 func (c *MainController) UpdateStudent() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	fmt.Println(stuuserid)
 	userinfo, usererr := models.GetUserinformationStudent(stuuserid)
@@ -705,7 +706,7 @@ func (c *MainController) UpdateStudent() {
 // @Failure 403
 // @router /UpdateTeacher/ [get]
 func (c *MainController) UpdateTeacher() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	fmt.Println(stuuserid)
 	userinfo, usererr := models.GetUserinformationTeacher(stuuserid)
@@ -744,6 +745,19 @@ func (c *MainController) UpdateTeacher() {
 	c.Data["userlistclass"] = userlistclass
 	c.Data["userclassstr"] = userclassstr
 
+	//补习学龄段
+	var strage string = ""
+	if userinfo.SchoolAgeIdT != "" {
+		var ageliststr string = userinfo.SchoolAgeIdT
+		ageidlist := strings.Split(ageliststr, ",")
+		for i := 0; i < len(ageidlist); i++ {
+			ageid, _ := strconv.Atoi(ageidlist[i])
+			schoolagemodel, _ := models.GetSchoolagesById(ageid)
+			strage = strage + schoolagemodel.AgeName + " "
+		}
+	}
+	c.Data["AgeNames"] = strage
+	c.Data["schoolagelist"] = userinfo.SchoolAgeIdT
 	c.TplNames = "personalteacher.html" //跳到
 }
 
@@ -755,7 +769,7 @@ func (c *MainController) UpdateTeacher() {
 // @Failure 403
 // @router /RetrievePassword/ [get]
 func (c *MainController) RetrievePassword() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "password.html" //跳到
 }
 
@@ -767,7 +781,7 @@ func (c *MainController) RetrievePassword() {
 // @Failure 403
 // @router /AboutMe/:tapid [get]
 func (c *MainController) AboutMe() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	tapid := c.Ctx.Input.Params[":tapid"]
 	c.Data["NowTapid"] = tapid
 	c.TplNames = "aboutme.html" //跳到关于我们
@@ -781,6 +795,6 @@ func (c *MainController) AboutMe() {
 // @Failure 403
 // @router /TechnoRegister/ [get]
 func (c *MainController) TechnoRegister() {
-	c.Data["Website"] = OnlineUrl
+	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "teacherregister.html" //
 }

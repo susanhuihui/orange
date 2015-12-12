@@ -417,7 +417,7 @@ var SqlUserinformationAllTeacherByPerson string = `select userinfo.*,
          ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState 
 	from userinformation as userinfo 
 	where userinfo.identityid = (select pkid from identity where identityname='老师')
-		and userinfo.gradeid in (select pkid from grade where gradename like ?)
+		and userinfo.schoolageidt like ? 
 		and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 		and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
 	    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))
@@ -433,7 +433,7 @@ var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
          ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState
 	from userinformation as userinfo 
 	where userinfo.identityid = (select pkid from identity where identityname='老师')
-		and userinfo.gradeid in (select pkid from grade where gradename like ?)
+		and userinfo.schoolageidt like ? 
 		and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 		and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
 	    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))
@@ -452,7 +452,7 @@ var SqlUserinformationAllTeacherByOnline string = `select userinfo.*,
      	 ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState
 		from userinformation as userinfo
 		where userinfo.identityid = (select pkid from identity where identityname='老师')
-			and userinfo.gradeid in (select pkid from grade where gradename like ?)
+		and userinfo.schoolageidt like ? 
 			and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 			and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
 		    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))

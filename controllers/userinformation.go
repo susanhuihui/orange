@@ -194,7 +194,13 @@ func (c *UserinformationController) GetUserinformationAllTeacher() {
 	nianji := c.Ctx.Input.Params[":nianji"]
 	fmt.Println(nianji)
 	if nianji != "" {
-		newnianji = nianji
+		//根据学龄段名称查询此学龄段主键id
+		schoolage, errage := models.GetSchoolagesByName(nianji)
+		if errage == nil && schoolage != nil {
+			newnianji = `%` + strconv.Itoa(schoolage.Id) + `%`
+		} else {
+			newnianji = `%%`
+		}
 	} else if nianji == "" {
 		newnianji = `%%`
 	}
@@ -257,7 +263,13 @@ func (c *UserinformationController) GetUserinformationAllTeacherCount() {
 	newshiqu := ""
 	nianji := c.Ctx.Input.Params[":nianji"]
 	if nianji != "" {
-		newnianji = nianji
+		//根据学龄段名称查询此学龄段主键id
+		schoolage, errage := models.GetSchoolagesByName(nianji)
+		if errage == nil && schoolage != nil {
+			newnianji = `%` + strconv.Itoa(schoolage.Id) + `%`
+		} else {
+			newnianji = `%%`
+		}
 	} else if nianji == "" {
 		newnianji = `%%`
 	}

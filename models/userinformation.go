@@ -33,6 +33,7 @@ type Userinformation struct {
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
 	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
 	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
 	Professional      string    `orm:"column(Professional);size(50);null"`
 	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
@@ -72,6 +73,7 @@ type UserinformationModels struct {
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
 	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
 	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
 	Professional      string    `orm:"column(Professional);size(50);null"`
 	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
@@ -107,6 +109,7 @@ type UserinformationTeacher struct {
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
 	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
 	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
 	Professional      string    `orm:"column(Professional);size(50);null"`
 	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
@@ -146,6 +149,7 @@ type UserinformationTeacherModu struct {
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
 	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
 	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
 	Professional      string    `orm:"column(Professional);size(50);null"`
 	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
@@ -182,6 +186,7 @@ type UserinformationStudent struct {
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
 	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
 	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
 	Professional      string    `orm:"column(Professional);size(50);null"`
 	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
@@ -590,16 +595,16 @@ func GetImganddata2(request *http.Request, headpath string) (json string, imgstr
 	return json, imgstr
 }
 
-//更新头像和昵称
-func UpdateUserimg(m *Userinformation, imgstr string) (rownums int, err error) {
-	var img string
-	if imgstr != "" {
-		str := strings.Split(imgstr, ",")
-		img = str[0]
-	}
-	o := orm.NewOrm()
-	var rs orm.RawSeter
-	rs = o.Raw("call proc_UpdateUserPortraitByUserid(?,?)", m.Id, img)
-	qs := rs.QueryRow(&rownums)
-	return rownums, qs
-}
+////更新头像和昵称
+//func UpdateUserimg(m *Userinformation, imgstr string) (rownums int, err error) {
+//	var img string
+//	if imgstr != "" {
+//		str := strings.Split(imgstr, ",")
+//		img = str[0]
+//	}
+//	o := orm.NewOrm()
+//	var rs orm.RawSeter
+//	rs = o.Raw("call proc_UpdateUserPortraitByUserid(?,?)", m.Id, img)
+//	qs := rs.QueryRow(&rownums)
+//	return rownums, qs
+//}

@@ -82,6 +82,23 @@ func (c *VerificationController) GetVerificationByPhone() {
 	c.ServeJson()
 }
 
+// @Title GetVerificationListByPhone
+// @Description GetVerificationListByPhone Verification by phone
+// @Param	phone		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Verification
+// @Failure 403 :phone is empty
+// @router /GetVerificationListByPhone/:phone [get]
+func (c *VerificationController) GetVerificationListByPhone() {
+	phoneStr := c.Ctx.Input.Params[":phone"] //查询手机号下的所有验证码信息
+	v, err := models.GetVerificationListByPhone(phoneStr)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title Get All
 // @Description get Verification
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
@@ -188,6 +205,32 @@ func (c *VerificationController) DeleteVerification() {
 		c.Data["json"] = "OK"
 	} else {
 		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}
+
+// @Title DeleteVerificationByPhone
+// @Description DeleteVerificationByPhone the Verification
+// @Param	id		path 	string	true		"The id you want to DeleteVerificationByPhone"
+// @Success 200 {string} delete success!
+// @Failure 403 id is empty
+// @router /DeleteVerificationByPhone/:phone [get]
+func (c *VerificationController) DeleteVerificationByPhone() {
+	phoneStr := c.Ctx.Input.Params[":phone"]
+	var dellisterr error
+	phonever, geterr := models.GetVerificationListByPhone(phoneStr)
+	if geterr == nil {
+		for i := 0; i < len(phonever); i++ {
+			delerr := models.DeleteVerification(phonever[i].Id)
+			if delerr != nil {
+				dellisterr = delerr
+			}
+		}
+	}
+	if dellisterr == nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = dellisterr.Error()
 	}
 	c.ServeJson()
 }
