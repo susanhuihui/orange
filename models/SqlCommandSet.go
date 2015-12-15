@@ -213,7 +213,7 @@ var SqlTransactionRecordByT string = `select tr.*, (select UserName from userinf
 //2015-11-04
 var SqlAccountRecordByUidType string = `select amt.*,(select tradingname from tradingway as tw where amt.TradingWayId = tw.pkid) as TradingName 
 	from amountrecords as amt 
-	where recordtype = ? and userid = ? 
+	where recordtype = ? and userid = ?  and IsComplete=1
 	order by recordtime desc  `
 
 //16.

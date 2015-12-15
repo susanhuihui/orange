@@ -260,9 +260,9 @@ func (c *OnlinetrylistenController) Delete() {
 }
 
 // @Title Get
-// @Description get Onlinecoursebooking by id
+// @Description get Onlinetrylisten by id
 // @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
+// @Success 200 {object} models.Onlinetrylisten
 // @Failure 403 :id is empty
 // @router /GetListenTecher/:listenid [get]
 func (c *OnlinetrylistenController) GetOss() {
@@ -280,9 +280,9 @@ func (c *OnlinetrylistenController) GetOss() {
 }
 
 // @Title Get
-// @Description get Onlinecoursebooking by id
+// @Description get Onlinetrylisten by id
 // @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
+// @Success 200 {object} models.Onlinetrylisten
 // @Failure 403 :id is empty
 // @router /GetListenStudent/:listenid [get]
 func (c *OnlinetrylistenController) GetOe() {

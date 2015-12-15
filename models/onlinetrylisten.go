@@ -399,6 +399,8 @@ func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
 			meetroom.ModeratorPW_ = onlinetrylisten.TeacherInId
 			meetroom.GetMeetingInfo()
 			var pcount = meetroom.MeetingInfo.ParticipantCount
+			fmt.Println("查看有几个人在线：")
+			fmt.Println(pcount)
 			if pcount == 0 { //老师不在
 				urlse = "0"
 			} else if pcount >= 2 { //已有人在试听

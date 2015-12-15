@@ -1255,7 +1255,7 @@
         function getvalue(txtname, yearmd, timelistindex) {
             var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
             var now = new Date();
-            if (now <= datetime) {
+            if (now <= datetime && now.getDay() != datetime.getDay()) {
                 //alert("dianji:" + txtname + document.getElementById(txtname).innerText + document.getElementById(txtname).tag + yearmd + "," + timelistindex);
                 var name = document.getElementById(txtname).innerText;
                 var tagid = document.getElementById(txtname).tag;

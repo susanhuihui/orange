@@ -797,6 +797,27 @@ func init() {
 			[]string{"get"},
 			nil})
 
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
+			"PayMentUser",
+			`/PayMentUser/:money`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
+			"PayEnd",
+			`/PayEnd/`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
+			"PayEndNotify",
+			`/PayEndNotify/`,
+			[]string{"post"},
+			nil})
+
 	beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingController"],
 		beego.ControllerComments{
 			"Post",

@@ -22,5 +22,18 @@ func main() {
 	beego.SessionCookieLifeTime = 60
 	beego.SessionAutoSetCookie = true
 	beego.SessionSavePath = "/"
+
+	//	var meetroomlist []bbb4go.MeetingRoom
+	//	meetingroom1 := bbb4go.MeetingRoom{}
+	//	meetingroom1.MeetingID_ = "asdf"
+	//	meetingroom1.ModeratorPW_ = "1111"
+	//	meetingroom2 := bbb4go.MeetingRoom{}
+	//	meetingroom2.MeetingID_ = "asdf"
+	//	meetingroom2.ModeratorPW_ = "1111"
+	//	meetroomlist = append(meetroomlist, meetingroom1)
+	//	meetroomlist = append(meetroomlist, meetingroom2)
+	//	fmt.Println(meetroomlist)
+	//	meetingroom1.End()
+	//	meetingroom2.End()
 	beego.Run()
 }

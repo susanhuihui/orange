@@ -86,8 +86,8 @@
                     </table>
                 </div>
                 <div class="modal-footer" style="text-align: center;">
-                    <a style="width: 30%;" class="evabtn btn btn-warning" id="btnSetMeet" onclick="setMeetTrueorFalse()" data-dismiss="modal">去缴费</a><!--href="payment.html"-->
-                    <button type="button" style="width: 30%;" class="evabtn btn btn-default" data-dismiss="modal">取消</button>
+                    <a style="width: 30%;" class="btn btn-warning" id="btnSetMeet" onclick="setMeetTrueorFalse()" data-dismiss="modal">去缴费</a><!--href="payment.html"-->
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
 
                 </div>
             </div>
@@ -955,7 +955,6 @@
                 }
             });
         }
-
         var nowName = "";//点中文本
         var nowTagid = 0;//有数据的数据主键id
         var nowDate = "";//年月日：2015-11-23
@@ -963,7 +962,7 @@
         function getvalue(txtname, yearmd, timelistindex) {
             var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
             var now = new Date();
-            if (now <= datetime) {//今天之前的日子不能再操作
+            if (now <= setHours(datetime, 12)) {//今天之前的日子不能再操作
                 //alert("dianji:" + txtname + document.getElementById(txtname).innerText + document.getElementById(txtname).tag + yearmd + "," + timelistindex);
                 var name = document.getElementById(txtname).innerText;
                 var tagid = document.getElementById(txtname).tag;
@@ -1006,7 +1005,7 @@
             else {
                 document.getElementById("showtext1").style.display = "none";//此时段已过期，不可再操作！
                 document.getElementById("showtext2").style.display = "block";
-                document.getElementById("tishicontent").innerText = "此时段已过期，不可再操作！";
+                document.getElementById("tishicontent").innerText = "请提前至少12个小时开始预约，此时段已过期，不可再操作！";
                 document.getElementById("btnSetMeet").innerText = "确定";
                 nowName = "";
             }

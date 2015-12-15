@@ -11,25 +11,27 @@ import (
 )
 
 type Amountrecords struct {
-	Id            int       `orm:"column(PKId);auto"`
-	UserId        int       `orm:"column(UserId)"`
-	RecordMoney   float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
-	Balance       float64   `orm:"column(Balance);digits(10);decimals(2)"`
-	RecordType    int       `orm:"column(RecordType)"`
-	RecordTime    time.Time `orm:"column(RecordTime);type(datetime)"`
-	TradingWayId  int       `orm:"column(TradingWayId)"`
+	Id           int       `orm:"column(PKId);auto"`
+	UserId       int       `orm:"column(UserId)"`
+	RecordMoney  float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
+	Balance      float64   `orm:"column(Balance);digits(10);decimals(2)"`
+	RecordType   int       `orm:"column(RecordType)"`
+	RecordTime   time.Time `orm:"column(RecordTime);type(datetime)"`
+	TradingWayId int       `orm:"column(TradingWayId)"`
+	IsComplete   int       `orm:"column(IsComplete)"`
 }
 
 //查询用户充值提现记录
 type AmountrecordsUserList struct {
-	Id            int       `orm:"column(PKId);auto"`
-	UserId        int       `orm:"column(UserId)"`
-	RecordMoney   float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
-	Balance       float64   `orm:"column(Balance);digits(10);decimals(2)"`
-	RecordType    int       `orm:"column(RecordType)"`
-	RecordTime    time.Time `orm:"column(RecordTime);type(datetime)"`
-	TradingWayId  int       `orm:"column(TradingWayId)"`
-	TradingName   string    `orm:"column(TradingName);size(50);null"`
+	Id           int       `orm:"column(PKId);auto"`
+	UserId       int       `orm:"column(UserId)"`
+	RecordMoney  float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
+	Balance      float64   `orm:"column(Balance);digits(10);decimals(2)"`
+	RecordType   int       `orm:"column(RecordType)"`
+	RecordTime   time.Time `orm:"column(RecordTime);type(datetime)"`
+	TradingWayId int       `orm:"column(TradingWayId)"`
+	IsComplete   int       `orm:"column(IsComplete)"`
+	TradingName  string    `orm:"column(TradingName);size(50);null"`
 }
 
 func (t *Amountrecords) TableName() string {
@@ -42,37 +44,36 @@ func init() {
 
 //    15.查询用户（提现/充值）记录
 //    2015-11-06
-func GetAmountrecordsByUserid (recordtype int,userid int,rows int,counts int) (list []AmountrecordsUserList, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlAccountRecordByUidType+limitSql,recordtype,userid,rows,counts)
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return list, qs
-    }
-    return
+func GetAmountrecordsByUserid(recordtype int, userid int, rows int, counts int) (list []AmountrecordsUserList, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordByUidType+limitSql, recordtype, userid, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
 }
 
 //    15.查询用户（提现/充值）记录总条数
 //    2015-11-06
-func GetAmountrecordsByUseridCount (recordtype int,userid int) (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlAccountRecordByUidType,recordtype,userid)
+func GetAmountrecordsByUseridCount(recordtype int, userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordByUidType, recordtype, userid)
 	var list []AmountrecordsUserList
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(list), qs
-    }
-    return
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
 }
-
 
 // AddAmountrecords insert a new Amountrecords into database and returns
 // last inserted Id on success.

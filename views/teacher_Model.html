@@ -626,16 +626,19 @@
                 });
             }
         }
-        //试听该老师的课程
+        //试听该老师的课程-立即试听
         function trylisten(tid) {
             var identityid = getCookie("identityid");
             if (tid > 0) {
                 if (identityid > 1 && identityid != "underfined") {
                     var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + tid;
                     $.getJSON(getstate, function (data) {
+                        alert(data["Id"])
+
                         if (data != null && data["Id"] > 0) {
                             var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
                             $.getJSON(getblack, function (dataurl) {
+                                alert(dataurl)
                                 if (dataurl == "0") {
                                     alert("老师暂时离开不在线，请稍后重试！");
                                 } else if (dataurl == "1") {

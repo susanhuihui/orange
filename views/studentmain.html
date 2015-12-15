@@ -130,14 +130,26 @@
                             <td>支付方式：
                               </td>
                             <td style="text-align: left;">
-                                <input type="radio">
+                                <input type="radio" id="paytype" checked="checked" onclick="checkpay()">
                                 支付宝
+                             </td>
+                            <td style="text-align: left;">
+                                <span id="errtype" style="color:red;"></span>
+                             </td>
+                        </tr> <tr>
+                            <td>支付金额：
+                              </td>
+                            <td style="text-align: left;">
+                                <input type="text" id="paymoney" onchange="checkmoney()"> 元
+                             </td>
+                            <td style="text-align: left;">
+                                <span id="errmoney" style="color:red;"></span>
                              </td>
                         </tr>
                     </table>
                 </div>
                 <div class="modal-footer" style="text-align: center;">
-                    <button type="button" style="width: 30%;" class="btn btn-warning">去充值</button>
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="gotoPay()">去充值</button>
                     <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -156,7 +168,7 @@
                         <tr>
                             <td>余额：
                               </td>
-                            <td>￥100.00</td>
+                            <td id="yueshow">￥100.00</td>
                         </tr>
                         <tr>
                             <td>提现金额：
@@ -307,14 +319,14 @@
                 <div id="menu">
                     <!--tag标题-->
                     <ul class="ull nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">个人资料</a></li>
-                        <li role="presentation"><a href="#allclass" aria-controls="profile" role="tab" data-toggle="tab">全部课程</a></li>
-                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">资金账户</a></li>
-                        <li role="presentation"><a href="#settings" aria-controls="messages" role="tab" data-toggle="tab">我的问题</a></li>
-                        <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab">我的评价</a></li>
-                        <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab">我的留言</a></li>
-                        <li role="presentation"><a href="#look" aria-controls="messages" role="tab" data-toggle="tab">我的关注</a></li>
-                        <li role="presentation"><a href="#divtui" aria-controls="messages" role="tab" data-toggle="tab">我的退约</a></li>
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" id="lihome">个人资料</a></li>
+                        <li role="presentation"><a href="#allclass" aria-controls="profile" role="tab" data-toggle="tab" id="liallclass">全部课程</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" id="limessages">资金账户</a></li>
+                        <li role="presentation"><a href="#settings" aria-controls="messages" role="tab" data-toggle="tab" id="lisettings">我的问题</a></li>
+                        <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab" id="lipingjia">我的评价</a></li>
+                        <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab" id="limessagetable">我的留言</a></li>
+                        <li role="presentation"><a href="#look" aria-controls="messages" role="tab" data-toggle="tab" id="lilook">我的关注</a></li>
+                        <li role="presentation"><a href="#divtui" aria-controls="messages" role="tab" data-toggle="tab" id="lidivtui">我的退约</a></li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
@@ -417,14 +429,14 @@
                         <div role="tabpanel" class="tab-pane" id="messages">
                             <table class="moneytable">
                                 <tr>
-                                    <td>现金余额：<span>￥{{.Balance}}</span>
-                                        冻结金额：<span>￥{{.FrozenMoney}}</span>
+                                    <td>现金余额：<span id="nowmoney">￥{{.Balance}} 元</span>
+                                        冻结金额：<span>￥{{.FrozenMoney}} 元</span>
                                     </td>
                                     <td>
-                                        <a data-toggle="modal" class="btn btn-warning moneybtn" data-target="#addmoney">充值</a>
+                                        <a data-toggle="modal" class="btn btn-warning moneybtn" data-target="#addmoney" onclick="clearmoney()">充值</a>
                                     </td>
                                     <td>
-                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#takemoney">提现</a>
+                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#takemoney" onclick="Tixian()">提现</a>
                                     </td>
                                 </tr>
                             </table>
@@ -746,10 +758,19 @@
             showtap();
             chushituijiandiv();
         }
+
+
         //设置显示tap页
         function showtap() {
             var tapnum = document.getElementById("tapSowNum").innerText;
-            //alert(tapnum);
+            if (tapnum + "" == "0") { document.getElementById("lihome").click(); }
+            else if (tapnum + "" == "1") { document.getElementById("liallclass").click(); }
+            else if (tapnum + "" == "2") { document.getElementById("limessages").click(); }
+            else if (tapnum + "" == "3") { document.getElementById("lisettings").click(); }
+            else if (tapnum + "" == "4") { document.getElementById("lipingjia").click(); }
+            else if (tapnum + "" == "5") { document.getElementById("limessagetable").click(); }
+            else if (tapnum + "" == "6") { document.getElementById("lilook").click(); }
+            else if (tapnum + "" == "7") { document.getElementById("lidivtui").click(); }
         }
 
         //点击预约分页
@@ -1388,6 +1409,43 @@
                     });
         }
 
+        function gotoPay() {
+            var radiopty = document.getElementById("paytype");
+            var txtmoney = trim(document.getElementById("paymoney").value);
+            var re = /^\d+.?\d{0,2}$/;
+            if (radiopty.checked) {
+                if (re.test(txtmoney)) {
+                    window.open("http://{{.Website}}/orange/Main/PayMentUser/" + txtmoney);
+                } else { document.getElementById("errmoney").innerHTML = "请正确填写金额！"; }
+            } else { document.getElementById("errtype").innerHTML = "请选择支付方式！"; }
+        }
+        function checkpay() {
+            var radiopty = document.getElementById("paytype");
+            if (radiopty.checked) {
+                document.getElementById("errtype").innerHTML = "";
+            }
+            else {
+                document.getElementById("errtype").innerHTML = "请选择支付方式！";
+            }
+        }
+        function checkmoney() {
+            var txtmoney = trim(document.getElementById("paymoney").value);
+            var re = /^\d+.?\d{0,2}$/;
+            if (re.test(txtmoney)) {
+                document.getElementById("errmoney").innerHTML = "";
+            } else {
+                document.getElementById("errmoney").innerHTML = "请正确填写金额！";
+            }
+        }
+        function clearmoney() {
+            document.getElementById("paymoney").value = "";
+        }
+
+        //点击提现按钮
+        function Tixian() {
+            var nowmoney = document.getElementById("nowmoney").innerHTML;
+            document.getElementById("yueshow").innerHTML = nowmoney;
+        }
     </script>
 </body>
 </html>

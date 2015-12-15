@@ -770,7 +770,8 @@
                     function (data) {
                         if (data["id"] > 0) {
                             alert("试听课堂已开启！");
-                            window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
+                            //window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
+                            document.getElementById("txtlistenState").innerHTML = "已开启";
                         } else {
                             alert("开启失败！");
                         }
@@ -789,7 +790,8 @@
                         $.getJSON(delstate, function (data) {
                             if (data == "OK") {
                                 alert("试听课堂已结束！");
-                                window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
+                                //window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
+                                document.getElementById("txtlistenState").innerHTML = "未开启";
                             } else {
                                 alert("结束失败！");
                             }

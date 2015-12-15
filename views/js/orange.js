@@ -170,10 +170,18 @@ function getdate2(startday, daycount) {
     return dateArray;
 }
 
+//获取日期的月和日，传入参数格式：2015-12-12，传出格式为：12-12
 function getmonthday(time) {
     time += " 00:00:00";
     time = time.replace(/-/g, "/");
     var myDate = new Date(time); //获取今天日期
     var strdate = (myDate.getMonth() + 1) + "-" + myDate.getDate();
     return strdate;
+}
+
+
+//将某个时间段的小时，减去固定值 传入：2015-12-12 15：00：00 传出：2015-12-12 03：00：00
+function setHours(date, value) {
+    date.setHours(date.getHours() - value);
+    return date;
 }

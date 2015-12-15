@@ -1,10 +1,17 @@
 package controllers
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"net/url"
+	"regexp"
+	"time"
+	//"github.com/ascoders/alipay"
 	"github.com/astaxie/beego"
 	"orange/models"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -797,4 +804,342 @@ func (c *MainController) AboutMe() {
 func (c *MainController) TechnoRegister() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "teacherregister.html" //
+}
+
+// 跳到支付页面
+// @Title PayMentUser
+// @Description PayMentUser the TbUser
+// @Param			"The id you want to PayMentUser"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /PayMentUser/:money [get]
+func (c *MainController) PayMentUser() {
+	moneyStr := c.Ctx.Input.Params[":money"]
+	money, _ := strconv.ParseFloat(moneyStr, 10)
+
+	//添加一条为完成账户充值记录
+	var addaccountpay models.Amountrecords
+	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	nowaccuser, _ := models.GetAccountfundsById(stuuserid) //当前用户账户信息
+	addaccountpay.UserId = stuuserid
+	addaccountpay.RecordMoney = money
+	addaccountpay.Balance = nowaccuser.Balance + money //充值后余额显示
+	addaccountpay.RecordType = 0                       //充值
+	addaccountpay.RecordTime = time.Now()              //操作日期
+	addaccountpay.TradingWayId = 2                     //支付宝支付
+	addaccountpay.IsComplete = 0                       //0：未完成，1：已完成
+	addint, adderr := models.AddAmountrecords(&addaccountpay)
+	if adderr == nil {
+
+	}
+	r := models.Request{
+		NotifyUrl:   `http://www.fankunedu.com/orange/Main/PayEndNotify/`, // 付款后异步通知页面
+		ReturnUrl:   `http://www.fankunedu.com/orange/Main/PayEnd/`,       // 付款后返回页面
+		OutTradeNo:  strconv.FormatInt(int64(addint), 10),                 // 充值订单号
+		SellerEmail: `1113911608@qq.com`,                                  // 支付宝用户名
+		Service:     `create_direct_pay_by_user`,                          // 不可改
+		PaymentType: `1`,                                                  // 不可改
+		Subject:     `账户充值`,                                               // 商品名称
+		TotalFee:    money,                                                // 价格
+	}
+
+	cc := models.Config{
+		Partner: `2088911257813375`,                 // 支付宝合作者身份 ID
+		Key:     `scnf70tnzygvjkdp259w2z2h2e0mhrrc`, // 支付宝交易安全校验码
+	}
+	fromstr := models.NewPage(cc, r, os.Stdout)
+	fmt.Println(fromstr)
+	c.Data["subContent"] = fromstr
+	c.TplNames = "payment.html"
+}
+
+type Result struct {
+	// 状态
+	Status int
+	// 本网站订单号
+	OrderNo string
+	// 支付宝交易号
+	TradeNo string
+	// 买家支付宝账号
+	BuyerEmail string
+	// 错误提示
+	Message string
+}
+
+// 支付同步回调地址
+// @Title PayEnd
+// @Description PayEnd the TbUser
+// @Param			"The id you want to PayEnd"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /PayEnd/ [get]
+func (c *MainController) PayEnd() {
+	result := Return(&c.Controller)
+	if result.Status == 1 {
+		fmt.Println("成功")
+		//获取唯一标识
+		inid := result.OrderNo //本网站订单号
+		inidt, _ := strconv.Atoi(inid)
+		accountpay, _ := models.GetAmountrecordsById(inidt)
+		var caozuomoney = strconv.FormatInt(int64(accountpay.RecordMoney), 10)
+		if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
+			accountpay.IsComplete = 1
+			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
+			fmt.Println(upresulterr)
+			//用户账户添加金额
+			accountuser, _ := models.GetAccountfundsById(accountpay.UserId)
+			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
+			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
+			if upaccerr == nil {
+				c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+			}
+		} else {
+			c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+		}
+	} else {
+		c.Data["resultStr"] = result.Message
+	}
+
+	fmt.Println(result)
+	c.TplNames = "moneyover.html" //
+}
+
+// 支付异步回调地址
+// @Title PayEndNotify
+// @Description PayEndNotify the TbUser
+// @Param			"The id you want to PayEndNotify"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /PayEndNotify/ [post]
+func (c *MainController) PayEndNotify() {
+	result := Notify(&c.Controller)
+	if result.Status == 1 {
+		//获取唯一标识
+		inid := result.OrderNo //本网站订单号
+		inidt, _ := strconv.Atoi(inid)
+		accountpay, _ := models.GetAmountrecordsById(inidt)
+		var caozuomoney = strconv.FormatInt(int64(accountpay.RecordMoney), 10)
+		if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
+			accountpay.IsComplete = 1
+			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
+			fmt.Println(upresulterr)
+			//用户账户添加金额
+			accountuser, _ := models.GetAccountfundsById(accountpay.UserId)
+			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
+			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
+			if upaccerr == nil {
+				c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+			}
+		} else {
+			c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+		}
+	} else {
+		c.Data["resultStr"] = result.Message
+	}
+
+	fmt.Println(result)
+	c.TplNames = "moneyover.html" //
+}
+
+/* 被动接收支付宝同步跳转的页面 */
+func Return(contro *beego.Controller) *Result {
+	// 列举全部传参
+	type Params struct {
+		Body        string `form:"body" json:"body"`                 // 描述
+		BuyerEmail  string `form:"buyer_email" json:"buyer_email"`   // 买家账号
+		BuyerId     string `form:"buyer_id" json:"buyer_id"`         // 买家ID
+		Exterface   string `form:"exterface" json:"exterface"`       // 接口名称
+		IsSuccess   string `form:"is_success" json:"is_success"`     // 交易是否成功
+		NotifyId    string `form:"notify_id" json:"notify_id"`       // 通知校验id
+		NotifyTime  string `form:"notify_time" json:"notify_time"`   // 校验时间
+		NotifyType  string `form:"notify_type" json:"notify_type"`   // 校验类型
+		OutTradeNo  string `form:"out_trade_no" json:"out_trade_no"` // 在网站中唯一id
+		PaymentType uint8  `form:"payment_type" json:"payment_type"` // 支付类型
+		SellerEmail string `form:"seller_email" json:"seller_email"` // 卖家账号
+		SellerId    string `form:"seller_id" json:"seller_id"`       // 卖家id
+		Subject     string `form:"subject" json:"subject"`           // 商品名称
+		TotalFee    string `form:"total_fee" json:"total_fee"`       // 总价
+		TradeNo     string `form:"trade_no" json:"trade_no"`         // 支付宝交易号
+		TradeStatus string `form:"trade_status" json:"trade_status"` // 交易状态 TRADE_FINISHED或TRADE_SUCCESS表示交易成功
+		Sign        string `form:"sign" json:"sign"`                 // 签名
+		SignType    string `form:"sign_type" json:"sign_type"`       // 签名类型
+	}
+
+	// 实例化参数
+	param := &Params{}
+
+	// 结果
+	result := &Result{}
+
+	// 解析表单内容，失败返回错误代码-3
+	if err := contro.ParseForm(param); err != nil {
+		result.Status = -3
+		result.Message = "解析表单失败"
+		return result
+	}
+	// 如果最基本的网站交易号为空，返回错误代码-1
+	if param.OutTradeNo == "" { //不存在交易号
+		result.Status = -1
+		result.Message = "站交易号为空"
+		return result
+	} else {
+		// 生成签名
+		//signs := Sign(param)
+		signs := models.Sign(param)
+		// 对比签名是否相同
+		if signs == param.Sign { //只有相同才说明该订单成功了
+			// 判断订单是否已完成
+			if param.TradeStatus == "TRADE_FINISHED" || param.TradeStatus == "TRADE_SUCCESS" { //交易成功
+				result.Status = 1
+				result.OrderNo = param.OutTradeNo
+				result.TradeNo = param.TradeNo
+				result.BuyerEmail = param.BuyerEmail
+				return result
+			} else { // 交易未完成，返回错误代码-4
+				result.Status = -4
+				result.Message = "交易未完成"
+				return result
+			}
+		} else { // 签名认证失败，返回错误代码-2
+			result.Status = -2
+			result.Message = "签名认证失败"
+			return result
+		}
+	}
+
+	// 位置错误类型-5
+	result.Status = -5
+	result.Message = "位置错误"
+	return result
+}
+
+/* 被动接收支付宝异步通知 */
+func Notify(contro *beego.Controller) *Result {
+	// 从body里读取参数，用&切割
+	//postArray := strings.Split(string(contro.Ctx.Input.CopyBody()), "&")
+	var postArray []string
+	//var jsonS string
+	for k, v := range contro.Ctx.Request.Form {
+		//fmt.Printf("k=%v, v=%v\n", k, v)
+		fmt.Println(k)
+		fmt.Println(v[0])
+		postArray = append(postArray, k+"="+v[0])
+
+	}
+	// 实例化url
+	urls := &url.Values{}
+
+	// 保存传参的sign
+	var paramSign string
+	var sign string
+
+	// 如果字符串中包含sec_id说明是手机端的异步通知
+	if strings.Index(string(contro.Ctx.Input.CopyBody()), `alipay.wap.trade.create.direct`) == -1 { // 快捷支付
+		//for _, v := range postArray {
+		for i := 0; i < len(postArray); i++ {
+			detail := strings.Split(postArray[i], "=")
+
+			// 使用=切割字符串 去除sign和sign_type
+			if detail[0] == "sign" || detail[0] == "sign_type" {
+				if detail[0] == "sign" {
+					paramSign = detail[1]
+				}
+				continue
+			} else {
+				urls.Add(detail[0], detail[1])
+			}
+		}
+
+		// url解码
+		urlDecode, _ := url.QueryUnescape(urls.Encode())
+		sign, _ = url.QueryUnescape(urlDecode)
+	} else { // 手机网页支付
+		// 手机字符串加密顺序
+		mobileOrder := []string{"service", "v", "sec_id", "notify_data"}
+		for _, v := range mobileOrder {
+			//for _, value := range postArray {
+			for i := 0; i < len(postArray); i++ {
+				fmt.Println(postArray[i])
+				detail := strings.Split(postArray[i], "=")
+				// 保存sign
+				if detail[0] == "sign" {
+					paramSign = detail[1]
+				} else {
+					// 如果满足当前v
+					if detail[0] == v {
+						if sign == "" {
+							sign = detail[0] + "=" + detail[1]
+						} else {
+							sign += "&" + detail[0] + "=" + detail[1]
+						}
+					}
+				}
+			}
+		}
+		sign, _ = url.QueryUnescape(sign)
+
+		// 获取<trade_status></trade_status>之间的request_token
+		re, _ := regexp.Compile("\\<trade_status[\\S\\s]+?\\</trade_status>")
+		rt := re.FindAllString(sign, 1)
+		trade_status := strings.Replace(rt[0], "<trade_status>", "", -1)
+		trade_status = strings.Replace(trade_status, "</trade_status>", "", -1)
+		urls.Add("trade_status", trade_status)
+
+		// 获取<out_trade_no></out_trade_no>之间的request_token
+		re, _ = regexp.Compile("\\<out_trade_no[\\S\\s]+?\\</out_trade_no>")
+		rt = re.FindAllString(sign, 1)
+		out_trade_no := strings.Replace(rt[0], "<out_trade_no>", "", -1)
+		out_trade_no = strings.Replace(out_trade_no, "</out_trade_no>", "", -1)
+		urls.Add("out_trade_no", out_trade_no)
+
+		// 获取<buyer_email></buyer_email>之间的request_token
+		re, _ = regexp.Compile("\\<buyer_email[\\S\\s]+?\\</buyer_email>")
+		rt = re.FindAllString(sign, 1)
+		buyer_email := strings.Replace(rt[0], "<buyer_email>", "", -1)
+		buyer_email = strings.Replace(buyer_email, "</buyer_email>", "", -1)
+		urls.Add("buyer_email", buyer_email)
+
+		// 获取<trade_no></trade_no>之间的request_token
+		re, _ = regexp.Compile("\\<trade_no[\\S\\s]+?\\</trade_no>")
+		rt = re.FindAllString(sign, 1)
+		trade_no := strings.Replace(rt[0], "<trade_no>", "", -1)
+		trade_no = strings.Replace(trade_no, "</trade_no>", "", -1)
+		urls.Add("trade_no", trade_no)
+	}
+	// 追加密钥
+	sign += "scnf70tnzygvjkdp259w2z2h2e0mhrrc" //AlipayKey合作者私钥
+
+	// 返回参数
+	result := &Result{}
+
+	// md5加密
+	m := md5.New()
+	m.Write([]byte(sign))
+	sign = hex.EncodeToString(m.Sum(nil))
+	fmt.Println("输出签名：")
+	fmt.Println(paramSign)
+	fmt.Println(sign)
+	if paramSign == sign { // 传进的签名等于计算出的签名，说明请求合法
+		// 判断订单是否已完成
+		if urls.Get("trade_status") == "TRADE_FINISHED" || urls.Get("trade_status") == "TRADE_SUCCESS" { //交易成功
+			contro.Ctx.WriteString("success")
+			result.Status = 1
+			result.OrderNo = urls.Get("out_trade_no")
+			result.TradeNo = urls.Get("trade_no")
+			result.BuyerEmail = urls.Get("buyer_email")
+			return result
+		} else {
+			contro.Ctx.WriteString("error")
+		}
+	} else {
+		contro.Ctx.WriteString("error")
+		// 签名不符，错误代码-1
+		result.Status = -1
+		result.Message = "签名不符"
+		return result
+	}
+	// 未知错误-2
+	result.Status = -2
+	result.Message = "未知错误"
+	return result
 }
