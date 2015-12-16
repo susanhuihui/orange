@@ -166,28 +166,28 @@
                 <div class="modal-body">
                     <table class="stutablepop">
                         <tr>
-                            <td>余额：
+                            <td>可提现金额：
                               </td>
-                            <td id="yueshow">￥100.00</td>
+                            <td><span id="yueshow"></span>元</td>
                         </tr>
                         <tr>
                             <td>提现金额：
                               </td>
                             <td>
-                                <input class="stuimput" type="text">
+                                <input class="stuimput" type="text" id="txtoutmoney">
                             </td>
                         </tr>
                         <tr>
                             <td>支付宝账户：
                               </td>
                             <td>
-                                <input class="stuimput" type="text">
+                                <input class="stuimput" type="text" id="txtaccountuser">
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="modal-footer" style="text-align: center;">
-                    <button type="button" style="width: 30%;" class="btn btn-warning">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-warning" data-dismiss="modal" onclick="addTixian()">确定</button>
                     <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
@@ -429,7 +429,7 @@
                         <div role="tabpanel" class="tab-pane" id="messages">
                             <table class="moneytable">
                                 <tr>
-                                    <td>现金余额：<span id="nowmoney">￥{{.Balance}} 元</span>
+                                    <td>现金余额：￥<span id="nowmoney">{{.Balance}}</span> 元&nbsp;&nbsp;&nbsp;
                                         冻结金额：<span>￥{{.FrozenMoney}} 元</span>
                                     </td>
                                     <td>
@@ -1031,17 +1031,23 @@
         }
         //获取提现记录列表信息
         function chushitixian(page) {
-            var allClass = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsByUserid/1/" + userid + "/" + page + "/" + pubRows;
+            var allClass = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTixianByUserid/" + userid + "/" + page + "/" + pubRows;
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var mytixianstr = '<tr class="stuth"><th>提现时间</th><th>提现金额</th><th>提现方式</th><th>余额</th></tr>';
+                var mytixianstr = '<tr class="stuth"><th>提现到账号</th><th>提现时间</th><th>提现金额</th><th>提现方式</th><th>余额</th><th>状态</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
-                        var itmes = "<tr><td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
+                        var nowstate = "";
+                        if (data[i]["IsComplete"] == 0) { nowstate = '<span style="color:red;">申请中</span>'; }
+                        else if (data[i]["IsComplete"] == 1) { nowstate = "提现成功" }
+                        var itmes = "<tr><td>" + data[i]["AccountNumber"] + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
                                     "<td>" + data[i]["RecordMoney"] + "</td>" +
                                     "<td>" + data[i]["TradingName"] + "</td>" +
-                                    '<td>' + data[i]["Balance"] + '</td></tr>';
+                                    '<td>' + data[i]["Balance"] + '</td>' +
+                                    '<td>' + nowstate + '</td>' +
+                                    '</tr>';
                         mytixianstr += itmes
                     }
                 }
@@ -1440,11 +1446,69 @@
         function clearmoney() {
             document.getElementById("paymoney").value = "";
         }
-
+        
         //点击提现按钮
         function Tixian() {
             var nowmoney = document.getElementById("nowmoney").innerHTML;
-            document.getElementById("yueshow").innerHTML = nowmoney;
+            if (nowmoney <= 100) {
+                document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
+                return;
+                //alert("账户余额不能少于100元！");
+            }
+            var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
+            $.getJSON(getstate, function (data) {
+                if (nowmoney - 100 > data) {
+                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data);
+                }
+                else {
+                    document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+                }
+            });
+        }
+
+        //提现确定按钮事件
+        function addTixian() {
+            var nowmoney = document.getElementById("nowmoney").innerHTML;
+            if (nowmoney > 100) {
+                //判断是否提现的金额大于
+                var tmoney = trim(document.getElementById("txtoutmoney").value);
+                var zhifuno = trim(document.getElementById("txtaccountuser").value);
+                var kecaozuomoney = document.getElementById("yueshow").innerHTML;
+                if (tmoney == "") { alert("提现金额不能为空！"); return; }
+                if (zhifuno == "") { alert("支付宝账号不能为空！"); return; }
+                var re = /^\d+.?\d{0,2}$/;
+                if (!re.test(tmoney)) { alert("请正确输入金额！"); return; }
+                if (tmoney <= kecaozuomoney) {
+                    //查询当前余额
+                    var getstate = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
+                    $.getJSON(getstate, function (data) {
+                        if (data["UserId"] > 0) {
+                            //添加一条提现申请信息
+                            var addrecord = '{"UserId":' + userid +
+                                            ',"RecordMoney":' + tmoney +
+                                            ',"Balance":' + data["Balance"] +
+                                            ',"RecordType":1' +
+                                            ',"RecordTime":"' + getInsertNowDate() +
+                                            '","TradingWayId":2' +
+                                            ',"IsComplete":0' +
+                                            ',"AccountNumber":"' + zhifuno +
+                                            '"}';
+                            $.post("http://{{.Website}}/orange/amountrecords/AddAmountrecords/", addrecord,
+                                function (adddata) {
+                                    if (adddata["id"] > 0) {
+                                        alert("申请成功！");
+                                        window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/2";
+                                    } else {
+                                        alert("申请失败！");
+                                    }
+                                });
+                        }
+                    });
+                }
+                else {
+                    alert("提现金额不能大于可提现金额！");
+                }
+            }
         }
     </script>
 </body>

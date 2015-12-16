@@ -4,7 +4,7 @@ a{cursor:pointer;}
 .menu{ height:55px; width:100%; background-color:#FFFFFF; border-bottom:1px solid #ccc; }
 .logo{ float:left; width:120px; font-size:20px; margin-top:15px;}
 .menumain{ float:left; width:80%;}
-.menumaintable { 
+.menumaintables { 
                  box-shadow:2px 2px 2px #f3f3f3;
 -moz-box-shadow:2px 2px 2px #f3f3f3;
 -webkit-box-shadow:2px 2px 2px #f3f3f3;

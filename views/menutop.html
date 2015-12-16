@@ -92,9 +92,9 @@
             </div>
         </div>
     </div>
-    <div class="navbar-wrapper">
-        <nav class="navbar navbar-inverse navbar-static-top row">
-            <div class="col-sm-2"></div>
+    <div class="navbar-wrapper" >
+        <nav class="navbar navbar-inverse navbar-static-top menumaintables" >
+            <div style="max-width:1000px; margin-left:auto; margin-right:auto;">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                     <span class="sr-only">Toggle navigation</span>
@@ -121,6 +121,8 @@
                     <li style="display: none" id="liusername"></li>-->
                 </ul>
             </div>
+                </div>
+
         </nav>
     </div>
 </body>
@@ -149,6 +151,8 @@
                     stuorteacher = "http://{{.Website}}/orange/Main/UserTeacher/0";
                 } else if (identityid == 2 || identityid == 3) {//学生|家长
                     stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
+                } else if (identityid == 4) {
+                    stuorteacher = "http://{{.Website}}/orange/Main/OwnerUser/";
                 }
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
                 if (AvatarPath != null && AvatarPath + "" != "") {

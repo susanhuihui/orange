@@ -113,6 +113,41 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
 		beego.ControllerComments{
+			"GetAmountrecordsTixianByUserid",
+			`/GetAmountrecordsTixianByUserid/:userid/:page/:size`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
+			"GetAmountrecordsTixianByUseridCount",
+			`/GetAmountrecordsTixianByUseridCount/:userid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
+			"GetAmountrecordsTMcountByUid",
+			`/GetAmountrecordsTMcountByUid/:userid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
+			"GetAmountrecordsAllT",
+			`/GetAmountrecordsAllT/:page/:size`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
+			"GetAmountrecordsAllTCount",
+			`/GetAmountrecordsAllTCount/`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
 			"GetAll",
 			`/GetAllAmountrecords/:page/:size`,
 			[]string{"get"},
@@ -122,7 +157,7 @@ func init() {
 		beego.ControllerComments{
 			"Put",
 			`/UpdateAmountrecordsById/:id`,
-			[]string{"put"},
+			[]string{"post"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
@@ -710,6 +745,13 @@ func init() {
 		beego.ControllerComments{
 			"UserStudent",
 			`/UserStudent/:tapid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
+			"OwnerUser",
+			`/OwnerUser/`,
 			[]string{"get"},
 			nil})
 

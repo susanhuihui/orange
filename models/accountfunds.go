@@ -16,7 +16,8 @@ type Accountfunds struct {
 	Balance       float64   `orm:"column(Balance);null;digits(10);decimals(2)"`
 	FundState     int       `orm:"column(FundState)"`
 	OpenTime      time.Time `orm:"column(OpenTime);type(datetime)"`
-	AccountTypeId int       `orm:"column(AccountTypeId)"`
+	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
+	AccountTypeId int       `orm:"column(AccountTypeId);null"`
 }
 
 //
@@ -26,7 +27,8 @@ type AccountfundsStudent struct {
 	Balance       float64   `orm:"column(Balance);null;digits(10);decimals(2)"`
 	FundState     int       `orm:"column(FundState)"`
 	OpenTime      time.Time `orm:"column(OpenTime);type(datetime)"`
-	AccountTypeId int       `orm:"column(AccountTypeId)"`
+	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
+	AccountTypeId int       `orm:"column(AccountTypeId);null"`
 	FrozenMoney   float64   `orm:"column(FrozenMoney);null;digits(10);decimals(2)"`
 }
 
@@ -42,8 +44,8 @@ func init() {
 //	2015-11-06
 func GetAccountfundsByuid(userid int) (account Accountfunds, err error) {
 	o := orm.NewOrm()
-	var rs orm.RawSeter	
-	rs = o.Raw(SqlAccountFundsByUserId,userid)
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountFundsByUserId, userid)
 	qs := rs.QueryRow(&account)
 	return account, qs
 }
@@ -52,8 +54,8 @@ func GetAccountfundsByuid(userid int) (account Accountfunds, err error) {
 //	2015-11-06
 func GetAccountfundsBySID(userid int) (account AccountfundsStudent, err error) {
 	o := orm.NewOrm()
-	var rs orm.RawSeter	
-	rs = o.Raw(SqlAccountFundsByS,userid)
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountFundsByS, userid)
 	qs := rs.QueryRow(&account)
 	return account, qs
 }

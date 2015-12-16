@@ -11,27 +11,44 @@ import (
 )
 
 type Amountrecords struct {
-	Id           int       `orm:"column(PKId);auto"`
-	UserId       int       `orm:"column(UserId)"`
-	RecordMoney  float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
-	Balance      float64   `orm:"column(Balance);digits(10);decimals(2)"`
-	RecordType   int       `orm:"column(RecordType)"`
-	RecordTime   time.Time `orm:"column(RecordTime);type(datetime)"`
-	TradingWayId int       `orm:"column(TradingWayId)"`
-	IsComplete   int       `orm:"column(IsComplete)"`
+	Id            int       `orm:"column(PKId);auto"`
+	UserId        int       `orm:"column(UserId)"`
+	RecordMoney   float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
+	Balance       float64   `orm:"column(Balance);digits(10);decimals(2)"`
+	RecordType    int       `orm:"column(RecordType)"`
+	RecordTime    time.Time `orm:"column(RecordTime);type(datetime)"`
+	TradingWayId  int       `orm:"column(TradingWayId)"`
+	IsComplete    int       `orm:"column(IsComplete)"`
+	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
 }
 
 //查询用户充值提现记录
 type AmountrecordsUserList struct {
-	Id           int       `orm:"column(PKId);auto"`
-	UserId       int       `orm:"column(UserId)"`
-	RecordMoney  float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
-	Balance      float64   `orm:"column(Balance);digits(10);decimals(2)"`
-	RecordType   int       `orm:"column(RecordType)"`
-	RecordTime   time.Time `orm:"column(RecordTime);type(datetime)"`
-	TradingWayId int       `orm:"column(TradingWayId)"`
-	IsComplete   int       `orm:"column(IsComplete)"`
-	TradingName  string    `orm:"column(TradingName);size(50);null"`
+	Id            int       `orm:"column(PKId);auto"`
+	UserId        int       `orm:"column(UserId)"`
+	RecordMoney   float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
+	Balance       float64   `orm:"column(Balance);digits(10);decimals(2)"`
+	RecordType    int       `orm:"column(RecordType)"`
+	RecordTime    time.Time `orm:"column(RecordTime);type(datetime)"`
+	TradingWayId  int       `orm:"column(TradingWayId)"`
+	IsComplete    int       `orm:"column(IsComplete)"`
+	TradingName   string    `orm:"column(TradingName);size(50);null"`
+	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
+}
+
+//管理员查询用户全部提现记录
+type AmountrecordsUserAllT struct {
+	Id            int       `orm:"column(PKId);auto"`
+	UserId        int       `orm:"column(UserId)"`
+	RecordMoney   float64   `orm:"column(RecordMoney);digits(10);decimals(2)"`
+	Balance       float64   `orm:"column(Balance);digits(10);decimals(2)"`
+	RecordType    int       `orm:"column(RecordType)"`
+	RecordTime    time.Time `orm:"column(RecordTime);type(datetime)"`
+	TradingWayId  int       `orm:"column(TradingWayId)"`
+	IsComplete    int       `orm:"column(IsComplete)"`
+	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
+	UserName      string    `orm:"column(UserName);size(50);null"`
+	IphoneNum     string    `orm:"column(IphoneNum);size(50);null"`
 }
 
 func (t *Amountrecords) TableName() string {
@@ -65,6 +82,88 @@ func GetAmountrecordsByUseridCount(recordtype int, userid int) (allcount int, er
 	var rs orm.RawSeter
 	rs = o.Raw(SqlAccountRecordByUidType, recordtype, userid)
 	var list []AmountrecordsUserList
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
+}
+
+//    15.查询用户（提现recordtype = 1）全部提现记录
+//    2015-11-06
+func GetAmountrecordsTixianByUserid(userid int, rows int, counts int) (list []AmountrecordsUserList, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordTixianByUid+limitSql, userid, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
+}
+
+//    15.查询用户（提现recordtype = 1）全部提现记录总条数
+//    2015-11-06
+func GetAmountrecordsTixianByUseridCount(userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordTixianByUid, userid)
+	var list []AmountrecordsUserList
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
+}
+
+//    15.查询用户正在提现的全部金额，继续提现的时候根据此值判断是否可继续提现
+//    2015-12-16
+func GetAmountrecordsTMcountByUid(userid int) (allmoney float64, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordTMcountByUID, userid)
+	var list Amountrecords
+	qs := rs.QueryRow(&list)
+	if qs != nil {
+		return 0, qs
+	} else {
+		return list.RecordMoney, qs
+	}
+	return
+}
+
+//    15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录
+//    2015-12-16
+func GetAmountrecordsAllT(rows int, counts int) (list []AmountrecordsUserAllT, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordAll+limitSql, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
+}
+
+//    15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录总条数
+//    2015-12-16
+func GetAmountrecordsAllTCount() (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlAccountRecordAll)
+	var list []AmountrecordsUserAllT
 	num, qs := rs.QueryRows(&list)
 	if qs != nil {
 		fmt.Printf("num", num)

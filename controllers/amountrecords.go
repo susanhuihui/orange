@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"orange/models"
 	"strconv"
 	"strings"
@@ -30,8 +31,13 @@ func (c *AmountrecordsController) URLMapping() {
 // @Failure 403 body is empty
 // @router /AddAmountrecords/ [post]
 func (c *AmountrecordsController) Post() {
+	var jsonS string
+	for k, v := range c.Ctx.Request.Form {
+		fmt.Printf("k=%v, v=%v\n", k, v)
+		jsonS = k
+	}
 	var v models.Amountrecords
-	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
+	json.Unmarshal([]byte(jsonS), &v)
 	if id, err := models.AddAmountrecords(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
@@ -58,7 +64,7 @@ func (c *AmountrecordsController) GetOne() {
 	c.ServeJson()
 }
 
-//15.查询用户（提现/充值）记录
+//15.查询用户（提现/充值）记录状态都为1的情况
 // @Title GetAmountrecordsByUserid
 // @Description GetAmountrecordsByUserid Amountrecords by id
 // @Param	id		path 	string	true		"The key for staticblock"
@@ -66,18 +72,18 @@ func (c *AmountrecordsController) GetOne() {
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsByUserid/:recordtype/:userid/:page/:size [get]
 func (c *AmountrecordsController) GetAmountrecordsByUserid() {
-	recordtypestr := c.Ctx.Input.Params[":recordtype"]	
-	idStr := c.Ctx.Input.Params[":userid"]	
+	recordtypestr := c.Ctx.Input.Params[":recordtype"]
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
 	recordtype, _ := strconv.Atoi(recordtypestr)
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.Atoi(page)//传来的页数
-	rows, _ := strconv.Atoi(size) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
-	v, err := models.GetAmountrecordsByUserid(recordtype,userid,offset,limit)
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetAmountrecordsByUserid(recordtype, userid, offset, limit)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -94,11 +100,116 @@ func (c *AmountrecordsController) GetAmountrecordsByUserid() {
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsByUseridCount/:recordtype/:userid [get]
 func (c *AmountrecordsController) GetAmountrecordsByUseridCount() {
-	recordtypestr := c.Ctx.Input.Params[":recordtype"]	
-	idStr := c.Ctx.Input.Params[":userid"]	
+	recordtypestr := c.Ctx.Input.Params[":recordtype"]
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
 	recordtype, _ := strconv.Atoi(recordtypestr)
-	v, err := models.GetAmountrecordsByUseridCount(recordtype,userid)
+	v, err := models.GetAmountrecordsByUseridCount(recordtype, userid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//15.查询用户（提现recordtype = 1）全部提现记录 **/
+// @Title GetAmountrecordsTixianByUserid
+// @Description GetAmountrecordsTixianByUserid Amountrecords by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is empty
+// @router /GetAmountrecordsTixianByUserid/:userid/:page/:size [get]
+func (c *AmountrecordsController) GetAmountrecordsTixianByUserid() {
+	idStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(idStr)
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetAmountrecordsTixianByUserid(userid, offset, limit)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//15.查询用户（提现recordtype = 1）全部提现记录 **/
+// @Title GetAmountrecordsTixianByUseridCount
+// @Description GetAmountrecordsTixianByUseridCount Amountrecords by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is empty
+// @router /GetAmountrecordsTixianByUseridCount/:userid [get]
+func (c *AmountrecordsController) GetAmountrecordsTixianByUseridCount() {
+	idStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(idStr)
+	v, err := models.GetAmountrecordsTixianByUseridCount(userid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//15.查询用户正在提现的全部金额，继续提现的时候根据此值判断是否可继续提现
+// @Title GetAmountrecordsTMcountByUid
+// @Description GetAmountrecordsTMcountByUid Amountrecords by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is empty
+// @router /GetAmountrecordsTMcountByUid/:userid [get]
+func (c *AmountrecordsController) GetAmountrecordsTMcountByUid() {
+	idStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(idStr)
+	v, err := models.GetAmountrecordsTMcountByUid(userid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录
+// @Title GetAmountrecordsAllT
+// @Description GetAmountrecordsAllT Amountrecords by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is empty
+// @router /GetAmountrecordsAllT/:page/:size [get]
+func (c *AmountrecordsController) GetAmountrecordsAllT() {
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetAmountrecordsAllT(offset, limit)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录总条数
+// @Title GetAmountrecordsAllTCount
+// @Description GetAmountrecordsAllTCount Amountrecords by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is empty
+// @router /GetAmountrecordsAllTCount/ [get]
+func (c *AmountrecordsController) GetAmountrecordsAllTCount() {
+	v, err := models.GetAmountrecordsAllTCount()
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -124,13 +235,13 @@ func (c *AmountrecordsController) GetAll() {
 	var order []string
 	var query map[string]string = make(map[string]string)
 
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.ParseInt(page, 0, 0)//传来的页数
-	rows, _ := strconv.ParseInt(size, 0, 0) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
+	page := c.Ctx.Input.Param(":page")       //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size")       //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.ParseInt(page, 0, 0) //传来的页数
+	rows, _ := strconv.ParseInt(size, 0, 0)  //传来的显示行数
+	truepages := (pages - 1) * rows          //计算舍弃多少行
+	limit := rows                            //显示行数
+	offset := truepages                      //舍弃行数	//新加--------结束--------
 
 	// fields: col1,col2,entity.col3
 	if v := c.GetString("fields"); v != "" {
@@ -181,12 +292,17 @@ func (c *AmountrecordsController) GetAll() {
 // @Param	body		body 	models.Amountrecords	true		"body for Amountrecords content"
 // @Success 200 {object} models.Amountrecords
 // @Failure 403 :id is not int
-// @router /UpdateAmountrecordsById/:id [put]
+// @router /UpdateAmountrecordsById/:id [post]
 func (c *AmountrecordsController) Put() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
+	var jsonS string
+	for k, v := range c.Ctx.Request.Form {
+		fmt.Printf("k=%v, v=%v\n", k, v)
+		jsonS = k
+	}
 	v := models.Amountrecords{Id: id}
-	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
+	json.Unmarshal([]byte(jsonS), &v)
 	if err := models.UpdateAmountrecordsById(&v); err == nil {
 		c.Data["json"] = "OK"
 	} else {

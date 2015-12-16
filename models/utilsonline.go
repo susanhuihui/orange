@@ -49,7 +49,7 @@ func Sign(param interface{}) string {
 	for _, v := range paramArray {
 		detail := strings.SplitN(v, ":", 2)
 		//排除sign和sign_type
-		if detail[0] != "sign" && detail[0] != "sign_type" {
+		if detail[0] != "sign" && detail[0] != "sign_type" && v != "" {
 			//total_fee转化为2位小数
 			if detail[0] == "total_fee" {
 				number, _ := strconv.ParseFloat(detail[1], 32)
@@ -65,7 +65,6 @@ func Sign(param interface{}) string {
 
 	//追加密钥 合作者密钥
 	sign += "scnf70tnzygvjkdp259w2z2h2e0mhrrc" //AlipayKey
-
 	//md5加密
 	m := md5.New()
 	m.Write([]byte(sign))

@@ -5,6 +5,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"regexp"
 	"time"
@@ -251,7 +252,7 @@ func (c *MainController) UserTeacher() {
 	jiaoyilist, _ := models.GetTransactionrecordsByTidCount(stuuserid)
 	c.Data["jiaoyicount"] = jiaoyilist
 	//资金-提现记录
-	tixianlist, _ := models.GetAmountrecordsByUseridCount(1, stuuserid)
+	tixianlist, _ := models.GetAmountrecordsTixianByUseridCount(stuuserid)
 	c.Data["tixiancount"] = tixianlist
 	//我的评价
 	pingjialist, _ := models.GetOnlinecourseevaluationByTidCount(stuuserid)
@@ -340,7 +341,7 @@ func (c *MainController) UserStudent() {
 	jiaoyilist, _ := models.GetTransactionrecordsBySidCount(stuuserid)
 	c.Data["jiaoyicount"] = jiaoyilist
 	//资金-提现记录
-	tixianlist, _ := models.GetAmountrecordsByUseridCount(1, stuuserid)
+	tixianlist, _ := models.GetAmountrecordsTixianByUseridCount(stuuserid)
 	c.Data["tixiancount"] = tixianlist
 	//资金-充值记录
 	chongzhilist, _ := models.GetAmountrecordsByUseridCount(0, stuuserid)
@@ -359,6 +360,24 @@ func (c *MainController) UserStudent() {
 
 	c.Data["tapNum"] = tapid        //显示第几个tap
 	c.TplNames = "studentmain.html" //跳到学生个人中心
+}
+
+// 管理员个人中心
+// @Title OwnerUser
+// @Description OwnerUser the TbUser
+// @Param			"The id you want to OwnerUser"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /OwnerUser/ [get]
+func (c *MainController) OwnerUser() {
+	c.Data["Website"] = models.OnlineUrl
+	account, err := models.GetAmountrecordsAllTCount()
+	if err == nil && account > 0 {
+		c.Data["tixiancount"] = account
+	} else {
+		c.Data["tixiancount"] = 0
+	}
+	c.TplNames = "adminpage.html"
 }
 
 // 学生个人中心-查看全部课程中自己给老师的一条评价
@@ -874,6 +893,7 @@ type Result struct {
 // @Failure 403
 // @router /PayEnd/ [get]
 func (c *MainController) PayEnd() {
+	c.Data["Website"] = models.OnlineUrl
 	result := Return(&c.Controller)
 	if result.Status == 1 {
 		fmt.Println("成功")
@@ -881,7 +901,7 @@ func (c *MainController) PayEnd() {
 		inid := result.OrderNo //本网站订单号
 		inidt, _ := strconv.Atoi(inid)
 		accountpay, _ := models.GetAmountrecordsById(inidt)
-		var caozuomoney = strconv.FormatInt(int64(accountpay.RecordMoney), 10)
+		zhifumoney := strconv.FormatFloat(accountpay.RecordMoney, 'f', -1, 64)
 		if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
 			accountpay.IsComplete = 1
 			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
@@ -891,10 +911,10 @@ func (c *MainController) PayEnd() {
 			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
 			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
 			if upaccerr == nil {
-				c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+				c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 			}
 		} else {
-			c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+			c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 		}
 	} else {
 		c.Data["resultStr"] = result.Message
@@ -918,7 +938,8 @@ func (c *MainController) PayEndNotify() {
 		inid := result.OrderNo //本网站订单号
 		inidt, _ := strconv.Atoi(inid)
 		accountpay, _ := models.GetAmountrecordsById(inidt)
-		var caozuomoney = strconv.FormatInt(int64(accountpay.RecordMoney), 10)
+		//var caozuomoney = strconv.FormatInt(int64(accountpay.RecordMoney), 10)
+		zhifumoney := strconv.FormatFloat(accountpay.RecordMoney, 'f', -1, 64)
 		if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
 			accountpay.IsComplete = 1
 			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
@@ -928,10 +949,10 @@ func (c *MainController) PayEndNotify() {
 			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
 			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
 			if upaccerr == nil {
-				c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+				c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 			}
 		} else {
-			c.Data["resultStr"] = "支付成功：" + caozuomoney + "元。"
+			c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 		}
 	} else {
 		c.Data["resultStr"] = result.Message
@@ -945,7 +966,7 @@ func (c *MainController) PayEndNotify() {
 func Return(contro *beego.Controller) *Result {
 	// 列举全部传参
 	type Params struct {
-		Body        string `form:"body" json:"body"`                 // 描述
+		//Body        string `form:"body" json:"body"`                 // 描述
 		BuyerEmail  string `form:"buyer_email" json:"buyer_email"`   // 买家账号
 		BuyerId     string `form:"buyer_id" json:"buyer_id"`         // 买家ID
 		Exterface   string `form:"exterface" json:"exterface"`       // 接口名称
@@ -986,6 +1007,9 @@ func Return(contro *beego.Controller) *Result {
 		// 生成签名
 		//signs := Sign(param)
 		signs := models.Sign(param)
+		log.Println(signs)
+		log.Println(param.Sign)
+		//log.Println(param.Body)
 		// 对比签名是否相同
 		if signs == param.Sign { //只有相同才说明该订单成功了
 			// 判断订单是否已完成

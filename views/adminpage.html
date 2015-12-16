@@ -1,0 +1,205 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="images/C_132.png">
+
+    <title>在线教育</title>
+    <link href="b/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+</head>
+
+<body>
+    {{template "menutop.html" .}}
+    <div id="pagetopb">
+        <!--个人资料-->
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;">
+            <div class="row" style="margin-top: 30px;">
+                <div class=" col-sm-1"></div>
+                <div class="col-sm-10 regtab" style="font-size: 16px;">
+                    提现列表                     
+                </div>
+                <div class=" col-sm-1"></div>
+            </div>
+            <div class=" row" style="margin-bottom: 20px;">
+                <div class=" col-sm-1"></div>
+                <div class=" col-sm-10 odd" style="text-align: center; color: #FFA403; font-size: 18px;">
+                    <table class="stutables" cellspacing="0" id="tixianlist">
+                        <tr class="stuth">
+                            <th>提现申请人
+                                                </th>
+                            <th>申请金额
+                                                </th>
+                            <th>支付宝账号
+                                                </th>
+                            <th>申请时间
+                                                </th>
+                            <th>联系方式
+                                                </th>
+                            <th>状态
+                                                </th>
+                            <th>操作
+                                                </th>
+                        </tr>
+                        <tr>
+
+                            <td>王大全
+                                                </td>
+                            <td>￥300.00
+                                                </td>
+                            <td>yangyan@126.com
+                                                </td>
+                            <td>2015-09-18  19:00:00
+                                                </td>
+                            <td>19812344321
+                                                </td>
+                            <td>申请中
+                                                </td>
+                            <td>
+                                <a href="#" class="btn btn-warning radsty">发放</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>王大全
+                                                </td>
+                            <td>￥300.00
+                                                </td>
+                            <td>yangyan@126.com
+                                                </td>
+                            <td>2015-09-18  19:00:00
+                                                </td>
+                            <td>19812344321
+                                                </td>
+                            <td>已发放
+                                                </td>
+                            <td>
+                                <a href="#" class="btn btn-warning radsty">删除</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="Pagination5" class="pagination"></div>
+                </div>
+            </div>
+        </div>
+        <p id="tixiancount" style="display: none">{{.tixiancount}}</p>
+    </div>
+
+    {{template "footer.html" .}}    
+    <script src="b/js/jquery.min.js"></script>
+    <script src="b/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
+    <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript">
+        var pubRows = 10;//每页显示行数
+        var userid = getCookie("userid")//获取登录用户主键id
+        window.onload = function () {
+            getuser();
+            setTitleOnSelect(4);
+            if (userid == null || userid <= 0) {
+                window.location.href = "http://{{.Website}}/";
+            }
+            chushitixian(1);
+        }
+
+        //点击提现记录
+        function pageselectCallback5(page_id, jq) {
+            chushitixian((page_id + 1));
+        }
+
+        // 创建提现记录分页元素----------------
+        $("#Pagination5").pagination(document.getElementById("tixiancount").innerText, {
+            num_edge_entries: 2,
+            num_display_entries: 5,
+            callback: pageselectCallback5  //回调函数
+        });
+        //获取提现记录列表信息
+        function chushitixian(page) {
+            var allClass = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsAllT" + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allClass, function (data) {
+                //alert(data);
+                var mytixianstr = '<tr class="stuth"><th>提现申请人</th><th>申请金额</th><th>支付宝账号</th><th>申请时间</th><th>联系方式</th><th>状态</th><th>操作</th>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var nowstate = "";
+                        if (data[i]["IsComplete"] == 0) { nowstate = '<span style="color:red;">申请中</span>'; }
+                        else if (data[i]["IsComplete"] == 1) { nowstate = "已发放"; }
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["RecordMoney"] + "</td>" +
+                                    "<td>" + data[i]["AccountNumber"] + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
+                                    "<td>" + data[i]["IphoneNum"] + "</td>" +
+                                    '<td>' + nowstate + '</td>' +
+                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="fafang(' + data[i]["Id"] + ')">发放</a>' + '</td>' +
+                                    '</tr>';
+                        mytixianstr += itmes
+                    }
+                }
+                document.getElementById("tixianlist").innerHTML = "";
+                $("#tixianlist").append(mytixianstr);
+            });
+        }
+
+        //点击发放按钮
+        function fafang(recid) {
+            //alert(recid);
+            var onerecore = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsById/" + recid;
+            //alert(allClass);
+            var fafanguserid = 0;
+            var nowyue = 0;
+            $.getJSON(onerecore, function (data) {
+                if (data["Id"] > 0) {
+                    //添加一条提现申请信息
+                    var tixianmoney = data["RecordMoney"];
+                    var yee = data["Balance"]
+                    nowyue = yee - tixianmoney;
+                    fafanguserid = data["UserId"];
+                    var uprecord = '{"UserId":' + data["UserId"] +
+                                    ',"RecordMoney":' + data["RecordMoney"] +
+                                    ',"Balance":' + nowyue +
+                                    ',"RecordType":' + data["RecordType"] +
+                                    ',"RecordTime":"' + getInsertDate(data["RecordTime"]) +
+                                    '","TradingWayId":' + data["TradingWayId"] +
+                                    ',"IsComplete":1' +
+                                    ',"AccountNumber":"' + data["AccountNumber"] +
+                                    '"}';
+                    $.post("http://{{.Website}}/orange/amountrecords/UpdateAmountrecordsById/" + recid, uprecord,
+                        function (update) {
+                            if (update == "OK") {
+                                var oneaccount = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + fafanguserid;
+                                $.getJSON(oneaccount, function (dataacc) {
+                                    var upuser = '{"UserId":' + dataacc["UserId"] +
+                                        ',"Balance":' + nowyue +
+                                        ',"FundState":' + dataacc["FundState"] +
+                                        ',"OpenTime":"' + getInsertDate(dataacc["OpenTime"]) +
+                                        '","AccountNumber":"' + dataacc["AccountNumber"] +
+                                        '","AccountTypeId":' + dataacc["AccountTypeId"] +
+                                        '}';
+                                    $.post("http://{{.Website}}/orange/accountfunds/UpdateAccountfundsById/" + dataacc["Id"], upuser,
+                                       function (upuserdate) {
+                                           if (upuserdate == "OK") {
+                                               alert("发放成功！");
+                                           } else {
+                                               alert("发放失败！");
+                                           }
+                                       });
+                                    window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/";
+                                });
+                            } else {
+
+                            }
+                    });
+                }
+            });
+        }
+    </script>
+</body>
+</html>

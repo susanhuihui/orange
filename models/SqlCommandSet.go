@@ -216,6 +216,30 @@ var SqlAccountRecordByUidType string = `select amt.*,(select tradingname from tr
 	where recordtype = ? and userid = ?  and IsComplete=1
 	order by recordtime desc  `
 
+//查询用户（提现recordtype = 1）全部提现记录
+//
+//参数说明：userid用户主键id；从第几行开始，获取几行
+var SqlAccountRecordTixianByUid string = `select amt.*,(select tradingname from tradingway as tw where amt.TradingWayId = tw.pkid) as TradingName
+	from amountrecords as amt 
+	where recordtype = 1 and userid = ? 
+	order by recordtime desc `
+
+//查询用户正在提现的全部金额，继续提现的时候根据此值判断是否可继续提现
+//参数：用户id，返回正在申请提现的金额总值
+var SqlAccountRecordTMcountByUID string = `select sum(amt.RecordMoney) as RecordMoney
+	from amountrecords as amt
+	where recordtype = 1 and IsComplete=0 and userid = ?
+	order by recordtime desc
+	limit 0,10`
+
+//管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录
+//无参数，分页
+var SqlAccountRecordAll string = `select amt.*,(select username from userinformation as userinfo where userinfo.pkid = amt.userid) as UserName
+	,(select IphoneNum from userinformation as userinfo where userinfo.pkid = amt.userid) as IphoneNum
+	from amountrecords as amt
+	where recordtype = 1 and iscomplete = 0
+	order by recordtime desc `
+
 //16.
 //用途：查询被提问者的问题信息
 //查询字段：问题表字段，提问人姓名
