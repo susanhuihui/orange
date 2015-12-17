@@ -290,7 +290,7 @@
             $.getJSON(getpicurl, function (data) {
                 for (var i = 0; i < data.length ; i++) {
                     document.getElementById("imgTeacher" + (i + 1)).src = data[i]["AvatarPath"];//头像
-                    document.getElementById("nameText" + (i + 1)).innerHTML = "<span>" + data[i]["UserName"] + "  " + data[i]["GradeName"] + data[i]["CourseName"] + "</span>";//姓名加年级主辅导课
+                    document.getElementById("nameText" + (i + 1)).innerHTML = "<span>" + data[i]["UserName"] + "  " + data[i]["CourseName"] + "</span>";//姓名加年级主辅导课
                     document.getElementById("nameText" + (i + 1)).href = "http://{{.Website}}/orange/Teacher/TeacherInformation/" + data[i]["Id"];
                     document.getElementById("A" + (i + 1)).href = "http://{{.Website}}/orange/Teacher/TeacherInformation/" + data[i]["Id"];
                 }

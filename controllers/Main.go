@@ -743,8 +743,8 @@ func (c *MainController) UpdateTeacher() {
 		c.Data["UserSex"] = userinfo.UserSex
 		c.Data["SchoolName"] = userinfo.SchoolName
 		c.Data["SchoolId"] = userinfo.SchoolId
-		c.Data["HighSchoolName"] = userinfo.HighSchoolName
-		c.Data["SeniorLocation"] = userinfo.SeniorLocation //高中学校id
+		c.Data["HighSchoolName"] = userinfo.HighSchool
+		c.Data["SeniorLocation"] = userinfo.SeniorLocation //高中学校市区id
 		c.Data["Professional"] = userinfo.Professional     //专业
 		c.Data["DegreeName"] = userinfo.DegreeName         //学位
 		c.Data["UserDegree"] = userinfo.UserDegree

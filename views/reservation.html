@@ -959,6 +959,7 @@
         var nowTagid = 0;//有数据的数据主键id
         var nowDate = "";//年月日：2015-11-23
         var timeListIndex = 0;//第一个时间段索引：0-8
+        var istorf = 0;//是否可以退约
         function getvalue(txtname, yearmd, timelistindex) {
             var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
             var now = new Date();
@@ -971,10 +972,20 @@
                 nowDate = yearmd;
                 timeListIndex = timelistindex;
                 if (name == "自约") {
-                    document.getElementById("showtext1").style.display = "none";//您是要取消此次预约么？
-                    document.getElementById("showtext2").style.display = "block";
-                    document.getElementById("tishicontent").innerText = "您是要取消此次预约么？";
-                    document.getElementById("btnSetMeet").innerText = "确定";
+                    istorf = 0;
+                    if (now <= setHours(datetime, 24)) {//今天之前的日子不能再操作
+                        document.getElementById("showtext1").style.display = "none";//您是要取消此次预约么？
+                        document.getElementById("showtext2").style.display = "block";
+                        document.getElementById("tishicontent").innerText = "您是要取消此次预约么？";
+                        document.getElementById("btnSetMeet").innerText = "确定";
+                        istorf = 1;
+                    } else {
+                        document.getElementById("showtext1").style.display = "none";//您是要取消此次预约么？
+                        document.getElementById("showtext2").style.display = "block";
+                        document.getElementById("tishicontent").innerText = "请提前24小时退约！";
+                        document.getElementById("btnSetMeet").innerText = "确定";
+                        istorf = 0;
+                    }
                 } else if (name == "不可约") {
                     document.getElementById("showtext1").style.display = "none";//对不起，此时段不能预约课程！
                     document.getElementById("showtext2").style.display = "block";
@@ -1014,54 +1025,56 @@
         //弹出层，确定事件，设置可约，自约
         function setMeetTrueorFalse() {
             if (nowName == "自约") {
-                //alert("自约改可约");//修改一条预约信息，修改一条冻结信息，取消此条信息冻结的资金，用户余额加上取消冻结资金
-                var ongetonline = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + nowTagid;
-                $.getJSON(ongetonline, function (dataon) {
-                    var uponline = '{"UserIdActive":0' +
-                                      ',"UserIdPassive":' + dataon["UserIdPassive"] +
-                                      ',"ReservationState":' + dataon["ReservationState"] +
-                                      ',"Payment":' + dataon["Payment"] +
-                                      ',"Leaming":' + dataon["Leaming"] +
-                                      ',"PayWay":' + dataon["PayWay"] +
-                                      ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
-                                      '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
-                                      '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
-                                      '","AppointMessage":"' + "" +
-                                      '","ClassroomId":"' + dataon["ClassroomId"] +
-                                      '","StudentInId":"' + dataon["StudentInId"] +
-                                      '","TeacherInId":"' + dataon["TeacherInId"] +
-                                      '"}';
-                    $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + nowTagid, uponline,
-                           function (data) {
-                               if (data == "OK") {//取消预约成功
-                                   var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + nowTagid;
-                                   $.getJSON(userfrozen, function (datafrozen) {
-                                       if (datafrozen != null) {
-                                           var updongjie = '{"UserId":' + datafrozen["UserId"] +
-                                                                ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
-                                                                ',"FrozenType":' + datafrozen["FrozenType"] +
-                                                                ',"BusinessId":' + datafrozen["BusinessId"] +
-                                                                ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
-                                                                '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
-                                                                '","FrozenState":0' +
-                                                                '}';
-                                           $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
-                                               function (data) {
-                                                   if (data["id"] > 0) {
+                if (istorf == 1) {
+                    //alert("自约改可约");//修改一条预约信息，修改一条冻结信息，取消此条信息冻结的资金，用户余额加上取消冻结资金
+                    var ongetonline = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + nowTagid;
+                    $.getJSON(ongetonline, function (dataon) {
+                        var uponline = '{"UserIdActive":0' +
+                                          ',"UserIdPassive":' + dataon["UserIdPassive"] +
+                                          ',"ReservationState":' + dataon["ReservationState"] +
+                                          ',"Payment":' + dataon["Payment"] +
+                                          ',"Leaming":' + dataon["Leaming"] +
+                                          ',"PayWay":' + dataon["PayWay"] +
+                                          ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
+                                          '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
+                                          '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
+                                          '","AppointMessage":"' + "" +
+                                          '","ClassroomId":"' + dataon["ClassroomId"] +
+                                          '","StudentInId":"' + dataon["StudentInId"] +
+                                          '","TeacherInId":"' + dataon["TeacherInId"] +
+                                          '"}';
+                        $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + nowTagid, uponline,
+                               function (data) {
+                                   if (data == "OK") {//取消预约成功
+                                       var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + nowTagid;
+                                       $.getJSON(userfrozen, function (datafrozen) {
+                                           if (datafrozen != null) {
+                                               var updongjie = '{"UserId":' + datafrozen["UserId"] +
+                                                                    ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
+                                                                    ',"FrozenType":' + datafrozen["FrozenType"] +
+                                                                    ',"BusinessId":' + datafrozen["BusinessId"] +
+                                                                    ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
+                                                                    '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
+                                                                    '","FrozenState":0' +
+                                                                    '}';
+                                               $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
+                                                   function (data) {
+                                                       if (data["id"] > 0) {
 
-                                                   }
-                                               });
-                                       }
-                                   });
-                                   alert("取消预约成功！");
-                                   window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/" + teacherid;
-                               } else {//预约失败
-                                   alert("取消预约失败！");
-                               }
-                           });
+                                                       }
+                                                   });
+                                           }
+                                       });
+                                       alert("取消预约成功！");
+                                       window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/" + teacherid;
+                                   } else {//预约失败
+                                       alert("取消预约失败！");
+                                   }
+                               });
 
-                });
-
+                    });
+                } else {
+                }
             } else if (nowName == "不可约") {
                 //alert("不可约不做操作");//一条数据               
             } else if (nowName == "可约") {

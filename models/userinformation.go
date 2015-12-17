@@ -25,10 +25,12 @@ type Userinformation struct {
 	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
 	UserSex           string    `orm:"column(UserSex);size(10);null"`
 	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
 	UserDegree        int       `orm:"column(UserDegree);null"`
 	UserLocation      int       `orm:"column(UserLocation);null"`
 	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
 	UserLevelId       int       `orm:"column(UserLevelId);null"`
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
@@ -65,10 +67,12 @@ type UserinformationModels struct {
 	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
 	UserSex           string    `orm:"column(UserSex);size(10);null"`
 	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
 	UserDegree        int       `orm:"column(UserDegree);null"`
 	UserLocation      int       `orm:"column(UserLocation);null"`
 	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
 	UserLevelId       int       `orm:"column(UserLevelId);null"`
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
@@ -84,7 +88,6 @@ type UserinformationModels struct {
 	Remarks           string    `orm:"column(Remarks);size(200);null"`
 	BriefIntroduction string    `orm:"column(BriefIntroduction);null"`
 	RegisteredTime    time.Time `orm:"column(RegisteredTime);type(datetime);null"`
-	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	DegreeName        string    `orm:"column(DegreeName);size(50);null"`
 	CourseNameZhu     string    `orm:"column(CourseNameZhu);size(50);null"`
 	CourseNameFu      string    `orm:"column(CourseNameFu);size(50);null"`
@@ -101,10 +104,12 @@ type UserinformationTeacher struct {
 	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
 	UserSex           string    `orm:"column(UserSex);size(10);null"`
 	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
 	UserDegree        int       `orm:"column(UserDegree);null"`
 	UserLocation      int       `orm:"column(UserLocation);null"`
 	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
 	UserLevelId       int       `orm:"column(UserLevelId);null"`
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
@@ -121,8 +126,6 @@ type UserinformationTeacher struct {
 	BriefIntroduction string    `orm:"column(BriefIntroduction);null"`
 	RegisteredTime    time.Time `orm:"column(RegisteredTime);type(datetime);null"`
 	IdentityName      string    `orm:"column(IdentityName);size(50);null"`
-	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
-	HighSchoolName    string    `orm:"column(HighSchoolName);size(50);null"`
 	AllPerson         int       `orm:"column(AllPerson);null"`
 	AllDate           int       `orm:"column(AllDate);null"`
 	AllCount          int       `orm:"column(AllCount);null"`
@@ -141,10 +144,12 @@ type UserinformationTeacherModu struct {
 	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
 	UserSex           string    `orm:"column(UserSex);size(10);null"`
 	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
 	UserDegree        int       `orm:"column(UserDegree);null"`
 	UserLocation      int       `orm:"column(UserLocation);null"`
 	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
 	UserLevelId       int       `orm:"column(UserLevelId);null"`
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
@@ -166,7 +171,6 @@ type UserinformationTeacherModu struct {
 	DegreeName        string    `orm:"column(DegreeName);size(50);null"`
 	CourseName        string    `orm:"column(CourseName);size(50);null"`
 	CourseNameFu      string    `orm:"column(CourseNameFu);size(50);null"`
-	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 }
 
 //学生个人信息详情
@@ -178,10 +182,12 @@ type UserinformationStudent struct {
 	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
 	UserSex           string    `orm:"column(UserSex);size(10);null"`
 	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
 	UserDegree        int       `orm:"column(UserDegree);null"`
 	UserLocation      int       `orm:"column(UserLocation);null"`
 	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
 	UserLevelId       int       `orm:"column(UserLevelId);null"`
 	LevelYear         int       `orm:"column(LevelYear);null"`
 	IdentityId        int       `orm:"column(IdentityId);null"`
@@ -198,7 +204,6 @@ type UserinformationStudent struct {
 	BriefIntroduction string    `orm:"column(BriefIntroduction);null"`
 	RegisteredTime    time.Time `orm:"column(RegisteredTime);type(datetime);null"`
 	IdentityName      string    `orm:"column(IdentityName);size(50);null"`
-	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
 	AllPerson         int       `orm:"column(AllPerson);null"`
 	AllDate           int       `orm:"column(AllDate);null"`
 	AllCount          int       `orm:"column(AllCount);null"`
@@ -325,12 +330,13 @@ func GetUserinformationStudent(userid int) (student UserinformationStudent, err 
 func GetUserinformationAllTeacher(seltype int, nianji string, kecheng string, jibie string, shengfen string, shiqu string, rows int, counts int) (userlist []UserinformationModels, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
+	fmt.Println(shiqu)
 	if seltype == 1 { //在线
-		rs = o.Raw(SqlUserinformationAllTeacherByOnline+limitSql, nianji, kecheng, jibie, shengfen, shiqu, rows, counts)
+		rs = o.Raw(SqlUserinformationAllTeacherByOnline+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
 	} else if seltype == 2 { //人气
-		rs = o.Raw(SqlUserinformationAllTeacherByPerson+limitSql, nianji, kecheng, jibie, shengfen, shiqu, rows, counts)
+		rs = o.Raw(SqlUserinformationAllTeacherByPerson+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
 	} else if seltype == 3 { //授课经验
-		rs = o.Raw(SqlUserinformationAllTeacherByTime+limitSql, nianji, kecheng, jibie, shengfen, shiqu, rows, counts)
+		rs = o.Raw(SqlUserinformationAllTeacherByTime+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
 	}
 	num, qs := rs.QueryRows(&userlist)
 	if qs != nil {
@@ -348,11 +354,11 @@ func GetUserinformationAllTeacherCount(seltype int, nianji string, kecheng strin
 	o := orm.NewOrm()
 	var rs orm.RawSeter
 	if seltype == 1 {
-		rs = o.Raw(SqlUserinformationAllTeacherByOnline, nianji, kecheng, jibie, shengfen, shiqu)
+		rs = o.Raw(SqlUserinformationAllTeacherByOnline, nianji, kecheng, jibie, shengfen)
 	} else if seltype == 2 {
-		rs = o.Raw(SqlUserinformationAllTeacherByPerson, nianji, kecheng, jibie, shengfen, shiqu)
+		rs = o.Raw(SqlUserinformationAllTeacherByPerson, nianji, kecheng, jibie, shengfen)
 	} else if seltype == 3 {
-		rs = o.Raw(SqlUserinformationAllTeacherByTime, nianji, kecheng, jibie, shengfen, shiqu)
+		rs = o.Raw(SqlUserinformationAllTeacherByTime, nianji, kecheng, jibie, shengfen)
 	}
 	var userlist []UserinformationModels
 	num, qs := rs.QueryRows(&userlist)

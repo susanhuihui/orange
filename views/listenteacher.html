@@ -10,40 +10,13 @@
     <link rel="icon" href="images/C_132.png">
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />    
+    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
 </head>
 <body>
-    <!--弹出层-->
-    <div id="popzcDiv" class="mydiv5" style="display: none;">
-        <a class="zcclosebtn" href="javascript:closezcDiv()">
-            <img src="images/CLOSE.png" />
-        </a>
-        <div>
-            <table class="stutablepop">
-                <tr>
-                    <td>您已完成学习
-                          </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>1小时20分</span>
-                    </td>
-                </tr>
-            </table>
-            <table class="stutablepop">
-                <tr>
-                    <td>
-                        <a href="evaluation.html">
-                            <input type="button" class="studentsbtn" value="去评价"></a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="bg" class="bg" style="display: none;"></div>  <!--弹出层结束-->
-    <div id="pagetopb">
-        <iframe id="myframe" width="100%" height="1400"></iframe>
-    </div><p id="listenid" style="display:none">{{.listenid}}</p>
+
+    <iframe id="myframe" style="width: 100%" height="1000" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+
+    <p id="listenid" style="display: none">{{.listenid}}</p>
     <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript">
@@ -81,6 +54,10 @@
         function ifrsrc(da) {
             document.getElementById("myframe").src = da;
         }
-	</script>
+        //关闭时释放
+        function deletemeeting() {
+
+        }
+    </script>
 </body>
 </html>

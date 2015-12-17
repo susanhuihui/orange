@@ -1128,7 +1128,7 @@
 
             //--------------设置第二个table开始------------------------------------
             var list3 = getdate2((7 - week + 1), 7);
-            var title = list3[0] + "—" + list1[6] + "课程安排表";
+            var title = list3[0] + "—" + list3[6] + "课程安排表";
             document.getElementById("tabletwotitle").innerText = title;
             var tabletwohtml = "<tr><td>&nbsp;</td>";
             tabletwohtml += '<td>星期一<p>' + getmonthday(list3[0]) + '</p></td>';
@@ -1255,7 +1255,7 @@
         function getvalue(txtname, yearmd, timelistindex) {
             var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
             var now = new Date();
-            if (now <= datetime && now.getDay() != datetime.getDay()) {
+            if (now <= datetime && now.getDate() != datetime.getDate()) {
                 //alert("dianji:" + txtname + document.getElementById(txtname).innerText + document.getElementById(txtname).tag + yearmd + "," + timelistindex);
                 var name = document.getElementById(txtname).innerText;
                 var tagid = document.getElementById(txtname).tag;

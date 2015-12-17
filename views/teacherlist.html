@@ -29,7 +29,7 @@
                             <span>{{.UserName}}</span>
                         </div>
                         <div class="col-xs-8" id="guanzhuTeacher">
-                            <a href="#" onclick="guanzhuTeacher()">关注</a>
+                            <a href="#" id="guanzhushow" onclick="guanzhuTeacher()">关注</a>
                         </div>
                     </div>
                     <div class="col-sm-8">
@@ -464,7 +464,7 @@
                             }
                             var itemse = '<div class="teaimgimg" style=" padding-top:20px;">' +
                                          '<img class="teaheadimgimg" src="' + userhead + '" />' +
-                                         '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + data[i]["AgeName"] + '</a></p>' +
+                                         '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + '</a></p>' +
                                          '</div>';
                             allseelist += itemse;
                         }

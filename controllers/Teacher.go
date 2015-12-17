@@ -389,3 +389,15 @@ func (c *TeacherController) ClassOverHtml() {
 
 	c.TplNames = "classover.html" //
 }
+
+// 在线试听结束后进入的页面
+// @Title ListenOverHtml
+// @Description ListenOverHtml the TbUser
+// @Param			"The id you want to ListenOverHtml"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /ListenOverHtml/ [get]
+func (c *TeacherController) ListenOverHtml() {
+	c.Data["Website"] = models.OnlineUrl
+	c.TplNames = "listenover.html" //
+}

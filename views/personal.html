@@ -60,7 +60,7 @@
                         <li><a id="limenu3" class="" onclick="qiehuantap(3)">修改密码</a></li>
                     </ul>
                 </div>
-                <div class=" col-sm-9" id="tab_content">
+                <div class=" col-sm-9" id="tab_content" style="height: 900px;">
                     <div id="divtap1" class="content">
                         <div class="row">
                             <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
@@ -137,8 +137,9 @@
                             <div class="col-xs-4 perfont">
                                 所在学校:                                   
                             </div>
-                            <div class="col-xs-8">
+                            <div class="col-xs-6">
                                 <span id="txtschoolname">{{.SchoolName}}</span>
+                                <input class="form-control" type="text" id="txtnowschoolname" style="display: none;" value="{{.SchoolName}}" />
                                 <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
                                     <span style="color: red" onclick="getprovence()">编辑</span>
                                 </a>
@@ -512,7 +513,9 @@
 
         //编辑按钮，修改为编辑状态
         function bianji() {
-            document.getElementById("btnbianji").style.display = "block";
+            //document.getElementById("btnbianji").style.display = "block"; 
+            document.getElementById("txtnowschoolname").style.display = "block";
+            document.getElementById("txtschoolname").style.display = "none";
             document.getElementById("txtUserName").style.display = "block";
             document.getElementById("username").style.display = "none";
             var setsex = document.getElementById("usersex").innerText;
@@ -550,7 +553,8 @@
         function saveUserInfo() {
             var username = trim(document.getElementById("txtUserName").value);
             var usersex = document.getElementById("selUserSex").value;
-            var userschoolid = document.getElementById("SchoolId").innerText;
+            //var userschoolid = document.getElementById("SchoolId").innerText; 
+            var schoolname = document.getElementById("txtnowschoolname").value;
             var userageid = document.getElementById("selage").value;
             var useryear = document.getElementById("txtruxueyear").value;
             var parentmail = document.getElementById("txtuseremal").value; //
@@ -569,11 +573,13 @@
                     '"LoginPassword":"' + datauser["LoginPassword"] + '",' +
                     '"PayPassword":"' + datauser["PayPassword"] + '",' +
                     '"UserSex":"' + usersex + '",' +
-                    '"SchoolId":' + userschoolid + ',' +
+                    '"SchoolId":' + datauser["SchoolId"] + ',' +
+                    '"SchoolName":"' + schoolname + '",' +
                     '"SchoolAgeId":' + userageid + ',' +
                     '"UserDegree":' + datauser["UserDegree"] + ',' +
                     '"UserLocation":' + datauser["UserLocation"] + ',' +
                     '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                    '"HighSchool":"' + datauser["HighSchool"] + '",' +
                     '"UserLevelId":' + datauser["UserLevelId"] + ',' +
                     '"LevelYear":' + useryear + ',' +
                     '"IdentityId":' + datauser["IdentityId"] + ',' +

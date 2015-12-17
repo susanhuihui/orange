@@ -56,7 +56,31 @@ func init() {
 // last inserted Id on success.
 func AddOnlinetrylisten(m *Onlinetrylisten) (id int64, err error) {
 	o := orm.NewOrm()
+	//添加试听信息同时创建白板
+	//生成三个随机数
+	var meetingID string = getcode("1")
+	var attendeePW string = getcode("2")  //学生进入密码
+	var moderatorPW string = getcode("3") //老师进入密码
+	//每次老师开启试听进入课堂时都要建立一个新的课堂
+	meetingroom := bbb4go.MeetingRoom{}
+	meetingroom.Name_ = "泛鲲教育第一教室"
+	meetingroom.MeetingID_ = meetingID
+	meetingroom.AttendeePW_ = attendeePW
+	meetingroom.ModeratorPW_ = moderatorPW
+	meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+	meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ListenOverHtml/" //试听结束进入首页+/orange/Teacher/ListenOverHtml/
+	meetingroom.Duration = 0
+	meetingroom.AllowStartStopRecording = false
+	//将白板信息保存到数据库试听信息中
+	m.StartTime = time.Now()
+	m.ClassroomId = meetingID
+	m.StudentInId = attendeePW
+	m.TeacherInId = moderatorPW
+
 	id, err = o.Insert(m)
+	if id > 0 && err == nil {
+		meetingroom.CreateMeeting()
+	}
 	return
 }
 
@@ -208,6 +232,10 @@ func UpdateOnlinetrylistenById(m *Onlinetrylisten) (err error) {
 func DeleteOnlinetrylisten(id int) (err error) {
 	o := orm.NewOrm()
 	v := Onlinetrylisten{Id: id}
+	meetroom := bbb4go.MeetingRoom{} //释放白板
+	meetroom.MeetingID_ = v.ClassroomId
+	meetroom.ModeratorPW_ = v.TeacherInId
+	meetroom.End()
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -329,49 +357,56 @@ func bs(data string) string {
 // trylistenid:当前试听课程主键id
 func GeListentecherlession2(trylistenid int) (urlse string, err error) {
 	//生成三个随机数
-	var meetingID string = getcode("1")
-	var attendeePW string = getcode("2")  //学生进入密码
-	var moderatorPW string = getcode("3") //老师进入密码
+	//	var meetingID string = getcode("1")
+	//	var attendeePW string = getcode("2")  //学生进入密码
+	//	var moderatorPW string = getcode("3") //老师进入密码
 	//获取试听信息
 	onlinetryclass, tryerr := GetOnlinetrylistenById(trylistenid)
-
-	if onlinetryclass != nil && tryerr == nil {
+	fmt.Println(onlinetryclass)
+	if onlinetryclass != nil && tryerr == nil && onlinetryclass.ClassroomId != "" {
 		//每次老师开启试听进入课堂时都要建立一个新的课堂
-		meetingroom := bbb4go.MeetingRoom{}
-		meetingroom.Name_ = "泛鲲教育第一教室"
-		meetingroom.MeetingID_ = meetingID
-		meetingroom.AttendeePW_ = attendeePW
-		meetingroom.ModeratorPW_ = moderatorPW
-		meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
-		meetingroom.LogoutURL = "http://" + OnlineUrl //试听结束进入首页+/orange/Teacher/ClassOverHtml/
-		meetingroom.Duration = 0
-		meetingroom.AllowStartStopRecording = false
-		//将白板信息保存到数据库试听信息中
-		onlinetryclass.StartTime = time.Now()
-		onlinetryclass.ClassroomId = meetingID
-		onlinetryclass.StudentInId = attendeePW
-		onlinetryclass.TeacherInId = moderatorPW
-		uperr := UpdateOnlinetrylistenById(onlinetryclass) //预约信息中添加密码
-		if uperr == nil {
-			meetingroom.CreateMeeting()
-			if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
-				//获取老师信息
-				userinfo, gerr := GetUserinformationTeacher(onlinetryclass.Tid)
-				if gerr == nil && userinfo.Id > 0 {
-					//创建白板成功后创建一个老师并生成老师进入课堂的URL
-					partTeacher := bbb4go.Participants{}
-					partTeacher.IsAdmin_ = 1
-					partTeacher.FullName_ = userinfo.UserName + "老师"
-					partTeacher.MeetingID_ = meetingID                                    //教室id
-					partTeacher.Password_ = moderatorPW                                   //老师进入密码
-					partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
-					partTeacher.UserID = strconv.Itoa(userinfo.Id)
-					partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath //http://www.fankunedu.com/images/PersonHeadImg/yanyan.png
-					partTeacher.GetJoinURL()
-					urlse = partTeacher.JoinURL
-				}
+		//		meetingroom := bbb4go.MeetingRoom{}
+		//		meetingroom.Name_ = "泛鲲教育第一教室"
+		//		meetingroom.MeetingID_ = meetingID
+		//		meetingroom.AttendeePW_ = attendeePW
+		//		meetingroom.ModeratorPW_ = moderatorPW
+		//		meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+		//		meetingroom.LogoutURL = "http://" + OnlineUrl //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+		//		meetingroom.Duration = 0
+		//		meetingroom.AllowStartStopRecording = false
+		//		//将白板信息保存到数据库试听信息中
+		//		onlinetryclass.StartTime = time.Now()
+		//		onlinetryclass.ClassroomId = meetingID
+		//		onlinetryclass.StudentInId = attendeePW
+		//		onlinetryclass.TeacherInId = moderatorPW
+		//		uperr := UpdateOnlinetrylistenById(onlinetryclass) //预约信息中添加密码
+		//		if uperr == nil {
+		//			meetingroom.CreateMeeting()
+		//if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+		//获取老师信息
+		userinfo, gerr := GetUserinformationTeacher(onlinetryclass.Tid)
+		if gerr == nil && userinfo.Id > 0 {
+			meetroom := bbb4go.MeetingRoom{}
+			meetroom.MeetingID_ = onlinetryclass.ClassroomId
+			meetroom.ModeratorPW_ = onlinetryclass.TeacherInId
+			meetroom.GetMeetingInfo()
+			var pcount = meetroom.MeetingInfo.ParticipantCount
+			if pcount == 0 { //老师不在
+				//创建一个老师并生成老师进入课堂的URL
+				partTeacher := bbb4go.Participants{}
+				partTeacher.IsAdmin_ = 1
+				partTeacher.FullName_ = userinfo.UserName + "老师"
+				partTeacher.MeetingID_ = onlinetryclass.ClassroomId //教室id
+				partTeacher.Password_ = onlinetryclass.TeacherInId  //老师进入密码
+				partTeacher.CreateTime = ""                         //与创建教室时时间一致
+				partTeacher.UserID = strconv.Itoa(userinfo.Id)
+				partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath //http://www.fankunedu.com/images/PersonHeadImg/yanyan.png
+				partTeacher.GetJoinURL()
+				urlse = partTeacher.JoinURL
 			}
 		}
+		//}
+		//}
 	}
 	return
 }

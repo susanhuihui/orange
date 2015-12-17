@@ -30,8 +30,6 @@ var SqlUserPicList string = `SELECT users.PKId,UserName,AvatarPath,
 //2015-11-03
 var SqlUserTeacher string = `select * ,
 	(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
-    (select SchoolName from schools as sch where users.SchoolId = sch.PkId) as SchoolName,
-    (select SchoolName from schools as hsch where users.SeniorLocation = hsch.PkId) as HighSchoolName,
     ifnull((select count(userfor.pkid) from userinformation userfor where userfor.pkid in (select useridactive from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId group by useridactive)),0) as AllPerson,
     ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
 		(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId)),0) as AllDate,
@@ -134,8 +132,7 @@ var SqlUserMessageTchOne string = `select usermsg.*, (select username from useri
 //参数说明：老师主键id，关系，从第几行开始，获取几行
 //2015-11-04
 var SqlRelationByTeacher string = `select rel.*,userinfo.UserName,userinfo.AvatarPath,
-	(select AgeName from schoolages as sa where userinfo.schoolageid = sa.pkid) as AgeName,
-	(select SchoolName from schools as sch where userinfo.schoolid = sch.pkid) as SchoolName,
+	(select AgeName from schoolages as sa where userinfo.schoolageid = sa.pkid) as AgeName,userinfo.SchoolName,
 	(select identityname from identity as ide where userinfo.IdentityId = ide.pkid) as IdentityName 
 	from relations as rel join userinformation as userinfo on rel.afteruserid = userinfo.pkid 
 	where FrontUserId = ? and sources = ?   
@@ -263,13 +260,14 @@ var SqlQuestionAskByTUserid string = `select qa.*,(select username from userinfo
 //2015-11-03
 var SqlUserInformationByS string = `select * ,
 		(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
-	    (select SchoolName from schools as sch where users.SchoolId = sch.PkId) as SchoolName,
-	    (select count(userfor.pkid) from userinformation userfor where userfor.pkid in (select UserIdPassive from onlineeducation.onlinecoursebooking as ob where ob.UserIdActive = users.PKId group by UserIdPassive)) as AllPerson,
+	    /*(select SchoolName from Schools as sch where users.SchoolId = sch.PkId) as SchoolName,*/
+	    (select count(userfor.pkid) from userinformation userfor where userfor.pkid in 
+			(select UserIdPassive from onlineeducation.onlinecourserecord as ob where ob.UserIdActive = 5 group by UserIdPassive)) as AllPerson,
 	    ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
 			(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdActive = users.PKId)),0) as AllDate,
-	    ifnull((select count(*) from onlineeducation.questionask as qa where qa.askuserid = users.pkid),0) as AllCount,
-	        (select agename from schoolages as sas where users.schoolageid = sas.pkid) as AgeName 
-	from onlineeducation.userinformation as users 
+	    ifnull((select count(*) from onlineeducation.QuestionAsk as qa where qa.askuserid = users.pkid),0) as AllCount,
+	        (select agename from SchoolAges as sas where users.schoolageid = sas.pkid) as AgeName
+	from onlineeducation.userinformation as users
 	where users.pkid = ?`
 
 //18.
@@ -350,8 +348,8 @@ var SqlOnlinebookingbySTidTime string = ` select online.*,
 //2015-11-04
 var SqlRelationsBySGuanZhuT string = `select rela.*,(select users.username from userinformation as users where users.pkid = rela.frontuserid) as UserName,
 		(select CourseName from course as cous where cous.PKId =  
-		 (select CoursesId from remedialcourses as remec where remec.UserId=rela.FrontUserId and IsMain=1 limit 1)) as CourseName,
-	     (select schoolname from schools as sch where sch.pkid = (select SchoolId from userinformation as userin where userin.pkid = rela.FrontUserId)) as SchoolName,
+	    (select CoursesId from remedialcourses as remec where remec.UserId=rela.FrontUserId and IsMain=1 limit 1)) as CourseName,
+     	(select SchoolName from userinformation as userin where userin.pkid = rela.FrontUserId) as SchoolName,
 	     ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
 			(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = rela.FrontUserId)),0) as AllDate
 	from relations  as rela 
@@ -433,7 +431,6 @@ var SqlUser string = ``
 
 //根据人气查询
 var SqlUserinformationAllTeacherByPerson string = `select userinfo.*,
-	     (select schoolname from schools as sch where sch.pkid = userinfo.schoolid) as SchoolName,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
@@ -444,12 +441,11 @@ var SqlUserinformationAllTeacherByPerson string = `select userinfo.*,
 		and userinfo.schoolageidt like ? 
 		and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 		and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
-	    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))
-			and (select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.cityname like ?)))
+	    and userinfo.SeniorLocation in 
+	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
 	order by SortCondition desc  `
 
 var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
-	     (select schoolname from schools as sch where sch.pkid = userinfo.schoolid) as SchoolName,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
@@ -460,12 +456,11 @@ var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
 		and userinfo.schoolageidt like ? 
 		and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 		and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
-	    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))
-			and (select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.cityname like ?)))
+	    and userinfo.SeniorLocation in 
+	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
 	order by SortCondition desc  `
 
 var SqlUserinformationAllTeacherByOnline string = `select userinfo.*,
-	     (select schoolname from schools as sch where sch.pkid = userinfo.schoolid) as SchoolName,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
@@ -479,9 +474,9 @@ var SqlUserinformationAllTeacherByOnline string = `select userinfo.*,
 		and userinfo.schoolageidt like ? 
 			and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like ?)
 			and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like ?)
-		    and ((select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?)))
-				and (select scho.CityId from schools as scho where scho.pkid = userinfo.SeniorLocation) in (select cont.pkid from countys as cont where cont.cityid in (select cit.pkid from citys as cit where cit.cityname like ?)))
-		order by OnlineState desc  `
+		    and userinfo.SeniorLocation in 
+	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
+	order by SortCondition desc  `
 
 //28.
 //用途：老师模块：点击老师姓名查看老师详情
@@ -497,8 +492,7 @@ var SqlUserinformationByTid string = `select userinfo.* ,ifnull((select count(*)
 	                   ifnull((select sum(ocr.ClassNumber) from onlineeducation.onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid and ocr.starttime between '?' and '?'),0) as AllTimeMouth,
 	                   (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
 					   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseName,
-				   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
-                   (select SchoolName from schools as sch where sch.pkid = userinfo.schoolid) as SchoolName 
+				   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu
 	from userinformation as userinfo 
 	where userinfo.pkid = ?`
 
@@ -571,8 +565,8 @@ var SqlQuestionAskJingcai string = `select questionask.PKId,questionask.Title,qu
 var SqlQuestionAskById string = `select questionask.Title,questionask.Contents,questionask.BadeTime,questionask.AskUserId,userinformation.UserName,userinformation.AvatarPath,questionask.AnswerUserId,
 		(select userinformation.UserName from userinformation where userinformation.PKId= questionask.AnswerUserId) as Hname,
 		(select userinformation.AvatarPath from userinformation where userinformation.PKId= questionask.AnswerUserId) as HuiDaAvatarPath,
-(select SchoolName from schools as sch where sch.pkid = (select userinformation.schoolid from userinformation where userinformation.PKId= questionask.AskUserId)) as UserSchoolName,
-		(select SchoolName from schools as sch where sch.pkid = (select userinformation.schoolid from userinformation where userinformation.PKId= questionask.AnswerUserId)) as SchoolName,
+		(select userinformation.SchoolName from userinformation where userinformation.PKId= questionask.AskUserId) as UserSchoolName,
+		(select userinformation.SchoolName from userinformation where userinformation.PKId= questionask.AnswerUserId) as SchoolName,
 		answers.Contents as HuiDaContents,answers.AnsTime ,answers.pkid as AnswerId,questionask.PKId
 		from questionask left join userinformation on questionask.AskUserId= userinformation.PKId 
 		left join answers on answers.QAId= questionask.PKId 
