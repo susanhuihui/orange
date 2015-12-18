@@ -131,6 +131,45 @@ func (c *OnlinetrylistenController) OnlineTryListenByTidCount() {
 	c.ServeJson()
 }
 
+//41.查询老师的试听信息总条数
+// @Title OnlineTryListenByTidSid
+// @Description OnlineTryListenByTidSid Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /OnlineTryListenByTidSid/:tid/:sid [get]
+func (c *OnlinetrylistenController) OnlineTryListenByTidSid() {
+	tidStr := c.Ctx.Input.Params[":tid"]
+	tid, _ := strconv.Atoi(tidStr)
+	sidStr := c.Ctx.Input.Params[":sid"]
+	sid, _ := strconv.Atoi(sidStr)
+	v, err := models.OnlineTryListenByTidSid(tid, sid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+// @Title GetOnlinetrylistenOneBysidLast
+// @Description GetOnlinetrylistenOneBysidLast Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /GetOnlinetrylistenOneBysidLast/:sid [get]
+func (c *OnlinetrylistenController) GetOnlinetrylistenOneBysidLast() {
+	idStr := c.Ctx.Input.Params[":sid"]
+	id, _ := strconv.Atoi(idStr)
+	v, err := models.GetOnlinetrylistenOneBysidLast(id)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title GetOnlinetrylistenOneByTid
 // @Description GetOnlinetrylistenOneByTid Onlinetrylisten by id
 // @Param	id		path 	string	true		"The key for staticblock"
@@ -223,7 +262,7 @@ func (c *OnlinetrylistenController) GetAll() {
 // @Param	body		body 	models.Onlinetrylisten	true		"body for Onlinetrylisten content"
 // @Success 200 {object} models.Onlinetrylisten
 // @Failure 403 :id is not int
-// @router /UpdateOnlinetrylistenById/:id [get]
+// @router /UpdateOnlinetrylistenById/:id [post]
 func (c *OnlinetrylistenController) Put() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
@@ -259,6 +298,8 @@ func (c *OnlinetrylistenController) Delete() {
 	c.ServeJson()
 }
 
+//老师进入课堂前先去查看是否已有在线数据，有   -判断是否已有课堂，课堂是否有人，-没有创建课堂
+//                                没有 -新增一条在线数据，并建立课堂
 // @Title Get
 // @Description get Onlinetrylisten by id
 // @Param	id		path 	string	true		"The key for staticblock"
@@ -266,10 +307,29 @@ func (c *OnlinetrylistenController) Delete() {
 // @Failure 403 :id is empty
 // @router /GetListenTecher/:listenid [get]
 func (c *OnlinetrylistenController) GetOss() {
-	idStr := c.Ctx.Input.Params[":listenid"]
+	idStr := c.Ctx.Input.Params[":listenid"] //老师主键id
 	listenid, _ := strconv.Atoi(idStr)
-	c.Ctx.SetCookie("onlinelistenid", strconv.Itoa(listenid)) //当前老师进入试听信息主键
 	joinurl, err := models.GeListentecherlession2(listenid)
+	c.Ctx.SetCookie("onlinelistenid", joinurl) //当前老师进入试听信息主键
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		fmt.Println(joinurl)
+		c.Data["json"] = map[string]string{"url": joinurl}
+	}
+	c.ServeJson()
+}
+
+// @Title GetListenTecherUrl
+// @Description GetListenTecherUrl Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /GetListenTecherUrl/:listenid [get]
+func (c *OnlinetrylistenController) GetListenTecherUrl() {
+	idStr := c.Ctx.Input.Params[":listenid"] //试听信息主键id
+	listenid, _ := strconv.Atoi(idStr)
+	joinurl, err := models.GetListenTeacherurl(listenid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {

@@ -357,9 +357,10 @@ func (c *TeacherController) StudentOnlineClass() {
 func (c *TeacherController) TeacherTryListenClass() {
 	c.Data["Website"] = models.OnlineUrl
 	onlineidStr := c.Ctx.Input.Params[":listenid"]
-	listenid, _ := strconv.Atoi(onlineidStr)
-	c.Data["listenid"] = listenid
-	c.TplNames = "listenteacher.html" //
+	//listenid, _ := strconv.Atoi(onlineidStr)
+	//c.Data["listenid"] = listenid
+	c.Ctx.SetCookie("onlinelistenid", onlineidStr) //当前老师进入试听信息主键
+	c.TplNames = "listenteacher.html"              //
 }
 
 // 学生进入试听

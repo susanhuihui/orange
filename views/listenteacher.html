@@ -17,11 +17,14 @@
     <iframe id="myframe" style="width: 100%" height="1000" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
 
     <p id="listenid" style="display: none">{{.listenid}}</p>
-    <script type="text/javascript" src="js/jquery.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
-        var listenid = document.getElementById("listenid").innerText;
+        //var listenid = document.getElementById("listenid").innerText;
+        var listenid = getCookie("onlinelistenid")//获取老师在线信息主键id
+
         window.onload = function () {
             //alert(userid);
             if (userid == null || userid <= 0) {
@@ -31,7 +34,7 @@
         }
 
         function chushi() {
-            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenTecher/" + listenid;
+            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenTecherUrl/" + listenid;
             //alert(getblack);
             $.getJSON(getblack, function (data) {
                 //alert(data["url"]);
@@ -43,8 +46,20 @@
         window.onbeforeunload = onbeforeunload_handler;
         window.onunload = onunload_handler;
         function onbeforeunload_handler() {
+            alert("是否真的要退出课堂？");
             var warning = "课程会结束";
             return warning;
+            //var identityid = getCookie("identityid");
+            //if (identityid == 1) { //如果是老师，释放此试听课堂
+            //    var delroom = "http://{{.Website}}/orange/onlinetrylisten/DeleteOnlinetrylisten/" + onlinelistenid;
+            //    $.getJSON(delroom, function (data) {
+            //        if (data == "OK") {
+            //            alert("试听结束！");
+            //        } else {
+            //            alert("请去个人信息-我的试听：手动结束试听！");
+            //        }
+            //    });
+            //}
         }
 
         function onunload_handler() {

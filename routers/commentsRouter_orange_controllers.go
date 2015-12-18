@@ -1149,6 +1149,20 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
 		beego.ControllerComments{
+			"OnlineTryListenByTidSid",
+			`/OnlineTryListenByTidSid/:tid/:sid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
+			"GetOnlinetrylistenOneBysidLast",
+			`/GetOnlinetrylistenOneBysidLast/:sid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
 			"GetOnlinetrylistenOneByTid",
 			`/GetOnlinetrylistenOneByTid/:tid`,
 			[]string{"get"},
@@ -1165,7 +1179,7 @@ func init() {
 		beego.ControllerComments{
 			"Put",
 			`/UpdateOnlinetrylistenById/:id`,
-			[]string{"get"},
+			[]string{"post"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
@@ -1179,6 +1193,13 @@ func init() {
 		beego.ControllerComments{
 			"GetOss",
 			`/GetListenTecher/:listenid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
+			"GetListenTecherUrl",
+			`/GetListenTecherUrl/:listenid`,
 			[]string{"get"},
 			nil})
 

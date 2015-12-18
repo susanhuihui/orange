@@ -128,6 +128,33 @@ func OnlineTryListenByTidCount(userid int) (allcount int, err error) {
 	return
 }
 
+//    44.查询这个学生试听过这个老师几次课程
+//    2015-12-18
+func OnlineTryListenByTidSid(Tid int, Sid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw((SqlOnlineTrylistenBtidsid), Tid, Sid)
+	var onlinetry []Onlinetrylisten
+	num, qs := rs.QueryRows(&onlinetry)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(onlinetry), qs
+	}
+	return
+}
+
+//	45.查询学生最后一条试听信息，学生试听结束时记录结束时间到此条信息中
+//	2015-12-18
+func GetOnlinetrylistenOneBysidLast(sid int) (trylisten Onlinetrylisten, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlOnlineTrylistenBysidLast, sid)
+	qs := rs.QueryRow(&trylisten)
+	return trylisten, qs
+}
+
 //	根据老师id查询一条信息
 //	2015-12-01
 func GetOnlinetrylistenOneByTid(tid int) (trylisten Onlinetrylisten, err error) {
@@ -236,6 +263,8 @@ func DeleteOnlinetrylisten(id int) (err error) {
 	meetroom.MeetingID_ = v.ClassroomId
 	meetroom.ModeratorPW_ = v.TeacherInId
 	meetroom.End()
+	fmt.Println("试听结束后的meetroom:")
+	fmt.Println(meetroom)
 	// ascertain id exists in the database
 	if err = o.Read(&v); err == nil {
 		var num int64
@@ -353,60 +382,119 @@ func bs(data string) string {
 	return fmt.Sprintf("%x", t.Sum(nil))
 }
 
-// 重新编写--------------------------------------老师为试听创建房间--------------------------------------
+// 2015-12-18重新编写--------------------------------------老师为试听创建房间 （此方法判断老师是否有可进入的房间）--------------------------------------
+//老师进入课堂前先去查看是否已有在线数据，有   -判断是否已有课堂，课堂是否有人，-没有创建课堂
+//                                没有 -新增一条在线数据，并建立课堂
 // trylistenid:当前试听课程主键id
-func GeListentecherlession2(trylistenid int) (urlse string, err error) {
-	//生成三个随机数
-	//	var meetingID string = getcode("1")
-	//	var attendeePW string = getcode("2")  //学生进入密码
-	//	var moderatorPW string = getcode("3") //老师进入密码
-	//获取试听信息
-	onlinetryclass, tryerr := GetOnlinetrylistenById(trylistenid)
-	fmt.Println(onlinetryclass)
-	if onlinetryclass != nil && tryerr == nil && onlinetryclass.ClassroomId != "" {
-		//每次老师开启试听进入课堂时都要建立一个新的课堂
-		//		meetingroom := bbb4go.MeetingRoom{}
-		//		meetingroom.Name_ = "泛鲲教育第一教室"
-		//		meetingroom.MeetingID_ = meetingID
-		//		meetingroom.AttendeePW_ = attendeePW
-		//		meetingroom.ModeratorPW_ = moderatorPW
-		//		meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
-		//		meetingroom.LogoutURL = "http://" + OnlineUrl //试听结束进入首页+/orange/Teacher/ClassOverHtml/
-		//		meetingroom.Duration = 0
-		//		meetingroom.AllowStartStopRecording = false
-		//		//将白板信息保存到数据库试听信息中
-		//		onlinetryclass.StartTime = time.Now()
-		//		onlinetryclass.ClassroomId = meetingID
-		//		onlinetryclass.StudentInId = attendeePW
-		//		onlinetryclass.TeacherInId = moderatorPW
-		//		uperr := UpdateOnlinetrylistenById(onlinetryclass) //预约信息中添加密码
-		//		if uperr == nil {
-		//			meetingroom.CreateMeeting()
-		//if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
-		//获取老师信息
-		userinfo, gerr := GetUserinformationTeacher(onlinetryclass.Tid)
-		if gerr == nil && userinfo.Id > 0 {
-			meetroom := bbb4go.MeetingRoom{}
-			meetroom.MeetingID_ = onlinetryclass.ClassroomId
-			meetroom.ModeratorPW_ = onlinetryclass.TeacherInId
-			meetroom.GetMeetingInfo()
-			var pcount = meetroom.MeetingInfo.ParticipantCount
-			if pcount == 0 { //老师不在
-				//创建一个老师并生成老师进入课堂的URL
-				partTeacher := bbb4go.Participants{}
-				partTeacher.IsAdmin_ = 1
-				partTeacher.FullName_ = userinfo.UserName + "老师"
-				partTeacher.MeetingID_ = onlinetryclass.ClassroomId //教室id
-				partTeacher.Password_ = onlinetryclass.TeacherInId  //老师进入密码
-				partTeacher.CreateTime = ""                         //与创建教室时时间一致
-				partTeacher.UserID = strconv.Itoa(userinfo.Id)
-				partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath //http://www.fankunedu.com/images/PersonHeadImg/yanyan.png
-				partTeacher.GetJoinURL()
-				urlse = partTeacher.JoinURL
+func GeListentecherlession2(userid int) (urlse string, err error) {
+	//获取老师在线信息
+	onlinetry, gerr := GetOnlinetrylistenOneByTid(userid)
+	fmt.Println("在线信息：")
+	fmt.Println(onlinetry)
+	if gerr == nil && onlinetry.Id > 0 { //老师已有试听数据
+		//判断此课堂是否存在
+		mettroom := bbb4go.MeetingRoom{}
+		mettroom.MeetingID_ = onlinetry.ClassroomId
+		istorf := mettroom.IsMeetingRunning()
+		fmt.Println("课堂是否存在：")
+		fmt.Println(istorf)
+		if istorf { //如果会议室存在，判断会议室是否有人
+			mettroom.ModeratorPW_ = onlinetry.TeacherInId
+			mettroom.GetMeetingInfo()
+			var pcount = mettroom.MeetingInfo.ParticipantCount
+			if pcount <= 1 { //没有人在
+				urlse = strconv.Itoa(onlinetry.Id) //老师可以跳页进入课堂
+			} else {
+				urlse = "-2" //会议室已存在一个人以上，老师不得进入
+			}
+		} else { //如果会议室不存在，建立会议室
+			var meetingID string = getcode("1")
+			var attendeePW string = getcode("2")  //学生进入密码
+			var moderatorPW string = getcode("3") //老师进入密码
+			meetingroom := bbb4go.MeetingRoom{}
+			meetingroom.Name_ = "泛鲲教育第一教室"
+			meetingroom.MeetingID_ = meetingID
+			meetingroom.AttendeePW_ = attendeePW
+			meetingroom.ModeratorPW_ = moderatorPW
+			meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+			meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ListenOverHtml/" //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+			meetingroom.Duration = 0
+			meetingroom.AllowStartStopRecording = false
+			//将白板信息保存到数据库试听信息中
+			onlinetry.StartTime = time.Now()
+			onlinetry.ClassroomId = meetingID
+			onlinetry.StudentInId = attendeePW
+			onlinetry.TeacherInId = moderatorPW
+			uperr := UpdateOnlinetrylistenById(&onlinetry) //更新试听信息
+			if uperr == nil {
+				meetingroom.CreateMeeting()
+				fmt.Println("课堂是否建立成功：")
+				fmt.Println(meetingroom.CreateMeetingResponse.Returncode)
+				if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+					urlse = strconv.Itoa(onlinetry.Id) //会议室创建成功老师可以跳页进入课堂
+				}
 			}
 		}
-		//}
-		//}
+	} else { //没有试听数据
+		var meetingID string = getcode("1")
+		var attendeePW string = getcode("2")  //学生进入密码
+		var moderatorPW string = getcode("3") //老师进入密码
+		addonlinetry := Onlinetrylisten{}
+		addonlinetry.Tid = userid
+		addonlinetry.StartTime = time.Now()
+		addonlinetry.ClassroomId = meetingID
+		addonlinetry.StudentInId = attendeePW
+		addonlinetry.TeacherInId = moderatorPW
+		addid, adderr := AddOnlinetrylisten(&addonlinetry)
+		if adderr == nil && addid > 0 {
+			meetingroom := bbb4go.MeetingRoom{}
+			meetingroom.Name_ = "泛鲲教育第一教室"
+			meetingroom.MeetingID_ = meetingID
+			meetingroom.AttendeePW_ = attendeePW
+			meetingroom.ModeratorPW_ = moderatorPW
+			meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+			meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ListenOverHtml/" //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+			meetingroom.Duration = 0
+			meetingroom.AllowStartStopRecording = false
+			meetingroom.CreateMeeting()
+			if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+				urlse = strconv.FormatInt(int64(addid), 10) //会议室创建成功老师可以跳页进入课堂
+			}
+		} else {
+			urlse = "-1" //创建试听信息失败
+		}
+	}
+	return
+}
+
+//获取老师进入课堂url
+func GetListenTeacherurl(listenid int) (urlse string, err error) {
+	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
+	fmt.Println("获取老师进入结构：")
+	fmt.Println(onlinetrylisten)
+	fmt.Println(listenid)
+	if geterr == nil && onlinetrylisten.Id > 0 {
+		//获取老师信息
+		userinfo, gerr := GetUserinformationTeacher(onlinetrylisten.Tid)
+		fmt.Println(userinfo)
+		if gerr == nil {
+			urlse = "0"
+			pardStudent := bbb4go.Participants{}
+			pardStudent.IsAdmin_ = 0
+			pardStudent.FullName_ = userinfo.UserName
+			pardStudent.MeetingID_ = onlinetrylisten.ClassroomId //教室id
+			pardStudent.Password_ = onlinetrylisten.StudentInId  //学生进入密码
+			//pardStudent.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardStudent.UserID = strconv.Itoa(userinfo.Id)
+			pardStudent.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+
+			fmt.Println("老师进入结构：")
+			fmt.Println(pardStudent)
+			pardStudent.GetJoinURL()
+			urlse = pardStudent.JoinURL
+
+			fmt.Println(urlse)
+		}
 	}
 	return
 }
@@ -417,6 +505,7 @@ func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
 	if geterr == nil && onlinetrylisten.Id > 0 {
 		//获取学生信息
 		userinfo, gerr := GetUserinformationTeacher(sid)
+		fmt.Println("进入试听学生信息：")
 		fmt.Println(userinfo)
 		if gerr == nil {
 			urlse = "0"

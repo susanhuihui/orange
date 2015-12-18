@@ -279,7 +279,7 @@
                                     <td>当前试听状态：<span id="txtlistenState">已开启</span></td>
                                     <td>
                                         <a data-toggle="modal" class="btn btn-warning radsty" data-target="#" onclick="openlisten()" style="display:none;">开启试听</a>
-                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#" onclick ="openlisten()">进入试听课堂</a><br /><br />
+                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#" onclick ="Teacherin()">进入试听课堂</a><br /><br />
                                         <a data-toggle="modal" class="btn btn-warning radsty" data-target="#" onclick="closelisten()">结束试听</a>
                                     </td>
                                 </tr>
@@ -331,9 +331,9 @@
     <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script src="js/teachertab.js"></script>
     <script src="js/orange.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         var pubRows = 10;//每页显示行数
@@ -769,6 +769,23 @@
             //} else {
             //    alert("请先开启试听课堂！");
             //}
+        }
+
+        function Teacherin() {
+            var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetListenTecher/" + userid;
+            $.getJSON(getstate, function (data) {
+                if (data != null) {
+                    if (data["url"] > 0) {
+                        window.open("http://{{.Website}}/orange/Teacher/TeacherTryListenClass/" + data["url"]);
+                    } else if (data["url"] == "-1") {
+                        alert("创建试听信息失败");
+                    } else if (data["url"] == "-2") {
+                        alert("会议室已存在一个人以上，老师不得进入");
+                    }
+                } else {
+
+                }
+            });
         }
 
         //点击提现按钮

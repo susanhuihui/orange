@@ -631,23 +631,29 @@
             var identityid = getCookie("identityid");
             if (tid > 0) {
                 if (identityid > 1 && identityid != "underfined") {
-                    var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + tid;
-                    $.getJSON(getstate, function (data) {
-                        //alert(data["Id"])
-
-                        if (data != null && data["Id"] > 0) {
-                            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
-                            $.getJSON(getblack, function (dataurl) {
-                                //alert(dataurl)
-                                if (dataurl == "0") {
-                                    alert("老师暂时离开不在线，请稍后重试！");
-                                } else if (dataurl == "1") {
-                                    alert("正在其他人试听，请稍后重试！");
-                                }
-                                else {
-                                    window.open(dataurl);
+                    var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + tid + "/" + userid;
+                    $.getJSON(getstucount, function (trycount) {
+                        if (trycount < 2) {
+                            var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + tid;
+                            $.getJSON(getstate, function (data) {
+                                //alert(data["Id"])
+                                if (data != null && data["Id"] > 0) {
+                                    var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
+                                    $.getJSON(getblack, function (dataurl) {
+                                        //alert(dataurl)
+                                        if (dataurl == "0") {
+                                            alert("老师暂时离开不在线，请稍后刷新网页重试！");
+                                        } else if (dataurl == "1") {
+                                            alert("其他人正在试听，请稍后刷新网页重试！");
+                                        }
+                                        else {
+                                            window.open(dataurl);
+                                        }
+                                    });
                                 }
                             });
+                        } else {
+                            alert("您已经试听过两次，不能继续试听！");
                         }
                     });
                 } else {

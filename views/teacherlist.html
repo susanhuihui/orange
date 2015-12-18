@@ -423,25 +423,46 @@
 
         //试听该老师的课程
         function trylisten() {
-            var btntry = document.getElementById("btnlisten").className;
-            if (btntry == "teacbtn") {
-                var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
-                $.getJSON(getstate, function (data) {
-                    if (data != null && data["Id"] > 0) {
-                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
-                        $.getJSON(getblack, function (dataurl) {
-                            if (dataurl == "0") {
-                                alert("老师暂时离开不在线，请稍后重试！");
-                            } else if (dataurl == "1") {
-                                alert("正在其他人试听，请稍后重试！");
+            var sid = getCookie("userid");
+            if (sid > 0) {
+                var identityid = getCookie("identityid");
+                if (identityid > 1 && identityid != "underfined") {
+                    var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + userid + "/" + sid;
+                    $.getJSON(getstucount, function (trycount) {
+                        if (trycount < 2) {
+                            var btntry = document.getElementById("btnlisten").className;
+                            if (btntry == "teacbtn") {
+                                var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+                                $.getJSON(getstate, function (data) {
+                                    if (data != null && data["Id"] > 0) {
+                                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
+                                        $.getJSON(getblack, function (dataurl) {
+                                            if (dataurl == "0") {
+                                                alert("老师暂时离开不在线，请稍后刷新网页重试！");
+                                            } else if (dataurl == "1") {
+                                                alert("其他人正在试听，请稍后刷新网页重试！");
+                                            }
+                                            else {
+                                                window.open(dataurl);
+                                            }
+                                        });
+                                    }
+                                });
                             }
-                            else {
-                                window.open(dataurl);
-                            }
-                        });
+                        } else {
+                            alert("您已经试听过两次，不能继续试听！");
+                        }
+                    });
+                } else {
+                    if (identityid != "" && identityid != "underfined" && identityid == 1) {
+                        alert("老师不能试听！");
+                    } else {
+                        alert("请您先登录！");
                     }
-                });
-            }   
+                }
+            } else {
+                alert("请先登录！");
+            }
         }
 
         //获取最近浏览信息

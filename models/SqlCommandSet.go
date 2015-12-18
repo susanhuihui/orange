@@ -620,7 +620,7 @@ var SqlOnlineCourseRecordTByUid = `select oncour.*,(select username from userinf
 /**41.查询老师的试听信息**/
 var SqlOnlineTryListenByTid = `select * ,(select username from userinformation as user where user.pkid = ontry.sid) as UserName 
 						from onlinetrylisten as ontry 
-						where tid = ?  and sid is not null `
+						where tid = ?  and sid is not null  and sid >0 `
 
 /*42.查询老师一条在线信息*/
 var SqlOnlinetrylistenOn = `select * 
@@ -633,3 +633,14 @@ var SqlOnlineCourseRecordTByUCid = `select oncour.*,(select username from userin
 						from onlinecourserecord as oncour
 						where oncour.useridactive = ? and (select CoursesId from remedialcourses as remec where remec.UserId=oncour.useridpassive and IsMain=1 limit 1)=?
 						group by oncour.useridpassive`
+
+/**44.查询这个学生试听过这个老师几次课程**/
+var SqlOnlineTrylistenBtidsid = `select ontry.*
+						from onlinetrylisten as ontry
+						where ontry.tid = ? and sid= ?`
+
+/**45.查询学生最后一条试听信息，学生试听结束时记录结束时间到此条信息中**/
+var SqlOnlineTrylistenBysidLast = `SELECT * FROM onlineeducation.onlinetrylisten
+						where sid = ? 
+						order by StuStartTime desc
+						limit 1`

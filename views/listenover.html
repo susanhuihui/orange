@@ -59,6 +59,27 @@
                         alert("请去个人信息-我的试听：手动结束试听！");
                     }
                 });
+            } else if (identityid <= 3 && identityid >= 2) {//如果是学生记录结束试听时间
+                var gettry = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneBysidLast/" + userid;
+                $.getJSON(gettry, function (data) {
+                    if (data != null && data["Id"] > 0) {
+                        var upstry = '{"Tid":' + data["Tid"] +
+                                     ',"Sid":' + data["Sid"] +
+                                     ',"StartTime":"' + getInsertDate(data["StartTime"]) +
+                                     '","EndTime":"' + getInsertNowDate() +
+                                     '","StuStartTime":"' + getInsertDate(data["StuStartTime"]) +
+                                     '","StuEndTime":"' + getInsertNowDate() +
+                                     '","ClassroomId":"' + data["ClassroomId"] +
+                                     '","StudentInId":"' + data["StudentInId"] +
+                                     '","TeacherInId":"' + data["TeacherInId"] +
+                                     '"}';
+                        $.post("http://{{.Website}}/orange/onlinetrylisten/UpdateOnlinetrylistenById/"+data["Id"], upstry,
+                            function (updata) {
+                                if (updata == "OK") {
+                                } 
+                        });
+                    }
+                });
             }
         }
     </script>
