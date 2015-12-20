@@ -66,6 +66,67 @@ func (c *UsermessageController) GetOne() {
 	c.ServeJson()
 }
 
+// @Title GetUsermessageBymuid
+// @Description GetUsermessageBymuid Usermessage by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Usermessage
+// @Failure 403 :id is empty
+// @router /GetUsermessageBymuid/:mid/:userid [get]
+func (c *UsermessageController) GetUsermessageBymuid() {
+	midStr := c.Ctx.Input.Params[":mid"]
+	mid, _ := strconv.Atoi(midStr)
+	useridStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(useridStr)
+	v, err := models.GetUsermessageBymuid(mid, userid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+//老师使用
+// @Title GetUsermessageBymuidft
+// @Description GetUsermessageBymuidft Usermessage by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Usermessage
+// @Failure 403 :id is empty
+// @router /GetUsermessageBymuidft/:mid/:userid [get]
+//func (c *UsermessageController) GetUsermessageBymuidft() {
+//	midStr := c.Ctx.Input.Params[":mid"]
+//	mid, _ := strconv.Atoi(midStr)
+//	useridStr := c.Ctx.Input.Params[":userid"]
+//	userid, _ := strconv.Atoi(useridStr)
+//	v, err := models.GetUsermessageBymuidft(mid, userid)
+//	if err != nil {
+//		c.Data["json"] = err.Error()
+//	} else {
+//		c.Data["json"] = v
+//	}
+//	c.ServeJson()
+//}
+
+// @Title UpdateUsermessageBypiduid
+// @Description UpdateUsermessageBypiduid Usermessage by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Usermessage
+// @Failure 403 :id is empty
+// @router /UpdateUsermessageBypiduid/:mid/:userid [get]
+func (c *UsermessageController) UpdateUsermessageBypiduid() {
+	midStr := c.Ctx.Input.Params[":mid"]
+	mid, _ := strconv.Atoi(midStr)
+	useridStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(useridStr)
+	v, err := models.UpdateUsermessageBypiduid(mid, userid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 //7老师看学生留言
 // @Title GetUsermessageByTid
 // @Description GetUsermessageByTid Usermessage by id
@@ -239,8 +300,11 @@ func (c *UsermessageController) Put() {
 		fmt.Printf("k=%v, v=%v\n", k, v)
 		jsonS = k
 	}
+	fmt.Println("更新留言变已看")
+	fmt.Println(jsonS)
 	v := models.Usermessage{Id: id}
 	json.Unmarshal([]byte(jsonS), &v)
+	fmt.Println(v)
 	if err := models.UpdateUsermessageById(&v); err == nil {
 		c.Data["json"] = "OK"
 	} else {

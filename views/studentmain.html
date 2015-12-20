@@ -289,7 +289,7 @@
                         </div>
                         <div class="col-sm-8 lefttopfont">
                             {{.UserName}} 
-                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
+                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a> 
                             <a href="http://{{.Website}}/orange/Main/UpdateStudent/">
                                 <input type="button" class="stubtns" value="修改资料"></a>
                             <table class="stutab" cellspacing="0">
@@ -326,7 +326,7 @@
                         <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab" id="lipingjia">我的评价</a></li>
                         <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab" id="limessagetable">我的留言</a></li>
                         <li role="presentation"><a href="#look" aria-controls="messages" role="tab" data-toggle="tab" id="lilook">我的关注</a></li>
-                        <li role="presentation"><a href="#divtui" aria-controls="messages" role="tab" data-toggle="tab" id="lidivtui">我的退约</a></li>
+                        <li role="presentation"><a href="#divtui" aria-controls="messages" role="tab" data-toggle="tab" id="lidivtui">我的退课</a></li>
                     </ul>
                     <div class="tab-content">
                         <div role="tabpanel" class="tab-pane active" id="home">
@@ -372,7 +372,7 @@
                                 <tr>
                                     <td class="oddtea" style="width: 20%;">学校：
                                                 </td>
-                                    <td>{{.SchoolName}}
+                                    <td>{{.SchoolName2}}
                                                 </td>
                                 </tr>
                                 <tr>
@@ -667,19 +667,7 @@
                                     <th>操作
                                     </th>
                                 </tr>
-                                <tr>
-                                    <td>语文
-                                    </td>
-                                    <td>杨艳
-                                    </td>
-                                    <td>2015-12-18
-                                    </td>
-                                    <td>15：00-16：00
-                                    </td>
-                                    <td>
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#dellook">退约</a>
-                                    </td>
-                                </tr>
+                                
                             </table>
                             <div id="Pagination10" class="pagination"></div>
                         </div>
@@ -920,11 +908,11 @@
                     myDate.setMinutes(myDate.getMinutes() - 10);
                     //var myDate2 = new Date("2015-11-25 12:00:00"); //获取
                     var myDate2 = new Date(datao["EndTime"]); //获取
-                    myDate2.setMinutes(myDate2.getMinutes() - 10);
+                    myDate2.setMinutes(myDate2.getMinutes() - 10);//课程结束的时间
                     var onliendate = new Date();
                     if (onliendate >= myDate) {
                         if (onliendate >= myDate2) {
-                            alert("您已错过讲课时间！此课程已作废！请去退约");
+                            alert("此课程时间已过！此课程已作废！");
                         }
                         else {
                             //alert("进入课堂");
@@ -1112,14 +1100,22 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>评价时间</th><th>评价状态</th><th>操作</th></tr>';
+                var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>留言时间</th><th>留言状态</th><th>操作</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
+                        var showtimestr = "";
+                        if (data[i]["MesTimeNew"] == null) {
+                            showtimestr = getSimpDate(data[i]["MesTimeNew"]) + " " + getSimpTime(data[i]["MesTimeNew"]);
+                        } else {
+                            showtimestr = getSimpDate(data[i]["MesTime"]) + " " + getSimpTime(data[i]["MesTime"]);
+                        }
+                        var showstate = ""
+                        if (data[i]["State"] > 0) { showstate = "<span style='color:red;'>未查看</span>"; } else { showstate = "已查看"; }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["Contents"] + "</td>" +
-                                   "<td>" + getSimpDate(data[i]["MesTimeNew"]) + getSimpTime(data[i]["MesTimeNew"]) + "</td>" +
-                                    "<td>" + data[i]["States"] + "</td>" +
-                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>&nbsp;  ' +
+                                   "<td>" + showtimestr + "</td>" +
+                                    "<td>" + showstate + "</td>" +
+                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["ActiveUserId"] + ')">查看</a>&nbsp;  ' +
                                     '<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delLiuyan(' + data[i]["Id"] + ')">删除</a></td></tr>';
                         myliuyanstr += itmes
                     }
@@ -1187,7 +1183,7 @@
                                     '<td><a data-toggle="modal" ' +
                                     'onclick="bandBookingOne(' + uid + ',' + "'" + uname + "'" + ',' + "'" + udate + "'" + ',' + "'" + utime + "'" + ')"' +
                                     ' class="btn btn-warning radsty" data-target="#tuiyuediv"' +
-                                    '>退约</a></td></tr>';
+                                    '>退课</a></td></tr>';
                         strtuiyue += onetr;
                     }
                 }
@@ -1509,6 +1505,31 @@
                     alert("提现金额不能大于可提现金额！");
                 }
             }
+        }
+
+        function setRead(mid, uid) {
+            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;
+            $.getJSON(getstate, function (data) {
+                if (data != null) {
+                    for (var i = 0; i < data.length; i++) {
+                        var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
+                                     ',"PassiveUserId":' + data[i]["PassiveUserId"] +
+                                     ',"MessageId":' + data[i]["MessageId"] +
+                                     ',"Contents":"' + data[i]["Contents"] +
+                                     '","States":1' +
+                                     ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
+                                     '"}';
+                        $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/" + data[i]["Id"], upmest,
+                            function (update) {
+                                if (update == "OK") {
+
+                                } else {
+
+                                }
+                            });
+                    }
+                }
+            });
         }
     </script>
 </body>

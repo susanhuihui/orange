@@ -44,7 +44,8 @@
                         </div>
                         <div class="col-sm-10 protable" style="padding-top: 20px;">
                             <span>{{.UserName}}</span>
-                            <span>{{.BadeTime}}</span>
+                            <span id="showtime"></span>
+                            <span id="nowtime" style="display:none;">{{.BadeTime}}</span>
                         </div>
                     </div>
                     <div class="col-sm-12 promainfont">
@@ -93,6 +94,8 @@
                 document.getElementById("huidacont").style.display = "block";
                 document.getElementById("addanswer").style.display = "block";
             }
+            var time = document.getElementById("nowtime").innerHTML;
+            document.getElementById("showtime").innerHTML = time.substring(0, 16);
         }
 
         //新增一条回答信息

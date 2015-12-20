@@ -479,19 +479,19 @@ func GetListenTeacherurl(listenid int) (urlse string, err error) {
 		fmt.Println(userinfo)
 		if gerr == nil {
 			urlse = "0"
-			pardStudent := bbb4go.Participants{}
-			pardStudent.IsAdmin_ = 0
-			pardStudent.FullName_ = userinfo.UserName
-			pardStudent.MeetingID_ = onlinetrylisten.ClassroomId //教室id
-			pardStudent.Password_ = onlinetrylisten.StudentInId  //学生进入密码
-			//pardStudent.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
-			pardStudent.UserID = strconv.Itoa(userinfo.Id)
-			pardStudent.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+			pardteacher := bbb4go.Participants{}
+			pardteacher.IsAdmin_ = 0
+			pardteacher.FullName_ = userinfo.UserName
+			pardteacher.MeetingID_ = onlinetrylisten.ClassroomId //教室id
+			pardteacher.Password_ = onlinetrylisten.TeacherInId  //老师进入密码
+			//pardteacher.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardteacher.UserID = strconv.Itoa(userinfo.Id)
+			pardteacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
 
 			fmt.Println("老师进入结构：")
-			fmt.Println(pardStudent)
-			pardStudent.GetJoinURL()
-			urlse = pardStudent.JoinURL
+			fmt.Println(pardteacher)
+			pardteacher.GetJoinURL()
+			urlse = pardteacher.JoinURL
 
 			fmt.Println(urlse)
 		}

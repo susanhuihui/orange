@@ -353,6 +353,23 @@ func (c *OnlinecoursebookingController) DeleteOnlinecoursebooking() {
 	c.ServeJson()
 }
 
+// @Title DeleteOnlinecoursebookingMeeting
+// @Description DeleteOnlinecoursebookingMeeting the Onlinecoursebooking
+// @Param	id		path 	string	true		"The id you want to DeleteOnlinecoursebookingMeeting"
+// @Success 200 {string} DeleteOnlinecoursebookingMeeting success!
+// @Failure 403 id is empty
+// @router /DeleteOnlinecoursebookingMeeting/:id [get]
+func (c *OnlinecoursebookingController) DeleteOnlinecoursebookingMeeting() {
+	idStr := c.Ctx.Input.Params[":id"]
+	id, _ := strconv.Atoi(idStr)
+	if err := models.DeleteOnlinecoursebookingMeeting(id); err == nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}
+
 // @Title Get
 // @Description get Onlinecoursebooking by id
 // @Param	id		path 	string	true		"The key for staticblock"
@@ -366,7 +383,26 @@ func (c *OnlinecoursebookingController) GetOss() {
 		c.Ctx.SetCookie("onlinebookid", strconv.Itoa(onlineid))
 	}
 	fmt.Println(onlineid)
-	teacherinurl, err := models.Getecherlession2(onlineid)
+	teacherinurl, err := models.Getecherlession3(onlineid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		fmt.Println(teacherinurl)
+		c.Data["json"] = map[string]string{"url": teacherinurl} // >0可以进入，-2会议室已存在一个人以上，老师不得进入
+	}
+	c.ServeJson()
+}
+
+// @Title GetOnlineClassTeacherurl
+// @Description GetOnlineClassTeacherurl Onlinecoursebooking by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinecoursebooking
+// @Failure 403 :id is empty
+// @router /GetOnlineClassTeacherurl/:onlineid [get]
+func (c *OnlinecoursebookingController) GetOnlineClassTeacherurl() {
+	idStr := c.Ctx.Input.Params[":onlineid"]
+	onlineid, _ := strconv.Atoi(idStr)
+	teacherinurl, err := models.GetOnlineClassTeacherurl(onlineid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -395,5 +431,42 @@ func (c *OnlinecoursebookingController) GetOe() {
 		fmt.Println(l)
 		c.Data["json"] = l
 	}
+	c.ServeJson()
+}
+
+//根据预约表主键id结算此次课程
+// @Title ClassPay
+// @Description ClassPay Onlinecoursebooking by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinecoursebooking
+// @Failure 403 :id is empty
+// @router /ClassPay/:onlineid [get]
+func (c *OnlinecoursebookingController) ClassPay() {
+	idStr := c.Ctx.Input.Params[":onlineid"] //预约表主键id
+	onlineid, _ := strconv.Atoi(idStr)
+	resultshow, err := models.SetUserClassPay(onlineid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		fmt.Println(resultshow)
+		c.Data["json"] = resultshow
+	}
+	c.ServeJson()
+}
+
+//测试方法
+// @Title ClassPay
+// @Description ClassPay Onlinecoursebooking by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinecoursebooking
+// @Failure 403 :id is empty
+// @router /GetALLtimeminute/:oid [get]
+func (c *OnlinecoursebookingController) GetALLtimeminute() {
+	oidStr := c.Ctx.Input.Params[":oid"] //预约表主键id
+	oid, _ := strconv.Atoi(oidStr)
+	resultshow := models.GetALLtimeminute(oid)
+
+	c.Data["json"] = resultshow
+
 	c.ServeJson()
 }

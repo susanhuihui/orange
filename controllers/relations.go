@@ -65,6 +65,27 @@ func (c *RelationsController) GetOne() {
 	c.ServeJson()
 }
 
+// @Title GetRelationsByST
+// @Description GetRelationsByST Relations by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Relations
+// @Failure 403 :id is empty
+// @router /GetRelationsByST/:sid/:tid/:guanxi [get]
+func (c *RelationsController) GetRelationsByST() {
+	sidStr := c.Ctx.Input.Params[":sid"]
+	sid, _ := strconv.Atoi(sidStr)
+	tidStr := c.Ctx.Input.Params[":tid"]
+	tid, _ := strconv.Atoi(tidStr)
+	guanxi := c.Ctx.Input.Params[":guanxi"]
+	v, err := models.GetRelationsByST(sid, tid, guanxi)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 //9老师查看谁看过我
 // @Title GetRelationsByTid
 // @Description GetRelationsByTid Relations by id

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strconv"
 	"strings"
 	"time"
 
@@ -11,39 +12,40 @@ import (
 )
 
 type Usermessage struct {
-	Id             int       `orm:"column(PKId);auto"`
-	ActiveUserId   int       `orm:"column(ActiveUserId)"`
-	PassiveUserId  int       `orm:"column(PassiveUserId)"`
-	MessageId      int       `orm:"column(MessageId)"`
-	Contents       string    `orm:"column(Contents);size(100);null"`
-	States         int       `orm:"column(States);null"`
-	MesTime        time.Time `orm:"column(MesTime);type(datetime);null"`
+	Id            int       `orm:"column(PKId);auto"`
+	ActiveUserId  int       `orm:"column(ActiveUserId)"`
+	PassiveUserId int       `orm:"column(PassiveUserId)"`
+	MessageId     int       `orm:"column(MessageId)"`
+	Contents      string    `orm:"column(Contents);size(100);null"`
+	States        int       `orm:"column(States);null"`
+	MesTime       time.Time `orm:"column(MesTime);type(datetime);null"`
 }
 
 //老师看学生留言
 type UsermessageFStu struct {
-	Id             int       `orm:"column(PKId);auto"`
-	ActiveUserId   int       `orm:"column(ActiveUserId)"`
-	PassiveUserId  int       `orm:"column(PassiveUserId)"`
-	MessageId      int       `orm:"column(MessageId)"`
-	Contents       string    `orm:"column(Contents);size(100);null"`
-	States         int       `orm:"column(States);null"`
-	MesTime        time.Time `orm:"column(MesTime);type(datetime);null"`
-	UserName       string    `orm:"column(UserName);size(50);null"` 
-	MesTimeNew     time.Time `orm:"column(MesTimeNew);type(datetime);null"`   
+	Id            int       `orm:"column(PKId);auto"`
+	ActiveUserId  int       `orm:"column(ActiveUserId)"`
+	PassiveUserId int       `orm:"column(PassiveUserId)"`
+	MessageId     int       `orm:"column(MessageId)"`
+	Contents      string    `orm:"column(Contents);size(100);null"`
+	States        int       `orm:"column(States);null"`
+	MesTime       time.Time `orm:"column(MesTime);type(datetime);null"`
+	UserName      string    `orm:"column(UserName);size(50);null"`
+	MesTimeNew    time.Time `orm:"column(MesTimeNew);type(datetime);null"`
+	State         int       `orm:"column(State);null"`
 }
 
 //老师/学生看一条留言
 type UsermessageOneList struct {
-	Id             int       `orm:"column(PKId);auto"`
-	ActiveUserId   int       `orm:"column(ActiveUserId)"`
-	PassiveUserId  int       `orm:"column(PassiveUserId)"`
-	MessageId      int       `orm:"column(MessageId)"`
-	Contents       string    `orm:"column(Contents);size(100);null"`
-	States         int       `orm:"column(States);null"`
-	MesTime        time.Time `orm:"column(MesTime);type(datetime);null"`
-	ActiveName     string    `orm:"column(ActiveName);size(50);null"` 
-	PassiveName    string    `orm:"column(PassiveName);size(50);null"`    
+	Id            int       `orm:"column(PKId);auto"`
+	ActiveUserId  int       `orm:"column(ActiveUserId)"`
+	PassiveUserId int       `orm:"column(PassiveUserId)"`
+	MessageId     int       `orm:"column(MessageId)"`
+	Contents      string    `orm:"column(Contents);size(100);null"`
+	States        int       `orm:"column(States);null"`
+	MesTime       time.Time `orm:"column(MesTime);type(datetime);null"`
+	ActiveName    string    `orm:"column(ActiveName);size(50);null"`
+	PassiveName   string    `orm:"column(PassiveName);size(50);null"`
 }
 
 func (t *Usermessage) TableName() string {
@@ -56,84 +58,132 @@ func init() {
 
 //    7.老师看学生留言
 //    2015-11-06
-func GetUsermessageByTid (userid int,rows int,counts int) (usermess []UsermessageFStu, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlUserMessageTeacher+limitSql,userid,rows,counts)
-    num, qs := rs.QueryRows(&usermess)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return usermess, qs
-    }
-    return
+func GetUsermessageByTid(userid int, rows int, counts int) (usermess []UsermessageFStu, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessageTeacher+limitSql, userid, rows, counts)
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return usermess, qs
+	}
+	return
 }
 
 //    7.老师看学生留言总条数
 //    2015-11-06
-func GetUsermessageByTidCount (userid int) (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlUserMessageTeacher,userid)
+func GetUsermessageByTidCount(userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessageTeacher, userid)
 	var usermess []UsermessageFStu
-    num, qs := rs.QueryRows(&usermess)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(usermess), qs
-    }
-    return
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(usermess), qs
+	}
+	return
 }
 
 //	8.老师/学生看一条留言
 //   2015-11-06
-func GetUsermessageByMessageId (usermesid int,usermesidt int) (usermess []UsermessageOneList, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlUserMessageTchOne,usermesid,usermesidt)
-    num, qs := rs.QueryRows(&usermess)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return usermess, qs
-    }
-    return
+func GetUsermessageByMessageId(usermesid int, usermesidt int) (usermess []UsermessageOneList, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessageTchOne, usermesid, usermesidt)
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return usermess, qs
+	}
+	return
 }
 
 //    25.学生查看自己的全部留言信息
 //    2015-11-06
-func GetUsermessageBySid (userid int,rows int,counts int) (usermess []UsermessageFStu, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlUserMessageBySid+limitSql,userid,rows,counts)
-    num, qs := rs.QueryRows(&usermess)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return usermess, qs
-    }
-    return
+func GetUsermessageBySid(userid int, rows int, counts int) (usermess []UsermessageFStu, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessageBySid+limitSql, userid, rows, counts)
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return usermess, qs
+	}
+	return
 }
 
 //    25.学生查看自己的全部留言信息总条数
 //    2015-11-06
-func GetUsermessageBySidCount (userid int) (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlUserMessageBySid,userid)
+func GetUsermessageBySidCount(userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessageBySid, userid)
 	var usermess []UsermessageFStu
-    num, qs := rs.QueryRows(&usermess)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(usermess), qs
-    }
-    return
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(usermess), qs
+	}
+	return
+}
+
+//
+//
+func GetUsermessageBymuid(mid int, userid int) (usermess []Usermessage, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMessagebymuid, mid, userid)
+	num, qs := rs.QueryRows(&usermess)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return usermess, qs
+	}
+	return
+}
+
+//
+//
+//func GetUsermessageBymuidft(mid int, userid int) (usermess []Usermessage, err error) {
+//	o := orm.NewOrm()
+//	var rs orm.RawSeter
+//	rs = o.Raw(SqlUserMessagebymuidft, mid, userid)
+//	num, qs := rs.QueryRows(&usermess)
+//	if qs != nil {
+//		fmt.Printf("num", num)
+//		return nil, qs
+//	} else {
+//		return usermess, qs
+//	}
+//	return
+//}
+
+//更改一条留言下的所有回复为已读(错误方法)
+func UpdateUsermessageBypiduid(mid int, userid int) (num int, err error) {
+	o := orm.NewOrm()
+	usermesg, _ := GetUsermessageBymuid(mid, userid)
+	fmt.Println(usermesg)
+	var rs orm.RawSeter
+	for i := 0; i < len(usermesg); i++ {
+		var upstr string = `update usermessage set states='1' where PKId=` + strconv.Itoa(usermesg[i].Id) + `; SELECT ROW_COUNT() as roocount;`
+		fmt.Println(upstr)
+		rs = o.Raw(upstr)
+		err = rs.QueryRow(&num)
+		fmt.Println(err)
+	}
+	return num, err
 }
 
 // AddUsermessage insert a new Usermessage into database and returns

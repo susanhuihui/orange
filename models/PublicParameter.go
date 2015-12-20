@@ -15,3 +15,9 @@ var OnlineClassUrl string = "http://meeting.fankunedu.com/bigbluebutton/api/crea
 
 //进入路径
 var OnlineInClassUrl string = "http://meeting.fankunedu.com/bigbluebutton/api/join"
+
+var TotalMinute int = 50 //每节课总课时
+
+var AdvanceMinutes int = 10 //提前几分钟可以进入课程
+
+var TradingWayId int = 1 //余额充值类型值

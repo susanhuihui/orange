@@ -90,6 +90,7 @@
     <script src="b/js/jquery.min.js"></script>
     <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         window.onload = function () {
@@ -170,8 +171,12 @@
             var kechengid = document.getElementById("classid").innerText;//课程id
             //alert(kechengid);
             var contents = document.getElementById("pingjiaContent").value;//评价内容
-            var addevalua = '{"OCRId":' + kechengid + ',"UserId":' + userid + ',"StartClear":' + startCount1 + ',"StartEfficiency":' + startCount2 +
-                                    ',"StartEfficiency":"' + contents + '"}';//","ReviewTime":"' + getNowFormatDate() + '
+            var addevalua = '{"OCRId":' + kechengid +
+                            ',"UserId":' + userid +
+                            ',"StartClear":' + startCount1 +
+                            ',"StartEfficiency":' + startCount2 +
+                            ',"ReviewContent":"' + contents +
+                            '","ReviewTime":"' + getInsertNowDate() + '"}';
             //alert(addevalua);
             $.post("http://{{.Website}}/orange/onlinecourseevaluation/AddOnlinecourseevaluation/", addevalua,
                 function (data) {

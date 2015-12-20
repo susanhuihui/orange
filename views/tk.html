@@ -27,28 +27,39 @@
         }
 
         function chushi() {
-            var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBHtecher/" + onlineid;
-            //alert(getblack);
+            var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlineClassTeacherurl/" + onlineid;
             $.getJSON(getblack, function (data) {
-                //alert(data["url"]);
                 ifrsrc(data["url"]);
+                //添加一条课堂时间记录
+                var addrecord = '{"OCBId":' + onlineid +
+                                ',"UserId":' + userid +
+                                ',"StartTime":"' + getInsertNowDate() +
+                                '"}';
+                $.post("http://{{.Website}}/orange/onlinecoursebookingrecord/AddOnlinecoursebookingrecord/", addrecord,
+                    function (data) {
+                        if (data["id"] > 0) {
+                            
+                        } else {
+                           
+                        }
+                });
+            });
+        }
+        //关闭网页时调用此方法，记录老师退出时间
+        window.onbeforeunload = function () {
+            //关闭网页时，修改老师课堂记录，记录离开时间
+            //查找老师最后一次进入信息
+            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid/" + userid + "/" + onlineid;
+            $.getJSON(getblack, function (data) {
+                if (data != null && data["Id"] > 0) {
+                   
+                }
             });
         }
 
-        window.onbeforeunload = onbeforeunload_handler;
-        window.onunload = onunload_handler;
-        function onbeforeunload_handler() {
-            var warning = "课程会结束";
-            //return warning;
-        }
-
-        function onunload_handler() {
-            var warning = "谢谢光临";
-            //alert(warning);
-        }
         function ifrsrc(aa) {
             document.getElementById("myframe").src = aa;
         }
-	</script>
+    </script>
 </body>
 </html>

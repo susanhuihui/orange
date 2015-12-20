@@ -329,6 +329,12 @@ func init() {
 			),
 		),
 
+		beego.NSNamespace("/onlinecoursebookingrecord",
+			beego.NSInclude(
+				&controllers.OnlinecoursebookingrecordController{},
+			),
+		),
+
 		beego.NSNamespace("/onlinecourseevaluation",
 			beego.NSInclude(
 				&controllers.OnlinecourseevaluationController{},

@@ -105,7 +105,8 @@ var SqlOnlineTeacherbookingByT string = `select online.*,
 //调用方法名：
 //参数说明：老师主键id，从第几行开始获取，获取几行
 //2015-11-03
-var SqlUserMessageTeacher string = `select usermsg.*,userinfo.UserName,(select mestime from usermessage as msg where msg.messageid = usermsg.pkid  order by mestime desc limit 1) as MesTimeNew 
+var SqlUserMessageTeacher string = `select usermsg.*,userinfo.UserName,(select mestime from usermessage as msg where msg.messageid = usermsg.pkid  order by mestime desc limit 1) as MesTimeNew ,
+     (select count(*) from usermessage uu where uu.ActiveUserId = usermsg.ActiveUserId and uu.States =0  and uu.MessageId = usermsg.PKId) as State
 	 from usermessage as usermsg join userinformation as userinfo on usermsg.ActiveUserId = userinfo.pkid 
 	 where usermsg.Messageid = 0 and usermsg.PassiveUserId = ?  
 	 order by MesTime desc `
@@ -260,13 +261,12 @@ var SqlQuestionAskByTUserid string = `select qa.*,(select username from userinfo
 //2015-11-03
 var SqlUserInformationByS string = `select * ,
 		(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
-	    /*(select SchoolName from Schools as sch where users.SchoolId = sch.PkId) as SchoolName,*/
 	    (select count(userfor.pkid) from userinformation userfor where userfor.pkid in 
 			(select UserIdPassive from onlineeducation.onlinecourserecord as ob where ob.UserIdActive = 5 group by UserIdPassive)) as AllPerson,
 	    ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
 			(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdActive = users.PKId)),0) as AllDate,
-	    ifnull((select count(*) from onlineeducation.QuestionAsk as qa where qa.askuserid = users.pkid),0) as AllCount,
-	        (select agename from SchoolAges as sas where users.schoolageid = sas.pkid) as AgeName
+	    ifnull((select count(*) from onlineeducation.questionask as qa where qa.askuserid = users.pkid),0) as AllCount,
+	        (select agename from schoolages as sas where users.schoolageid = sas.pkid) as AgeName
 	from onlineeducation.userinformation as users
 	where users.pkid = ?`
 
@@ -405,10 +405,11 @@ var SqlQuestionAskBySUserid string = `select qa.*,(select username from userinfo
 //调用方法名：
 //参数说明：学生主键id，从第几行开始，获取多少行
 //2015-11-05
-var SqlUserMessageBySid string = `select usermsg.*,userinfo.UserName,(select mestime from usermessage as msg where msg.messageid = usermsg.pkid  order by mestime desc limit 1) as MesTimeNew 
-	 from usermessage as usermsg join userinformation as userinfo on usermsg.PassiveUserId = userinfo.pkid 
+var SqlUserMessageBySid string = `select usermsg.*,userinfo.UserName,(select mestime from usermessage as msg where msg.messageid = usermsg.pkid  order by mestime desc limit 1) as MesTimeNew, 	 
+     (select count(*) from usermessage uu where uu.ActiveUserId = usermsg.PassiveUserId and uu.States =0  and uu.MessageId = usermsg.PKId) as State
+	from usermessage as usermsg join userinformation as userinfo on usermsg.PassiveUserId = userinfo.pkid 
 	 where usermsg.Messageid = 0 and usermsg.ActiveUserId = ? 
-	 order by MesTime desc  `
+	 order by MesTimeNew desc ,MesTime desc`
 
 //26.
 //用途：
@@ -644,3 +645,17 @@ var SqlOnlineTrylistenBysidLast = `SELECT * FROM onlineeducation.onlinetrylisten
 						where sid = ? 
 						order by StuStartTime desc
 						limit 1`
+
+/**46.查询老师或学生一条课堂时间记录，一条时间最近且结束时间为null的记录**/
+var SqlOnlineBookingRecord = `select * 
+						from onlinecoursebookingrecord
+						where userid = ? and ocbid = ? and EndTime is null
+						order by starttime desc
+						limit 1`
+
+/**47.查询老师或学生关于某次课程的全部课程时间记录信息**/
+var SqlOnlineBookingRecordBybookiduid = `select * 
+						from onlinecoursebookingrecord
+						where userid = ? and ocbid = ?`
+
+var SqlUserMessagebymuid = `SELECT * FROM onlineeducation.usermessage where messageid = ? and activeuserid = ?`

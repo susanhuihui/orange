@@ -206,12 +206,13 @@ func (c *MainController) UserTeacher() {
 		if showTeacher.UserSex == "" {
 			c.Data["StuSex"] = ""
 		} else {
-			c.Data["StuSex"] = "|" + showTeacher.UserSex
+			c.Data["StuSex"] = "| " + showTeacher.UserSex
 		}
 		if showTeacher.SchoolName == "" {
 			c.Data["SchoolName"] = ""
 		} else {
-			c.Data["SchoolName"] = "|" + showTeacher.SchoolName
+			c.Data["SchoolName"] = "| " + showTeacher.SchoolName
+			c.Data["SchoolName2"] = showTeacher.SchoolName
 		}
 		c.Data["IdentityName"] = showTeacher.IdentityName
 		c.Data["AllDate"] = strconv.Itoa(showTeacher.AllDate)
@@ -284,6 +285,8 @@ func (c *MainController) UserStudent() {
 	var showStudent models.UserinformationStudent
 	var err error
 	showStudent, err = models.GetUserinformationStudent(stuuserid)
+	fmt.Println(stuuserid)
+	fmt.Println(showStudent)
 	if err == nil {
 		c.Data["UserName"] = showStudent.UserName
 		c.Data["StudentUserid"] = "00000" + strconv.Itoa(showStudent.Id)
@@ -294,12 +297,13 @@ func (c *MainController) UserStudent() {
 		if showStudent.UserSex == "" {
 			c.Data["StuSex"] = ""
 		} else {
-			c.Data["StuSex"] = "|" + showStudent.UserSex
+			c.Data["StuSex"] = "| " + showStudent.UserSex
 		}
 		if showStudent.SchoolName == "" {
 			c.Data["SchoolName"] = ""
 		} else {
-			c.Data["SchoolName"] = "|" + showStudent.SchoolName
+			c.Data["SchoolName"] = "| " + showStudent.SchoolName
+			c.Data["SchoolName2"] = showStudent.SchoolName
 		}
 		c.Data["AgeName"] = showStudent.AgeName
 		c.Data["LevelYear"] = strconv.Itoa(showStudent.LevelYear)
@@ -557,6 +561,7 @@ func (c *MainController) GetOnlineCourseBooking() {
 		}
 		c.Data["StartTime"] = onbook.StartTime
 		c.Data["EndTime"] = onbook.EndTime
+		c.Data["AppointMessage"] = onbook.AppointMessage
 		c.Data["onbookid"] = onbook.Id
 	}
 	c.TplNames = "classmainstudents.html" //跳到
@@ -575,6 +580,7 @@ func (c *MainController) GetOnlineCourseBookingByTeacher() {
 	bookid, _ := strconv.Atoi(bookidStr)
 
 	onbook, recerr := models.GetOnlinecoursebookingById(bookid)
+	fmt.Println(onbook)
 	if onbook != nil && recerr == nil {
 		userinfo, usererr := models.GetUserinformationTeacher(onbook.UserIdActive)
 		if usererr == nil {
@@ -587,6 +593,7 @@ func (c *MainController) GetOnlineCourseBookingByTeacher() {
 		c.Data["StartTime"] = onbook.StartTime
 		c.Data["EndTime"] = onbook.EndTime
 		c.Data["onbookid"] = onbook.Id
+		c.Data["AppointMessage"] = onbook.AppointMessage
 	}
 	c.TplNames = "classmainstudents.html" //跳到
 }

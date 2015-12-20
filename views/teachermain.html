@@ -167,7 +167,7 @@
                             <table class="stutabbottom">
                                 <tr>
                                     <td class="oddtea" style="width: 20%;">学校：</td>
-                                    <td>{{.SchoolName}}</td>
+                                    <td>{{.SchoolName2}}</td>
                                 </tr>
                                 <tr>
                                     <td class="oddtea">专业：</td>
@@ -276,11 +276,11 @@
                         <div role="tabpanel" class="tab-pane" id="trylisten">
                            <table class="moneytable">
                                 <tr>
-                                    <td>当前试听状态：<span id="txtlistenState">已开启</span></td>
+                                    <td style="display:none;">当前试听状态：<span id="txtlistenState">已开启</span></td>
                                     <td>
                                         <a data-toggle="modal" class="btn btn-warning radsty" data-target="#" onclick="openlisten()" style="display:none;">开启试听</a>
-                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#" onclick ="Teacherin()">进入试听课堂</a><br /><br />
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#" onclick="closelisten()">结束试听</a>
+                                        <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#" onclick ="Teacherin()" style="width:250px;">进入试听课堂</a><br /><br />
+                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#" onclick="closelisten()" style="display:none;">结束试听</a>
                                     </td>
                                 </tr>
                             </table>
@@ -487,19 +487,26 @@
                         else {
                             var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBHtecher/" + onlineid;
                             $.getJSON(getblack, function (data) {
-                                //alert(data["url"]);
                                 var resulturl = data["url"];
-                                if (resulturl == "-1") {//-1:预约信息不存在 -2:用户不存在 -3:创建课堂失败
-                                    alert("预约信息不存在");
-                                } else if (resulturl == "-2") {
-                                    alert("用户不存在");
-                                } else if (resulturl == "-3") {
-                                    alert("创建课堂失败");
-                                } else {
+                                if (resulturl > 0) {
+                                    window.open("http://{{.Website}}/orange/Teacher/TeacherOnlineClass/" + onlineid);
+                                } else if (resulturl == -2) {
+                                    alert("会议室已存在一个人以上，老师不得进入");
+                                }
+
+                                //alert(data["url"]);
+                                //var resulturl = data["url"];
+                                //if (resulturl == "-1") {//-1:预约信息不存在 -2:用户不存在 -3:创建课堂失败
+                                //    alert("预约信息不存在");
+                                //} else if (resulturl == "-2") {
+                                //    alert("用户不存在");
+                                //} else if (resulturl == "-3") {
+                                //    alert("创建课堂失败");
+                                //} else {
                                     //alert(resulturl);
                                     //window.open(resulturl); 
-                                    window.open("http://{{.Website}}/orange/Teacher/TeacherOnlineClass/" + onlineid);
-                                }
+                                    
+                                //}
                             });
                         }
                     }
@@ -636,14 +643,22 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var myliuyanstr = '<tr class="stuth"><th>留言人</th><th>内容</th><th>留言时间</th><th>评价状态</th><th>操作</th></tr>';
+                var myliuyanstr = '<tr class="stuth"><th>留言人</th><th>内容</th><th>留言时间</th><th>留言状态</th><th>操作</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
+                        var showtimestr = "";
+                        if (data[i]["MesTimeNew"] == null) {
+                            showtimestr = getSimpDate(data[i]["MesTimeNew"]) + " " + getSimpTime(data[i]["MesTimeNew"]);
+                        } else {
+                            showtimestr = getSimpDate(data[i]["MesTime"]) + " " + getSimpTime(data[i]["MesTime"]);
+                        }
+                        var showstate = ""
+                        if (data[i]["State"] > 0) { showstate = "<span style='color:red;'>未查看</span>"; } else { showstate = "已查看"; }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["Contents"] + "</td>" +
-                                   "<td>" + getSimpDate(data[i]["MesTimeNew"]) + getSimpTime(data[i]["MesTimeNew"]) + "</td>" +
-                                    "<td>" + data[i]["States"] + "</td>" +
-                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageListTeacher/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>' +
+                                   "<td>" + showtimestr + "</td>" +
+                                    "<td>" + showstate + "</td>" +
+                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageListTeacher/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["ActiveUserId"] + ')">查看</a>' +
                                     '</td></tr>';//<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
                         myliuyanstr += itmes
                     }
@@ -850,6 +865,30 @@
                     alert("提现金额不能大于可提现金额！");
                 }
             }
+        }
+        function setRead(mid, uid) {
+            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;
+            $.getJSON(getstate, function (data) {
+                if (data != null) {
+                    for (var i = 0; i < data.length; i++) {
+                        var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
+                                     ',"PassiveUserId":' + data[i]["PassiveUserId"] +
+                                     ',"MessageId":' + data[i]["MessageId"] +
+                                     ',"Contents":"' + data[i]["Contents"] +
+                                     '","States":1' +
+                                     ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
+                                     '"}';
+                        $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/"+data[i]["Id"], upmest,
+                            function (update) {
+                                if (update == "OK") {
+                                    
+                                } else {
+
+                                }
+                            });
+                    }
+                }
+            });
         }
     </script>
 </body>

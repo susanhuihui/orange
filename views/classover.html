@@ -30,7 +30,7 @@
                             <img style="width: 40%;" src="images/wckc.jpg" />
                         </div>
                     </div>
-                    <p>您已完成课程，课程总计时：45分钟</p>
+                    <p id="resultcontent"></p>
                     <br />
                     <input id="btnpingjia" type="button" class="evabtn" value="去评价" onclick="gopingjia()">
                     <input id="btnshouye" type="button" class="evabtn" value="返回首页" onclick="goback()">
@@ -55,24 +55,57 @@
             if (identityid <= 1) {
                 document.getElementById("btnpingjia").style.display = "none";
             }
-            stuJieSuan();
+            setonlineovertime();
+            
         }
+
+        //设置结束时间
+        function setonlineovertime() {
+            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByTwoid/" + onlineid;
+            $.getJSON(getblack, function (data) {
+                stuJieSuan();//调用结算方法
+            });
+        }
+
+        //课程完成调用结算
+        function stuJieSuan() {
+            if (identityid != null && identityid > 0) {//无论老师还是学生进入都先关闭白板
+                var delroom = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebookingMeeting/" + onlineid;
+                $.getJSON(delroom, function (data) {
+                    if (data == "OK") {
+                        //alert("课程结束！");
+                        if (identityid != null && identityid <= 3 && identityid >= 2) {//学生进入此页面去结算此次课程
+                            var payurl = "http://{{.Website}}/orange/onlinecoursebooking/ClassPay/" + onlineid;
+                            //alert(payurl);
+                            $.getJSON(payurl, function (data) {
+                                //alert(data);
+                                if (data > 0) {//结算成功
+                                    document.getElementById("resultcontent").innerHTML = "您已完成课程，课程总计时：" + data + "分钟";
+                                } else if (data == "-1") {
+                                    document.getElementById("resultcontent").innerHTML = "";
+                                }
+                            });
+                        } else {
+                            document.getElementById("resultcontent").innerHTML = "课程结束！";
+                        }
+                    } else {
+                        alert("请去个人信息-我的试听：手动结束试听！");
+                    }
+                });
+            }
+        }
+
         //返回首页
         function goback() {
-            window.open("http://{{.Website}}"); 
+            window.open("http://{{.Website}}");
         }
+
         //去评价
         function gopingjia() {
             var onlineclassid = 0;//在线课程id(需结算时添加课程信息)
             window.location = "http://{{.Website}}/orange/Main/AddOnLineEvaluation/" + onlineclassid;
         }
 
-        //学生课程完成调用结算
-        function stuJieSuan() {
-            if (identityid > 1) {
-
-            }
-        }
         function setOverTime() {
             if (identityid > 1) {
                 var nowDate = new Date();

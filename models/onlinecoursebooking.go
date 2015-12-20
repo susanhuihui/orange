@@ -355,6 +355,31 @@ func DeleteOnlinecoursebooking(id int) (err error) {
 	return
 }
 
+// DeleteOnlinecoursebookingMeeting deletes Onlinecoursebooking by Id and returns error if
+// the record to be deleted doesn't exist
+func DeleteOnlinecoursebookingMeeting(id int) (err error) {
+	o := orm.NewOrm()
+	//v := Onlinecoursebooking{Id: id}
+	var onlineclass *Onlinecoursebooking
+	onlineclass, err = GetOnlinecoursebookingById(id)
+	//end白板信息，清楚预约信息中白板信息
+	meetroom := bbb4go.MeetingRoom{} //释放白板
+	meetroom.MeetingID_ = onlineclass.ClassroomId
+	meetroom.ModeratorPW_ = onlineclass.TeacherInId
+	meetroom.End()
+	fmt.Println("课程结束后的meetroom:")
+	fmt.Println(meetroom)
+	fmt.Println(&onlineclass)
+
+	var rs orm.RawSeter
+	var roocount int
+	var upstr string = `update onlinecoursebooking set ClassroomId='' ,StudentInId='' ,TeacherInId='' where PKId=` + strconv.Itoa(id) + `; SELECT ROW_COUNT() as roocount;`
+	rs = o.Raw(upstr)
+	rs.QueryRow(&roocount)
+	fmt.Println(roocount)
+	return
+}
+
 //获取随机数方法
 func getcode(index string) (vcode string) {
 	rnd := rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -362,6 +387,8 @@ func getcode(index string) (vcode string) {
 	return vcode + index
 }
 
+//更新白板信息方法
+//根据预约信息主键id更新白板meetingid 老师进入密码，学生进入密码
 func Updatebookings(id int, classid string, sid string, tid string) (num int, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
@@ -609,37 +636,116 @@ func Getecherlession2(onlineid int) (urlse string, err error) {
 	return
 }
 
-//新建课堂方法
-func CreateMeeting(onlineid int, userinfo UserinformationTeacher) (urlse string) {
-	var meetingID string = getcode("1")
-	var attendeePW string = getcode("2")  //学生进入密码
-	var moderatorPW string = getcode("3") //老师进入密码
-	meetingroom := bbb4go.MeetingRoom{}
-	meetingroom.Name_ = "泛鲲教育第一教室"
-	meetingroom.MeetingID_ = meetingID
-	meetingroom.AttendeePW_ = attendeePW
-	meetingroom.ModeratorPW_ = moderatorPW
-	meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
-	meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入课程结束页面
-	meetingroom.Duration = 50
-	meetingroom.AllowStartStopRecording = false
-	num, _ := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
-	fmt.Println(num)
-	meetingroom.CreateMeeting()
-	if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
-		//创建白板成功后创建一个老师并生成老师进入课堂的URL
-		partTeacher := bbb4go.Participants{}
-		partTeacher.IsAdmin_ = 1
-		partTeacher.FullName_ = userinfo.UserName + "老师"
-		partTeacher.MeetingID_ = meetingID                                    //教室id
-		partTeacher.Password_ = moderatorPW                                   //老师进入密码
-		partTeacher.CreateTime = meetingroom.CreateMeetingResponse.CreateTime //与创建教室时时间一致
-		partTeacher.UserID = strconv.Itoa(userinfo.Id)
-		partTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
-		partTeacher.GetJoinURL()
-		urlse = partTeacher.JoinURL
+// 重写老师创建课堂方法，查询预约信息，是否存在meetingid，存在- 判断此课堂是否存在，存在-判断里面是否有人
+//																     不存在-根据已有meetid建立课堂（此种可能几乎没有）
+//												 不存在- 生成meetingid 建立课堂，
+// onlineid:当前预约课程主键id
+func Getecherlession3(onlineid int) (urlse string, err error) {
+	//获取预约信息
+	onlinenow, onlineerr := GetOnlinecoursebookingById(onlineid)
+	timenow := time.Now()
+	var overTimeMinute = TotalMinute
+	if timenow.Hour() == onlinenow.EndTime.Hour() {
+		overTimeMinute = 60 - AdvanceMinutes - timenow.Minute()
 	} else {
-		urlse = "-3" //创建课堂失败
+		overTimeMinute = (60 - timenow.Minute()) + TotalMinute
+	}
+
+	if onlineerr == nil && onlinenow.Id > 0 {
+		if onlinenow.ClassroomId != "" { //meetingid存在
+			//判断此meetingid的会议室是否存在
+			mettroom := bbb4go.MeetingRoom{}
+			mettroom.MeetingID_ = onlinenow.ClassroomId
+			istorf := mettroom.IsMeetingRunning()
+			fmt.Println("课堂是否存在：")
+			fmt.Println(istorf)
+			if istorf { //如果会议室存在，判断会议室是否有人
+				mettroom.ModeratorPW_ = onlinenow.TeacherInId
+				mettroom.GetMeetingInfo()
+				var pcount = mettroom.MeetingInfo.ParticipantCount
+				if pcount <= 1 { //没有人在
+					urlse = strconv.Itoa(onlinenow.Id) //老师可以跳页进入课堂
+				} else {
+					urlse = "-2" //会议室已存在一个人以上，老师不得进入
+				}
+			} else { //如果会议室不存在，建立会议室
+				meetingroom := bbb4go.MeetingRoom{}
+				meetingroom.Name_ = "泛鲲教育第一教室"
+				meetingroom.MeetingID_ = onlinenow.ClassroomId
+				meetingroom.AttendeePW_ = onlinenow.StudentInId
+				meetingroom.ModeratorPW_ = onlinenow.TeacherInId
+				meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+				meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+				meetingroom.Duration = overTimeMinute
+				meetingroom.AllowStartStopRecording = false
+				meetingroom.CreateMeeting()
+				fmt.Println("课堂是否建立成功：")
+				fmt.Println(meetingroom.CreateMeetingResponse.Returncode)
+				if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+					urlse = strconv.Itoa(onlinenow.Id) //会议室创建成功老师可以跳页进入课堂
+				}
+
+			}
+		} else { //meetingid不存在
+			var meetingID string = getcode("1")
+			var attendeePW string = getcode("2")  //学生进入密码
+			var moderatorPW string = getcode("3") //老师进入密码
+			meetingroom := bbb4go.MeetingRoom{}
+			meetingroom.Name_ = "泛鲲教育第一教室"
+			meetingroom.MeetingID_ = meetingID
+			meetingroom.AttendeePW_ = attendeePW
+			meetingroom.ModeratorPW_ = moderatorPW
+			meetingroom.Welcome = "欢迎来到泛鲲教育第一教室"
+			meetingroom.LogoutURL = "http://" + OnlineUrl + "/orange/Teacher/ClassOverHtml/" //试听结束进入首页+/orange/Teacher/ClassOverHtml/
+			meetingroom.Duration = overTimeMinute
+			meetingroom.AllowStartStopRecording = false
+			//将白板信息保存到数据库试听信息中
+			onlinenow.StartTime = time.Now()
+			onlinenow.ClassroomId = meetingID
+			onlinenow.StudentInId = attendeePW
+			onlinenow.TeacherInId = moderatorPW
+			_, uperr := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
+			if uperr == nil {
+				meetingroom.CreateMeeting()
+				fmt.Println("课堂是否建立成功：")
+				fmt.Println(meetingroom.CreateMeetingResponse.Returncode)
+				if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+					urlse = strconv.Itoa(onlinenow.Id) //会议室创建成功老师可以跳页进入课堂
+				}
+			}
+		}
+	}
+	return
+}
+
+//获取老师进入课堂url
+func GetOnlineClassTeacherurl(bookid int) (urlse string, err error) {
+	//onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
+	onlineclass, geterr := GetOnlinecoursebookingById(bookid)
+	fmt.Println("获取老师进入结构：")
+	fmt.Println(onlineclass)
+	if geterr == nil && onlineclass.Id > 0 {
+		//获取老师信息
+		userinfo, gerr := GetUserinformationTeacher(onlineclass.UserIdPassive)
+		fmt.Println(userinfo)
+		if gerr == nil {
+			urlse = "0"
+			pardTeacher := bbb4go.Participants{}
+			pardTeacher.IsAdmin_ = 0
+			pardTeacher.FullName_ = userinfo.UserName
+			pardTeacher.MeetingID_ = onlineclass.ClassroomId //教室id
+			pardTeacher.Password_ = onlineclass.TeacherInId  //老师进入密码
+			//pardTeacher.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardTeacher.UserID = strconv.Itoa(userinfo.Id)
+			pardTeacher.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+
+			fmt.Println("老师进入结构：")
+			fmt.Println(pardTeacher)
+			pardTeacher.GetJoinURL()
+			urlse = pardTeacher.JoinURL
+
+			fmt.Println(urlse)
+		}
 	}
 	return
 }
@@ -686,6 +792,226 @@ func Getstudentlession2(onlineid int) (urlse string, err error) {
 		}
 	} else {
 		urlse = "-1"
+	}
+	return
+}
+
+//结算课程
+//传入参数：onlineid:预约信息主键id
+//传出参数：resultmsg:返回结果 err:错误信息
+//        resultmsg---  >0:结算成功，返回总分钟数
+//        				-1:查询不到预约信息
+//        				-2:没有课程时间记录（几乎没有这种可能）
+//        				-3:没有查到冻结资金
+//        				-4:没有查到用户账户信息
+//        				-5:给用户返还钱失败
+//        				-6:解冻资金失败
+//        				-7:新增交易记录失败
+//        				-8:更新预约信息状态失败
+//        				-9:添加在线课程记录失败
+//2015-12-19
+//思路：1.查询预约信息 2.查询此次预约课程所有时间记录信息，计算总时间 3.根据学生主键找到此次预约冻结资金，解冻，根据冻结时间分配金额，4.钱打给老师，剩余退还学生，
+//     5.新增一条老师打钱给学生的交易记录，6.将预约信息状态修改为已学习，已支付，7.新增一条课程记录信息
+func SetUserClassPay(onlineid int) (resultmsg string, err error) {
+	//根据预约信息主键id查询 一条预约信息
+	onlineclass, geterr := GetOnlinecoursebookingById(onlineid)
+	fmt.Println("获取预约信息")
+	fmt.Println(onlineid)
+	fmt.Println(onlineclass)
+	fmt.Println("1")
+	if geterr == nil && onlineclass.Id > 0 {
+		allminutes := GetALLtimeminute(onlineid)
+		if allminutes > 0 {
+			//查询此次预约的冻结信息
+			fonze, ferr := GetFrozenfundsByUidOnId(onlineclass.UserIdActive, 0, onlineid)
+			fmt.Println("2")
+			if ferr == nil && fonze.Id > 0 {
+				//计算此次课程总费用
+				allm, _ := strconv.ParseFloat(strconv.Itoa(allminutes), 64)
+				alltm, _ := strconv.ParseFloat(strconv.Itoa(TotalMinute), 64)
+				teachermoney := (allm / alltm) * fonze.FrozenMoney //（上课分钟/总分钟）*总钱数 = 应给老师多少钱
+				returnmoney := fonze.FrozenMoney - teachermoney    //返还学生的钱
+				resultmsg = SetUserMoney(onlineclass.UserIdPassive, teachermoney)
+				resultmsg = SetUserMoney(onlineclass.UserIdActive, returnmoney)
+				fmt.Println("3")
+				if resultmsg == "1" { //钱各自打成功，解冻冻结资金信息
+					fonze.FrozenState = 0
+					upfonzerr := UpdateFrozenfundsById(&fonze)
+					fmt.Println("4")
+					if upfonzerr == nil { //解冻成功新增一条交易记录
+						resultmsg = AddUserTransactionRecords(onlineclass.UserIdActive, onlineclass.UserIdPassive, teachermoney)
+						fmt.Println("5")
+						if resultmsg == "1" { //添加交易记录完成
+							onlineclass.Payment = 1
+							onlineclass.Leaming = 1
+							uponerr := UpdateOnlinecoursebookingById(onlineclass)
+							fmt.Println("6")
+							if uponerr == nil {
+								//新增一条课程记录信息
+								var onlinerecord Onlinecourserecord
+								onlinerecord.OCBId = onlineclass.Id
+								onlinerecord.UserIdActive = onlineclass.UserIdActive
+								onlinerecord.UserIdPassive = onlineclass.UserIdPassive
+								onlinerecord.CourseContent = onlineclass.AppointMessage
+								onlinerecord.StartTime = onlineclass.StartTime
+								onlinerecord.EndTime = onlineclass.EndTime
+								onlinerecord.UnitPrice = (allm / alltm)
+								onlinerecord.TotalPrice = teachermoney
+								onlinerecord.ClassNumber = allminutes
+								addrecordid, recorderr := AddOnlinecourserecord(&onlinerecord)
+								fmt.Println("7")
+								if recorderr == nil && addrecordid > 0 {
+									resultmsg = strconv.Itoa(allminutes) //返回总分钟数
+									fmt.Println("8")
+								} else {
+									resultmsg = "-9"
+								}
+							} else {
+								resultmsg = "-8"
+							}
+						} else {
+							resultmsg = "-7"
+						}
+					} else {
+						resultmsg = "-6"
+					}
+				}
+			} else {
+				resultmsg = "-3"
+			}
+		} else {
+			resultmsg = "-2" //没有课程时间记录
+		}
+	} else {
+		resultmsg = "-1" //查询不到预约信息
+	}
+	return
+}
+
+//根据预约信息主键计算两人共同在线时间
+func GetALLtimeminute(onlineid int) (allminute int) {
+	classnow, _ := GetOnlinecoursebookingById(onlineid)
+	teacherlistrecord, _ := GetOnlinecoursebookingrecordBybookiduid(classnow.UserIdPassive, onlineid)
+	studentlistrecord, _ := GetOnlinecoursebookingrecordBybookiduid(classnow.UserIdActive, onlineid)
+	fmt.Println(teacherlistrecord)
+	fmt.Println(studentlistrecord)
+	var tint [50]int //老师在线时间数组
+	var sint [50]int //学生在线时间数组
+
+	loc, _ := time.LoadLocation("Local")
+	//	var starttime string = ""
+	//	starttime = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " 24:00:00"
+	//	dd, _ := time.ParseInLocation("2006-01-02 15:04:05", starttime, loc) //将字符串转换为时间
+	//外层循环50数组，循环每个时间点
+	//内层循环老师所有时间记录信息，比对外层时间点是否存在于这些数组之中，存在即修改数组值为1，不存在值为0
+	for i := 0; i < len(tint); i++ {
+		tint[i] = 0
+		minute := strconv.Itoa(i + 1)
+		if i < 9 {
+			minute = "0" + strconv.Itoa(i+1)
+		}
+		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " "
+		itemtime = itemtime + strconv.Itoa(classnow.StartTime.Hour()) + ":" + minute + ":00"
+		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
+		fmt.Println(timecomp)
+		for j := 0; j < len(teacherlistrecord); j++ {
+			if teacherlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(teacherlistrecord[j].EndTime) {
+				tint[i] = 1
+				fmt.Println(teacherlistrecord[j].StartTime)
+			}
+		}
+
+	}
+	//外层循环50数组，循环每个时间点
+	//内层循环学生所有时间记录信息，比对外层时间点是否存在于这些数组之中，存在即修改数组值为1，不存在值为0
+	for i := 0; i < len(sint); i++ {
+		sint[i] = 0
+		minute := strconv.Itoa(i + 1)
+		if i < 9 {
+			minute = "0" + strconv.Itoa(i+1)
+		}
+		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " "
+		itemtime = itemtime + strconv.Itoa(classnow.StartTime.Hour()) + ":" + minute + ":00"
+		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
+		for j := 0; j < len(studentlistrecord); j++ {
+			if studentlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(studentlistrecord[j].EndTime) {
+				sint[i] = 1
+				fmt.Println(studentlistrecord[j].StartTime)
+			}
+		}
+
+	}
+	//循环两个数组计算共同在线时间
+	allminute = 0
+	for i := 0; i < len(tint); i++ {
+		if tint[i] == 1 && sint[i] == 1 {
+			allminute = allminute + 1
+		}
+	}
+	fmt.Println(tint)
+	fmt.Println(sint)
+	return
+}
+
+func GetMonth(month time.Month) (yue string) {
+	if month.String() == "January" {
+		yue = "1"
+	} else if month.String() == "February" {
+		yue = "2"
+	} else if month.String() == "March" {
+		yue = "3"
+	} else if month.String() == "April" {
+		yue = "4"
+	} else if month.String() == "May" {
+		yue = "5"
+	} else if month.String() == "June" {
+		yue = "6"
+	} else if month.String() == "July" {
+		yue = "7"
+	} else if month.String() == "August" {
+		yue = "8"
+	} else if month.String() == "September" {
+		yue = "9"
+	} else if month.String() == "October" {
+		yue = "10"
+	} else if month.String() == "November" {
+		yue = "11"
+	} else if month.String() == "December" {
+		yue = "12"
+	}
+	return
+}
+
+//给此用户打钱
+func SetUserMoney(userid int, money float64) (result string) {
+	useraccount, accerr := GetAccountfundsByuid(userid)
+	if accerr == nil && useraccount.Id > 0 {
+		useraccount.Balance = useraccount.Balance + money
+		uperr := UpdateAccountfundsById(&useraccount)
+		if uperr == nil {
+			result = "1"
+		} else {
+			result = "-5"
+		}
+	} else {
+		result = "-4"
+	}
+	return
+}
+
+//新增一条交易记录
+func AddUserTransactionRecords(sid int, tid int, money float64) (result string) {
+	var addtrecord Transactionrecords
+	addtrecord.SendUserId = sid
+	addtrecord.CollectUserId = tid
+	addtrecord.RecordMoney = money
+	addtrecord.TradingWayId = TradingWayId
+	addtrecord.RecordTime = time.Now()
+	addid, adderr := AddTransactionrecords(&addtrecord)
+	if adderr == nil && addid > 0 {
+		result = "1"
+	} else {
+		result = "-7"
 	}
 	return
 }

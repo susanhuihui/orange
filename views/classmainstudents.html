@@ -37,24 +37,25 @@
                 </div>
                 <div class="col-sm-9 col-md-10 leftdiv">
                     <div class="porlink">
-                        <div class="col-sm-5 classfont">
+                        <div class="col-sm-9 classfont" id="timeall">
                             预约时间: {{.StartTime}} —— {{.EndTime}}:
+
                            
                         </div>
-                        <!--<div class="col-sm-5 classfont">
+                        <div class="col-sm-5 classfont">
                             <p>
-                                预约课时: 1课时                           
-                        </div>-->
+                                留言: {{.AppointMessage}}                   
+                        </div>
                     </div>
                     <div class="row messright" id="fujiandiv">
-                        <div class="col-sm-2">
+                        <!--<div class="col-sm-2">
                             <p>附件：</p>
                         </div>
                         <div class="col-sm-3">
                             <img width="180" src="images/bao-2.png" /><br />
                             <a onclick="seePic()">查看</a>
                             <a style="margin-left: 80px;">删除</a>
-                        </div>
+                        </div>-->
                     </div>
                 </div>
             </div>
@@ -62,10 +63,13 @@
     </div>
     <p id="teacherid" style="display: none">{{.TeacherId}}</p>
     <p id="bookid" style="display: none">{{.onbookid}}</p>
+    <p id="time1" style="display: none">{{.StartTime}}</p>
+    <p id="time2" style="display: none">{{.EndTime}}</p>
     {{template "footer.html" .}}
     <script src="b/js/jquery.min.js"></script>
     <script src="b/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
+    <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         window.onload = function () {
@@ -74,7 +78,19 @@
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
+            chushitime();
             getfujina();
+        }
+        function chushitime() {
+            var timest1 = document.getElementById("time1").innerHTML.replace(/-/g, "/");
+            var timest2 = document.getElementById("time2").innerHTML.replace(/-/g, "/");
+            var newtime1 = timest1.substring(0, 19);
+            var newtime2 = timest2.substring(0, 19);
+            var time1 = new Date(newtime1);
+            var time2 = new Date(newtime2);
+            var time1str = getSimpDate(time1) + " " + getSimpTime(time1);
+            var time2str = getSimpDate(time2) + " " + getSimpTime(time2);
+            document.getElementById("timeall").innerHTML = "预约时间: " + time1str + " —— " + time2str;
         }
         function getfujina() {
             var orcid = document.getElementById("bookid").innerText;
@@ -83,6 +99,25 @@
             $.getJSON(allClass, function (data) {
                 var stryuye = '<div class="col-sm-12"><p>附件：</p></div>';
                 if (data != null) {
+                    var identityid = getCookie("identityid");
+                    if (identityid != null && identityid == 1) {
+                        for (var i = 0; i < data.length ; i++) {
+                            var onetr = '<div class="col-sm-3">' +
+                                        '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
+                                        '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
+                                        '</div>';
+                            stryuye += onetr;
+                        }
+                    } else if (identityid != null && identityid >= 2 && identityid <= 3) {
+                        for (var i = 0; i < data.length ; i++) {
+                            var onetr = '<div class="col-sm-3">' +
+                                        '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
+                                        '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
+                                        '<a style="margin-left: 80px;" onclick="delFujian(' + data[i]["Id"] + ')">删除</a>' +
+                                        '</div>';
+                            stryuye += onetr;
+                        }
+                    }
                     for (var i = 0; i < data.length ; i++) {
                         var onetr = '<div class="col-sm-3">' +
                                     '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +

@@ -16,8 +16,10 @@
     <script type="text/javascript" src="b/js/jquery.min.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
+    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
+        var onlineid = getCookie("onlinebookid");//获取预约信息id
         window.onload = function () {
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
@@ -30,23 +32,31 @@
             var getblack = "http://{{.Website}}/orange/onlinecoursebooking/GetBstudent/" + onlineid;
             $.getJSON(getblack, function (data) {
                 ifrsrc(data);
+                //添加一条课堂时间记录
+                var addrecord = '{"OCBId":' + onlineid +
+                                ',"UserId":' + userid +
+                                ',"StartTime":"' + getInsertNowDate() +
+                                '"}';
+                $.post("http://{{.Website}}/orange/onlinecoursebookingrecord/AddOnlinecoursebookingrecord/", addrecord,
+                    function (data) {
+                        if (data["id"] > 0) {
+
+                        } else {
+
+                        }
+                    });
             });
         }
 
-        window.onbeforeunload = onbeforeunload_handler;
-        window.onunload = onunload_handler;
-        function onbeforeunload_handler() {
-            var warning = "课程会结束";
-            //alert("jieshu");
-        }
-
-        function onunload_handler() {
-            var warning = "谢谢光临";
-            //调用结束方法
-            //setOverTime();//添加一条课程信息
-            //uponlinebookstate();//修改预约信息为已上课
-            //alert(warning);
-            //zhifuClass();//解冻资金，将钱转入老师账户
+        //关闭网页时调用此方法，记录学生退出时间
+        window.onbeforeunload = function () {
+            var nowtime = new Date();//系统当前时间
+            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid/" + userid + "/" + onlineid;
+            $.getJSON(getblack, function (data) {
+                if (data != null && data["Id"] > 0) {
+                    
+                }
+            });            
         }
 
         function setOverTime() {
@@ -79,7 +89,7 @@
                                uponlinebookstate();
                            } else {
                            }
-                       });
+                    });
                 }
                 else {//添加课程信息
                     var getonlinebook = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + onlineid;//获取预约信息最为参考
@@ -105,11 +115,12 @@
                                    uponlinebookstate();
                                } else {
                                }
-                           });
+                        });
                     });
                 }
             });
         }
+
         //将预约信息改为已支付和已学习
         function uponlinebookstate() {
             var onlineid = document.getElementById("onlinenowid").innerText;
@@ -165,16 +176,15 @@
                                                if (data["id"] > 0) {
 
                                                }
-                                           });
+                                       });
                                    }
                                });
                            } else {
                            }
-                       });
+                    });
                 }
             });
         }
-
 
         function ifrsrc(da) {
             document.getElementById("myframe").src = da;

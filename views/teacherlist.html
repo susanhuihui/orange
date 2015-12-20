@@ -28,7 +28,7 @@
                         <div class="col-xs-4">
                             <span>{{.UserName}}</span>
                         </div>
-                        <div class="col-xs-8" id="guanzhuTeacher">
+                        <div class="col-xs-8" id="guanzhuTeachercontent" style="display:none;">
                             <a href="#" id="guanzhushow" onclick="guanzhuTeacher()">关注</a>
                         </div>
                     </div>
@@ -65,11 +65,11 @@
                      
                     </div>
                     <div class="row" style="margin-top: 10px;">
-                        <a id="listenNow">
+                        <a id="listenNow" style="display:none;">
                             <input id="btnlisten" type="button" class="teacbtn" value="立即试听" onclick="trylisten()"></a>
                     </div>
-                    <div class="row" style="margin-top: 10px;">
-                        <a href="http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}" id="yuyuelist">
+                    <div class="row" style="margin-top: 10px;display:none;" id="yuyuelist">
+                        <a href="http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}" >
                             <input id="btnyuyue" type="button" class="teacbtn" value="预约课程"></a>
                     </div>
                 </div>
@@ -242,12 +242,23 @@
                 document.getElementById("listenNow").style.display = "none";
                 document.getElementById("yuyuelist").style.display = "none";
                 //document.getElementById("setTeacherLiuyan").style.display = "none";
-                document.getElementById("guanzhuTeacher").style.display = "none";
+                document.getElementById("guanzhuTeachercontent").style.display = "none";
             } else if (identityid > 1) {
                 document.getElementById("listenNow").style.display = "block";
                 document.getElementById("yuyuelist").style.display = "block";
                 //document.getElementById("setTeacherLiuyan").style.display = "block";
-                document.getElementById("guanzhuTeacher").style.display = "block";
+                document.getElementById("guanzhuTeachercontent").style.display = "block";
+                
+                var sid = getCookie("userid");
+                var tid = userid;
+                var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
+                $.getJSON(geturl, function (datarela) {
+                    if (datarela != null && datarela["Id"] > 0) {
+                        document.getElementById("guanzhushow").innerHTML = "取消关注";
+                    } else {
+                        document.getElementById("guanzhushow").innerHTML = "关注";
+                    }
+                });
             }
         }
 
@@ -376,14 +387,35 @@
         }
 
         function guanzhuTeacher() {
+            var showtext = document.getElementById("guanzhushow").innerHTML;
             var sid = getCookie("userid");
             var tid = userid;
-            var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/关注";
-            $.getJSON(addguanzhu, function (data) {
-                if (data["id"] > 0) { alert("关注成功！"); }
-                else if (data["id"] == 0) { alert("关注失败！"); }
-                else if (data["id"] == -1) { alert("您已关注此人！"); }
-            });
+            if (showtext == "关注") {
+                var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/关注";
+                $.getJSON(addguanzhu, function (data) {
+                    if (data["id"] > 0) {
+                        alert("关注成功！");
+                        document.getElementById("guanzhushow").innerHTML = "取消关注";
+                    }
+                    else if (data["id"] == 0) { alert("关注失败！"); }
+                });
+            } else if (showtext == "取消关注") {                
+                var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
+                $.getJSON(geturl, function (datarela) {
+                    if (datarela != null && datarela["Id"] > 0) {
+                        var del = "http://{{.Website}}/orange/relations/DeleteRelations/" + datarela["Id"];
+                        $.getJSON(del, function (data) {
+                            if (data != null && data + "" == "OK") {
+                                alert("取消关注成功！");
+                                document.getElementById("guanzhushow").innerHTML = "关注";
+                            }
+                        });
+                    }
+                    else {
+
+                    }
+                });
+            }
         }
 
 
@@ -391,10 +423,8 @@
             var sid = getCookie("userid");
             var identityid = getCookie("identityid");
             var tid = document.getElementById("userid").innerHTML;
-            //alert(sid + tid + identityid);
-            return;
             if (sid > 0) {
-                if (identityid > 1) {
+                if (identityid !=null && identityid >=2 && identityid<=3) {
                     var mess = document.getElementById("messcount").value;
                     //alert(sid + "" + tid + mess);
                     var addmess = '{"ActiveUserId":' + sid +
@@ -413,7 +443,7 @@
                                 alert("留言失败！");
                             }
                         });
-                } else {
+                } else if(identityid != null && identityid == 1){
                     alert("老师不允许留言！");
                 }
             } else {

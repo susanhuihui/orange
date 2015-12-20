@@ -294,9 +294,9 @@ func (c *TeacherController) TeacherSetMeet() {
 }
 
 // 学生点击老师，预约此老师课程
-// @Title TeacherSetMeet
-// @Description TeacherSetMeet the TbUser
-// @Param			"The id you want to TeacherSetMeet"
+// @Title StudentSetTeacherMeet
+// @Description StudentSetTeacherMeet the TbUser
+// @Param			"The id you want to StudentSetTeacherMeet"
 // @Success 200 {object} models.TbUser
 // @Failure 403
 // @router /StudentSetTeacherMeet/:tid [get]
@@ -328,7 +328,8 @@ func (c *TeacherController) TeacherOnlineClass() {
 	onlineidStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(onlineidStr)
 	c.Data["onlineid"] = onlineid
-	c.TplNames = "tk.html" //
+	c.Ctx.SetCookie("onlinebookid", onlineidStr) //当前老师进入试听信息主键
+	c.TplNames = "tk.html"                       //
 }
 
 // 学生跳页，跳到听课页面
@@ -343,7 +344,7 @@ func (c *TeacherController) StudentOnlineClass() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
 	onlineid, _ := strconv.Atoi(idStr)
 	c.Data["onlineid"] = onlineid
-
+	c.Ctx.SetCookie("onlinebookid", strconv.Itoa(onlineid))
 	c.TplNames = "tk_student.html" //
 }
 
