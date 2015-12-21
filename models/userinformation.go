@@ -348,6 +348,53 @@ func GetUserinformationAllTeacher(seltype int, nianji string, kecheng string, ji
 	return
 }
 
+//	27.检索老师全部信息
+//	2015-11-03
+func GetUserinformationAllTeacher2(seltype int, nianji string, kecheng string, jibie string, shengfen string, shiqu string, rows int, counts int) (userlist []UserinformationModels, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	fmt.Println(shiqu)
+	var SqlSchoolAge = ` and userinfo.schoolageidt like `
+	var SqlClass = ` and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like `
+	var SqlLevel = ` and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like `
+	var SqlProvince = ` and userinfo.SeniorLocation in 
+	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like `
+	var selstr string = ""
+	if seltype == 1 { //在线
+		selstr = SqlUserinformationAllTeacherByPerson1
+	} else if seltype == 2 { //人气
+		selstr = SqlUserinformationAllTeacherByTime1
+		//rs = o.Raw(SqlUserinformationAllTeacherByPerson+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
+	} else if seltype == 3 { //授课经验
+		selstr = SqlUserinformationAllTeacherByOnline1
+		//rs = o.Raw(SqlUserinformationAllTeacherByTime+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
+	}
+	if nianji != `%%` {
+		selstr = selstr + SqlSchoolAge + `'` + nianji + `' `
+	}
+	if kecheng != `%%` {
+		selstr = selstr + SqlClass + `'` + kecheng + `'` + `) `
+	}
+	if jibie != `%%` {
+		selstr = selstr + SqlLevel + `'` + jibie + `'` + `) `
+	}
+	if shengfen != `%%` {
+		selstr = selstr + SqlProvince + `'` + shengfen + `'` + `))	`
+	}
+	selstr = selstr + SqlUserOver
+	fmt.Println("最终查询语句为：")
+	fmt.Println(selstr + limitSql)
+	rs = o.Raw((selstr + limitSql), rows, counts)
+	num, qs := rs.QueryRows(&userlist)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return userlist, qs
+	}
+	return
+}
+
 //	27.检索老师全部信息总条数
 //	2015-11-03
 func GetUserinformationAllTeacherCount(seltype int, nianji string, kecheng string, jibie string, shengfen string, shiqu string) (allcount int, err error) {
@@ -360,6 +407,51 @@ func GetUserinformationAllTeacherCount(seltype int, nianji string, kecheng strin
 	} else if seltype == 3 {
 		rs = o.Raw(SqlUserinformationAllTeacherByTime, nianji, kecheng, jibie, shengfen)
 	}
+	var userlist []UserinformationModels
+	num, qs := rs.QueryRows(&userlist)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(userlist), qs
+	}
+	return
+}
+
+//	27.检索老师全部信息总条数
+//	2015-11-03
+func GetUserinformationAllTeacherCount2(seltype int, nianji string, kecheng string, jibie string, shengfen string, shiqu string) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	var SqlSchoolAge = ` and userinfo.schoolageidt like `
+	var SqlClass = ` and (select coursesid from remedialcourses recs where recs.userid = userinfo.pkid and ismain = 1 limit 1) in (select cou.pkid from course as cou where cou.coursename like `
+	var SqlLevel = ` and userinfo.UserLevelId in (select ulv.pkid from userlevel as ulv where ulv.levelname like `
+	var SqlProvince = ` and userinfo.SeniorLocation in 
+	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like `
+	var selstr string = ""
+	if seltype == 1 { //在线
+		selstr = SqlUserinformationAllTeacherByPerson1
+	} else if seltype == 2 { //人气
+		selstr = SqlUserinformationAllTeacherByTime1
+		//rs = o.Raw(SqlUserinformationAllTeacherByPerson+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
+	} else if seltype == 3 { //授课经验
+		selstr = SqlUserinformationAllTeacherByOnline1
+		//rs = o.Raw(SqlUserinformationAllTeacherByTime+limitSql, nianji, kecheng, jibie, shengfen, rows, counts)
+	}
+	if nianji != `%%` {
+		selstr = selstr + SqlSchoolAge + `'` + nianji + `' `
+	}
+	if kecheng != `%%` {
+		selstr = selstr + SqlClass + `'` + kecheng + `'` + `) `
+	}
+	if jibie != `%%` {
+		selstr = selstr + SqlLevel + `'` + jibie + `'` + `) `
+	}
+	if shengfen != `%%` {
+		selstr = selstr + SqlProvince + `'` + shengfen + `'` + `))	`
+	}
+	selstr = selstr + SqlUserOver
+	rs = o.Raw(selstr)
 	var userlist []UserinformationModels
 	num, qs := rs.QueryRows(&userlist)
 	if qs != nil {

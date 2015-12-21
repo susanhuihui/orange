@@ -175,6 +175,9 @@
         var pubCitys = "";//市区
         var pubRows = 10;//每页显示行数
         var allrowscount = 0;//总页数
+        var allclasscount = 6;//当前页面全部课程数量
+        var alllevelcount = 5;//当前页面全部课程数量
+        var allagecount = 4;//当前页
 
         window.onload = function () {
             getuser();
@@ -208,6 +211,7 @@
                 } else {
                     gradestr = '<li><a href="#" class="" id="grade0" onclick="clickgradeSel(0)">全部</a></li>';
                 }
+                allagecount = data.length;
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (nianji == data[i]["AgeName"]) {
@@ -228,6 +232,7 @@
                 if (kecheng == "") { coursestr = '<li><a href="#" class="listfont" id="course0" onclick="clickcourseSel(0)"><span>全部</span></a></li>'; } else {
                     coursestr = '<li><a href="#" class="" id="course0" onclick="clickcourseSel(0)"><span>全部</span></a></li>';
                 }
+                allclasscount = data.length;
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (kecheng == data[i]["CourseName"]) {
@@ -250,6 +255,7 @@
                 } else {
                     levelstr = '<li><a href="#" class="" id="level0" onclick="clicklevelSel(0)"><span>全部</span></a></li>';
                 }
+                alllevelcount = data.length;
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (jibie == data[i]["LevelName"]) {
@@ -497,7 +503,7 @@
 
         //点击年级条件
         function clickgradeSel(tapnum) {
-            for (var i = 0; i < 13; i++) {
+            for (var i = 0; i < allagecount; i++) {
                 var grade = document.getElementById("grade" + i);
                 if (grade != null) {
                     grade.className = "";
@@ -515,7 +521,7 @@
         };
         //点击科目条件
         function clickcourseSel(tapnum) {
-            for (var i = 0; i < 12; i++) {
+            for (var i = 0; i < allclasscount; i++) {
                 document.getElementById("course" + i).className = "";
             }
             document.getElementById("course" + tapnum).className = "listfont";
@@ -529,7 +535,7 @@
         };
         //点击级别条件
         function clicklevelSel(tapnum) {
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < alllevelcount; i++) {
                 document.getElementById("level" + i).className = "";
             }
             document.getElementById("level" + tapnum).className = "listfont";

@@ -238,7 +238,7 @@ func (c *UserinformationController) GetUserinformationAllTeacher() {
 	truepages := (pages - 1) * rows    //计算舍弃多少行
 	limit := rows                      //显示行数
 	offset := truepages                //舍弃行数	//新加--------结束--------
-	v, err := models.GetUserinformationAllTeacher(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu, offset, limit)
+	v, err := models.GetUserinformationAllTeacher2(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu, offset, limit)
 
 	if err != nil {
 		c.Data["json"] = err.Error()

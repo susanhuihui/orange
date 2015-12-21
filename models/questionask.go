@@ -36,38 +36,38 @@ type QuestionaskByUid struct {
 	AmountMoney  float64   `orm:"column(AmountMoney);null;digits(10);decimals(2)"`
 	IsSee        int       `orm:"column(IsSee)"`
 	UserName     string    `orm:"column(UserName);size(50);null"`
+	AnswerCount  int       `orm:"column(AnswerCount)"`
 }
 
 //查询精彩问答
 type QuestionaskJingCai struct {
-	Id           int       `orm:"column(PKId);auto"`
-	Title        string    `orm:"column(Title);size(50);null"`
-	Contents     string    `orm:"column(Contents);size(50);null"`
-	BadeTime     time.Time `orm:"column(BadeTime);type(datetime);null"`
-	Numbers      int       `orm:"column(Numbers)"`
-	State        int       `orm:"column(State)"`
-	Count        int       `orm:"column(Count)"`
+	Id       int       `orm:"column(PKId);auto"`
+	Title    string    `orm:"column(Title);size(50);null"`
+	Contents string    `orm:"column(Contents);size(50);null"`
+	BadeTime time.Time `orm:"column(BadeTime);type(datetime);null"`
+	Numbers  int       `orm:"column(Numbers)"`
+	State    int       `orm:"column(State)"`
+	Count    int       `orm:"column(Count)"`
 }
 
 //查询精彩问答详情
 type QuestionaskJingCaiOne struct {
-	Title        		string    `orm:"column(Title);size(50);null"`
-	Contents     		string    `orm:"column(Contents);size(50);null"`
-	BadeTime     		time.Time `orm:"column(BadeTime);type(datetime);null"`
-	AskUserId			int       `orm:"column(AskUserId)"`
-	UserName     		string    `orm:"column(UserName);size(50);null"`
-	Hname        		string    `orm:"column(Hname);size(50);null"`
-	HuiDaContents       string    `orm:"column(HuiDaContents);size(50);null"`
-	AnsTime      		time.Time `orm:"column(AnsTime);type(datetime);null"`
-	AvatarPath      	string    `orm:"column(AvatarPath);size(50);null"`
-	HuiDaAvatarPath     string    `orm:"column(HuiDaAvatarPath);size(50);null"`
-	AnswerUserId		int       `orm:"column(AnswerUserId)"`
-	SchoolName     		string    `orm:"column(SchoolName);size(50);null"`
-	UserSchoolName     	string    `orm:"column(UserSchoolName);size(50);null"`
-	AnswerId			int       `orm:"column(AnswerId)"`
-	Id           		int       `orm:"column(PKId);auto"`
+	Title           string    `orm:"column(Title);size(50);null"`
+	Contents        string    `orm:"column(Contents);size(50);null"`
+	BadeTime        time.Time `orm:"column(BadeTime);type(datetime);null"`
+	AskUserId       int       `orm:"column(AskUserId)"`
+	UserName        string    `orm:"column(UserName);size(50);null"`
+	Hname           string    `orm:"column(Hname);size(50);null"`
+	HuiDaContents   string    `orm:"column(HuiDaContents);size(50);null"`
+	AnsTime         time.Time `orm:"column(AnsTime);type(datetime);null"`
+	AvatarPath      string    `orm:"column(AvatarPath);size(50);null"`
+	HuiDaAvatarPath string    `orm:"column(HuiDaAvatarPath);size(50);null"`
+	AnswerUserId    int       `orm:"column(AnswerUserId)"`
+	SchoolName      string    `orm:"column(SchoolName);size(50);null"`
+	UserSchoolName  string    `orm:"column(UserSchoolName);size(50);null"`
+	AnswerId        int       `orm:"column(AnswerId)"`
+	Id              int       `orm:"column(PKId);auto"`
 }
-
 
 func (t *Questionask) TableName() string {
 	return "questionask"
@@ -79,108 +79,109 @@ func init() {
 
 //    16.查询被提问者所有问答信息
 //    2015-11-06
-func GetQuestionaskByTid (userid int,rows int,counts int) (list []QuestionaskByUid, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskByTUserid+limitSql,userid,rows,counts)
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return list, qs
-    }
-    return
+func GetQuestionaskByTid(userid int, rows int, counts int) (list []QuestionaskByUid, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskByTUserid+limitSql, userid, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
 }
+
 //    16.查询被提问者所有问答信息总条数
 //    2015-11-18
-func GetQuestionaskByTidCount (userid int) (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskByTUserid,userid)
+func GetQuestionaskByTidCount(userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskByTUserid, userid)
 	var list []QuestionaskByUid
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(list), qs
-    }
-    return
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
 }
 
 //    24.查询提问者所有问答信息 学生查询自己的提问
 //    2015-11-06
-func GetQuestionaskBySid (userid int,rows int,counts int) (list []QuestionaskByUid, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskBySUserid+limitSql,userid,rows,counts)
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return list, qs
-    }
-    return
+func GetQuestionaskBySid(userid int, rows int, counts int) (list []QuestionaskByUid, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskBySUserid+limitSql, userid, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
 }
 
 //    24.查询提问者所有问答信息 学生查询自己的提问总条数
 //    2015-11-06
-func GetQuestionaskBySidCount (userid int) (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskBySUserid,userid)
+func GetQuestionaskBySidCount(userid int) (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskBySUserid, userid)
 	var list []QuestionaskByUid
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(list), qs
-    }
-    return
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
 }
 
 //    32.查询精彩问答
 //    2015-11-06
-func GetQuestionaskByJingCai (rows int,counts int) (list []QuestionaskJingCai, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskJingcai+limitSql,rows,counts)
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return nil, qs
-    } else {
-        return list, qs
-    }
-    return
+func GetQuestionaskByJingCai(rows int, counts int) (list []QuestionaskJingCai, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskJingcai+limitSql, rows, counts)
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return list, qs
+	}
+	return
 }
 
 //    32.查询精彩问答总条数
 //    2015-11-06
-func GetQuestionaskByJingCaiCount () (allcount int, err error) {
-    o := orm.NewOrm()
-    var rs orm.RawSeter    
-    rs = o.Raw(SqlQuestionAskJingcai)
+func GetQuestionaskByJingCaiCount() (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskJingcai)
 	var list []QuestionaskJingCai
-    num, qs := rs.QueryRows(&list)
-    if qs != nil {
-        fmt.Printf("num", num)
-        return 0, qs
-    } else {
-        return len(list), qs
-    }
-    return
+	num, qs := rs.QueryRows(&list)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(list), qs
+	}
+	return
 }
 
 //	33.精彩回答详情
 //	2015-11-06
-func GetQuestionaskByJingCaiOne(qaid int) (quest QuestionaskJingCaiOne,	err error) {
+func GetQuestionaskByJingCaiOne(qaid int) (quest QuestionaskJingCaiOne, err error) {
 	o := orm.NewOrm()
-	var rs orm.RawSeter	
-	rs = o.Raw(SqlQuestionAskById,qaid)
+	var rs orm.RawSeter
+	rs = o.Raw(SqlQuestionAskById, qaid)
 	qs := rs.QueryRow(&quest)
 	return quest, qs
 }

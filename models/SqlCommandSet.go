@@ -246,7 +246,8 @@ var SqlAccountRecordAll string = `select amt.*,(select username from userinforma
 //调用方法名：
 //参数说明：被提问者主键id，从第几行开始，获取几行
 //2015-11-04
-var SqlQuestionAskByTUserid string = `select qa.*,(select username from userinformation as userinfo where qa.askuserid = userinfo.pkid) as UserName 
+var SqlQuestionAskByTUserid string = `select qa.*,(select username from userinformation as userinfo where qa.askuserid = userinfo.pkid) as UserName ,
+(select count(*) from answers as ans where ans.qaid = qa.pkid) as AnswerCount
 	from questionask as qa 
 	where qa.answeruserid = ? 
 	order by qa.badetime desc `
@@ -446,6 +447,17 @@ var SqlUserinformationAllTeacherByPerson string = `select userinfo.*,
 	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
 	order by SortCondition desc  `
 
+var SqlUserinformationAllTeacherByPerson1 string = `select userinfo.*,
+	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
+		 ifnull((select count(*) from onlinecourseevaluation as onev where onev.ocrid in (select onrec.pkid from onlinecourserecord as onrec where onrec.useridpassive = userinfo.pkid)),0) as SortCondition,
+         ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState 
+	from userinformation as userinfo
+	where userinfo.identityid = (select pkid from identity where identityname='老师') `
+
+var SqlUserOver string = `	order by SortCondition desc  `
+
 var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
 	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
@@ -460,6 +472,15 @@ var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
 	    and userinfo.SeniorLocation in 
 	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
 	order by SortCondition desc  `
+
+var SqlUserinformationAllTeacherByTime1 string = `select userinfo.*,
+	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
+	     ifnull((select sum(classnumber) from onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid),0) as SortCondition,
+         ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState
+	from userinformation as userinfo 
+	where userinfo.identityid = (select pkid from identity where identityname='老师')`
 
 var SqlUserinformationAllTeacherByOnline string = `select userinfo.*,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
@@ -478,6 +499,18 @@ var SqlUserinformationAllTeacherByOnline string = `select userinfo.*,
 		    and userinfo.SeniorLocation in 
 	    (select cit.pkid from citys as cit where cit.proid in (select prov.pkid from province as prov where prov.proname like ?))		
 	order by SortCondition desc  `
+
+var SqlUserinformationAllTeacherByOnline1 string = `select userinfo.*,
+	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseNameZhu,
+	     (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu,
+	     ifnull(
+				((select count(*) from onlinecourseevaluation as onev where onev.ocrid in (select onrec.pkid from onlinecourserecord as onrec where onrec.useridpassive = userinfo.pkid))+
+				 (select sum(classnumber) from onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid))
+				  ,0) as SortCondition,
+     	 ifnull((select count(*)from onlinetrylisten as ontry where ontry.tid = userinfo.pkid and (ontry.sid=0 or ontry.sid is null)),0) as OnlineState
+		from userinformation as userinfo
+		where userinfo.identityid = (select pkid from identity where identityname='老师')`
 
 //28.
 //用途：老师模块：点击老师姓名查看老师详情

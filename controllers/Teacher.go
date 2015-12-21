@@ -100,8 +100,8 @@ func (c *TeacherController) TeacherList() {
 		truepages := (pages - 1) * rows //计算舍弃多少行
 		limit := rows                   //显示行数
 		offset := truepages             //舍弃行数	//新加--------结束--------
-		v, err := models.GetUserinformationAllTeacher(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu, offset, limit)
-		vCount, _ := models.GetUserinformationAllTeacherCount(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu)
+		v, err := models.GetUserinformationAllTeacher2(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu, offset, limit)
+		vCount, _ := models.GetUserinformationAllTeacherCount2(seltype, newnianji, newkecheng, newjibie, newshengfen, newshiqu)
 		c.Data["allUserscount"] = vCount
 		//fmt.Println(v)
 		var allteacherstr string = ""
