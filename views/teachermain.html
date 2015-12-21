@@ -803,21 +803,25 @@
             });
         }
 
+        var tixianistorf = 0;
         //点击提现按钮
         function Tixian() {
             var nowmoney = document.getElementById("nowmoney").innerHTML;
             if (nowmoney <= 100) {
                 document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
+                tixianistorf = 0;
                 return;
                 //alert("账户余额不能少于100元！");
             }
             var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
             $.getJSON(getstate, function (data) {
                 if (nowmoney - 100 > data) {
-                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data);
+                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data).toFixed(2);
+                    tixianistorf = 1;
                 }
                 else {
                     document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+                    tixianistorf = 0;
                 }
             });
         }
@@ -825,6 +829,9 @@
         //提现确定按钮事件
         function addTixian() {
             var nowmoney = document.getElementById("nowmoney").innerHTML;
+            if (tixianistorf == 0) {
+                return;
+            }
             if (nowmoney > 100) {
                 //判断是否提现的金额大于
                 var tmoney = trim(document.getElementById("txtoutmoney").value);

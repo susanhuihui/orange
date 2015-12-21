@@ -164,7 +164,7 @@
                     <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">提现</h3>
                 </div>
                 <div class="modal-body">
-                    <table class="stutablepop">
+                    <table class="stutablepop"  id="tixiantb">
                         <tr>
                             <td>可提现金额：
                               </td>
@@ -1049,7 +1049,7 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var mychongzhistr = '<tr class="stuth"><th>提现时间</th><th>提现金额</th><th>提现方式</th><th>余额</th></tr>';
+                var mychongzhistr = '<tr class="stuth"><th>充值时间</th><th>充值金额</th><th>充值方式</th><th>余额</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
                         var itmes = "<tr><td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
@@ -1442,22 +1442,24 @@
         function clearmoney() {
             document.getElementById("paymoney").value = "";
         }
-        
+        var tixianistorf = 0;
         //点击提现按钮
         function Tixian() {
             var nowmoney = document.getElementById("nowmoney").innerHTML;
             if (nowmoney <= 100) {
                 document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
+                tixianistorf = 0;
                 return;
-                //alert("账户余额不能少于100元！");
             }
             var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
             $.getJSON(getstate, function (data) {
                 if (nowmoney - 100 > data) {
-                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data);
+                    document.getElementById("yueshow").innerHTML = ((nowmoney - data) - 100).toFixed(2);
+                    tixianistorf = 1;
                 }
                 else {
                     document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+                    tixianistorf = 0;
                 }
             });
         }
@@ -1465,6 +1467,9 @@
         //提现确定按钮事件
         function addTixian() {
             var nowmoney = document.getElementById("nowmoney").innerHTML;
+            if (tixianistorf == 0) {
+                return;
+            }
             if (nowmoney > 100) {
                 //判断是否提现的金额大于
                 var tmoney = trim(document.getElementById("txtoutmoney").value);

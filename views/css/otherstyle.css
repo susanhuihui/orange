@@ -3,6 +3,8 @@
 body{ background-color:#f5f5f5;}
 .logo{ float:left; width:120px; font-size:20px; margin-top:15px;}
 
+.pichead {width:150px;height:157px;}
+
 .loginsty{ margin:1px 5px 1px 5px; padding:0px 0px 20px 0px; color:#666;}
 
 .threebtn{ border:none; border-radius:20px; background-color:#F90; padding:10px 35px 10px 35px; color:#FFF; font-size:18px;}

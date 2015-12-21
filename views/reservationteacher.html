@@ -1254,6 +1254,7 @@
         var timeListIndex = 0;//第一个时间段索引：0-8
         var nowtxtname = ""
         var nowdivname = ""
+        var notimeistorf = 0;//此时段是否可操作
         function getvalue(txtname, yearmd, timelistindex,divname) {
             nowtxtname = txtname;
             nowdivname = divname;
@@ -1267,6 +1268,7 @@
                 nowTagid = tagid;
                 nowDate = yearmd;
                 timeListIndex = timelistindex;
+                notimeistorf = 1;
                 if (name == "已约") {
                     document.getElementById("showtext").innerHTML = "<td><span>用户已约，不能再修改状态！</span></td>";
                 } else if (name == "不可约") {                    
@@ -1281,6 +1283,7 @@
             }
             else {
                 document.getElementById("showtext").innerHTML = "<td><span>此时段不可操作！</span></td>";
+                notimeistorf = 0;
             }
         }
 
@@ -1288,7 +1291,7 @@
         function setMeetTrueorFalse() {
             if (nowName == "已约") {
                 //alert("不做操作");
-            } else if (nowName == "不可约") {
+            } else if (nowName == "不可约" && notimeistorf == 1) {
                 //alert("不可约改可约");//新增一条数据                
                 var stime = getInsertDate((nowDate + ' ' + timelist1[timeListIndex] + ':00').replace(/-/g, "/"));
                 var etime = getInsertDate((nowDate + ' ' + timelist2[timeListIndex] + ':00').replace(/-/g, "/"));
@@ -1313,7 +1316,7 @@
                             }
                         });
 
-            } else if (nowName == "可约") {
+            } else if (nowName == "可约" && notimeistorf == 1) {
                 //alert("可约改不可约");//删除一条数据
                 var delonline = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebooking/" + nowTagid;
                 $.getJSON(delonline, function (deldata) {

@@ -103,7 +103,7 @@ func (c *MainController) LoginUser() {
 		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
 		c.Ctx.SetCookie("identityid", strconv.Itoa(vuser.IdentityId))
 		c.Ctx.SetCookie("AvatarPath", vuser.AvatarPath)
-		c.Data["json"] = "OK"
+		c.Data["json"] = map[string]interface{}{"Id": vuser.Id, "IdentityId": vuser.IdentityId, "AvatarPath": vuser.AvatarPath}
 	} else {
 		vphoneuser, errph := models.GetUserinformationLoginPhone(v.UserName, v.LoginPassword)
 		if errph == nil && vphoneuser != nil {
@@ -112,12 +112,12 @@ func (c *MainController) LoginUser() {
 			c.Ctx.SetCookie("userid", strconv.Itoa(vphoneuser.Id))
 			c.Ctx.SetCookie("identityid", strconv.Itoa(vphoneuser.IdentityId))
 			c.Ctx.SetCookie("AvatarPath", vphoneuser.AvatarPath)
-			c.Data["json"] = "OK"
+			c.Data["json"] = map[string]interface{}{"Id": vphoneuser.Id, "IdentityId": vphoneuser.IdentityId, "AvatarPath": vphoneuser.AvatarPath}
 		} else {
-			var usertrue string = "0" //0获取用户失败 1用户名昵称存在密码不正确 -1用户名昵称不存在
+			var usertrue string = "0" //0获取用户失败 -2用户名昵称存在密码不正确 -1用户名昵称不存在
 			getuserbyname, nameerr := models.GetUserinformationByUserName(v.UserName)
 			if nameerr == nil && getuserbyname != nil {
-				usertrue = "1" //用户名昵称存在密码不正确
+				usertrue = "-2" //用户名昵称存在密码不正确
 			} else if getuserbyname == nil {
 				usertrue = "-1" //用户名昵称不存在
 			} else if nameerr != nil {
@@ -126,14 +126,14 @@ func (c *MainController) LoginUser() {
 			if usertrue != "1" {
 				getuserbyphone, phoneerr := models.GetUserinformationByPhone(v.IphoneNum)
 				if phoneerr == nil && getuserbyphone != nil {
-					usertrue = "1" //用户名昵称存在密码不正确
+					usertrue = "-2" //用户名昵称存在密码不正确
 				} else if getuserbyphone == nil {
 					usertrue = "-1" //用户名昵称不存在
 				} else if phoneerr != nil {
 					usertrue = "0" //获取用户失败
 				}
-			}
-			c.Data["json"] = usertrue
+			} //map[string]interface{}{"id": id, "state": 1}
+			c.Data["json"] = map[string]interface{}{"Id": usertrue, "IdentityId": 0, "AvatarPath": ""}
 		}
 	}
 	c.ServeJson()
