@@ -806,66 +806,116 @@
         }
 
         $(document).ready(function () {
-            // 创建预约课程分页元素
-            $("#Paginationcourse").pagination(document.getElementById("yuyuecount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback  //回调函数
-            });
-            // 创建全部课程分页元素
-            $("#Pagination2").pagination(document.getElementById("quanbucount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback2  //回调函数
-            });
-            // 创建我的问题分页元素
-            $("#Pagination3").pagination(document.getElementById("tiwencount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback3  //回调函数
-            });
-            // 创建交易记录分页元素----------------
-            $("#Pagination4").pagination(document.getElementById("jiaoyicount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback4  //回调函数
-            });
-            // 创建提现记录分页元素----------------
-            $("#Pagination5").pagination(document.getElementById("tixiancount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback5  //回调函数
-            });
-            // 创建充值记录分页元素----------------
-            $("#Pagination6").pagination(document.getElementById("chongzhicount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback6  //回调函数
-            });
-            // 创建分页元素
-            $("#Pagination7").pagination(document.getElementById("pingjiacount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback7  //回调函数
-            });
-            // 创建分页元素
-            $("#Pagination8").pagination(document.getElementById("liuyancount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback8  //回调函数
-            });
-            // 创建分页元素
-            $("#Pagination9").pagination(document.getElementById("guanzhucount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback9  //回调函数
-            });
-            // 创建退约课程分页元素
-            $("#Pagination10").pagination(document.getElementById("tuiyuecount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback10  //回调函数
-            });
+            var yuyuecountnow = document.getElementById("yuyuecount").innerText;
+            if (yuyuecountnow > 0) {
+                // 创建预约课程分页元素
+                $("#Paginationcourse").pagination(yuyuecountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback  //回调函数
+                });
+            } else {
+                document.getElementById("Paginationcourse").style.display = "none";
+            }
+            var quanbucountnow = document.getElementById("quanbucount").innerText;
+            if (quanbucountnow > 0) {
+                // 创建全部课程分页元素
+                $("#Pagination2").pagination(quanbucountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback2  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination2").style.display = "none";
+            }
+            var tiwencountnow = document.getElementById("tiwencount").innerText;
+            if (tiwencountnow > 0) {
+                // 创建我的问题分页元素
+                $("#Pagination3").pagination(tiwencountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback3  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination3").style.display = "none";
+            }
+            var jiaoyicountnow = document.getElementById("jiaoyicount").innerText;
+            if(jiaoyicountnow >0){
+                // 创建交易记录分页元素----------------
+                $("#Pagination4").pagination(jiaoyicountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback4  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination4").style.display = "none";
+            }
+            var tixiancountnow = document.getElementById("tixiancount").innerText;
+            if(tixiancountnow >0){
+                // 创建提现记录分页元素----------------
+                $("#Pagination5").pagination(tixiancountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback5  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination5").style.display = "none";
+            }
+            var chongzhicountnow = document.getElementById("chongzhicount").innerText;
+            if(chongzhicountnow>0){
+                // 创建充值记录分页元素----------------
+                $("#Pagination6").pagination(chongzhicountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback6  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination6").style.display = "none";
+            }
+            var pingjiacountnow = document.getElementById("pingjiacount").innerText;
+            if (pingjiacountnow > 0) {
+                // 创建分页元素
+                $("#Pagination7").pagination(pingjiacountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback7  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination7").style.display = "none";
+            }
+            var liuyancountnow = document.getElementById("liuyancount").innerText;
+            if (liuyancountnow > 0) {
+                // 创建分页元素
+                $("#Pagination8").pagination(liuyancountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback8  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination8").style.display = "none";
+            }
+            var guanzhucountnow = document.getElementById("guanzhucount").innerText;
+            if(guanzhucountnow >0){
+                // 创建分页元素
+                $("#Pagination9").pagination(guanzhucountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback9  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination9").style.display = "none";
+            }
+            var tuiyuecountnow = document.getElementById("tuiyuecount").innerText;
+            if(tuiyuecountnow >0){
+                // 创建退约课程分页元素
+                $("#Pagination10").pagination(tuiyuecountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback10  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination10").style.display = "none";
+            }
         });
 
         //获取预约列表信息
@@ -1084,7 +1134,7 @@
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["ReviewContent"] + "</td>" +
                                     "<td>" + starimg + "</td>" +
-                                   "<td>" + getSimpDate(data[i]["ReviewTime"]) + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
+                                   "<td>" + getSimpDate(data[i]["ReviewTime"]) + " " + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Main/GetOnLineEvaluation/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>&nbsp;  ' +
                                     '<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delPingjia(' + data[i]["Id"] + ')">删除</a></td></tr>';
                         mychongzhistr += itmes

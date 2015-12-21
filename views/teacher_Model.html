@@ -207,17 +207,17 @@
             $.getJSON(allGrade, function (data) {
                 var gradestr = '';
                 if (nianji == "") {
-                    gradestr = '<li><a href="#" class="listfont" id="grade0" onclick="clickgradeSel(0)">全部</a></li>';
+                    gradestr = '<li><a href="#" class="listfont" id="grade0" onclick="clickgradeSel(0)"><span>全部</span></a></li>';
                 } else {
-                    gradestr = '<li><a href="#" class="" id="grade0" onclick="clickgradeSel(0)">全部</a></li>';
+                    gradestr = '<li><a href="#" class="" id="grade0" onclick="clickgradeSel(0)"><span>全部</span></a></li>';
                 }
                 allagecount = data.length;
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (nianji == data[i]["AgeName"]) {
-                        items = '<li><a class="listfont" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')">' + data[i]["AgeName"] + '</a></li>';
+                        items = '<li><a class="listfont" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')"><span>' + data[i]["AgeName"] + '</span></a></li>';
                     } else {
-                        items = '<li><a class="" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')">' + data[i]["AgeName"] + '</a></li>';
+                        items = '<li><a class="" id=' + 'grade' + (i + 1) + ' onclick="clickgradeSel(' + (i + 1) + ')"><span>' + data[i]["AgeName"] + '</span></a></li>';
                     }
                     gradestr += items;
                 }
@@ -236,9 +236,9 @@
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (kecheng == data[i]["CourseName"]) {
-                        items = '<li><a class="listfont" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')">' + data[i]["CourseName"] + '</a></li>';
+                        items = '<li><a class="listfont" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')"><span>' + data[i]["CourseName"] + '</span></a></li>';
                     } else {
-                        items = '<li><a class="" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')">' + data[i]["CourseName"] + '</a></li>';
+                        items = '<li><a class="" id=' + 'course' + (i + 1) + ' onclick="clickcourseSel(' + (i + 1) + ')"><span>' + data[i]["CourseName"] + '</span></a></li>';
                     }
                     coursestr += items;
                 }
@@ -259,9 +259,9 @@
                 for (var i = 0; i < data.length ; i++) {
                     var items = '';
                     if (jibie == data[i]["LevelName"]) {
-                        items = '<li><a class="listfont" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')">' + data[i]["LevelName"] + '</a></li>';
+                        items = '<li><a class="listfont" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')"><span>' + data[i]["LevelName"] + '</span></a></li>';
                     } else {
-                        items = '<li><a class="" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')">' + data[i]["LevelName"] + '</a></li>';
+                        items = '<li><a class="" id=' + 'level' + (i + 1) + ' onclick="clicklevelSel(' + (i + 1) + ')"><span>' + data[i]["LevelName"] + '</span></a></li>';
                     }
                     levelstr += items;
                 }
@@ -398,12 +398,16 @@
         //分页初始
         $(document).ready(function () {
             var allcountvalue = document.getElementById("allcount").innerText;
-            // 创建分页元素
-            $("#Pagination").pagination(allcountvalue, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback  //回调函数
-            });
+            if (allcountvalue > 0) {
+                // 创建分页元素
+                $("#Pagination").pagination(allcountvalue, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination").style.display = "none";
+            }
         });
 
 

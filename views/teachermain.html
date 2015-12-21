@@ -153,7 +153,7 @@
                                 </tr>
                             </table>
                             <div id="Paginationcourse" class="pagination"></div>
-                            <hr color="#ccc" size="1">
+                            <hr color="#ccc" size="1" style="margin-top:100px;">
                             <table class="stutabtop">
                                 <tr>
                                     <td>
@@ -395,54 +395,94 @@
         }
 
         $(document).ready(function () {
-            // 创建预约课程分页元素
-            $("#Paginationcourse").pagination(document.getElementById("yuyuecount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback  //回调函数
-            });
-            // 创建全部课程分页元素
-            $("#Pagination2").pagination(document.getElementById("quanbucount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback2  //回调函数
-            });
-            // 创建我的问题分页元素
-            $("#Pagination3").pagination(document.getElementById("tiwencount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback3  //回调函数
-            });
-            // 创建交易记录分页元素----------------
-            $("#Pagination4").pagination(document.getElementById("jiaoyicount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback4  //回调函数
-            });
-            // 创建提现记录分页元素----------------
-            $("#Pagination5").pagination(document.getElementById("tixiancount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback5  //回调函数
-            });
-            // 创建分页元素
-            $("#Pagination7").pagination(document.getElementById("pingjiacount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback7  //回调函数
-            });
-            // 创建分页元素
-            $("#Pagination8").pagination(document.getElementById("liuyancount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback8  //回调函数
-            });
-            // 创建分页元素
-            $("#pagination9s").pagination(document.getElementById("listencount").innerText, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback9  //回调函数
-            });
+            var yuyuecountnow  = document.getElementById("yuyuecount").innerText;
+            if (yuyuecountnow > 0) {
+                // 创建预约课程分页元素
+                $("#Paginationcourse").pagination(yuyuecountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback  //回调函数
+                });
+            } else {
+                document.getElementById("Paginationcourse").style.display = "none";
+            }
+            var quanbucountnow = document.getElementById("quanbucount").innerText;
+            if (quanbucountnow > 0) {
+                // 创建全部课程分页元素
+                $("#Pagination2").pagination(quanbucountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback2  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination2").style.display = "none";
+            }
+            var tiwencountnow = document.getElementById("tiwencount").innerText;
+            if (tiwencountnow > 0) {
+                // 创建我的问题分页元素
+                $("#Pagination3").pagination(tiwencountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback3  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination3").style.display = "none";
+            }
+            var jiaoyicountnow = document.getElementById("jiaoyicount").innerText;
+            if (jiaoyicountnow > 0) {
+                // 创建交易记录分页元素----------------
+                $("#Pagination4").pagination(jiaoyicountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback4  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination4").style.display = "none";
+            }
+            var tixiancountnow = document.getElementById("tixiancount").innerText;
+            if (tixiancountnow > 0) {
+                // 创建提现记录分页元素----------------
+                $("#Pagination5").pagination(tixiancountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback5  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination5").style.display = "none";
+            }
+            var pingjiacountnow = document.getElementById("pingjiacount").innerText;
+            if (pingjiacountnow > 0) {
+                // 创建分页元素
+                $("#Pagination7").pagination(pingjiacountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback7  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination7").style.display = "none";
+            }
+            var liuyancountnow = document.getElementById("liuyancount").innerText;
+            if (liuyancountnow > 0) {
+                // 创建分页元素
+                $("#Pagination8").pagination(liuyancountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback8  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination8").style.display = "none";
+            }
+            var listencountnow = document.getElementById("listencount").innerText;
+            if(listencountnow >0){
+                // 创建分页元素
+                $("#pagination9s").pagination(listencountnow, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback9  //回调函数
+                });
+            } else {
+                document.getElementById("pagination9s").style.display = "none";
+            }
         });
 
         //获取预约列表信息
@@ -553,7 +593,7 @@
                         if (data[i]["AnswerCount"] == 0) { showbtn = "回答"; } else if (data[i]["AnswerCount"] == 0) { showbtn = "查看"; }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["Contents"] + "</td>" +
-                                    "<td>" + getSimpDate(data[i]["BadeTime"]) + getSimpTime(data[i]["BadeTime"]) + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["BadeTime"]) + " " + getSimpTime(data[i]["BadeTime"]) + "</td>" +
                                     "<td>" + data[i]["AmountMoney"] + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Teacher/ProblemAnswer/' + data[i]["Id"] + '" class="btn btn-warning radsty">' + showbtn + '</a></td></tr>';
                         myaskstr += itmes
@@ -630,7 +670,7 @@
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + data[i]["ReviewContent"] + "</td>" +
                                     "<td>" + starimg + "</td>" +
-                                   "<td>" + getSimpDate(data[i]["ReviewTime"]) + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
+                                   "<td>" + getSimpDate(data[i]["ReviewTime"]) + " " + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Main/GetOnLineEvaluationTeacher/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a></td></tr>';
                         mychongzhistr += itmes
                     }

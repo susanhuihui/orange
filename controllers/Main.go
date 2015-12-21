@@ -96,6 +96,7 @@ func (c *MainController) LoginUser() {
 	fmt.Println("用户名，密码：")
 	fmt.Println(v.UserName, v.LoginPassword)
 	vuser, err := models.GetUserinformationLogin(v.UserName, v.LoginPassword)
+	fmt.Println(vuser)
 	if err == nil && vuser != nil {
 		fmt.Println(vuser)
 		c.Data["Website"] = models.OnlineUrl

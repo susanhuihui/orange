@@ -229,24 +229,24 @@ func (c *RemedialcoursesController) UpdateStudentClass() {
 					}
 				}
 			}
-			for j := 0; j < len(sellist); j++ { //循环新的是否存在旧的集合中，是不做操作，否添加
-				var haveadd bool = false
-				selids, _ := strconv.Atoi(sellist[j])
-				for b := 0; b < len(userclass); b++ {
-					if selids == userclass[b].CoursesId {
-						haveadd = true
-					}
+		}
+		for j := 0; j < len(sellist); j++ { //循环新的是否存在旧的集合中，是不做操作，否添加
+			var haveadd bool = false
+			selids, _ := strconv.Atoi(sellist[j])
+			for b := 0; b < len(userclass); b++ {
+				if selids == userclass[b].CoursesId {
+					haveadd = true
 				}
-				if haveadd == false {
-					var addrc models.Remedialcourses
-					addrc.UserId = sid
-					addrc.CoursesId = selids
-					addrc.IsMain = 0
-					addresult, adderr := models.AddRemedialcourses(&addrc)
-					fmt.Println(addresult)
-					if adderr != nil {
-						err = adderr
-					}
+			}
+			if haveadd == false {
+				var addrc models.Remedialcourses
+				addrc.UserId = sid
+				addrc.CoursesId = selids
+				addrc.IsMain = 0
+				addresult, adderr := models.AddRemedialcourses(&addrc)
+				fmt.Println(addresult)
+				if adderr != nil {
+					err = adderr
 				}
 			}
 		}

@@ -11,6 +11,8 @@
     <title>在线教育</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
+		<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js" type="text/javascript"></script>
+		<script src="/static/js/jquery.uploadify.min.js" type="text/javascript"></script>
 </head>
 <body>
     {{template "menutop.html" .}}
@@ -71,6 +73,33 @@
                             </div>
                             <div class="col-xs-8">
                                 <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
+                                <!--重新添加-->
+                                <!--<div id="update">
+                                    <form method="post" action="/uploads" enctype="multipart/form-data">
+                                        <input type="file" name="image" id="file_upload" onchange="setImagePreview()"  />
+                                    </form>
+                                </div>
+                                <div id="xx-script">
+                                    <script type="text/javascript">
+                                        $(function () {
+                                            $("#file_upload").uploadify({
+                                                'fileObjName': 'image',
+                                                'debug': false,
+                                                'auto': true,
+                                                'buttonText': '选择一个文件',
+                                                'removeCompleted': false,
+                                                'cancelImg': '/static/img/uploadify-cancel.png',
+                                                'swf': '/static/img/uploadify.swf',
+                                                'uploader': '/uploads',
+                                                'fileTypeDesc': 'FileType',
+                                                'fileTypeExts': '*.jpg;*.jpeg;*.gif;*.png',
+                                                'overrideEvents': ['onDialogClose'],
+                                                'multi': true,
+                                                'formData': { 'url': window.location.search }
+                                            })
+                                        })
+                                    </script>
+                                </div>-->
                                 <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" />
                                 <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
                                 <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>

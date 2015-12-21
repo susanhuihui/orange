@@ -1093,6 +1093,26 @@
         var timelist1 = [timeone1, timetwo1, timethree1, timefour1, timefive1, timesex1, timeseven1, timeeight1, timenine1];
         var timelist2 = [timeone2, timetwo2, timethree2, timefour2, timefive2, timesex2, timeseven2, timeeight2, timenine2];
 
+        var timeone1a = '09:00';
+        var timeone2a = '09:50';
+        var timetwo1a = '10:00';
+        var timetwo2a = '10:50';
+        var timethree1a = '11:00';
+        var timethree2a = '11:50';
+        var timefour1a = '13:00';
+        var timefour2a = '13:50';
+        var timefive1a = '14:00';
+        var timefive2a = '14:50';
+        var timesex1a = '15:00';
+        var timesex2a = '15:50';
+        var timeseven1a = '16:00';
+        var timeseven2a = '16:50';
+        var timeeight1a = '18:00';
+        var timeeight2a = '18:50';
+        var timenine1a = '19:00';
+        var timenine2a = '19:50';
+        var timelist1a = [timeone1a, timetwo1a, timethree1a, timefour1a, timefive1a, timesex1a, timeseven1a, timeeight1a, timenine1a];
+        var timelist2a = [timeone2a, timetwo2a, timethree2a, timefour2a, timefive2a, timesex2a, timeseven2a, timeeight2a, timenine2a];
         //设置预约状态
         function setMeetState() {
             var list1 = getdate(7 - ((7 - week) + 1));
@@ -1111,7 +1131,7 @@
             tableonehtml += '<td>星期日<p>' + getmonthday(list1[6]) + '</p></td></td>';
             var classstyle = "arrow-upno";
             for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
-                tableonehtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                tableonehtml += '<tr><td>' + timelist1[j] + '--' + timelist2a[j] + '</td>';
                 for (var i = 0; i < list1.length; i++) {//循环第一周
                     var itemdd = '';
                     itemdd = '<td style="text-align: center;">' +
@@ -1139,7 +1159,7 @@
             tabletwohtml += '<td>星期六<p>' + getmonthday(list3[5]) + '</p></td>';
             tabletwohtml += '<td>星期日<p>' + getmonthday(list3[6]) + '</p></td></td>';
             for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
-                tabletwohtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                tabletwohtml += '<tr><td>' + timelist1[j] + '--' + timelist2a[j] + '</td>';
                 for (var i = 0; i < list3.length; i++) {//循环第二周
                     //alert(list3[i]);
                     var itemtt = '<td style="text-align: center;">' +
@@ -1168,7 +1188,7 @@
             tablethreehtml += '<td>星期六<p>' + getmonthday(list4[5]) + '</p></td>';
             tablethreehtml += '<td>星期日<p>' + getmonthday(list4[6]) + '</p></td></td>';
             for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
-                tablethreehtml += '<tr><td>' + timelist1[j] + '--' + timelist2[j] + '</td>';
+                tablethreehtml += '<tr><td>' + timelist1[j] + '--' + timelist2a[j] + '</td>';
                 for (var i = 0; i < list4.length; i++) {//循环第三周
                     //alert(list4[i]);
                     var itemrr = '<td style="text-align: center;">' +
@@ -1294,7 +1314,7 @@
             } else if (nowName == "不可约" && notimeistorf == 1) {
                 //alert("不可约改可约");//新增一条数据                
                 var stime = getInsertDate((nowDate + ' ' + timelist1[timeListIndex] + ':00').replace(/-/g, "/"));
-                var etime = getInsertDate((nowDate + ' ' + timelist2[timeListIndex] + ':00').replace(/-/g, "/"));
+                var etime = getInsertDate((nowDate + ' ' + timelist2a[timeListIndex] + ':00').replace(/-/g, "/"));
                 var addonlinebook = '{"UserIdActive":0,"UserIdPassive":' + userid +
                       ',"ReservationState":0' +
                       ',"Payment":0' +
