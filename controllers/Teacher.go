@@ -173,12 +173,21 @@ func (c *TeacherController) TeacherInformation() {
 	c.Data["LevelYear"] = vuser.LevelYear
 	c.Data["Professional"] = vuser.Professional
 	c.Data["CourseName"] = vuser.CourseName
-	c.Data["CourseNameFu"] = vuser.CourseNameFu
 	c.Data["BriefIntroduction"] = vuser.BriefIntroduction
 	c.Data["UserHobby"] = vuser.UserHobby
 	c.Data["UnitPrice"] = vuser.UnitPrice
 
 	c.Data["CourseName"] = vuser.CourseName
+	zhucourse, fuerr := models.GetRemedialcoursesMain(userid, 0)
+	fmt.Println(zhucourse)
+	var fuzhu string = ""
+	if zhucourse != nil && fuerr == nil {
+		for i := 0; i < len(zhucourse); i++ {
+			fuzhu += zhucourse[i].CourseName
+			fuzhu += " "
+		}
+	}
+	c.Data["CourseNameFu"] = fuzhu
 
 	c.TplNames = "teacherlist.html" //跳到老师个人中心
 }
