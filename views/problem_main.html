@@ -49,8 +49,8 @@
                     <div class="col-sm-12 promainfont">
                         {{.Title}}                     
                     </div>
-                    <div class="col-sm-12 promain">
-                        {{.Contents}} 
+                        
+                    <div class="col-sm-12 promain" id="showcontent">
                     </div>
                     <div class="col-sm-12 promainfont">
                         回答内容：                  
@@ -60,7 +60,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div><p id="hiddencontent" style="display:none;">{{.Contents}} </p>
     </div>
 
     {{template "footer.html" .}}    
@@ -77,7 +77,9 @@
                 document.getElementById("setquestion").style.display = "block";
             } else {
                 document.getElementById("setquestion").style.display = "none";
-            }
+            }            
+            var text = document.getElementById("hiddencontent").innerHTML;
+            document.getElementById("showcontent").innerHTML = text;
         }
       </script>
 </body>

@@ -116,6 +116,24 @@ func (c *UserinformationController) GetUserinformationByUserName() {
 	c.ServeJson()
 }
 
+// @Title GetUserinformationOneByName
+// @Description GetUserinformationOneByName Userinformation by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Userinformation
+// @Failure 403 :id is empty
+// @router /GetUserinformationOneByName/:name [get]
+func (c *UserinformationController) GetUserinformationOneByName() {
+	nameStr := c.Ctx.Input.Params[":name"]
+	fmt.Println(nameStr)
+	v, err := models.GetUserinformationByUserName(nameStr)
+	if err != nil && v == nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title GetUserinformationPhone
 // @Description GetUserinformationPhone Userinformation by id
 // @Param	id		path 	string	true		"The key for staticblock"
@@ -452,4 +470,37 @@ func (c *UserinformationController) UpdateUserimg() {
 		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
 	}
 	c.ServeJson()
+}
+
+// @Title Update
+// @Description update the TbUser
+// @Param	id		path 	string	true		"The id you want to update"
+// @Param	body		body 	models.TbUser	true		"body for TbUser content"
+// @Success 200 {object} models.TbUser
+// @Failure 403 :id is not int
+// @router /UpdateUserimg2/ [post]
+func (c *UserinformationController) UpdateUserimg2() {
+	request := c.Ctx.Request
+	fmt.Println("是否调到")
+	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	var v models.Userinformation
+	json.Unmarshal([]byte(jsons), &v)
+	fmt.Println(jsons)
+	//保存用户头像
+	userid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	fmt.Println(imgstr)
+	if imgstr != "" {
+		updateuser, _ := models.GetUserinformationById(userid)
+		updateuser.AvatarPath = imgstr
+		upresulterr := models.UpdateUserinformationById(updateuser)
+		if upresulterr == nil {
+			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
+		} else {
+			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
+		}
+	} else {
+		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
+	}
+	//c.ServeJson()
+	c.TplNames = "personal.html" //跳到
 }

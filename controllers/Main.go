@@ -97,7 +97,8 @@ func (c *MainController) LoginUser() {
 	fmt.Println(v.UserName, v.LoginPassword)
 	vuser, err := models.GetUserinformationLogin(v.UserName, v.LoginPassword)
 	fmt.Println(vuser)
-	if err == nil && vuser != nil {
+	var usertrue string = "0" //0获取用户失败 -2用户名昵称存在密码不正确 -1用户名昵称不存在
+	if err == nil && vuser != nil && vuser.Id > 0 {
 		fmt.Println(vuser)
 		c.Data["Website"] = models.OnlineUrl
 		c.Ctx.SetCookie("username", vuser.UserName)
@@ -115,7 +116,7 @@ func (c *MainController) LoginUser() {
 			c.Ctx.SetCookie("AvatarPath", vphoneuser.AvatarPath)
 			c.Data["json"] = map[string]interface{}{"Id": vphoneuser.Id, "IdentityId": vphoneuser.IdentityId, "AvatarPath": vphoneuser.AvatarPath}
 		} else {
-			var usertrue string = "0" //0获取用户失败 -2用户名昵称存在密码不正确 -1用户名昵称不存在
+
 			getuserbyname, nameerr := models.GetUserinformationByUserName(v.UserName)
 			if nameerr == nil && getuserbyname != nil {
 				usertrue = "-2" //用户名昵称存在密码不正确
@@ -124,7 +125,7 @@ func (c *MainController) LoginUser() {
 			} else if nameerr != nil {
 				usertrue = "0" //获取用户失败
 			}
-			if usertrue != "1" {
+			if usertrue != "-2" {
 				getuserbyphone, phoneerr := models.GetUserinformationByPhone(v.IphoneNum)
 				if phoneerr == nil && getuserbyphone != nil {
 					usertrue = "-2" //用户名昵称存在密码不正确
@@ -697,6 +698,7 @@ func (c *MainController) GetUserMessageListTeacher() {
 // @Failure 403
 // @router /UpdateStudent/ [get]
 func (c *MainController) UpdateStudent() {
+	fmt.Println("woshiget")
 	c.Data["Website"] = models.OnlineUrl
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	fmt.Println(stuuserid)
@@ -716,6 +718,91 @@ func (c *MainController) UpdateStudent() {
 		c.Data["StudyDifficult"] = userinfo.StudyDifficult
 		c.Data["SchoolId"] = userinfo.SchoolId
 		c.Data["Mailbox"] = userinfo.Mailbox
+	}
+	userclass, clerr := models.GetRemedialcoursesMain(stuuserid, 0)
+	var userlistclass string = ""
+	var userclassstr string = "" //名称集合
+	if userclass != nil && clerr == nil {
+		for i := 0; i < len(userclass); i++ {
+			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
+			userclassstr += userclass[i].CourseName + "  "
+		}
+	}
+	c.Data["userlistclass"] = userlistclass
+	c.Data["userclassstr"] = userclassstr
+
+	c.TplNames = "personal.html" //跳到
+}
+
+// 学生个人中心-编辑个人信息
+// @Title UpdateStudent
+// @Description UpdateStudent the TbUser
+// @Param			"The id you want to UpdateStudent"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /UpdateStudent/ [post]
+func (c *MainController) UpdateStudent2() {
+	c.Data["Website"] = models.OnlineUrl
+	if c.Ctx.Input.Request.Method == "GET" {
+		c.TplNames = "personal.html" //跳到
+	}
+	request := c.Ctx.Request
+	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	fmt.Println("图片路径为：")
+	fmt.Println(jsons)
+	fmt.Println(imgstr)
+	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	var name []string = c.Ctx.Input.Request.Form["txtUserName"]        //
+	var sex []string = c.Ctx.Input.Request.Form["selUserSex"]          //
+	var age []string = c.Ctx.Input.Request.Form["selage"]              //
+	var school []string = c.Ctx.Input.Request.Form["txtnowschoolname"] //
+	var year []string = c.Ctx.Input.Request.Form["txtruxueyear"]       //
+	var mail []string = c.Ctx.Input.Request.Form["txtmail"]            //
+	var pmail []string = c.Ctx.Input.Request.Form["txtuseremal"]       //
+	var class []string = c.Ctx.Input.Request.Form["stucheckclass"]     //
+	fmt.Println(class)
+	var dif []string = c.Ctx.Input.Request.Form["txtnandian"] //
+	userinfo, usererr := models.GetUserinformationById(stuuserid)
+	if usererr == nil && userinfo.Id > 0 {
+		userinfo.UserName = name[0]
+		userinfo.UserSex = sex[0]
+		userinfo.SchoolAgeId, _ = strconv.Atoi(age[0])
+		userinfo.SchoolName = school[0]
+		userinfo.LevelYear, _ = strconv.Atoi(year[0])
+		userinfo.Mailbox = mail[0]
+		userinfo.ParentMailbox = pmail[0]
+		userinfo.StudyDifficult = dif[0]
+		fmt.Println(imgstr)
+		if imgstr != "" {
+			userinfo.AvatarPath = imgstr
+			c.Ctx.SetCookie("username", name[0])
+			c.Ctx.SetCookie("AvatarPath", imgstr)
+		}
+		upresulterr := models.UpdateUserinformationById(userinfo)
+		err := SetUserClassList(userinfo.Id, class)
+		if upresulterr == nil && err == nil {
+			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
+		} else {
+			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
+		}
+
+	}
+	userinfot, usererr := models.GetUserinformationStudent(stuuserid)
+	fmt.Println(userinfot.UserName)
+	if usererr == nil {
+		c.Data["AvatarPath"] = userinfot.AvatarPath
+		c.Data["UserName"] = userinfot.UserName
+		c.Data["UserSex"] = userinfot.UserSex
+		c.Data["SchoolName"] = userinfot.SchoolName
+		c.Data["AgeName"] = userinfot.AgeName
+		c.Data["LevelYear"] = userinfot.LevelYear
+		c.Data["Mailbox"] = userinfot.Mailbox
+		c.Data["ParentMailbox"] = userinfot.ParentMailbox
+		c.Data["IphoneNum"] = userinfot.IphoneNum
+		c.Data["SchoolAgeId"] = userinfot.SchoolAgeId
+		c.Data["StudyDifficult"] = userinfot.StudyDifficult
+		c.Data["SchoolId"] = userinfot.SchoolId
+		c.Data["Mailbox"] = userinfot.Mailbox
 	}
 	userclass, clerr := models.GetRemedialcoursesMain(stuuserid, 0)
 	var userlistclass string = ""
@@ -792,6 +879,126 @@ func (c *MainController) UpdateTeacher() {
 	}
 	c.Data["AgeNames"] = strage
 	c.Data["schoolagelist"] = userinfo.SchoolAgeIdT
+	c.TplNames = "personalteacher.html" //跳到
+}
+
+// 老师个人中心-编辑个人信息
+// @Title UpdateTeacher
+// @Description UpdateTeacher the TbUser
+// @Param			"The id you want to UpdateTeacher"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /UpdateTeacher/ [post]
+func (c *MainController) UpdateTeacher2() {
+	c.Data["Website"] = models.OnlineUrl
+	if c.Ctx.Input.Request.Method == "GET" {
+		c.TplNames = "personalteacher.html" //跳到
+	}
+	request := c.Ctx.Request
+	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	fmt.Println("图片路径为：")
+	fmt.Println(jsons)
+	fmt.Println(imgstr)
+	userid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	var name []string = c.Ctx.Input.Request.Form["txtUserName"] //
+	var sex []string = c.Ctx.Input.Request.Form["selUserSex"]   //
+	var cityid []string = c.Ctx.Input.Request.Form["selCitys"]  //高中所在市区主键id
+	var highschoolname []string = c.Ctx.Input.Request.Form["txthighschool"]
+	var nowschoolname []string = c.Ctx.Input.Request.Form["txtnowschoolname"]
+	var year []string = c.Ctx.Input.Request.Form["txtruxueyear"]
+	var mail []string = c.Ctx.Input.Request.Form["txtusermail"]
+	var selDegree []string = c.Ctx.Input.Request.Form["selDegree"]
+	var txtProfessional []string = c.Ctx.Input.Request.Form["txtProfessional"] //
+	var age []string = c.Ctx.Input.Request.Form["ageTeacher"]                  //补习学龄段
+	var selcourse []string = c.Ctx.Input.Request.Form["selcourse"]             //主辅导科目
+	var selckclass []string = c.Ctx.Input.Request.Form["selckclass"]           //辅辅导课程
+	var txtjianjie []string = c.Ctx.Input.Request.Form["txtjianjie"]
+	var txtaihao []string = c.Ctx.Input.Request.Form["txtaihao"]
+	var xuelingduan string = ""
+	for i := 0; i < len(age); i++ {
+		if i == (len(age) - 1) {
+			xuelingduan = xuelingduan + age[i]
+		} else {
+			xuelingduan = xuelingduan + age[i] + ","
+		}
+	}
+
+	userinfo, usererr := models.GetUserinformationById(userid)
+	if usererr == nil && userinfo.Id > 0 {
+		userinfo.UserName = name[0]
+		userinfo.UserSex = sex[0]
+		userinfo.SeniorLocation, _ = strconv.Atoi(cityid[0])
+		userinfo.HighSchool = highschoolname[0]
+		userinfo.SchoolName = nowschoolname[0]
+		userinfo.LevelYear, _ = strconv.Atoi(year[0])
+		userinfo.Mailbox = mail[0]
+		userinfo.UserDegree, _ = strconv.Atoi(selDegree[0])
+		userinfo.Professional = txtProfessional[0]
+		userinfo.BriefIntroduction = txtjianjie[0]
+		userinfo.UserHobby = txtaihao[0]
+		userinfo.SchoolAgeIdT = xuelingduan
+		if imgstr != "" {
+			userinfo.AvatarPath = imgstr
+			c.Ctx.SetCookie("username", name[0])
+			c.Ctx.SetCookie("AvatarPath", imgstr)
+		}
+		upresulterr := models.UpdateUserinformationById(userinfo)
+		ismainid, _ := strconv.Atoi(selcourse[0])
+		err := SetUserClassListTeacher(userinfo.Id, selckclass, ismainid)
+		if upresulterr == nil && err == nil {
+			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
+		} else {
+			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
+		}
+	}
+	userinfot, usererr := models.GetUserinformationTeacher(userid)
+	if usererr == nil {
+		c.Data["AvatarPath"] = userinfot.AvatarPath
+		c.Data["UserName"] = userinfot.UserName
+		c.Data["UserSex"] = userinfot.UserSex
+		c.Data["SchoolName"] = userinfot.SchoolName
+		c.Data["SchoolId"] = userinfot.SchoolId
+		c.Data["HighSchoolName"] = userinfot.HighSchool
+		c.Data["SeniorLocation"] = userinfot.SeniorLocation //高中学校市区id
+		c.Data["Professional"] = userinfot.Professional     //专业
+		c.Data["DegreeName"] = userinfot.DegreeName         //学位
+		c.Data["UserDegree"] = userinfot.UserDegree
+		c.Data["GradeName"] = userinfot.GradeName       //所教年级
+		c.Data["GradeId"] = userinfot.GradeId           //所教年级
+		c.Data["CourseName"] = userinfot.CourseName     //主辅导课
+		c.Data["CourseNameId"] = userinfot.CourseNameId //主辅导课程id
+		c.Data["LevelYear"] = userinfot.LevelYear
+		c.Data["Mailbox"] = userinfot.Mailbox
+		c.Data["IphoneNum"] = userinfot.IphoneNum
+		c.Data["BriefIntroduction"] = userinfot.BriefIntroduction
+		c.Data["UserHobby"] = userinfot.UserHobby
+		c.Data["Mailbox"] = userinfot.Mailbox
+	}
+	userclass, clerr := models.GetRemedialcoursesMain(userid, 0)
+	var userlistclass string = "" //主键集合
+	var userclassstr string = ""  //名称集合
+	if userclass != nil && clerr == nil {
+		for i := 0; i < len(userclass); i++ {
+			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
+			userclassstr += userclass[i].CourseName + "  "
+		}
+	}
+	c.Data["userlistclass"] = userlistclass
+	c.Data["userclassstr"] = userclassstr
+
+	//补习学龄段
+	var strage string = ""
+	if userinfot.SchoolAgeIdT != "" {
+		var ageliststr string = userinfot.SchoolAgeIdT
+		ageidlist := strings.Split(ageliststr, ",")
+		for i := 0; i < len(ageidlist); i++ {
+			ageid, _ := strconv.Atoi(ageidlist[i])
+			schoolagemodel, _ := models.GetSchoolagesById(ageid)
+			strage = strage + schoolagemodel.AgeName + " "
+		}
+	}
+	c.Data["AgeNames"] = strage
+	c.Data["schoolagelist"] = userinfot.SchoolAgeIdT
 	c.TplNames = "personalteacher.html" //跳到
 }
 

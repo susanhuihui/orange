@@ -49,268 +49,268 @@
     <div id="bg" class="bg" style="display: none;"></div>
     <div id="pagetopb">
         <!--个人资料-->
-        <form method="post" action="http://{{.Website}}/orange/Main/UpdateTeacher/" enctype="multipart/form-data"  onsubmit="return check()">
-            <div class="container" style="margin-top: 20px; background-color: #FFFFFF; padding-top: 20px;">
-                <div>
-                        <div class=" col-sm-4" style="background-color: #FFFFFF; float: left;">
-                            <ul id="tabnav">
-                                <li><a id="limenu1" class="active" onclick="qiehuantap(1)">基本信息</a></li>
-                                <li><a id="limenu2" class="" onclick="qiehuantap(2)">账号设置</a></li>
-                                <li><a id="limenu3" class="" onclick="qiehuantap(3)">修改密码</a></li>
-                            </ul>
+        <div class="container" style="margin-top: 20px; background-color: #FFFFFF; padding-top: 20px;">
+            <div>
+
+                <div class=" col-sm-4" style="background-color: #FFFFFF; float: left;">
+                    <ul id="tabnav">
+                        <li><a id="limenu1" class="active" onclick="qiehuantap(1)">基本信息</a></li>
+                        <li><a id="limenu2" class="" onclick="qiehuantap(2)">账号设置</a></li>
+                        <li><a id="limenu3" class="" onclick="qiehuantap(3)">修改密码</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-8" id="tab_content" style="height: 1500px;">
+                    <div id="divtap1" class="content">
+                        <div class="row">
+                            <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
                         </div>
-                        <div class="col-sm-8" id="tab_content" style="height: 1500px;">
-                            <div id="divtap1" class="content">
-                                <div class="row">
-                                    <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        照片:
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
-                                        <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" /><input type="file" style="display: none;"  id="file" name="file" onchange="setImagePreview2()" />
-                                        <!--<input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
-                                        <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
-                                        <script type="text/javascript">
-                                            (function (W, D) {
-                                                var fileForm = document.getElementById("file_form");
-                                                var fileImage = document.getElementById("file_image");
-                                                function testAjax(files, i) {
-                                                    if (i < 0) {
-                                                        return;
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                照片:
+                            </div>
+                            <div class="col-xs-8">
+                                <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
+                                <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" />
+                                <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
+                                <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
+                                <script type="text/javascript">
+                                    (function (W, D) {
+                                        var fileForm = document.getElementById("file_form");
+                                        var fileImage = document.getElementById("file_image");
+                                        function testAjax(files, i) {
+                                            if (i < 0) {
+                                                return;
+                                            }
+                                            var xhr = new XMLHttpRequest(),
+                                                 data = new FormData();
+                                            xhr.onload = function () {
+                                                // 递归
+                                                testAjax(files, --i);
+                                            };
+                                            data.append("file1", files[i]);
+                                            xhr.open("post", "http://{{.Website}}/orange/userinformation/UpdateUserimg/" + getCookie("userid"), true);
+                                            xhr.send(data);
+                                        }
+                                        fileForm.addEventListener("click", function (e) {
+                                            e.preventDefault();
+                                            var files = fileImage.files;
+                                            testAjax(files, --files.length);
+                                        }, false);
+                                    })(window, document);
+                                </script>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                姓名:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="username">{{.UserName}} </span>
+                                <input class="form-control" type="text" id="txtUserName" style="display: none;" value="{{.UserName}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                性别:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="usersex">{{.UserSex}}</span>
+                                <select class="form-control" id="selUserSex" style="display: none;">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
+
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                高中所在学校:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txthighschoolname">{{.HighSchoolName}}</span>
+                                <select class=" form-control" id="selProvence" onchange="selcityByPchange()" style="display: none">
+                                    <option value="0"></option>
+                                </select>
+                                <select class="form-control" id="selCitys" onchange="selAllcitys()" style="display: none">
+                                    <option value="0"></option>
+                                </select>
+                                <input class="form-control" type="text" id="txthighschool" style="display: none;" value="{{.HighSchoolName}}" />
+                                <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianjihigh">
+                                    <span style="color: red" onclick="getprovence(3)">编辑</span><!--中小学0，大学1--> 
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                所在大学:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtschoolname">{{.SchoolName}}</span>
+                                <input class="form-control" type="text" id="txtnowschoolname" style="display: none;" value="{{.SchoolName}}" />
+                                <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
+                                    <span style="color: red" onclick="getprovence(1)">编辑</span>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                大学入学年份:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="ruxueyear">{{.LevelYear}}</span>
+                                <input class="form-control" type="text" id="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                用户邮箱:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="youxiang">{{.Mailbox}}</span>
+                                <input class="form-control" type="text" id="txtusermail" style="display: none;" value="{{.Mailbox}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学位:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtagename">{{.DegreeName}}</span>
+                                <select class="form-control" id="selDegree" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                大学所学专业:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="Professional">{{.Professional}}</span>
+                                <input class="form-control" type="text" id="txtProfessional" style="display: none;" value="{{.Professional}}" />
+                            </div>
+                        </div>
+                        <div class="row message" style="display:none;">
+                            <div class="col-xs-4 perfont">
+                                补习年级:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="showgrid">{{.GradeName}}</span>
+                                <select class="form-control" id="selgrid" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                补习学龄段:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtsage">{{.AgeNames}}</span>
+                                <div class="col-xs-8" id="selSchoolage" style ="display:none;">
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                主辅导科目:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="txtzhucourse">{{.CourseName}}</span>
+                                <select class="form-control" id="selcourse" style="display: none;">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                辅辅导科目:                                   
+                            </div>
+                            <span id="txtfucourse">{{.userclassstr}}</span>
+                            <div class="col-xs-8" id="selClass" style ="display:none;">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                个人简介:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="showjianjie">{{.BriefIntroduction}}</span>
+                                <textarea class="form-control evaareass" id="txtjianjie" style="display:none;">{{.BriefIntroduction}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                兴趣爱好:
+                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="showaihao">{{.UserHobby}}</span>
+                                <textarea class="form-control evaareass" id="txtaihao" style="display:none;">{{.UserHobby}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;
+                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input id="btnjiben" class="evabtn messagebtn" style="display: none;" type="button" value="保存信息" onclick="saveUserInfo()">
+                            </div>
+                        </div>
+
+                        <div>
+                        </div>
+                    </div>
+                    <div id="divtap2" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="olduserphone">{{.IphoneNum}}</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManager(this,'box')" style=" text-decoration:underline; color:#0026ff;">更改手机号</a>
+                                <div id="box" style="display: none;">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td class="odd">手机号：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="odd">验证码：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="yzmtext" id="upyanzhengma">
+                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
+                                                <script type="text/javascript">
+                                                    var wait = 60;
+                                                    function time(o) {
+                                                        if (wait == 0) {
+                                                            o.removeAttribute("disabled");
+                                                            o.value = "点击获取验证码";
+                                                            wait = 60;
+                                                        } else {
+                                                            o.setAttribute("disabled", true);
+                                                            o.value = "重新发送(" + wait + ")";
+                                                            wait--;
+                                                            if (wait == 0) {
+                                                                delPhoneVerifica();
+                                                            }
+                                                            setTimeout(function () {
+                                                                time(o)
+                                                            },
+                                                            1000)
+                                                        }
                                                     }
-                                                    var xhr = new XMLHttpRequest(),
-                                                         data = new FormData();
-                                                    xhr.onload = function () {
-                                                        // 递归
-                                                        testAjax(files, --i);
-                                                    };
-                                                    data.append("file1", files[i]);
-                                                    xhr.open("post", "http://{{.Website}}/orange/userinformation/UpdateUserimg/" + getCookie("userid"), true);
-                                                    xhr.send(data);
-                                                }
-                                                fileForm.addEventListener("click", function (e) {
-                                                    e.preventDefault();
-                                                    var files = fileImage.files;
-                                                    testAjax(files, --files.length);
-                                                }, false);
-                                            })(window, document);
-                                        </script>-->
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        姓名:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="username">{{.UserName}} </span>
-                                        <input class="form-control" type="text" id="txtUserName" name="txtUserName" style="display: none;" value="{{.UserName}}" onchange="checkname()" />
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        性别:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="usersex">{{.UserSex}}</span>
-                                        <select class="form-control" id="selUserSex" name="selUserSex" style="display: none;">
-                                            <option value="男">男</option>
-                                            <option value="女">女</option>
-                                        </select>
-
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        高中所在学校:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="txthighschoolname">{{.HighSchoolName}}</span>
-                                        <select class=" form-control" id="selProvence" onchange="selcityByPchange()" style="display: none">
-                                            <option value="0"></option>
-                                        </select>
-                                        <select class="form-control" id="selCitys" name="selCitys" onchange="selAllcitys()" style="display: none">
-                                            <option value="0"></option>
-                                        </select>
-                                        <input class="form-control" type="text" id="txthighschool" name="txthighschool" style="display: none;" value="{{.HighSchoolName}}" />
-                                        <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianjihigh">
-                                            <span style="color: red" onclick="getprovence(3)">编辑</span><!--中小学0，大学1-->
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        所在大学:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="txtschoolname">{{.SchoolName}}</span>
-                                        <input class="form-control" type="text" id="txtnowschoolname" name="txtnowschoolname" style="display: none;" value="{{.SchoolName}}" />
-                                        <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
-                                            <span style="color: red" onclick="getprovence(1)">编辑</span>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        大学入学年份:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="ruxueyear">{{.LevelYear}}</span>
-                                        <input class="form-control" type="text" id="txtruxueyear" name="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        用户邮箱:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="youxiang">{{.Mailbox}}</span>
-                                        <input class="form-control" type="text" id="txtusermail" name="txtusermail" style="display: none;" value="{{.Mailbox}}" />
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        学位:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="txtagename">{{.DegreeName}}</span>
-                                        <select class="form-control" id="selDegree" name="selDegree" style="display: none;">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        大学所学专业:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="Professional">{{.Professional}}</span>
-                                        <input class="form-control" type="text" id="txtProfessional" name="txtProfessional" style="display: none;" value="{{.Professional}}" />
-                                    </div>
-                                </div>
-                                <div class="row message" style="display: none;">
-                                    <div class="col-xs-4 perfont">
-                                        补习年级:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="showgrid">{{.GradeName}}</span>
-                                        <select class="form-control" id="selgrid" style="display: none;">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        补习学龄段:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="txtsage">{{.AgeNames}}</span>
-                                        <div class="col-xs-8" id="selSchoolage" style="display: none;">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        主辅导科目:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="txtzhucourse">{{.CourseName}}</span>
-                                        <select class="form-control" id="selcourse" name="selcourse" style="display: none;">
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        辅辅导科目:                                   
-                                    </div>
-                                    <span id="txtfucourse">{{.userclassstr}}</span>
-                                    <div class="col-xs-8" id="selClass" style="display: none;">
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        个人简介:                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="showjianjie">{{.BriefIntroduction}}</span>
-                                        <textarea class="form-control evaareass" id="txtjianjie" name="txtjianjie" style="display: none;">{{.BriefIntroduction}}</textarea>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        兴趣爱好:
-                                   
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <span id="showaihao">{{.UserHobby}}</span>
-                                        <textarea class="form-control evaareass" id="txtaihao" name="txtaihao" style="display: none;">{{.UserHobby}}</textarea>
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        &nbsp;
-                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input id="btnjiben" class="evabtn messagebtn" style="display: none;" type="submit" value="保存信息" onclick="saveUserInfo()">
-                                    </div>
-                                </div>
-
-                                <div>
+                                                    document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                </script>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
-                            <div id="divtap2" class="content" style="display: none;">
-                                <div class="row messagesss">
-                                    <div class="col-xs-4 perfont">
-                                        手机号:                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <span id="olduserphone">{{.IphoneNum}}</span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManager(this,'box')" style="text-decoration: underline; color: #0026ff;">更改手机号</a>
-                                        <div id="box" style="display: none;">
-                                            <table style="width: 100%;">
-                                                <tr>
-                                                    <td class="odd">手机号：   
-                                                    </td>
-                                                    <td class="even">
-                                                        <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="odd">验证码：   
-                                                    </td>
-                                                    <td class="even">
-                                                        <input type="text" class="yzmtext" id="upyanzhengma">
-                                                        <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
-                                                        <script type="text/javascript">
-                                                            var wait = 60;
-                                                            function time(o) {
-                                                                if (wait == 0) {
-                                                                    o.removeAttribute("disabled");
-                                                                    o.value = "点击获取验证码";
-                                                                    wait = 60;
-                                                                } else {
-                                                                    o.setAttribute("disabled", true);
-                                                                    o.value = "重新发送(" + wait + ")";
-                                                                    wait--;
-                                                                    if (wait == 0) {
-                                                                        delPhoneVerifica();
-                                                                    }
-                                                                    setTimeout(function () {
-                                                                        time(o)
-                                                                    },
-                                                                    1000)
-                                                                }
-                                                            }
-                                                            document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
-                                                        </script>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--<div class="row messagesss">
+                        </div>
+                        <!--<div class="row messagesss">
                             <div class="col-xs-4 perfont">
                                 邮箱绑定:
                                    
@@ -339,82 +339,81 @@
                                 </div>
                             </div>
                         </div>-->
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        &nbsp;
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;
                                    
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input class="evabtn messagebtn" type="button" value="保存信息" onclick="saveUserPhone()">
-                                    </div>
-                                </div>
-
                             </div>
-                            <div id="divtap3" class="content" style="display: none;">
-                                <div class="row messagesss">
-                                    <div class="col-xs-4 perfont">
-                                        手机号:                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        {{.IphoneNum}}                                     
-                                    </div>
-                                </div>
-                                <div class="row messagesss">
-                                    <div class="col-xs-4 perfonts">
-                                        原密码:                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="oldpass">
-                                    </div>
-                                </div>
-                                <div class="row messagesss">
-                                    <div class="col-xs-4 perfonts">
-                                        新密码:                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="newpass1">
-                                    </div>
-                                </div>
-                                <div class="row messagesss">
-                                    <div class="col-xs-4 perfonts">
-                                        再次输入新密码:                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="newpass2">
-                                    </div>
-                                </div>
-                                <div class="row message">
-                                    <div class="col-xs-4 perfont">
-                                        &nbsp;                                   
-                                    </div>
-                                    <div class="col-xs-8">
-                                        <input class="evabtn messagebtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
-                                    </div>
-                                </div>
+                            <div class="col-xs-8">
+                                <input class="evabtn messagebtn" type="button" value="保存信息" onclick="saveUserPhone()">
                             </div>
-                            <p id="userlistclass" style="display: none;">{{.userlistclass}}</p>
-                            <p id="schoolagelist" style="display: none;">{{.schoolagelist}}</p>
-                            <p id="UserDegree" style="display: none;">{{.UserDegree}}</p>
-                            <!--学位-->
-                            <p id="GradeId" style="display: none;">{{.GradeId}}</p>
-                            <!--补习年级id-->
-                            <p id="CourseNameId" style="display: none;">{{.CourseNameId}}</p>
-                            <!--主辅导课程id-->
-
-                            <p id="SchoolId" style="display: none;">{{.SchoolId}}</p>
-                            <!--将要被保存的学校id，没有选择时还保存最初值-->
-                            <p id="selSchoolId" style="display: none;">{{.SchoolId}}</p>
-                            <!--暂时存放选中的学校id，点击确定后从此取值放入上面，保存时取上方p值-->
-                            <p id="selSchoolName" style="display: none;">{{.SchoolName}}</p>
-                            <!--暂时存放选中的学校名称，点击确定后取值放入span,与保存无关-->
-
-                            <p id="highSchoolid" style="display: none;">{{.SeniorLocation}}</p>
-                            <p id="selHighSchoolid" style="display: none;">{{.SeniorLocation}}</p>
-                            <p id="selHighSchoolName" style="display: none;">{{.HighSchoolName}}</p>
                         </div>
+
+                    </div>
+                    <div id="divtap3" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                {{.IphoneNum}}                                     
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                原密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control" type="password" id="oldpass">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control" type="password" id="newpass1">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                再次输入新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control" type="password" id="newpass2">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="evabtn messagebtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
+                            </div>
+                        </div>
+                    </div>
+                    <p id="userlistclass" style="display: none;">{{.userlistclass}}</p>
+                    <p id="schoolagelist" style="display: none;">{{.schoolagelist}}</p>
+                    <p id="UserDegree" style="display: none;">{{.UserDegree}}</p>
+                    <!--学位-->
+                    <p id="GradeId" style="display: none;">{{.GradeId}}</p>
+                    <!--补习年级id-->
+                    <p id="CourseNameId" style="display: none;">{{.CourseNameId}}</p>
+                    <!--主辅导课程id-->
+
+                    <p id="SchoolId" style="display: none;">{{.SchoolId}}</p>
+                    <!--将要被保存的学校id，没有选择时还保存最初值-->
+                    <p id="selSchoolId" style="display: none;">{{.SchoolId}}</p>
+                    <!--暂时存放选中的学校id，点击确定后从此取值放入上面，保存时取上方p值-->
+                    <p id="selSchoolName" style="display: none;">{{.SchoolName}}</p>
+                    <!--暂时存放选中的学校名称，点击确定后取值放入span,与保存无关-->
+
+                    <p id="highSchoolid" style="display: none;">{{.SeniorLocation}}</p>
+                    <p id="selHighSchoolid" style="display: none;">{{.SeniorLocation}}</p>
+                    <p id="selHighSchoolName" style="display: none;">{{.HighSchoolName}}</p>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
     {{template "footer.html" .}}
     <script src="b/js/jquery.min.js"></script>
@@ -525,7 +524,7 @@
                             check = ' checked = "checked" ';
                         }
                     }
-                    var items = '<input type="checkbox" name="selckclass" value="' + data[i]["Id"] + '" id="ckclass' + i + '" ' + check + '>' + data[i]["CourseName"] + '&nbsp;&nbsp;&nbsp; ';
+                    var items = '<input type="checkbox" value="' + data[i]["Id"] + '" id="ckclass' + i + '" ' + check + '>' + data[i]["CourseName"] + '&nbsp;&nbsp;&nbsp; ';
                     coursestr += items;
                 }
                 document.getElementById("selClass").innerHTML = "";
@@ -543,7 +542,7 @@
                             check = ' checked = "checked" ';
                         }
                     }
-                    var items = '<input type="checkbox" name="ageTeacher" value="' + dataage[i]["Id"] + '" id="ckage' + i + '" ' + check + '>' + dataage[i]["AgeName"] + '&nbsp;&nbsp;&nbsp; ';
+                    var items = '<input type="checkbox" value="' + dataage[i]["Id"] + '" id="ckage' + i + '" ' + check + '>' + dataage[i]["AgeName"] + '&nbsp;&nbsp;&nbsp; ';
                     courseagestr += items;
                 }
                 document.getElementById("selSchoolage").innerHTML = "";
@@ -760,8 +759,8 @@
                 document.getElementById("txtzhucourse").style.display = "none";
                 document.getElementById("selcourse").value = zhucourseid;
             }
-            document.getElementById("file").style.display = "block";//更改头像按钮
-            //document.getElementById("file_form").style.display = "block";//更改头像按钮
+            document.getElementById("file_image").style.display = "block";//更改头像按钮
+            document.getElementById("file_form").style.display = "block";//更改头像按钮
             document.getElementById("btnjiben").style.display = "block";//保存信息按钮
 
             document.getElementById("txtfucourse").style.display = "none";//辅辅导课程文字隐藏
@@ -1081,44 +1080,10 @@
             imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
             return true;
         }
-        function setImagePreview2() {
-            var docObj = document.getElementById("file");
-            var imgObjPreview = document.getElementById("userhead");
-            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
-            return true;
-        }
         //验证码倒计时结束后删除此手机下的所有验证信息
         function delPhoneVerifica() {
             $.getJSON("http://{{.Website}}/orange/verification/DeleteVerificationByPhone/" + nowPhone, function (data) {
 
-            });
-        }
-
-        function check() {
-            var username = trim(document.getElementById("txtUserName").value);           
-            if (username == "") {
-                alert("用户名不能为空，请填写用户名"); return false;
-            } else if (nametorf) {
-                return true;
-            } else {
-                alert("此昵称已有人使用，请更换其他昵称！");
-                return false;
-            }
-        }
-        var nametorf = true;
-        function checkname() {
-            var username = trim(document.getElementById("txtUserName").value);
-            var geturlname = "http://{{.Website}}/orange/userinformation/GetUserinformationOneByName/" + username;
-            $.getJSON(geturlname, function (data) {
-                if (data != null && data["Id"] > 0) {
-                    if (data["Id"] == userid) {//自己名字
-                        nametorf = true;
-                    } else {//此昵称已有人使用
-                        nametorf = false;
-                    }
-                } else {//没人用
-                    nametorf = true;
-                }
             });
         }
     </script>

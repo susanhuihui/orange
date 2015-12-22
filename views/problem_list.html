@@ -119,15 +119,24 @@
                         } else {
                             srcimg = '<img style="width: 250px; margin-left: 2px;" src="images/three3.jpg" />';
                         }
+                        //var itemse = '<div class="row prorow"><div class="col-sm-4 col-md-3">' + srcimg + '</div>' +
+                        //             '<div class="col-sm-8 col-md-9 listmenu">' +
+                        //             '<a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '">' +
+                        //             '<p class="listtop">问题：' + data[i]["Title"] + '</p>' +
+                        //             '<p class="listmain">' + data[i]["Contents"] + '</p></a>' +
+                        //             '<div class="col-sm-6 "><table class="listicon"><tr><td><img src="images/eye.png" /></td>' +
+                        //             '<td style="width: 60px;">' + data[i]["Numbers"] + '</td>' +
+                        //             '<td><img src="images/looked.png" /></td>' +
+                        //             '<td>' + data[i]["Count"] + '</td></tr></table></div></div></div>';
                         var itemse = '<div class="row prorow"><div class="col-sm-4 col-md-3">' + srcimg + '</div>' +
                                      '<div class="col-sm-8 col-md-9 listmenu">' +
                                      '<a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '">' +
                                      '<p class="listtop">问题：' + data[i]["Title"] + '</p>' +
                                      '<p class="listmain">' + data[i]["Contents"] + '</p></a>' +
-                                     '<div class="col-sm-6 "><table class="listicon"><tr><td><img src="images/eye.png" /></td>' +
-                                     '<td style="width: 60px;">' + data[i]["Numbers"] + '</td>' +
-                                     '<td><img src="images/looked.png" /></td>' +
-                                     '<td>' + data[i]["Count"] + '</td></tr></table></div></div></div>';
+                                     '<div class="col-sm-6 "><table class="listicon"><tr><td></td>' +
+                                     '<td style="width: 60px;"></td>' +
+                                     '<td></td>' +
+                                     '<td></td></tr></table></div></div></div>';
                         allask += itemse;
                     }
                     document.getElementById("allAskDiv").innerHTML = "";

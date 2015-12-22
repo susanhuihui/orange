@@ -52,6 +52,9 @@ from onlineeducation.userinformation as users
 //2015-11-03
 var SqlUserMainCourse string = `select *,(select CourseName from course as cous where cous.PKId = rec.Coursesid) as CourseName 
 	 from remedialcourses rec where userid = ? and ismain = ? `
+var SqlUserMainCourse2 string = `select *,(select CourseName from course as cous where cous.PKId = rec.Coursesid) as CourseName 
+	 from remedialcourses rec where userid = ? and ismain = ? 
+     limit 1`
 
 //4.
 //用途：查询老师全部课程信息

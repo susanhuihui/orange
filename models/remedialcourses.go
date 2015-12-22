@@ -50,6 +50,17 @@ func GetRemedialcoursesMain(userid int, ismain int) (remedial []RemedialcoursesM
 	return
 }
 
+//	3.查询老师主辅导课程或辅辅导课程/学生的学习难点
+//	参数：ismain（0为否，1为是）(学生都为0，老师主为1辅为0）
+//	2015-11-06
+func GetRemedialcoursesMain2(userid int, ismain int) (remedial RemedialcoursesMain, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserMainCourse2, userid, ismain)
+	qs := rs.QueryRow(&remedial)
+	return remedial, qs
+}
+
 // AddRemedialcourses insert a new Remedialcourses into database and returns
 // last inserted Id on success.
 func AddRemedialcourses(m *Remedialcourses) (id int64, err error) {

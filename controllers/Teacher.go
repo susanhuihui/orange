@@ -6,6 +6,7 @@ import (
 	"orange/models"
 	"strconv"
 	"strings"
+	"time"
 )
 
 type TeacherController struct {
@@ -133,7 +134,7 @@ func (c *TeacherController) TeacherList() {
 										<span>` + v[i].UserName + onlinestr + `</span>
 									</a>
 									<p>` + v[i].SchoolName + ` | ` + v[i].DegreeName + ` | ` + strconv.Itoa(v[i].LevelYear) + `级 | ` + v[i].Professional + `</p>
-									<p>主辅导课：` + v[i].CourseNameZhu + ` | 辅辅导课：` + v[i].CourseNameFu + `</p></div>
+									<p>主辅导课：` + v[i].CourseNameZhu + ` </p></div>
 									<div class="col-sm-3"><div class="teamainright"><p>` + strconv.FormatFloat(v[i].UnitPrice, 'f', -1, 64) + `元/小时</p><br />` + btnstr + btnhou + `
 									</div>
 									</div>
@@ -188,7 +189,6 @@ func (c *TeacherController) TeacherInformation() {
 		}
 	}
 	c.Data["CourseNameFu"] = fuzhu
-
 	c.TplNames = "teacherlist.html" //跳到老师个人中心
 }
 
@@ -286,6 +286,58 @@ func (c *TeacherController) ProblemAnswer() {
 // @router /UserAskQuestion/ [get]
 func (c *TeacherController) UserAskQuestion() {
 	c.Data["Website"] = models.OnlineUrl
+
+	c.TplNames = "problem.html" //
+}
+
+// 我要提问
+// @Title UserAskQuestion
+// @Description UserAskQuestion the TbUser
+// @Param			"The id you want to UserAskQuestion"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /UserAskQuestion/ [Post]
+func (c *TeacherController) UserAskQuestion2() {
+	c.Data["Website"] = models.OnlineUrl
+	userid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	var class []string = c.Ctx.Input.Request.Form["selClass"]       //
+	var teacherid []string = c.Ctx.Input.Request.Form["selteacher"] //
+	var times []string = c.Ctx.Input.Request.Form["txtdate"]        //
+	var title []string = c.Ctx.Input.Request.Form["txtTitle"]
+	var content []string = c.Ctx.Input.Request.Form["hiddencontent"]
+	var money []string = c.Ctx.Input.Request.Form["selmoney"]
+	var question models.Questionask
+	question.AskUserId = userid
+	question.AnswerUserId, _ = strconv.Atoi(teacherid[0])
+	question.GCId, _ = strconv.Atoi(class[0])
+	question.Title = title[0]
+	question.Contents = content[0]
+	question.BadeTime = time.Now()
+	question.AmountMoney, _ = strconv.ParseFloat(money[0], 64)
+	loc, _ := time.LoadLocation("Local")
+	t1, _ := time.ParseInLocation("2006-01-02", times[0], loc) //time类型
+	question.EndTime = t1
+	question.IsSee = 0
+	addint, aderr := models.AddQuestionask(&question)
+	if aderr == nil && addint > 0 {
+		var fontsize models.Frozenfunds
+		fontsize.UserId = userid
+		fontsize.FrozenMoney, _ = strconv.ParseFloat(money[0], 64)
+		fontsize.FrozenType = 1
+		addintstr := strconv.FormatInt(int64(addint), 10)
+		fontsize.BusinessId, _ = strconv.Atoi(addintstr)
+		fontsize.FrozenTime = time.Now()
+		fontsize.FrozenState = 1
+		addfontid, fonterr := models.AddFrozenfunds(&fontsize)
+		if fonterr == nil && addfontid > 0 {
+			useraccount, _ := models.GetAccountfundsByuid(userid)
+			useraccount.Balance = useraccount.Balance - fontsize.FrozenMoney
+			err := models.UpdateAccountfundsById(&useraccount)
+			if err == nil {
+
+			}
+		}
+	}
 
 	c.TplNames = "problem.html" //
 }

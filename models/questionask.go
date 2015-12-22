@@ -16,7 +16,7 @@ type Questionask struct {
 	AnswerUserId int       `orm:"column(AnswerUserId)"`
 	GCId         int       `orm:"column(GCId)"`
 	Title        string    `orm:"column(Title);size(50);null"`
-	Contents     string    `orm:"column(Contents);size(50);null"`
+	Contents     string    `orm:"column(Contents);null"`
 	BadeTime     time.Time `orm:"column(BadeTime);type(datetime);null"`
 	EndTime      time.Time `orm:"column(EndTime);type(datetime);null"`
 	AmountMoney  float64   `orm:"column(AmountMoney);null;digits(10);decimals(2)"`
@@ -30,7 +30,7 @@ type QuestionaskByUid struct {
 	AnswerUserId int       `orm:"column(AnswerUserId)"`
 	GCId         int       `orm:"column(GCId)"`
 	Title        string    `orm:"column(Title);size(50);null"`
-	Contents     string    `orm:"column(Contents);size(50);null"`
+	Contents     string    `orm:"column(Contents);null"`
 	BadeTime     time.Time `orm:"column(BadeTime);type(datetime);null"`
 	EndTime      time.Time `orm:"column(EndTime);type(datetime);null"`
 	AmountMoney  float64   `orm:"column(AmountMoney);null;digits(10);decimals(2)"`
@@ -43,7 +43,7 @@ type QuestionaskByUid struct {
 type QuestionaskJingCai struct {
 	Id       int       `orm:"column(PKId);auto"`
 	Title    string    `orm:"column(Title);size(50);null"`
-	Contents string    `orm:"column(Contents);size(50);null"`
+	Contents string    `orm:"column(Contents);null"`
 	BadeTime time.Time `orm:"column(BadeTime);type(datetime);null"`
 	Numbers  int       `orm:"column(Numbers)"`
 	State    int       `orm:"column(State)"`
@@ -53,7 +53,7 @@ type QuestionaskJingCai struct {
 //查询精彩问答详情
 type QuestionaskJingCaiOne struct {
 	Title           string    `orm:"column(Title);size(50);null"`
-	Contents        string    `orm:"column(Contents);size(50);null"`
+	Contents        string    `orm:"column(Contents);null"`
 	BadeTime        time.Time `orm:"column(BadeTime);type(datetime);null"`
 	AskUserId       int       `orm:"column(AskUserId)"`
 	UserName        string    `orm:"column(UserName);size(50);null"`

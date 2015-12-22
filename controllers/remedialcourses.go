@@ -77,6 +77,8 @@ func (c *RemedialcoursesController) GetRemedialcoursesMain() {
 	ismainStr := c.Ctx.Input.Params[":ismain"]
 	ismain, _ := strconv.Atoi(ismainStr)
 	v, err := models.GetRemedialcoursesMain(userid, ismain)
+	fmt.Println("查询老师主辅导课程")
+	fmt.Println(v)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -209,8 +211,18 @@ func (c *RemedialcoursesController) UpdateStudentClass() {
 	for i := 0; i < len(sellist); i++ {
 		fmt.Println(sellist[i])
 	}
-	var err error = nil
-	if sid > 0 && classidlist != "" {
+	err := SetUserClassList(sid, sellist)
+	if err == nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}
+
+//更新用户辅辅导课程，或补习科目
+func SetUserClassList(sid int, sellist []string) (err error) {
+	if sid > 0 {
 		userclass, _ := models.GetRemedialcoursesMain(sid, 0)
 		if userclass != nil {
 			for a := 0; a < len(userclass); a++ { //循环旧的是否存在新的集合中，是不做操作，否删除
@@ -251,10 +263,104 @@ func (c *RemedialcoursesController) UpdateStudentClass() {
 			}
 		}
 	}
+	return
+}
+
+// @Title UpdateStudentClassTeacher
+// @Description UpdateStudentClassTeacher the Remedialcourses
+// @Param	id		path 	string	true		"The id you want to UpdateStudentClassTeacher"
+// @Success 200 {string} delete success!
+// @Failure 403 id is empty
+// @router /UpdateStudentClassTeacher/:sid/:classidlist/:mainid [get]
+func (c *RemedialcoursesController) UpdateStudentClassTeacher() {
+	idStr := c.Ctx.Input.Params[":sid"]
+	sid, _ := strconv.Atoi(idStr)
+	mainidStr := c.Ctx.Input.Params[":mainid"]
+	mainid, _ := strconv.Atoi(mainidStr)
+	fmt.Println("主辅导课程id为：")
+	fmt.Println(mainid)
+
+	classidlist := c.Ctx.Input.Params[":classidlist"]
+	sellist := strings.Split(classidlist, ",") //总长度为8
+	for i := 0; i < len(sellist); i++ {
+		fmt.Println(sellist[i])
+	}
+	var err error = nil
+	err = SetUserClassListTeacher(sid, sellist, mainid)
+
 	if err == nil {
 		c.Data["json"] = "OK"
 	} else {
 		c.Data["json"] = err.Error()
 	}
 	c.ServeJson()
+}
+
+//更新用户辅辅导课程，或补习科目
+func SetUserClassListTeacher(sid int, sellist []string, mainid int) (err error) {
+	//保存主辅导课程
+	if mainid > 0 {
+		mainclass, merr := models.GetRemedialcoursesMain2(sid, 1)
+		fmt.Println(mainclass)
+		if merr == nil && mainclass.Id > 0 {
+			//存在更新
+			var uppclass models.Remedialcourses
+			uppclass.Id = mainclass.Id
+			uppclass.UserId = sid
+			uppclass.CoursesId = mainid
+			uppclass.IsMain = 1
+			up := models.UpdateRemedialcoursesById(&uppclass)
+			fmt.Println(up)
+		} else {
+			//不存在添加
+			var addclass models.Remedialcourses
+			addclass.UserId = sid
+			addclass.IsMain = 1
+			addclass.CoursesId = mainid
+			adid, _ := models.AddRemedialcourses(&addclass)
+			fmt.Println(adid)
+		}
+	}
+	if sid > 0 {
+		userclass, _ := models.GetRemedialcoursesMain(sid, 0)
+		if userclass != nil {
+			for a := 0; a < len(userclass); a++ { //循环旧的是否存在新的集合中，是不做操作，否删除
+				var have bool = false
+				for i := 0; i < len(sellist); i++ {
+					selid, _ := strconv.Atoi(sellist[i])
+					if userclass[a].CoursesId == selid {
+						have = true
+					}
+				}
+				if have == false {
+					//shanchu
+					delresult := models.DeleteRemedialcourses(userclass[a].Id) //删除没有勾选的项
+					if delresult != nil {
+						err = delresult
+					}
+				}
+			}
+		}
+		for j := 0; j < len(sellist); j++ { //循环新的是否存在旧的集合中，是不做操作，否添加
+			var haveadd bool = false
+			selids, _ := strconv.Atoi(sellist[j])
+			for b := 0; b < len(userclass); b++ {
+				if selids == userclass[b].CoursesId {
+					haveadd = true
+				}
+			}
+			if haveadd == false {
+				var addrc models.Remedialcourses
+				addrc.UserId = sid
+				addrc.CoursesId = selids
+				addrc.IsMain = 0
+				addresult, adderr := models.AddRemedialcourses(&addrc)
+				fmt.Println(addresult)
+				if adderr != nil {
+					err = adderr
+				}
+			}
+		}
+	}
+	return
 }

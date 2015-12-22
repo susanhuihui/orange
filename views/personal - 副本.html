@@ -62,20 +62,19 @@
                         <li><a id="limenu3" class="" onclick="qiehuantap(3)">修改密码</a></li>
                     </ul>
                 </div>
-                <form  method="post" action="http://{{.Website}}/orange/Main/UpdateStudent/" enctype="multipart/form-data" onsubmit="return check()">
-                    <div class=" col-sm-9" id="tab_content" style="height: 900px;">
-                        <div id="divtap1" class="content">
-                            <div class="row">
-                                <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
+                <div class=" col-sm-9" id="tab_content" style="height: 900px;">
+                    <div id="divtap1" class="content">
+                        <div class="row">
+                            <input type="button" style="float: right;" class="btn btn-default" value="编辑" onclick="bianji()">
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                照片:
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    照片:
-                                </div>
-                                <div class="col-xs-8">
-                                    <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
-                                    <!--重新添加-->
-                                    <!--<div id="update">
+                            <div class="col-xs-8">
+                                <img id="userhead" src="{{.AvatarPath}}" style="width: 120px; height: 125px;" />
+                                <!--重新添加-->
+                                <!--<div id="update">
                                     <form method="post" action="/uploads" enctype="multipart/form-data">
                                         <input type="file" name="image" id="file_upload" onchange="setImagePreview()"  />
                                     </form>
@@ -101,184 +100,184 @@
                                         })
                                     </script>
                                 </div>-->
-                                    <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" /><input type="file" style="display: none;"  id="file" name="file" onchange="setImagePreview2()" />
-                                  <!--  <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
-                                    <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
-                                    <script type="text/javascript">
-                                        (function (W, D) {
-                                            var fileForm = document.getElementById("file_form");
-                                            var fileImage = document.getElementById("file_image");
-                                            function testAjax(files, i) {
-                                                if (i < 0) {
-                                                    return;
-                                                }
-                                                var xhr = new XMLHttpRequest(),
-                                                     data = new FormData();
-                                                xhr.onload = function () {
-                                                    // 递归
-                                                    testAjax(files, --i);
-                                                };
-                                                data.append("file", files[i]);
-                                                xhr.open("post", "http://{{.Website}}/orange/userinformation/UpdateUserimg/" + getCookie("userid"), true);
-                                                xhr.send(data);
+                                <input type="file" accept="image/*" id="file_image" name="file_image" style="display: none;" onchange="setImagePreview()" />
+                                <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
+                                <p id="userheadpath" style="display: none;">{{.AvatarPath}}</p>
+                                <script type="text/javascript">
+                                    (function (W, D) {
+                                        var fileForm = document.getElementById("file_form");
+                                        var fileImage = document.getElementById("file_image");
+                                        function testAjax(files, i) {
+                                            if (i < 0) {
+                                                return;
                                             }
-                                            fileForm.addEventListener("click", function (e) {
-                                                e.preventDefault();
-                                                var files = fileImage.files;
-                                                testAjax(files, --files.length);
-                                            }, false);
-                                        })(window, document);
-                                    </script>-->
-                                </div>
+                                            var xhr = new XMLHttpRequest(),
+                                                 data = new FormData();
+                                            xhr.onload = function () {
+                                                // 递归
+                                                testAjax(files, --i);
+                                            };
+                                            data.append("file", files[i]);
+                                            xhr.open("post", "http://{{.Website}}/orange/userinformation/UpdateUserimg/" + getCookie("userid"), true);
+                                            xhr.send(data);
+                                        }
+                                        fileForm.addEventListener("click", function (e) {
+                                            e.preventDefault();
+                                            var files = fileImage.files;
+                                            testAjax(files, --files.length);
+                                        }, false);
+                                    })(window, document);
+                                </script>
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    学生昵称:
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学生昵称:
                                    
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="username">{{.UserName}} </span>
-                                    <input class="form-control" type="text" id="txtUserName" name="txtUserName" style="display: none;" value="{{.UserName}}" onchange="checkname()" />
-                                </div>
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    学生性别:
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="usersex">{{.UserSex}}</span>
-                                    <select class="form-control" id="selUserSex" name="selUserSex" style="display: none">
-                                        <option value="男">男</option>
-                                        <option value="女">女</option>
-                                    </select>
-                                </div>
+                            <div class="col-xs-6">
+                                <span id="username">{{.UserName}} </span>
+                                <input class="form-control" type="text" id="txtUserName" style="display: none;" value="{{.UserName}}" />
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    学龄段:                                   
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="txtagename">{{.AgeName}}</span>
-                                    <select class="form-control" id="selage" name="selage" style="display: none">
-                                    </select>
-                                </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学生性别:
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    所在学校:                                   
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="txtschoolname">{{.SchoolName}}</span>
-                                    <input class="form-control" type="text" id="txtnowschoolname" name="txtnowschoolname" style="display: none;" value="{{.SchoolName}}" />
-                                    <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
-                                        <span style="color: red" onclick="getprovence()">编辑</span>
-                                    </a>
-                                </div>
+                            <div class="col-xs-6">
+                                <span id="usersex">{{.UserSex}}</span>
+                                <select class="form-control" id="selUserSex" style="display: none">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
+                                </select>
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    入学年份:                                   
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="ruxueyear">{{.LevelYear}}</span>
-                                    <input class="form-control" type="text" id="txtruxueyear" name="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
-                                </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学龄段:                                   
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    学生邮箱:                                    
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="useremal">{{.Mailbox}}</span>
-                                    <input class="form-control" type="text" id="txtmail" name="txtmail" style="display: none;" value="{{.Mailbox}}" />
-                                </div>
+                            <div class="col-xs-6">
+                                <span id="txtagename">{{.AgeName}}</span>
+                                <select class="form-control" id="selage" style="display: none">
+                                </select>
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    家长邮箱:                                    
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="parentmail">{{.ParentMailbox}}</span>
-                                    <input class="form-control" type="text" id="txtuseremal" name ="txtuseremal" style="display: none;" value="{{.ParentMailbox}}" />
-                                </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                所在学校:                                   
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    补习课目:                                   
-                                </div>
-                                <span id="showclass">{{.userclassstr}}</span>
-                                <div class="col-xs-6" id="selClass" style="display: none;">
-                                </div>
+                            <div class="col-xs-6">
+                                <span id="txtschoolname">{{.SchoolName}}</span>
+                                <input class="form-control" type="text" id="txtnowschoolname" style="display: none;" value="{{.SchoolName}}" />
+                                <a data-toggle="modal" data-target="#selschooldiv" style="display: none;" id="btnbianji">
+                                    <span style="color: red" onclick="getprovence()">编辑</span>
+                                </a>
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    学习难点:                                   
-                                </div>
-                                <div class="col-xs-6">
-                                    <span id="shownandian">{{.StudyDifficult}}</span>
-                                    <textarea class="form-control evaareass" id="txtnandian" name="txtnandian" style="display: none;">{{.StudyDifficult}}</textarea>
-                                </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                入学年份:                                   
                             </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    &nbsp;                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <input id="btnsaveuser" class="evabtn messagebtn" style="display: none;" type="submit" value="保存信息" onclick="saveUserInfo()">
+                            <div class="col-xs-6">
+                                <span id="ruxueyear">{{.LevelYear}}</span>
+                                <input class="form-control" type="text" id="txtruxueyear" style="display: none;" value="{{.LevelYear}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学生邮箱:                                    
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="useremal">{{.Mailbox}}</span>
+                                <input class="form-control" type="text" id="txtmail" style="display: none;" value="{{.Mailbox}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                家长邮箱:                                    
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="parentmail">{{.ParentMailbox}}</span>
+                                <input class="form-control" type="text" id="txtuseremal" style="display: none;" value="{{.ParentMailbox}}" />
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                补习课目:                                   
+                            </div>
+                            <span id="showclass">{{.userclassstr}}</span>
+                            <div class="col-xs-6" id="selClass" style="display:none;">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                学习难点:                                   
+                            </div>
+                            <div class="col-xs-6">
+                                <span id="shownandian">{{.StudyDifficult}}</span>
+                                <textarea class="form-control evaareass" id="txtnandian" style="display:none;">{{.StudyDifficult}}</textarea>
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input id="btnsaveuser" class="evabtn messagebtn" style="display: none;" type="button" value="保存信息" onclick="saveUserInfo()">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="divtap2" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <span id="olduserphone">{{.IphoneNum}}</span>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManager(this,'box')" style=" text-decoration:underline; color:#0026ff;">更改手机号</a>
+                                <div id="box" style="display: none">
+                                    <table style="width: 100%;">
+                                        <tr>
+                                            <td class="odd">手机号：   
+                                            </td>
+                                            <td class="even">
+                                                <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="odd">验证码：</td>
+                                            <td class="even">
+                                                <input type="text" class="yzmtext" id="upyanzhengma">
+                                                <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
+                                                <script type="text/javascript">
+                                                    var wait = 60;
+                                                    function time(o) {
+                                                        if (wait == 0) {
+                                                            o.removeAttribute("disabled");
+                                                            o.value = "点击获取验证码";
+                                                            wait = 60;
+                                                        } else {
+                                                            o.setAttribute("disabled", true);
+                                                            o.value = "重新发送(" + wait + ")";
+                                                            wait--;
+                                                            if (wait == 0) {
+                                                                delPhoneVerifica();
+                                                            }
+                                                            setTimeout(function () {
+                                                                time(o)
+                                                            },
+                                                            1000)
+                                                        }
+                                                    }
+                                                    document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                </script>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <div id="divtap2" class="content" style="display: none;">
-                            <div class="row messagesss">
-                                <div class="col-xs-4 perfont">
-                                    手机号:                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <span id="olduserphone">{{.IphoneNum}}</span>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManager(this,'box')" style="text-decoration: underline; color: #0026ff;">更改手机号</a>
-                                    <div id="box" style="display: none">
-                                        <table style="width: 100%;">
-                                            <tr>
-                                                <td class="odd">手机号：   
-                                                </td>
-                                                <td class="even">
-                                                    <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="odd">验证码：</td>
-                                                <td class="even">
-                                                    <input type="text" class="yzmtext" id="upyanzhengma">
-                                                    <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
-                                                    <script type="text/javascript">
-                                                        var wait = 60;
-                                                        function time(o) {
-                                                            if (wait == 0) {
-                                                                o.removeAttribute("disabled");
-                                                                o.value = "点击获取验证码";
-                                                                wait = 60;
-                                                            } else {
-                                                                o.setAttribute("disabled", true);
-                                                                o.value = "重新发送(" + wait + ")";
-                                                                wait--;
-                                                                if (wait == 0) {
-                                                                    delPhoneVerifica();
-                                                                }
-                                                                setTimeout(function () {
-                                                                    time(o)
-                                                                },
-                                                                1000)
-                                                            }
-                                                        }
-                                                        document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
-                                                    </script>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                            <!--                        <div class="row messagesss">
+                        <!--                        <div class="row messagesss">
                             <div class="col-xs-4 perfont">
                                 邮箱绑定:                                   
                             </div>
@@ -306,59 +305,58 @@
                                 </div>
                             </div>
                         </div>-->
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    &nbsp;
-                                </div>
-                                <div class="col-xs-8">
-                                    <input class="messagebtn evabtn" type="button" value="保存信息" onclick="saveUserPhone()">
-                                </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;
                             </div>
-                        </div>
-                        <div id="divtap3" class="content" style="display: none;">
-                            <div class="row messagesss">
-                                <div class="col-xs-4 perfont">
-                                    手机号:                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    {{.IphoneNum}}                                     
-                                </div>
-                            </div>
-                            <div class="row messagesss">
-                                <div class="col-xs-4 perfonts">
-                                    原密码:                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <input class="form-control " type="password" id="oldpass">
-                                </div>
-                            </div>
-                            <div class="row messagesss">
-                                <div class="col-xs-4 perfonts">
-                                    新密码:                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <input class="form-control " type="password" id="newpass1">
-                                </div>
-                            </div>
-                            <div class="row messagesss">
-                                <div class="col-xs-4 perfonts">
-                                    再次输入新密码:                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <input class="form-control" type="password" id="newpass2">
-                                </div>
-                            </div>
-                            <div class="row message">
-                                <div class="col-xs-4 perfont">
-                                    &nbsp;                                   
-                                </div>
-                                <div class="col-xs-8">
-                                    <input class="messagebtn evabtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
-                                </div>
+                            <div class="col-xs-8">
+                                <input class="messagebtn evabtn" type="button" value="保存信息" onclick="saveUserPhone()">
                             </div>
                         </div>
                     </div>
-                </form>
+                    <div id="divtap3" class="content" style="display: none;">
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfont">
+                                手机号:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                {{.IphoneNum}}                                     
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                原密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control " type="password" id="oldpass">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control " type="password" id="newpass1">
+                            </div>
+                        </div>
+                        <div class="row messagesss">
+                            <div class="col-xs-4 perfonts">
+                                再次输入新密码:                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="form-control" type="password" id="newpass2">
+                            </div>
+                        </div>
+                        <div class="row message">
+                            <div class="col-xs-4 perfont">
+                                &nbsp;                                   
+                            </div>
+                            <div class="col-xs-8">
+                                <input class="messagebtn evabtn" type="button" value="保存信息" id="btnSavePass" onclick="saveUserPass()">
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <p id="userlistclass" style="display: none">{{.userlistclass}}</p>
                 <p id="SchoolAgeId" style="display: none">{{.SchoolAgeId}}</p>
                 <p id="SchoolId" style="display: none">{{.SchoolId}}</p>
@@ -409,7 +407,7 @@
                             check = ' checked = "checked" ';
                         }
                     }
-                    var items = '<input type="checkbox" name="stucheckclass" value="' + data[i]["Id"] + '" id="ckclass' + i + '" ' + check + '>' + data[i]["CourseName"] + '&nbsp;&nbsp;&nbsp; ';
+                    var items = '<input type="checkbox" value="' + data[i]["Id"] + '" id="ckclass' + i + '" ' + check + '>' + data[i]["CourseName"] + '&nbsp;&nbsp;&nbsp; ';
                     coursestr += items;
                 }
                 document.getElementById("selClass").innerHTML = "";
@@ -571,10 +569,10 @@
             document.getElementById("txtuseremal").style.display = "block";
             document.getElementById("txtmail").style.display = "block";
             document.getElementById("useremal").style.display = "none";
-            document.getElementById("file").style.display = "block";//更改头像按钮
-            //document.getElementById("file_form").style.display = "block";//更改头像按钮
+            document.getElementById("file_image").style.display = "block";//更改头像按钮
+            document.getElementById("file_form").style.display = "block";//更改头像按钮
             document.getElementById("btnsaveuser").style.display = "block"; 
-            
+
             document.getElementById("showclass").style.display = "none";//补习课目文字隐藏
             document.getElementById("selClass").style.display = "block";//补习科目选项checkbox显示 
             document.getElementById("shownandian").style.display = "none";//文字隐藏
@@ -850,43 +848,10 @@
             imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
             return true;
         }
-        function setImagePreview2() {
-            var docObj = document.getElementById("file");
-            var imgObjPreview = document.getElementById("userhead");
-            imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
-            return true;
-        }
         //验证码倒计时结束后删除此手机下的所有验证信息
         function delPhoneVerifica() {
             $.getJSON("http://{{.Website}}/orange/verification/DeleteVerificationByPhone/" + nowPhone, function (data) {
 
-            });
-        }
-        function check() {
-            var username = trim(document.getElementById("txtUserName").value);
-            if (username == "") {
-                alert("用户名不能为空，请填写用户名"); return false;
-            } else if (nametorf) {
-                return true;
-            } else {
-                alert("此昵称已有人使用，请更换其他昵称！");
-                return false;
-            }
-        }
-        var nametorf = true;
-        function checkname() {
-            var username = trim(document.getElementById("txtUserName").value);
-            var geturlname = "http://{{.Website}}/orange/userinformation/GetUserinformationOneByName/" + username;
-            $.getJSON(geturlname, function (data) {
-                if (data != null && data["Id"] > 0) {
-                    if (data["Id"] == userid) {//自己名字
-                        nametorf = true;
-                    } else {//此昵称已有人使用
-                        nametorf = false;
-                    }
-                } else {//没人用
-                    nametorf = true;
-                }
             });
         }
     </script>

@@ -33,11 +33,19 @@ func (c *QuestionaskController) URLMapping() {
 func (c *QuestionaskController) Post() {
 	var jsonS string
 	for k, v := range c.Ctx.Request.Form {
-		fmt.Printf("k=%v, v=%v\n", k, v)
-		jsonS = k
+		fmt.Println(k)
+		fmt.Println(v)
+		jsonS = jsonS + k
 	}
+	fmt.Println("要添加的数据为：")
+	fmt.Println(jsonS)
 	var v models.Questionask
-	json.Unmarshal([]byte(jsonS), &v)
+	gerr := json.Unmarshal([]byte(jsonS), &v)
+	fmt.Println(v)
+	if gerr != nil {
+		fmt.Println("转换错误：")
+		fmt.Println(gerr.Error())
+	}
 	if id, err := models.AddQuestionask(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
@@ -45,6 +53,78 @@ func (c *QuestionaskController) Post() {
 	}
 	c.ServeJson()
 }
+
+//// @Title Post
+//// @Description create Questionask
+//// @Param	body		body 	models.Questionask	true		"body for Questionask content"
+//// @Success 200 {int} models.Questionask.Id
+//// @Failure 403 body is empty
+//// @router /AddQuestionask/ [post]
+//func (c *QuestionaskController) Post() {
+
+//	var class []string = c.Ctx.Input.Request.Form["selClass"] //
+//	selClass := class[0]
+//	fmt.Println(selClass)
+//	var teach []string = c.Ctx.Input.Request.Form["selteacher"] //
+//	selteacher := teach[0]
+//	fmt.Println(selteacher)
+//	var date []string = c.Ctx.Input.Request.Form["txtdate"] //
+//	txtdate := date[0]
+//	fmt.Println(txtdate)
+//	var title []string = c.Ctx.Input.Request.Form["txtTitle"] //
+//	txtTitle := title[0]
+//	fmt.Println(txtTitle)
+//	var content []string = c.Ctx.Input.Request.Form["txtContents"] //
+//	txtContents := content[0]
+//	fmt.Println(txtContents)
+//	var money []string = c.Ctx.Input.Request.Form["selMoney"] //
+//	selMoney := money[0]
+//	fmt.Println(selMoney)
+
+//	log.Println("Client: ", c.Ctx.Request.RemoteAddr,
+//		"Method: ", c.Ctx.Request.Method)
+
+//	r := c.Ctx.Request
+//	r.ParseForm()
+//	r.ParseMultipartForm(32 << 20)
+
+//	userId := r.FormValue("userId")
+//	log.Println("userId=", userId)
+
+//	mp := r.MultipartForm
+//	if nil == mp {
+//		log.Println("NOT MULTIPARATFORM.")
+
+//		c.Ctx.WriteString("NOT MULTIPARATFORM.")
+//	}
+
+//	fileHeaders, findFile := mp.File["file"]
+//	if !findFile || len(fileHeaders) == 0 {
+//		log.Println("FILE COUNT == 0.")
+
+//		c.Ctx.WriteString("FILE COUNT == 0.")
+//	}
+//	for _, v := range fileHeaders {
+//		fileName := v.Filename
+//		fmt.Println(fileName)
+//	}
+
+//	//	var jsonS string
+//	//	for k, v := range c.Ctx.Request.Form {
+//	//		fmt.Printf("k=%v, v=%v\n", k, v)
+//	//		jsonS = k
+//	//	}
+//	//	var v models.Questionask
+//	//	json.Unmarshal([]byte(jsonS), &v)
+//	//	if id, err := models.AddQuestionask(&v); err == nil {
+//	//		c.Data["json"] = map[string]int64{"id": id}
+//	//	} else {
+//	//		c.Data["json"] = err.Error()
+//	//	}
+//	//	c.ServeJson()
+
+//	c.TplNames = "problem_list.html" //跳到问答中心
+//}
 
 // @Title Get
 // @Description get Questionask by id

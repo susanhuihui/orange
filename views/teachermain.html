@@ -586,13 +586,13 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var myaskstr = '<tr class="stuth"><th>提问人</th><th>内容</th><th>提问时间</th><th>问题奖励</th><th>操作</th></tr>';
+                var myaskstr = '<tr class="stuth"><th>提问人</th><th>标题</th><th>提问时间</th><th>问题奖励</th><th>操作</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
                         var showbtn = "查看";
                         if (data[i]["AnswerCount"] == 0) { showbtn = "回答"; } else if (data[i]["AnswerCount"] == 0) { showbtn = "查看"; }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
-                                    "<td>" + data[i]["Contents"] + "</td>" +
+                                    "<td>" + data[i]["Title"] + "</td>" +
                                     "<td>" + getSimpDate(data[i]["BadeTime"]) + " " + getSimpTime(data[i]["BadeTime"]) + "</td>" +
                                     "<td>" + data[i]["AmountMoney"] + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Teacher/ProblemAnswer/' + data[i]["Id"] + '" class="btn btn-warning radsty">' + showbtn + '</a></td></tr>';
