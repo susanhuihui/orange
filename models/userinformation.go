@@ -677,6 +677,7 @@ func GetImganddata2(request *http.Request, headpath string) (json string, imgstr
 			defer fileo.Close()
 			filePath, _ := exec.LookPath(os.Args[0])
 			bendipath := strings.Replace(filePath, "orange.exe", "", 1)
+			bendipath = "../orange"
 			rs := []rune(bendipath)
 			rl := len(rs)
 			overs := string(rs[rl-1])
