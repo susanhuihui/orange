@@ -449,7 +449,7 @@ func (c *UserinformationController) Delete() {
 func (c *UserinformationController) UpdateUserimg() {
 	request := c.Ctx.Request
 	fmt.Println("是否调到")
-	jsons, imgstr := models.GetImganddata2(request, Headurl, HeadurlFu)
+	jsons, imgstr := models.GetImganddata2(request, Headurl)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsons), &v)
 	fmt.Println(jsons)
@@ -482,7 +482,7 @@ func (c *UserinformationController) UpdateUserimg() {
 func (c *UserinformationController) UpdateUserimg2() {
 	request := c.Ctx.Request
 	fmt.Println("是否调到")
-	jsons, imgstr := models.GetImganddata2(request, Headurl, HeadurlFu)
+	jsons, imgstr := models.GetImganddata2(request, Headurl)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsons), &v)
 	fmt.Println(jsons)
