@@ -399,7 +399,7 @@ func Updatebookings(id int, classid string, sid string, tid string) (num int, er
 	fmt.Println(upstr)
 	rs = o.Raw(upstr)
 	qs := rs.QueryRow(&num)
-	fmt.Println(qs)
+	//fmt.Println(qs)
 	return num, qs
 }
 
@@ -705,14 +705,15 @@ func Getecherlession3(onlineid int) (urlse string, err error) {
 			onlinenow.StudentInId = attendeePW
 			onlinenow.TeacherInId = moderatorPW
 			_, uperr := Updatebookings(onlineid, meetingID, attendeePW, moderatorPW) //更新数据库的白板信息
-			if uperr == nil {
-				meetingroom.CreateMeeting()
-				fmt.Println("课堂是否建立成功：")
-				fmt.Println(meetingroom.CreateMeetingResponse.Returncode)
-				if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
-					urlse = strconv.Itoa(onlinenow.Id) //会议室创建成功老师可以跳页进入课堂
-				}
+			fmt.Println(uperr)
+			//if uperr == nil {
+			meetingroom.CreateMeeting()
+			fmt.Println("课堂是否建立成功：")
+			fmt.Println(meetingroom.CreateMeetingResponse.Returncode)
+			if meetingroom.CreateMeetingResponse.Returncode == "SUCCESS" {
+				urlse = strconv.Itoa(onlinenow.Id) //会议室创建成功老师可以跳页进入课堂
 			}
+			//}
 		}
 	}
 	return
