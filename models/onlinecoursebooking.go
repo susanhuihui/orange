@@ -242,8 +242,21 @@ func GetOnlinecoursebookingById(id int) (v *Onlinecoursebooking, err error) {
 	v = &Onlinecoursebooking{Id: id}
 	if err = o.Read(v); err == nil {
 		return v, nil
+	} else {
+		fmt.Println("chaxuncuowu ")
+		fmt.Println(err.Error())
 	}
 	return nil, err
+}
+
+// GetOnlinecoursebookingById retrieves Onlinecoursebooking by Id. Returns error if
+// Id doesn't exist
+func GetOnlinecoursebookingByIdModel(id int) (v Onlinecoursebooking, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlOnlineBooningbyid, id)
+	qs := rs.QueryRow(&v)
+	return v, qs
 }
 
 // GetAllOnlinecoursebooking retrieves all Onlinecoursebooking matches certain condition. Returns empty list if
@@ -373,7 +386,8 @@ func DeleteOnlinecoursebookingMeeting(id int) (err error) {
 
 	var rs orm.RawSeter
 	var roocount int
-	var upstr string = `update onlinecoursebooking set ClassroomId='' ,StudentInId='' ,TeacherInId='' where PKId=` + strconv.Itoa(id) + `; SELECT ROW_COUNT() as roocount;`
+	//var upstr string = `update onlinecoursebooking set ClassroomId='' ,StudentInId='' ,TeacherInId='' where PKId=` + strconv.Itoa(id) + `; SELECT ROW_COUNT() as roocount;`
+	var upstr string = `update onlinecoursebooking set ClassroomId='' ,StudentInId='' ,TeacherInId='' where PKId=` + strconv.Itoa(id) + `;`
 	rs = o.Raw(upstr)
 	rs.QueryRow(&roocount)
 	fmt.Println(roocount)
@@ -395,7 +409,8 @@ func Updatebookings(id int, classid string, sid string, tid string) (num int, er
 	fmt.Println("参数为：")
 	fmt.Println(id)
 	fmt.Println(classid + sid + tid)
-	var upstr string = `update onlinecoursebooking set ClassroomId='` + classid + `' ,StudentInId='` + sid + `' ,TeacherInId='` + tid + `' where PKId=` + strconv.Itoa(id) + `; SELECT ROW_COUNT() as roocount;`
+	//var upstr string = `update onlinecoursebooking set ClassroomId='` + classid + `' ,StudentInId='` + sid + `' ,TeacherInId='` + tid + `' where PKId=` + strconv.Itoa(id) + `; SELECT ROW_COUNT() as roocount;`
+	var upstr string = `update onlinecoursebooking set ClassroomId='` + classid + `' ,StudentInId='` + sid + `' ,TeacherInId='` + tid + `' where PKId=` + strconv.Itoa(id) + `;`
 	fmt.Println(upstr)
 	rs = o.Raw(upstr)
 	qs := rs.QueryRow(&num)
@@ -722,7 +737,7 @@ func Getecherlession3(onlineid int) (urlse string, err error) {
 //获取老师进入课堂url
 func GetOnlineClassTeacherurl(bookid int) (urlse string, err error) {
 	//onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
-	onlineclass, geterr := GetOnlinecoursebookingById(bookid)
+	onlineclass, geterr := GetOnlinecoursebookingByIdModel(bookid)
 	fmt.Println("获取老师进入结构：")
 	fmt.Println(onlineclass)
 	if geterr == nil && onlineclass.Id > 0 {
@@ -797,97 +812,97 @@ func Getstudentlession2(onlineid int) (urlse string, err error) {
 	return
 }
 
-//结算课程
-//传入参数：onlineid:预约信息主键id
-//传出参数：resultmsg:返回结果 err:错误信息
-//        resultmsg---  >0:结算成功，返回总分钟数
-//        				-1:查询不到预约信息
-//        				-2:没有课程时间记录（几乎没有这种可能）
-//        				-3:没有查到冻结资金
-//        				-4:没有查到用户账户信息
-//        				-5:给用户返还钱失败
-//        				-6:解冻资金失败
-//        				-7:新增交易记录失败
-//        				-8:更新预约信息状态失败
-//        				-9:添加在线课程记录失败
-//2015-12-19
-//思路：1.查询预约信息 2.查询此次预约课程所有时间记录信息，计算总时间 3.根据学生主键找到此次预约冻结资金，解冻，根据冻结时间分配金额，4.钱打给老师，剩余退还学生，
-//     5.新增一条老师打钱给学生的交易记录，6.将预约信息状态修改为已学习，已支付，7.新增一条课程记录信息
-func SetUserClassPay(onlineid int) (resultmsg string, err error) {
-	//根据预约信息主键id查询 一条预约信息
-	onlineclass, geterr := GetOnlinecoursebookingById(onlineid)
-	fmt.Println("获取预约信息")
-	fmt.Println(onlineid)
-	fmt.Println(onlineclass)
-	fmt.Println("1")
-	if geterr == nil && onlineclass.Id > 0 {
-		allminutes := GetALLtimeminute(onlineid)
-		if allminutes > 0 {
-			//查询此次预约的冻结信息
-			fonze, ferr := GetFrozenfundsByUidOnId(onlineclass.UserIdActive, 0, onlineid)
-			fmt.Println("2")
-			if ferr == nil && fonze.Id > 0 {
-				//计算此次课程总费用
-				allm, _ := strconv.ParseFloat(strconv.Itoa(allminutes), 64)
-				alltm, _ := strconv.ParseFloat(strconv.Itoa(TotalMinute), 64)
-				teachermoney := (allm / alltm) * fonze.FrozenMoney //（上课分钟/总分钟）*总钱数 = 应给老师多少钱
-				returnmoney := fonze.FrozenMoney - teachermoney    //返还学生的钱
-				resultmsg = SetUserMoney(onlineclass.UserIdPassive, teachermoney)
-				resultmsg = SetUserMoney(onlineclass.UserIdActive, returnmoney)
-				fmt.Println("3")
-				if resultmsg == "1" { //钱各自打成功，解冻冻结资金信息
-					fonze.FrozenState = 0
-					upfonzerr := UpdateFrozenfundsById(&fonze)
-					fmt.Println("4")
-					if upfonzerr == nil { //解冻成功新增一条交易记录
-						resultmsg = AddUserTransactionRecords(onlineclass.UserIdActive, onlineclass.UserIdPassive, teachermoney)
-						fmt.Println("5")
-						if resultmsg == "1" { //添加交易记录完成
-							onlineclass.Payment = 1
-							onlineclass.Leaming = 1
-							uponerr := UpdateOnlinecoursebookingById(onlineclass)
-							fmt.Println("6")
-							if uponerr == nil {
-								//新增一条课程记录信息
-								var onlinerecord Onlinecourserecord
-								onlinerecord.OCBId = onlineclass.Id
-								onlinerecord.UserIdActive = onlineclass.UserIdActive
-								onlinerecord.UserIdPassive = onlineclass.UserIdPassive
-								onlinerecord.CourseContent = onlineclass.AppointMessage
-								onlinerecord.StartTime = onlineclass.StartTime
-								onlinerecord.EndTime = onlineclass.EndTime
-								onlinerecord.UnitPrice = (allm / alltm)
-								onlinerecord.TotalPrice = teachermoney
-								onlinerecord.ClassNumber = allminutes
-								addrecordid, recorderr := AddOnlinecourserecord(&onlinerecord)
-								fmt.Println("7")
-								if recorderr == nil && addrecordid > 0 {
-									resultmsg = strconv.Itoa(allminutes) //返回总分钟数
-									fmt.Println("8")
-								} else {
-									resultmsg = "-9"
-								}
-							} else {
-								resultmsg = "-8"
-							}
-						} else {
-							resultmsg = "-7"
-						}
-					} else {
-						resultmsg = "-6"
-					}
-				}
-			} else {
-				resultmsg = "-3"
-			}
-		} else {
-			resultmsg = "-2" //没有课程时间记录
-		}
-	} else {
-		resultmsg = "-1" //查询不到预约信息
-	}
-	return
-}
+////结算课程
+////传入参数：onlineid:预约信息主键id
+////传出参数：resultmsg:返回结果 err:错误信息
+////        resultmsg---  >0:结算成功，返回总分钟数
+////        				-1:查询不到预约信息
+////        				-2:没有课程时间记录（几乎没有这种可能）
+////        				-3:没有查到冻结资金
+////        				-4:没有查到用户账户信息
+////        				-5:给用户返还钱失败
+////        				-6:解冻资金失败
+////        				-7:新增交易记录失败
+////        				-8:更新预约信息状态失败
+////        				-9:添加在线课程记录失败
+////2015-12-19
+////思路：1.查询预约信息 2.查询此次预约课程所有时间记录信息，计算总时间 3.根据学生主键找到此次预约冻结资金，解冻，根据冻结时间分配金额，4.钱打给老师，剩余退还学生，
+////     5.新增一条老师打钱给学生的交易记录，6.将预约信息状态修改为已学习，已支付，7.新增一条课程记录信息
+//func SetUserClassPay(onlineid int) (resultmsg string, err error) {
+//	//根据预约信息主键id查询 一条预约信息
+//	onlineclass, geterr := GetOnlinecoursebookingById(onlineid)
+//	fmt.Println("获取预约信息")
+//	fmt.Println(onlineid)
+//	fmt.Println(onlineclass)
+//	fmt.Println("1")
+//	if geterr == nil && onlineclass.Id > 0 {
+//		allminutes := GetALLtimeminute(onlineid)
+//		if allminutes > 0 {
+//			//查询此次预约的冻结信息
+//			fonze, ferr := GetFrozenfundsByUidOnId(onlineclass.UserIdActive, 0, onlineid)
+//			fmt.Println("2")
+//			if ferr == nil && fonze.Id > 0 {
+//				//计算此次课程总费用
+//				allm, _ := strconv.ParseFloat(strconv.Itoa(allminutes), 64)
+//				alltm, _ := strconv.ParseFloat(strconv.Itoa(TotalMinute), 64)
+//				teachermoney := (allm / alltm) * fonze.FrozenMoney //（上课分钟/总分钟）*总钱数 = 应给老师多少钱
+//				returnmoney := fonze.FrozenMoney - teachermoney    //返还学生的钱
+//				resultmsg = SetUserMoney(onlineclass.UserIdPassive, teachermoney)
+//				resultmsg = SetUserMoney(onlineclass.UserIdActive, returnmoney)
+//				fmt.Println("3")
+//				if resultmsg == "1" { //钱各自打成功，解冻冻结资金信息
+//					fonze.FrozenState = 0
+//					upfonzerr := UpdateFrozenfundsById(&fonze)
+//					fmt.Println("4")
+//					if upfonzerr == nil { //解冻成功新增一条交易记录
+//						resultmsg = AddUserTransactionRecords(onlineclass.UserIdActive, onlineclass.UserIdPassive, teachermoney)
+//						fmt.Println("5")
+//						if resultmsg == "1" { //添加交易记录完成
+//							onlineclass.Payment = 1
+//							onlineclass.Leaming = 1
+//							uponerr := UpdateOnlinecoursebookingById(onlineclass)
+//							fmt.Println("6")
+//							if uponerr == nil {
+//								//新增一条课程记录信息
+//								var onlinerecord Onlinecourserecord
+//								onlinerecord.OCBId = onlineclass.Id
+//								onlinerecord.UserIdActive = onlineclass.UserIdActive
+//								onlinerecord.UserIdPassive = onlineclass.UserIdPassive
+//								onlinerecord.CourseContent = onlineclass.AppointMessage
+//								onlinerecord.StartTime = onlineclass.StartTime
+//								onlinerecord.EndTime = onlineclass.EndTime
+//								onlinerecord.UnitPrice = (allm / alltm)
+//								onlinerecord.TotalPrice = teachermoney
+//								onlinerecord.ClassNumber = allminutes
+//								addrecordid, recorderr := AddOnlinecourserecord(&onlinerecord)
+//								fmt.Println("7")
+//								if recorderr == nil && addrecordid > 0 {
+//									resultmsg = strconv.Itoa(allminutes) //返回总分钟数
+//									fmt.Println("8")
+//								} else {
+//									resultmsg = "-9"
+//								}
+//							} else {
+//								resultmsg = "-8"
+//							}
+//						} else {
+//							resultmsg = "-7"
+//						}
+//					} else {
+//						resultmsg = "-6"
+//					}
+//				}
+//			} else {
+//				resultmsg = "-3"
+//			}
+//		} else {
+//			resultmsg = "-2" //没有课程时间记录
+//		}
+//	} else {
+//		resultmsg = "-1" //查询不到预约信息
+//	}
+//	return
+//}
 
 //根据预约信息主键计算两人共同在线时间
 func GetALLtimeminute(onlineid int) (allminute int) {
@@ -916,7 +931,13 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
 		fmt.Println(timecomp)
 		for j := 0; j < len(teacherlistrecord); j++ {
-			if teacherlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(teacherlistrecord[j].EndTime) {
+			var endtime time.Time
+			if teacherlistrecord[j].EndTime.Year() <= 1 {
+				endtime = time.Now()
+			} else {
+				endtime = teacherlistrecord[j].EndTime
+			}
+			if teacherlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(endtime) {
 				tint[i] = 1
 				fmt.Println(teacherlistrecord[j].StartTime)
 			}
@@ -935,7 +956,13 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 		itemtime = itemtime + strconv.Itoa(classnow.StartTime.Hour()) + ":" + minute + ":00"
 		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
 		for j := 0; j < len(studentlistrecord); j++ {
-			if studentlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(studentlistrecord[j].EndTime) {
+			var endtime time.Time
+			if studentlistrecord[j].EndTime.Year() <= 1 {
+				endtime = time.Now()
+			} else {
+				endtime = studentlistrecord[j].EndTime
+			}
+			if studentlistrecord[j].StartTime.Before(timecomp) && timecomp.Before(endtime) {
 				sint[i] = 1
 				fmt.Println(studentlistrecord[j].StartTime)
 			}

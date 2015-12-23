@@ -118,14 +118,14 @@
                             stryuye += onetr;
                         }
                     }
-                    for (var i = 0; i < data.length ; i++) {
-                        var onetr = '<div class="col-sm-3">' +
-                                    '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
-                                    '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
-                                    '<a style="margin-left: 80px;" onclick="delFujian(' + data[i]["Id"] + ')">删除</a>' +
-                                    '</div>';
-                        stryuye += onetr;
-                    }
+                    //for (var i = 0; i < data.length ; i++) {
+                    //    var onetr = '<div class="col-sm-3">' +
+                    //                '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
+                    //                '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
+                    //                '<a style="margin-left: 80px;" onclick="delFujian(' + data[i]["Id"] + ')">删除</a>' +
+                    //                '</div>';
+                    //    stryuye += onetr;
+                    //}
                 }
                 document.getElementById("fujiandiv").innerHTML = "";
                 $("#fujiandiv").append(stryuye);

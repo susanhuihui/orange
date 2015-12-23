@@ -47,8 +47,8 @@
         var onlineid = getCookie("onlinebookid");//获取预约信息id
         var onlineClassid = 0;//结算是生成的课程id
         window.onload = function () {
-            getuser();
-            setTitleOnSelect(4);
+            //getuser();
+            //setTitleOnSelect(4);
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
@@ -61,37 +61,37 @@
 
         //设置结束时间
         function setonlineovertime() {
-            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByTwoid/" + onlineid;
-            $.getJSON(getblack, function (data) {
-                stuJieSuan();//调用结算方法
-            });
+            //var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByTwoid/" + onlineid;
+            //$.getJSON(getblack, function (data) {
+                var payurl = "http://{{.Website}}/orange/onlinecoursebooking/ClassPay/" + onlineid;
+                $.getJSON(payurl, function (data) {
+
+                    if (data > 0) {//结算成功
+                        document.getElementById("resultcontent").innerHTML = "您已完成课程，课程总计时：" + data + "分钟";
+                    } else if (data == "-1") {
+                        document.getElementById("resultcontent").innerHTML = "";
+                    }
+                });
+            //});
         }
 
         //课程完成调用结算
         function stuJieSuan() {
-            if (identityid != null && identityid > 0) {//无论老师还是学生进入都先关闭白板
-                var delroom = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebookingMeeting/" + onlineid;
-                $.getJSON(delroom, function (data) {
+            //if (identityid != null && identityid > 0) {//无论老师还是学生进入都先关闭白板
+            //    var delroom = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebookingMeeting/" + onlineid;
+            //    $.getJSON(delroom, function (data) {
                     //if (data == "OK") {
                         //alert("课程结束！");
                         
                         //if (identityid != null && identityid <= 3 && identityid >= 2) {//学生进入此页面去结算此次课程   
-                        var payurl = "http://{{.Website}}/orange/onlinecoursebooking/ClassPay/" + onlineid;
-                            $.getJSON(payurl, function (data) {
-                                
-                                if (data > 0) {//结算成功
-                                    document.getElementById("resultcontent").innerHTML = "您已完成课程，课程总计时：" + data + "分钟";
-                                } else if (data == "-1") {
-                                    document.getElementById("resultcontent").innerHTML = "";
-                                }
-                            });
+                        
                         //} else {
                         //    document.getElementById("resultcontent").innerHTML = "课程结束！";
                         //}
                     //} else {
                     //}
-                });
-            }
+            //    });
+            //}
         }
 
         //返回首页

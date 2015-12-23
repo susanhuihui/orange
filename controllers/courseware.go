@@ -52,7 +52,7 @@ func (c *CoursewareController) Post() {
 func (c *CoursewareController) AddCoursewareOnbook() {
 	request := c.Ctx.Request
 	fmt.Println("是否调到")
-	jsons, imgstr := models.GetImganddata(request, Fujianurl)
+	jsons, imgstr := models.GetImganddata2(request, Fujianurl)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsons), &v)
 	fmt.Println(jsons)

@@ -831,10 +831,10 @@
         var timesex2 = '16:00';
         var timeseven1 = '16:00';
         var timeseven2 = '17:00';
-        var timeeight1 = '18:00';
-        var timeeight2 = '19:00';
-        var timenine1 = '19:00';
-        var timenine2 = '20:00';
+        var timeeight1 = '17:00';
+        var timeeight2 = '18:00';
+        var timenine1 = '18:00';
+        var timenine2 = '19:00';
         var timelist1 = [timeone1, timetwo1, timethree1, timefour1, timefive1, timesex1, timeseven1, timeeight1, timenine1];
         var timelist2 = [timeone2, timetwo2, timethree2, timefour2, timefive2, timesex2, timeseven2, timeeight2, timenine2];
 
@@ -852,10 +852,10 @@
         var timesex2a = '15:50';
         var timeseven1a = '16:00';
         var timeseven2a = '16:50';
-        var timeeight1a = '18:00';
-        var timeeight2a = '18:50';
-        var timenine1a = '19:00';
-        var timenine2a = '19:50';
+        var timeeight1a = '17:00';
+        var timeeight2a = '17:50';
+        var timenine1a = '18:00';
+        var timenine2a = '18:50';
         var timelist1a = [timeone1a, timetwo1a, timethree1a, timefour1a, timefive1a, timesex1a, timeseven1a, timeeight1a, timenine1a];
         var timelist2a = [timeone2a, timetwo2a, timethree2a, timefour2a, timefive2a, timesex2a, timeseven2a, timeeight2a, timenine2a];
 
@@ -1184,7 +1184,7 @@
                     testAjax(files, --i);
                 };
                 //alert(files[i]);
-                data.append("file1", files[i]);
+                data.append("file", files[i]);
                 xhr.open("post", "http://{{.Website}}/orange/courseware/AddCoursewareOnbook/" + nowTagid, true);
                 xhr.send(data);
             }

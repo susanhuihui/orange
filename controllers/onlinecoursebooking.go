@@ -444,7 +444,9 @@ func (c *OnlinecoursebookingController) GetOe() {
 func (c *OnlinecoursebookingController) ClassPay() {
 	idStr := c.Ctx.Input.Params[":onlineid"] //预约表主键id
 	onlineid, _ := strconv.Atoi(idStr)
-	resultshow, err := models.SetUserClassPay(onlineid)
+	//	result, _ := models.GetOnlinecoursebookingrecordByTwoid(onlineid)
+	//	fmt.Println(result)
+	resultshow, err := SetUserClassPay(onlineid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -452,6 +454,98 @@ func (c *OnlinecoursebookingController) ClassPay() {
 		c.Data["json"] = resultshow
 	}
 	c.ServeJson()
+}
+
+//结算课程
+//传入参数：onlineid:预约信息主键id
+//传出参数：resultmsg:返回结果 err:错误信息
+//        resultmsg---  >0:结算成功，返回总分钟数
+//        				-1:查询不到预约信息
+//        				-2:没有课程时间记录（几乎没有这种可能）
+//        				-3:没有查到冻结资金
+//        				-4:没有查到用户账户信息
+//        				-5:给用户返还钱失败
+//        				-6:解冻资金失败
+//        				-7:新增交易记录失败
+//        				-8:更新预约信息状态失败
+//        				-9:添加在线课程记录失败
+//2015-12-19
+//思路：1.查询预约信息 2.查询此次预约课程所有时间记录信息，计算总时间 3.根据学生主键找到此次预约冻结资金，解冻，根据冻结时间分配金额，4.钱打给老师，剩余退还学生，
+//     5.新增一条老师打钱给学生的交易记录，6.将预约信息状态修改为已学习，已支付，7.新增一条课程记录信息
+func SetUserClassPay(onlineid int) (resultmsg string, err error) {
+	//根据预约信息主键id查询 一条预约信息
+	onlineclass, geterr := models.GetOnlinecoursebookingById(onlineid)
+	fmt.Println("获取预约信息")
+	fmt.Println(onlineid)
+	fmt.Println(onlineclass)
+	fmt.Println("1")
+	if geterr == nil && onlineclass.Id > 0 {
+		allminutes := models.GetALLtimeminute(onlineid)
+		if allminutes > 0 {
+			//查询此次预约的冻结信息
+			fonze, ferr := models.GetFrozenfundsByUidOnId(onlineclass.UserIdActive, 0, onlineid)
+			fmt.Println("2")
+			if ferr == nil && fonze.Id > 0 {
+				//计算此次课程总费用
+				allm, _ := strconv.ParseFloat(strconv.Itoa(allminutes), 64)
+				alltm, _ := strconv.ParseFloat(strconv.Itoa(models.TotalMinute), 64)
+				teachermoney := (allm / alltm) * fonze.FrozenMoney //（上课分钟/总分钟）*总钱数 = 应给老师多少钱
+				returnmoney := fonze.FrozenMoney - teachermoney    //返还学生的钱
+				resultmsg = models.SetUserMoney(onlineclass.UserIdPassive, teachermoney)
+				resultmsg = models.SetUserMoney(onlineclass.UserIdActive, returnmoney)
+				fmt.Println("3")
+				if resultmsg == "1" { //钱各自打成功，解冻冻结资金信息
+					fonze.FrozenState = 0
+					upfonzerr := models.UpdateFrozenfundsById(&fonze)
+					fmt.Println("4")
+					if upfonzerr == nil { //解冻成功新增一条交易记录
+						resultmsg = models.AddUserTransactionRecords(onlineclass.UserIdActive, onlineclass.UserIdPassive, teachermoney)
+						fmt.Println("5")
+						if resultmsg == "1" { //添加交易记录完成
+							onlineclass.Payment = 1
+							onlineclass.Leaming = 1
+							uponerr := models.UpdateOnlinecoursebookingById(onlineclass)
+							fmt.Println("6")
+							if uponerr == nil {
+								//新增一条课程记录信息
+								var onlinerecord models.Onlinecourserecord
+								onlinerecord.OCBId = onlineclass.Id
+								onlinerecord.UserIdActive = onlineclass.UserIdActive
+								onlinerecord.UserIdPassive = onlineclass.UserIdPassive
+								onlinerecord.CourseContent = onlineclass.AppointMessage
+								onlinerecord.StartTime = onlineclass.StartTime
+								onlinerecord.EndTime = onlineclass.EndTime
+								onlinerecord.UnitPrice = (allm / alltm)
+								onlinerecord.TotalPrice = teachermoney
+								onlinerecord.ClassNumber = allminutes
+								addrecordid, recorderr := models.AddOnlinecourserecord(&onlinerecord)
+								fmt.Println("7")
+								if recorderr == nil && addrecordid > 0 {
+									resultmsg = strconv.Itoa(allminutes) //返回总分钟数
+									fmt.Println("8")
+								} else {
+									resultmsg = "-9"
+								}
+							} else {
+								resultmsg = "-8"
+							}
+						} else {
+							resultmsg = "-7"
+						}
+					} else {
+						resultmsg = "-6"
+					}
+				}
+			} else {
+				resultmsg = "-3"
+			}
+		} else {
+			resultmsg = "-2" //没有课程时间记录
+		}
+	} else {
+		resultmsg = "-1" //查询不到预约信息
+	}
+	return
 }
 
 //测试方法

@@ -610,7 +610,7 @@ var SqlQuestionAskById string = `select questionask.Title,questionask.Contents,q
 		where questionask.PKId=?`
 
 /**34.学生查看自己所评价的老师们**/
-var SqlOnlineCourseEvaluationBySid = `
+var SqlOnlineCourseEvaluationBySid string = `
 			select online.*,(select userinfo.UserName from userinformation as userinfo where userinfo.pkid=
 				(select onc.UserIdPassive from onlinecourserecord as onc where onc.pkid = online.ocrid)) as UserName,
                 (select userinfo.pkid from userinformation as userinfo where userinfo.pkid=
@@ -621,77 +621,79 @@ var SqlOnlineCourseEvaluationBySid = `
 			where online.userid = ? `
 
 /**35.查询学生全部已经冻结的资金总和**/
-var SqlFrozenFundsByUserid = `
+var SqlFrozenFundsByUserid string = `
 			select sum(frozenmoney) as FrozenMoney 
 			from frozenfunds 
 			where frozenstate = 1 and userid =?`
 
 /**36.根据手机号码获取一条最新的验证码信息**/
-var SqlVerificationByPhone = `select * 
+var SqlVerificationByPhone string = `select * 
 			from verification
 			where userphone = ?
 			order by createtime desc
 			limit 1`
 
 /**37.查询预约课程附件信息**/
-var SqlCoursewareByOCBID = `select * from courseware where ocbrid = ?`
+var SqlCoursewareByOCBID string = `select * from courseware where ocbrid = ?`
 
 /**38.根据老师主键id，和时间段查询此时间段预约课程信息**/
-var SqlOnlineBookingByTidTime = `
+var SqlOnlineBookingByTidTime string = `
 						select * 
 						from onlinecoursebooking
 						where UserIdPassive = ? and StartTime > ?`
 
 /**39.查询学生预约课程信息相关的冻结信息，条件：用户主键id，是预约0还是提问1，预约id或提问id**/
-var SqlFrozenfundsByUidOnId = `select * 
+var SqlFrozenfundsByUidOnId string = `select * 
 						from frozenfunds 
 						where userid =? and FrozenType=? and businessid= ? and frozenstate=1 
 						limit 1`
 
 /**40.查询给我上过课的老师们**/
-var SqlOnlineCourseRecordTByUid = `select oncour.*,(select username from userinformation as userinfo where userinfo.pkid = oncour.useridpassive)as UserName  
+var SqlOnlineCourseRecordTByUid string = `select oncour.*,(select username from userinformation as userinfo where userinfo.pkid = oncour.useridpassive)as UserName  
 						from onlinecourserecord as oncour 
 						where oncour.useridactive = ? 
 						group by oncour.useridpassive `
 
 /**41.查询老师的试听信息**/
-var SqlOnlineTryListenByTid = `select * ,(select username from userinformation as user where user.pkid = ontry.sid) as UserName 
+var SqlOnlineTryListenByTid string = `select * ,(select username from userinformation as user where user.pkid = ontry.sid) as UserName 
 						from onlinetrylisten as ontry 
 						where tid = ?  and sid is not null  and sid >0 `
 
 /*42.查询老师一条在线信息*/
-var SqlOnlinetrylistenOn = `select * 
+var SqlOnlinetrylistenOn string = `select * 
 						from onlinetrylisten as ontry 
 						where tid = ? and (sid is null or sid = 0)
 						limit 1 `
 
 /**43.查询给我上过课的某个学科的老师们(参数：学生id,课程id)**/
-var SqlOnlineCourseRecordTByUCid = `select oncour.*,(select username from userinformation as userinfo where userinfo.pkid = oncour.useridpassive)as UserName
+var SqlOnlineCourseRecordTByUCid string = `select oncour.*,(select username from userinformation as userinfo where userinfo.pkid = oncour.useridpassive)as UserName
 						from onlinecourserecord as oncour
 						where oncour.useridactive = ? and (select CoursesId from remedialcourses as remec where remec.UserId=oncour.useridpassive and IsMain=1 limit 1)=?
 						group by oncour.useridpassive`
 
 /**44.查询这个学生试听过这个老师几次课程**/
-var SqlOnlineTrylistenBtidsid = `select ontry.*
+var SqlOnlineTrylistenBtidsid string = `select ontry.*
 						from onlinetrylisten as ontry
 						where ontry.tid = ? and sid= ?`
 
 /**45.查询学生最后一条试听信息，学生试听结束时记录结束时间到此条信息中**/
-var SqlOnlineTrylistenBysidLast = `SELECT * FROM onlineeducation.onlinetrylisten
+var SqlOnlineTrylistenBysidLast string = `SELECT * FROM onlineeducation.onlinetrylisten
 						where sid = ? 
 						order by StuStartTime desc
 						limit 1`
 
 /**46.查询老师或学生一条课堂时间记录，一条时间最近且结束时间为null的记录**/
-var SqlOnlineBookingRecord = `select * 
+var SqlOnlineBookingRecord string = `select * 
 						from onlinecoursebookingrecord
 						where userid = ? and ocbid = ? and EndTime is null
 						order by starttime desc
 						limit 1`
 
 /**47.查询老师或学生关于某次课程的全部课程时间记录信息**/
-var SqlOnlineBookingRecordBybookiduid = `select * 
+var SqlOnlineBookingRecordBybookiduid string = `select * 
 						from onlinecoursebookingrecord
 						where userid = ? and ocbid = ?`
 
-var SqlUserMessagebymuid = `SELECT * FROM onlineeducation.usermessage where messageid = ? and activeuserid = ?`
+var SqlUserMessagebymuid string = `SELECT * FROM onlineeducation.usermessage where messageid = ? and activeuserid = ?`
+
+var SqlOnlineBooningbyid string = `SELECT * FROM onlineeducation.onlinecoursebooking where pkid=?`

@@ -51,8 +51,7 @@
                     <div class="col-sm-12 promainfont">
                         {{.Title}}                     
                     </div>
-                    <div class="col-sm-12 promain">
-                        {{.Contents}} 
+                    <div class="col-sm-12 promain"  id="showcontent">
                     </div>
                     <div id="answercontent">
                         <div class="col-sm-12 promainfont">
@@ -68,6 +67,7 @@
             <p id="AnswerId" style="display: none">{{.AnswerId}}</p>
             <p id="QuestionId" style="display: none">{{.QuestionId}}</p>
             <p id="HuiDaContents" style="display: none">{{.HuiDaContents}}</p>
+            <p id="hiddencontent" style="display:none;">{{.Contents}} </p>
         </div>
     </div>
 
@@ -82,6 +82,7 @@
             getuser();
             setTitleOnSelect(3);
             setistorf();
+            document.getElementById("showcontent").innerHTML = "{{.Contents}}";
         }
         //设置回答是否显示
         function setistorf() {

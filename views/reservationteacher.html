@@ -1086,10 +1086,10 @@
         var timesex2 = '16:00';
         var timeseven1 = '16:00';
         var timeseven2 = '17:00';
-        var timeeight1 = '18:00';
-        var timeeight2 = '19:00';
-        var timenine1 = '19:00';
-        var timenine2 = '20:00';
+        var timeeight1 = '17:00';
+        var timeeight2 = '18:00';
+        var timenine1 = '18:00';
+        var timenine2 = '19:00';
         var timelist1 = [timeone1, timetwo1, timethree1, timefour1, timefive1, timesex1, timeseven1, timeeight1, timenine1];
         var timelist2 = [timeone2, timetwo2, timethree2, timefour2, timefive2, timesex2, timeseven2, timeeight2, timenine2];
 
@@ -1107,10 +1107,10 @@
         var timesex2a = '15:50';
         var timeseven1a = '16:00';
         var timeseven2a = '16:50';
-        var timeeight1a = '18:00';
-        var timeeight2a = '18:50';
-        var timenine1a = '19:00';
-        var timenine2a = '19:50';
+        var timeeight1a = '17:00';
+        var timeeight2a = '17:50';
+        var timenine1a = '18:00';
+        var timenine2a = '18:50';
         var timelist1a = [timeone1a, timetwo1a, timethree1a, timefour1a, timefive1a, timesex1a, timeseven1a, timeeight1a, timenine1a];
         var timelist2a = [timeone2a, timetwo2a, timethree2a, timefour2a, timefive2a, timesex2a, timeseven2a, timeeight2a, timenine2a];
         //设置预约状态
@@ -1329,6 +1329,7 @@
                             //alert(data["id"]);
                             if (data["id"] > 0) {
                                 alert("修改成功！");
+                                document.getElementById(nowtxtname).tag = data["id"]
                                 document.getElementById(nowtxtname).innerHTML = "可约";
                                 document.getElementById(nowdivname).className = "arrow-ups";
                             } else {
@@ -1338,9 +1339,9 @@
 
             } else if (nowName == "可约" && notimeistorf == 1) {
                 //alert("可约改不可约");//删除一条数据
-                var delonline = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebooking/" + nowTagid;
+                var delonline = "http://{{.Website}}/orange/onlinecoursebooking/DeleteOnlinecoursebooking/" + nowTagid;                
                 $.getJSON(delonline, function (deldata) {
-                    if (deldata != null && deldata + "" == "OK") {
+                    if (deldata != null && deldata == "OK") {
                         alert("修改成功！");
                         document.getElementById(nowtxtname).innerHTML = "不可约";
                         document.getElementById(nowdivname).className = "arrow-upno";

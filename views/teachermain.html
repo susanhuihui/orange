@@ -855,17 +855,19 @@
                 return;
                 //alert("账户余额不能少于100元！");
             }
-            var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
-            $.getJSON(getstate, function (data) {
-                if (nowmoney - 100 > data) {
-                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data).toFixed(2);
-                    tixianistorf = 1;
-                }
-                else {
-                    document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
-                    tixianistorf = 0;
-                }
-            });
+            //var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
+            //$.getJSON(getstate, function (data) {
+            //    if (nowmoney - 100 > data) {
+            //        document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data).toFixed(2);
+            //        tixianistorf = 1;
+            //    }
+            //    else {
+            //        document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+            //        tixianistorf = 0;
+            //    }
+            //});
+            document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
+            tixianistorf = 1;
         }
 
         //提现确定按钮事件
