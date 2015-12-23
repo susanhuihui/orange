@@ -747,7 +747,7 @@ func (c *MainController) UpdateStudent2() {
 		c.TplNames = "personal.html" //跳到
 	}
 	request := c.Ctx.Request
-	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	jsons, imgstr := models.GetImganddata2(request, Headurl, HeadurlFu)
 	fmt.Println("图片路径为：")
 	fmt.Println(jsons)
 	fmt.Println(imgstr)
@@ -895,7 +895,7 @@ func (c *MainController) UpdateTeacher2() {
 		c.TplNames = "personalteacher.html" //跳到
 	}
 	request := c.Ctx.Request
-	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	jsons, imgstr := models.GetImganddata2(request, Headurl, HeadurlFu)
 	fmt.Println("图片路径为：")
 	fmt.Println(jsons)
 	fmt.Println(imgstr)

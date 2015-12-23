@@ -637,7 +637,7 @@ func GetImganddata(request *http.Request, picpath string) (json string, imgstr s
 }
 
 //上传图片
-func GetImganddata2(request *http.Request, headpath string) (json string, imgstr string) {
+func GetImganddata2(request *http.Request, headpath string, headpathfu string) (json string, imgstr string) {
 	request.ParseMultipartForm(32 << 20)
 
 	multipartForm := request.MultipartForm
@@ -677,7 +677,9 @@ func GetImganddata2(request *http.Request, headpath string) (json string, imgstr
 			defer fileo.Close()
 			filePath, _ := exec.LookPath(os.Args[0])
 			path := strings.Replace(filePath, "orange.exe", "", 1)
-			outputFilePath := path + "views/" + headpath + name
+			outputFilePath := path + "views" + `\` + headpathfu + name
+			fmt.Println("保存图片路径为：")
+			fmt.Println(outputFilePath)
 			fileWriter, err := os.OpenFile(outputFilePath, os.O_WRONLY|os.O_CREATE,
 				0666)
 
