@@ -210,6 +210,8 @@ func init() {
 	beego.SetStaticPath("/orange/Teacher/ListenOverHtml/b/css", `views/b/css`)
 	beego.SetStaticPath("/orange/Teacher/ListenOverHtml/b/js", `views/b/js`)
 
+	beego.SetStaticPath("/orange/Teacher/UserAskQuestion/b/fonts", "views/b/fonts")
+
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/Teacher", &controllers.TeacherController{})
 

@@ -26,7 +26,8 @@ background: -webkit-linear-gradient(top, #fff, #DDDDDD);   /*Safari5.1 Chrome 10
 
 background: -o-linear-gradient(top, #fff, #DDDDDD);  /*Opera 11.10+*/
 
-} 
+}
+#editor img { width:200px;}
 #editor {
 	max-height: 550px;
 	height: 550px;
