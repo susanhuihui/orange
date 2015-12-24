@@ -1,36 +1,36 @@
-var allcookies = document.cookie;
+ï»¿var allcookies = document.cookie;
 function getCookie(cookie_name) {
     var allcookies = document.cookie;
-    var cookie_pos = allcookies.indexOf(cookie_name);   //Ë÷ÒýµÄ³¤¶È  
-    // Èç¹ûÕÒµ½ÁËË÷Òý£¬¾Í´ú±ícookie´æÔÚ£¬    
-    // ·´Ö®£¬¾ÍËµÃ÷²»´æÔÚ¡£    
+    var cookie_pos = allcookies.indexOf(cookie_name);   //ç´¢å¼•çš„é•¿åº¦  
+    // å¦‚æžœæ‰¾åˆ°äº†ç´¢å¼•ï¼Œå°±ä»£è¡¨cookieå­˜åœ¨ï¼Œ    
+    // åä¹‹ï¼Œå°±è¯´æ˜Žä¸å­˜åœ¨ã€‚    
     if (cookie_pos != -1) {
-        // °Ñcookie_pos·ÅÔÚÖµµÄ¿ªÊ¼£¬Ö»Òª¸øÖµ¼Ó1¼´¿É¡£    
-        cookie_pos += cookie_name.length + 1;      //ÕâÀïÎÒ×Ô¼ºÊÔ¹ý£¬ÈÝÒ×³öÎÊÌâ£¬ËùÒÔÇë´ó¼Ò²Î¿¼µÄÊ±ºò×Ô¼ººÃºÃÑÐ¾¿Ò»ÏÂ¡£¡£¡£    
+        // æŠŠcookie_posæ”¾åœ¨å€¼çš„å¼€å§‹ï¼Œåªè¦ç»™å€¼åŠ 1å³å¯ã€‚    
+        cookie_pos += cookie_name.length + 1;      //è¿™é‡Œæˆ‘è‡ªå·±è¯•è¿‡ï¼Œå®¹æ˜“å‡ºé—®é¢˜ï¼Œæ‰€ä»¥è¯·å¤§å®¶å‚è€ƒçš„æ—¶å€™è‡ªå·±å¥½å¥½ç ”ç©¶ä¸€ä¸‹ã€‚ã€‚ã€‚    
         var cookie_end = allcookies.indexOf(";", cookie_pos);
         if (cookie_end == -1) {
             cookie_end = allcookies.length;
         }
-        var value = unescape(allcookies.substring(cookie_pos, cookie_end)); //ÕâÀï¾Í¿ÉÒÔµÃµ½ÄãÏëÒªµÄcookieµÄÖµÁË¡£¡£¡£    
+        var value = unescape(allcookies.substring(cookie_pos, cookie_end)); //è¿™é‡Œå°±å¯ä»¥å¾—åˆ°ä½ æƒ³è¦çš„cookieçš„å€¼äº†ã€‚ã€‚ã€‚    
     }
     return value;
 }
 
-//Çå³ýcookie  
+//æ¸…é™¤cookie  
 function clearCookie(name) {
     setCookie(name, "", -1);
 }
 
-//ÉèÖÃcookie  
+//è®¾ç½®cookie  
 function setCookie(name, value, seconds) {
-    seconds = seconds || 0;   //secondsÓÐÖµ¾ÍÖ±½Ó¸³Öµ£¬Ã»ÓÐÎª0£¬Õâ¸ö¸ùphp²»Ò»Ñù¡£  
+    seconds = seconds || 0;   //secondsæœ‰å€¼å°±ç›´æŽ¥èµ‹å€¼ï¼Œæ²¡æœ‰ä¸º0ï¼Œè¿™ä¸ªæ ¹phpä¸ä¸€æ ·ã€‚  
     var expires = "";
-    if (seconds != 0) {      //ÉèÖÃcookieÉú´æÊ±¼ä  
+    if (seconds != 0) {      //è®¾ç½®cookieç”Ÿå­˜æ—¶é—´  
         var date = new Date();
         date.setTime(date.getTime() + (seconds * 1000));
         expires = "; expires=" + date.toGMTString();
     }
-    document.cookie = name + "=" + escape(value) + expires + "; path=/";   //×ªÂë²¢¸³Öµ  
+    document.cookie = name + "=" + escape(value) + expires + "; path=/";   //è½¬ç å¹¶èµ‹å€¼  
 }
 
 function getCookie2(name) {
@@ -50,19 +50,19 @@ String.prototype.trim = function () {
 
 
 
-//É¾³ý×óÓÒÁ½¶ËµÄ¿Õ¸ñ
+//åˆ é™¤å·¦å³ä¸¤ç«¯çš„ç©ºæ ¼
 function trim(str) {
     return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-//¸ù¾Ý×Ö·û´®£¨2015-11-01T09:30:50+08:00£©»ñÈ¡¼òµ¥Ê±¼ä2015-5-5
+//æ ¹æ®å­—ç¬¦ä¸²ï¼ˆ2015-11-01T09:30:50+08:00ï¼‰èŽ·å–ç®€å•æ—¶é—´2015-5-5
 function getSimpDate(time) {
     var starttime = new Date(time);
     var strstr = starttime.getFullYear() + "-" + (starttime.getMonth() + 1) + "-" + starttime.getDate();
     return strstr;
 }
 
-//¸ù¾Ý×Ö·û´®£¨2015-11-01T09:30:50+08:00£©»ñÈ¡¼òµ¥Ê±·Ö
+//æ ¹æ®å­—ç¬¦ä¸²ï¼ˆ2015-11-01T09:30:50+08:00ï¼‰èŽ·å–ç®€å•æ—¶åˆ†
 function getSimpTime(time) {
     var starttime = new Date(time);
     var hours = starttime.getHours();
@@ -77,7 +77,7 @@ function getSimpTime(time) {
     return stardate;
 }
 
-//½«Ê±¼ä×ª»»Îª¿ÉÌí¼Ó»òÐÞ¸ÄµÄÑù×Ó
+//å°†æ—¶é—´è½¬æ¢ä¸ºå¯æ·»åŠ æˆ–ä¿®æ”¹çš„æ ·å­
 function getInsertDate(time) {
     var date = new Date(time);
     var seperator1 = "-";
@@ -108,41 +108,36 @@ function getInsertDate(time) {
     return currentdate;
 }
 
-//»ñÈ¡ÏÖÔÚÊ±¼ä£¬ÓÃÓÚÊý¾Ý¿âÌí¼ÓÊ±¼äÊ±Ê¹ÓÃ 2015-12-24T18:19:00.0000000+08:00
+//èŽ·å–çŽ°åœ¨æ—¶é—´ï¼Œç”¨äºŽæ•°æ®åº“æ·»åŠ æ—¶é—´æ—¶ä½¿ç”¨ 2015-12-24T18:19:00.0000000+08:00
+// ä½œè€…: æŽå‘å“²
+// æ—¶é—´: 2012/12/15
 function getInsertNowDate() {
-    var date = new Date();
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var hours = date.getHours();
-    if (hours >= 0 && hours <= 9) {
-        hours = "0" + hours;
-    }
-    var minutes = date.getMinutes();
-    if (minutes >= 0 && minutes <= 9) {
-        minutes = "0" + minutes;
-    }
-    var second = date.getSeconds();
-    if (second >= 0 && second <= 9) {
-        second = "0" + second;
-    }
-    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + "T" + hours + seperator2 + minutes
-            + seperator2 + second + "Z";//".0000000+08:00";
-    return currentdate;
+    var nowTime = Date.now();       // èŽ·å–å½“å‰æ—¶é—´, è¡¨ç¤ºæ–¹å¼ä¸ºä»Ž1970-1-1 00:00:00 UTCè‡³ä»Šæ‰€ç»è¿‡çš„æ¯«ç§’æ•°
+    console.log("å½“å‰æ—¶é—´: " + new Date(nowDate));
+
+    // èŽ·å–çŽ°åœ¨çš„æ—¶åŒºåç§»é‡
+    var currentTimeOffset = (new Date()).getTimezoneOffset() / 60;
+
+    // æ ¹æ®èŽ·å–åˆ°çš„æ—¶åŒºåç§»é‡è¿›è¡Œåç§»è®¡ç®—, ä¾‹å¦‚
+    // ä¸­å›½æ˜¯+8:00æ—¶åŒº, åç§»é‡æ˜¯-8, é‚£ä¹ˆåœ¨å°†æ—¶é—´è¿›è¡ŒJSONè½¬æ¢æ—¶å€™ä¼šè¿˜åŽŸåŒ—å›žå½’çº¿æ—¶é—´, åŠå½“å‰æ—¶é—´å‡å°‘8å°æ—¶, éœ€è¦åšåç§»çº æ­£.
+    // å¦‚å½“å‰æ—¶é—´æ˜¯ 23:00:00 GMT+0800 (ä¸­å›½æ ‡å‡†æ—¶é—´). å½“è¿›è¡ŒJSONè½¬æ¢åŽä¼šå–åŒ—å›žå½’çº¿æ—¶é—´, å³å˜ä¸º8å°æ—¶å‰çš„15:00:00, æ‰€ä»¥è¦åš8å°æ—¶çš„åç§»çº æ­£. 
+    // åŒç†, å¦‚æžœæ˜¯-0800æ—¶åŒº(æ³¨æ„, æ˜¯æ—¶åŒº, ä¸æ˜¯æ—¶åŒºåç§»), åˆ™åº”å½“åœ¨åŒ—å›žçº¿æ—¶é—´åŸºç¡€ä¸Šå‡å°‘8å°æ—¶
+    var offsetTime = nowTime - (currentTimeOffset * 60 * 60 * 1000);
+
+    var nowDate = new Date(offsetTime);
+    console.log("åç§»åŽæ—¶é—´: " + nowDate + "(åº”ä¸Žå½“å‰æ—¶é—´å‘åŽåç§»16å°æ—¶)");
+    var jsonDate = nowDate.toJSON();        // èŽ·å–è¿›è¡Œä¸¤æ¬¡ä¾¿å®œåŽçš„CSTæ–¹å¼è¡¨ç¤ºçš„æ—¶é—´
+    console.log("CSTæ ¼å¼åŒ–åŽæ—¶é—´: " + jsonDate + "(åº”ä¸Žå½“å‰æ—¶é—´å‘åŽåç§»16å°æ—¶)");
+
+    jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "+08:00";
+
+    return jsonDate;
 }
 
-//»ñÈ¡½ñÌìÖ®Ç°µÄ¼¸¸öÈÕÆÚ£¬²»°üÀ¨½ñÌì
+//èŽ·å–ä»Šå¤©ä¹‹å‰çš„å‡ ä¸ªæ—¥æœŸï¼Œä¸åŒ…æ‹¬ä»Šå¤©
 function getdate(daycount) {
-    //ÉèÖÃÈÕÆÚ£¬µ±Ç°ÈÕÆÚµÄÇ°ÆßÌì
-    var myDate = new Date(); //»ñÈ¡½ñÌìÈÕÆÚ
+    //è®¾ç½®æ—¥æœŸï¼Œå½“å‰æ—¥æœŸçš„å‰ä¸ƒå¤©
+    var myDate = new Date(); //èŽ·å–ä»Šå¤©æ—¥æœŸ
     myDate.setDate(myDate.getDate() - daycount);
     var dateArray = [];
     var dateTemp;
@@ -154,10 +149,10 @@ function getdate(daycount) {
     }
     return dateArray;
 }
-//»ñÈ¡ÈÕÆÚ¼¯ºÏµÚÒ»¸ö²ÎÊý0´ú±í´Ó½ñÌì¿ªÊ¼1´ú±í´ÓÃ÷Ìì¿ªÊ¼»ñÈ¡ÈÕÆÚ£¬µÚ¶þ¸ö²ÎÊýÍùºó»ñÈ¡¼¸¸öÈÕÆÚ
+//èŽ·å–æ—¥æœŸé›†åˆç¬¬ä¸€ä¸ªå‚æ•°0ä»£è¡¨ä»Žä»Šå¤©å¼€å§‹1ä»£è¡¨ä»Žæ˜Žå¤©å¼€å§‹èŽ·å–æ—¥æœŸï¼Œç¬¬äºŒä¸ªå‚æ•°å¾€åŽèŽ·å–å‡ ä¸ªæ—¥æœŸ
 function getdate2(startday, daycount) {
-    //ÉèÖÃÈÕÆÚ£¬µ±Ç°ÈÕÆÚµÄÇ°ÆßÌì
-    var myDate = new Date(); //»ñÈ¡½ñÌìÈÕÆÚ
+    //è®¾ç½®æ—¥æœŸï¼Œå½“å‰æ—¥æœŸçš„å‰ä¸ƒå¤©
+    var myDate = new Date(); //èŽ·å–ä»Šå¤©æ—¥æœŸ
     myDate.setDate(myDate.getDate() + startday);
     var dateArray = [];
     var dateTemp;
@@ -170,17 +165,17 @@ function getdate2(startday, daycount) {
     return dateArray;
 }
 
-//»ñÈ¡ÈÕÆÚµÄÔÂºÍÈÕ£¬´«Èë²ÎÊý¸ñÊ½£º2015-12-12£¬´«³ö¸ñÊ½Îª£º12-12
+//èŽ·å–æ—¥æœŸçš„æœˆå’Œæ—¥ï¼Œä¼ å…¥å‚æ•°æ ¼å¼ï¼š2015-12-12ï¼Œä¼ å‡ºæ ¼å¼ä¸ºï¼š12-12
 function getmonthday(time) {
     time += " 00:00:00";
     time = time.replace(/-/g, "/");
-    var myDate = new Date(time); //»ñÈ¡½ñÌìÈÕÆÚ
+    var myDate = new Date(time); //èŽ·å–ä»Šå¤©æ—¥æœŸ
     var strdate = (myDate.getMonth() + 1) + "-" + myDate.getDate();
     return strdate;
 }
 
 
-//½«Ä³¸öÊ±¼ä¶ÎµÄÐ¡Ê±£¬¼õÈ¥¹Ì¶¨Öµ ´«Èë£º2015-12-12 15£º00£º00 ´«³ö£º2015-12-12 03£º00£º00
+//å°†æŸä¸ªæ—¶é—´æ®µçš„å°æ—¶ï¼Œå‡åŽ»å›ºå®šå€¼ ä¼ å…¥ï¼š2015-12-12 15ï¼š00ï¼š00 ä¼ å‡ºï¼š2015-12-12 03ï¼š00ï¼š00
 function setHours(date, value) {
     date.setHours(date.getHours() - value);
     return date;
