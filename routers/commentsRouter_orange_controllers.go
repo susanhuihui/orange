@@ -92,6 +92,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
 		beego.ControllerComments{
+			"Poststu",
+			`/AddAmountrecordsStudent/`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
 			"GetOne",
 			`/GetAmountrecordsById/:id`,
 			[]string{"get"},
@@ -157,6 +164,13 @@ func init() {
 		beego.ControllerComments{
 			"Put",
 			`/UpdateAmountrecordsById/:id`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
+		beego.ControllerComments{
+			"FaFang",
+			`/FaFang/:id/:identityid`,
 			[]string{"post"},
 			nil})
 
@@ -1459,6 +1473,13 @@ func init() {
 		beego.ControllerComments{
 			"DeleteQuestionask",
 			`/DeleteQuestionask/:id`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:QuestionaskController"] = append(beego.GlobalControllerRouter["orange/controllers:QuestionaskController"],
+		beego.ControllerComments{
+			"DeleteQuestionaskFStu",
+			`/DeleteQuestionaskFStu/:id/:userid`,
 			[]string{"get"},
 			nil})
 

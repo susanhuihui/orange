@@ -31,10 +31,8 @@ var SqlUserPicList string = `SELECT users.PKId,UserName,AvatarPath,
 var SqlUserTeacher string = `select * ,
 	(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
     ifnull((select count(userfor.pkid) from userinformation userfor where userfor.pkid in (select useridactive from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId group by useridactive)),0) as AllPerson,
-    ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
-		(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId)),0) as AllDate,
-    ifnull((select count(*) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
-		(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId)),0) as AllCount,
+    ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.UserIdPassive = users.pkid) ,0) as  AllDate,
+    ifnull((select count(*) from onlineeducation.onlinecourserecord as oc where oc.UserIdPassive = users.pkid) ,0)as AllCount,
         (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=users.PKId and IsMain=1 limit 1)) as CourseName,
         (select cous.pkid from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=users.PKId and IsMain=1 limit 1)) as CourseNameId,
     (select DegreeName from degree as deg where users.UserDegree = deg.PkId) as DegreeName,
@@ -237,6 +235,8 @@ var SqlAccountRecordTMcountByUID string = `select sum(amt.RecordMoney) as Record
 //无参数，分页
 var SqlAccountRecordAll string = `select amt.*,(select username from userinformation as userinfo where userinfo.pkid = amt.userid) as UserName
 	,(select IphoneNum from userinformation as userinfo where userinfo.pkid = amt.userid) as IphoneNum
+,(select identityname from identity as iden where iden.pkid = (select identityid from userinformation as userinfo where userinfo.pkid = amt.userid)) as IdentityName,
+ (select identityid from userinformation as userinfo where userinfo.pkid = amt.userid) as IdentityId
 	from amountrecords as amt
 	where recordtype = 1 and iscomplete = 0
 	order by recordtime desc `
@@ -249,8 +249,9 @@ var SqlAccountRecordAll string = `select amt.*,(select username from userinforma
 //调用方法名：
 //参数说明：被提问者主键id，从第几行开始，获取几行
 //2015-11-04
-var SqlQuestionAskByTUserid string = `select qa.*,(select username from userinformation as userinfo where qa.askuserid = userinfo.pkid) as UserName ,
-(select count(*) from answers as ans where ans.qaid = qa.pkid) as AnswerCount
+var SqlQuestionAskByTUserid string = `select qa.PKId,qa.AskUserId,qa.AnswerUserId,qa.GCId,qa.Title,qa.BadeTime,qa.EndTime,qa.AmountMoney,qa.IsSee,
+	(select username from userinformation as userinfo where qa.askuserid = userinfo.pkid) as UserName ,
+	(select count(*) from answers as ans where ans.qaid = qa.pkid) as AnswerCount
 	from questionask as qa 
 	where qa.answeruserid = ? 
 	order by qa.badetime desc `
@@ -396,7 +397,8 @@ var SqlTranscationRecordsByUserid string = `select trds.*,(select username from 
 //调用方法名：
 //参数说明：学生主键id，从第行开始，获取多少行
 //2015-11-05
-var SqlQuestionAskBySUserid string = `select qa.*,(select username from userinformation as userinfo where qa.AnswerUserId = userinfo.pkid) as UserName 
+var SqlQuestionAskBySUserid string = `select qa.PKId,qa.AskUserId,qa.AnswerUserId,qa.GCId,qa.Title,qa.BadeTime,qa.EndTime,qa.AmountMoney,qa.IsSee,
+	(select username from userinformation as userinfo where qa.AnswerUserId = userinfo.pkid) as UserName 
 	from questionask as qa 
 	where AskUserId = ? 
 	order by badetime desc `
@@ -523,15 +525,15 @@ var SqlUserinformationAllTeacherByOnline1 string = `select userinfo.*,
 //调用方法名：
 //参数说明：本月开始时间，本月结束时间，老师主键id
 //2015-11-05
-var SqlUserinformationByTid string = `select userinfo.* ,ifnull((select count(*) from userinformation as uuf where uuf.pkid in
-							(select useridactive from onlineeducation.onlinecourserecord as ocb where ocb.UserIdPassive = userinfo.pkid group by useridactive)),0) as AllPerson,
-					   ifnull((select sum(oc.ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.useridpassive = userinfo.pkid),0) as AllTime,
-	                   ifnull((select sum(ocr.ClassNumber) from onlineeducation.onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid and ocr.starttime between '?' and '?'),0) as AllTimeMouth,
-	                   (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
-					   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseName,
-				   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu
-	from userinformation as userinfo 
-	where userinfo.pkid = ?`
+//var SqlUserinformationByTid string = `select userinfo.* ,ifnull((select count(*) from userinformation as uuf where uuf.pkid in
+//							(select useridactive from onlineeducation.onlinecourserecord as ocb where ocb.UserIdPassive = userinfo.pkid group by useridactive)),0) as AllPerson,
+//					   ifnull((select sum(oc.ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.useridpassive = userinfo.pkid),0) as AllTime,
+//	                   ifnull((select sum(ocr.ClassNumber) from onlineeducation.onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid and ocr.starttime between ? and ?),0) as AllTimeMouth,
+//	                   (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
+//					   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseName,
+//				   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu
+//	from userinformation as userinfo
+//	where userinfo.pkid = ?`
 
 //29.
 //用途：老师模块：查询老师的所有在线课程评价
@@ -694,6 +696,6 @@ var SqlOnlineBookingRecordBybookiduid string = `select *
 						from onlinecoursebookingrecord
 						where userid = ? and ocbid = ?`
 
-var SqlUserMessagebymuid string = `SELECT * FROM onlineeducation.usermessage where messageid = ? and activeuserid = ?`
+var SqlUserMessagebymuid string = `SELECT * FROM onlineeducation.usermessage where (messageid = ? and activeuserid = ?) or pkid=?`
 
 var SqlOnlineBooningbyid string = `SELECT * FROM onlineeducation.onlinecoursebooking where pkid=?`

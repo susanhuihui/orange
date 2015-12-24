@@ -66,6 +66,7 @@
                                     '","States":' + 0 +
                                     ',"MesTime":"' + getInsertNowDate() +
                                     '"}';
+            alert(getInsertNowDate());
             $.post("http://{{.Website}}/orange/usermessage/AddUsermessage/", addmess,
                 function (data) {
                     if (data["id"] > 0) {
@@ -74,7 +75,7 @@
                     } else {
                         alert("留言失败！");
                     }
-                });
+            });
         }
 
     </script>

@@ -36,10 +36,10 @@ func (c *UsermessageController) Post() {
 		fmt.Printf("k=%v, v=%v\n", k, v)
 		jsonS = k
 	}
+	fmt.Println("添加留言实体：")
+	fmt.Println(jsonS)
 	var v models.Usermessage
 	json.Unmarshal([]byte(jsonS), &v)
-	//	var v models.Usermessage
-	//	json.Unmarshal(c.Ctx.Input.RequestBody, &v)
 	if id, err := models.AddUsermessage(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
@@ -78,10 +78,18 @@ func (c *UsermessageController) GetUsermessageBymuid() {
 	useridStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(useridStr)
 	v, err := models.GetUsermessageBymuid(mid, userid)
+	if err == nil && len(v) > 0 {
+		for i := 0; i < len(v); i++ {
+			if v[i].States != 1 {
+				v[i].States = 1
+				err = models.UpdateUsermessageById(&v[i])
+			}
+		}
+	}
 	if err != nil {
-		c.Data["json"] = err.Error()
+		c.Data["json"] = "OK"
 	} else {
-		c.Data["json"] = v
+		c.Data["json"] = "NO"
 	}
 	c.ServeJson()
 }

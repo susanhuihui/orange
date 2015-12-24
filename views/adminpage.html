@@ -47,41 +47,6 @@
                             <th>操作
                                                 </th>
                         </tr>
-                        <tr>
-
-                            <td>王大全
-                                                </td>
-                            <td>￥300.00
-                                                </td>
-                            <td>yangyan@126.com
-                                                </td>
-                            <td>2015-09-18  19:00:00
-                                                </td>
-                            <td>19812344321
-                                                </td>
-                            <td>申请中
-                                                </td>
-                            <td>
-                                <a href="#" class="btn btn-warning radsty">发放</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>王大全
-                                                </td>
-                            <td>￥300.00
-                                                </td>
-                            <td>yangyan@126.com
-                                                </td>
-                            <td>2015-09-18  19:00:00
-                                                </td>
-                            <td>19812344321
-                                                </td>
-                            <td>已发放
-                                                </td>
-                            <td>
-                                <a href="#" class="btn btn-warning radsty">删除</a>
-                            </td>
-                        </tr>
                     </table>
                     <div id="Pagination5" class="pagination"></div>
                 </div>
@@ -126,19 +91,20 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
                 //alert(data);
-                var mytixianstr = '<tr class="stuth"><th>提现申请人</th><th>申请金额</th><th>支付宝账号</th><th>申请时间</th><th>联系方式</th><th>状态</th><th>操作</th>';
+                var mytixianstr = '<tr class="stuth"><th>提现申请人</th><th>身份</th><th>申请金额</th><th>支付宝账号</th><th>申请时间</th><th>联系方式</th><th>状态</th><th>操作</th>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
                         var nowstate = "";
                         if (data[i]["IsComplete"] == 0) { nowstate = '<span style="color:red;">申请中</span>'; }
                         else if (data[i]["IsComplete"] == 1) { nowstate = "已发放"; }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["IdentityName"] + "</td>" +
                                     "<td>" + data[i]["RecordMoney"] + "</td>" +
                                     "<td>" + data[i]["AccountNumber"] + "</td>" +
                                     "<td>" + getSimpDate(data[i]["RecordTime"]) + " " + getSimpTime(data[i]["RecordTime"]) + "</td>" +
                                     "<td>" + data[i]["IphoneNum"] + "</td>" +
                                     '<td>' + nowstate + '</td>' +
-                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="fafang(' + data[i]["Id"] + ')">发放</a>' + '</td>' +
+                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="fafang(' + data[i]["Id"] + ',' + data[i]["IdentityId"] + ')">发放</a>' + '</td>' +
                                     '</tr>';
                         mytixianstr += itmes
                     }
@@ -149,15 +115,15 @@
         }
 
         //点击发放按钮
-        function fafang(recid) {
+        function fafang(recid, identityid) {
             //alert(recid);
-            var onerecore = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsById/" + recid;
+            var onerecore = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsById/" + recid;//查询一条提现记录
             //alert(allClass);
             var fafanguserid = 0;
             var nowyue = 0;
             $.getJSON(onerecore, function (data) {
                 if (data["Id"] > 0) {
-                    //添加一条提现申请信息
+                    //更新一条提现申请信息
                     var tixianmoney = data["RecordMoney"];
                     var yee = data["Balance"]
                     nowyue = yee - tixianmoney;
@@ -171,31 +137,14 @@
                                     ',"IsComplete":1' +
                                     ',"AccountNumber":"' + data["AccountNumber"] +
                                     '"}';
-                    $.post("http://{{.Website}}/orange/amountrecords/UpdateAmountrecordsById/" + recid, uprecord,
+                    $.post("http://{{.Website}}/orange/amountrecords/FaFang/" + recid + "/" + identityid, uprecord,//更改提现记录为已提现
                         function (update) {
                             if (update == "OK") {
-                                var oneaccount = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + fafanguserid;
-                                $.getJSON(oneaccount, function (dataacc) {
-                                    var upuser = '{"UserId":' + dataacc["UserId"] +
-                                        ',"Balance":' + nowyue +
-                                        ',"FundState":' + dataacc["FundState"] +
-                                        ',"OpenTime":"' + getInsertDate(dataacc["OpenTime"]) +
-                                        '","AccountNumber":"' + dataacc["AccountNumber"] +
-                                        '","AccountTypeId":' + dataacc["AccountTypeId"] +
-                                        '}';
-                                    $.post("http://{{.Website}}/orange/accountfunds/UpdateAccountfundsById/" + dataacc["Id"], upuser,
-                                       function (upuserdate) {
-                                           if (upuserdate == "OK") {
-                                               alert("发放成功！");
-                                           } else {
-                                               alert("发放失败！");
-                                           }
-                                       });
-                                    window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/";
-                                });
+                                alert("发放成功！");
                             } else {
-
+                                alert("发放失败！");
                             }
+                            window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/";
                     });
                 }
             });

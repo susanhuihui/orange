@@ -7,6 +7,7 @@ import (
 	"orange/models"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego"
 )
@@ -39,6 +40,50 @@ func (c *AmountrecordsController) Post() {
 	var v models.Amountrecords
 	json.Unmarshal([]byte(jsonS), &v)
 	if id, err := models.AddAmountrecords(&v); err == nil {
+		c.Data["json"] = map[string]int64{"id": id}
+	} else {
+		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}
+
+// @Title Post
+// @Description create Amountrecords
+// @Param	body		body 	models.Amountrecords	true		"body for Amountrecords content"
+// @Success 200 {int} models.Amountrecords.Id
+// @Failure 403 body is empty
+// @router /AddAmountrecordsStudent/ [post]
+func (c *AmountrecordsController) Poststu() {
+	var jsonS string
+	for k, v := range c.Ctx.Request.Form {
+		fmt.Printf("k=%v, v=%v\n", k, v)
+		jsonS = k
+	}
+	fmt.Println("申请提现：")
+	fmt.Println(jsonS)
+	var v models.Amountrecords
+	json.Unmarshal([]byte(jsonS), &v)
+	v.Balance = v.Balance - v.RecordMoney
+	if id, err := models.AddAmountrecords(&v); err == nil {
+		//添加冻结学生中户要提现的资金
+		//修改学生账户资金余额
+		var fontfonz models.Frozenfunds
+		fontfonz.UserId = v.UserId
+		fontfonz.FrozenMoney = v.RecordMoney
+		fontfonz.FrozenType = 2 //提现
+		var text = strconv.FormatInt(int64(id), 10)
+		fontfonz.BusinessId, _ = strconv.Atoi(text)
+		fontfonz.FrozenTime = time.Now()
+		fontfonz.FrozenState = 0
+		addf, aerr := models.AddFrozenfunds(&fontfonz)
+		fmt.Println(addf)
+		if aerr == nil {
+			useracc, _ := models.GetAccountfundsByuid(v.UserId) //用户账户信息
+			useracc.Balance = useracc.Balance - v.RecordMoney
+			upacerr := models.UpdateAccountfundsById(&useracc)
+			fmt.Println(upacerr)
+		}
+
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
 		c.Data["json"] = err.Error()
@@ -304,6 +349,50 @@ func (c *AmountrecordsController) Put() {
 	v := models.Amountrecords{Id: id}
 	json.Unmarshal([]byte(jsonS), &v)
 	if err := models.UpdateAmountrecordsById(&v); err == nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}
+
+// @Title Update
+// @Description update the Amountrecords
+// @Param	id		path 	string	true		"The id you want to update"
+// @Param	body		body 	models.Amountrecords	true		"body for Amountrecords content"
+// @Success 200 {object} models.Amountrecords
+// @Failure 403 :id is not int
+// @router /FaFang/:id/:identityid [post]
+func (c *AmountrecordsController) FaFang() {
+	idStr := c.Ctx.Input.Params[":id"]
+	id, _ := strconv.Atoi(idStr) //提现信息主键
+	identityidStr := c.Ctx.Input.Params[":identityid"]
+	identityid, _ := strconv.Atoi(identityidStr)
+	var jsonS string
+	for k, v := range c.Ctx.Request.Form {
+		fmt.Printf("k=%v, v=%v\n", k, v)
+		jsonS = k
+	}
+	v := models.Amountrecords{Id: id}
+	json.Unmarshal([]byte(jsonS), &v)
+	//查询当前用户账户信息
+	account, _ := models.GetAccountfundsByuid(v.UserId)
+
+	tixianmoney := v.RecordMoney                               //操作金额
+	v.Balance = account.Balance - v.RecordMoney                //更新提现记录余额
+	if err := models.UpdateAmountrecordsById(&v); err == nil { //修改提现记录为
+		if identityid == 1 { //给老师 发放金额：老师账户余额需要更新
+			account.Balance = account.Balance - tixianmoney
+			upacc := models.UpdateAccountfundsById(&account)
+			fmt.Println(upacc)
+		} else if identityid >= 2 && identityid <= 3 { //学生无需更新账户余额，金额已经从余额中扣除
+			//解冻资金，
+			fontfonz, _ := models.GetFrozenfundsByUidOnId(v.UserId, 2, v.Id)
+			fontfonz.ThawingTime = time.Now()
+			fontfonz.FrozenState = 1
+			fonterr := models.UpdateFrozenfundsById(&fontfonz)
+			fmt.Println(fonterr)
+		}
 		c.Data["json"] = "OK"
 	} else {
 		c.Data["json"] = err.Error()

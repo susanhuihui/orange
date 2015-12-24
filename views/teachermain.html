@@ -45,7 +45,7 @@
                 </div>
                 <div class="modal-footer" style="text-align: center;">
                     <button type="button" style="width: 30%;" class="btn btn-warning" data-dismiss="modal" onclick="addTixian()">确定</button>
-                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal" onclick="clearmoney()">取消</button>
                 </div>
             </div>
         </div>
@@ -855,18 +855,17 @@
                 return;
                 //alert("账户余额不能少于100元！");
             }
-            //var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
-            //$.getJSON(getstate, function (data) {
-            //    if (nowmoney - 100 > data) {
-            //        document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data).toFixed(2);
-            //        tixianistorf = 1;
-            //    }
-            //    else {
-            //        document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
-            //        tixianistorf = 0;
-            //    }
-            //});
-            document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
+            var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
+            $.getJSON(getstate, function (data) {
+                if (nowmoney - 100 > data) {
+                    document.getElementById("yueshow").innerHTML = (nowmoney - 100 - data).toFixed(2);
+                    tixianistorf = 1;
+                }
+                else {
+                    document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+                    tixianistorf = 0;
+                }
+            });
             tixianistorf = 1;
         }
 
@@ -878,14 +877,14 @@
             }
             if (nowmoney > 100) {
                 //判断是否提现的金额大于
-                var tmoney = trim(document.getElementById("txtoutmoney").value);
+                var tmoney = trim(document.getElementById("txtoutmoney").value);//正在提现的金额
                 var zhifuno = trim(document.getElementById("txtaccountuser").value);
-                var kecaozuomoney = document.getElementById("yueshow").innerHTML;
+                var kecaozuomoney = document.getElementById("yueshow").innerHTML;//可提现金额
                 if (tmoney == "") { alert("提现金额不能为空！"); return; }
                 if (zhifuno == "") { alert("支付宝账号不能为空！"); return; }
                 var re = /^\d+.?\d{0,2}$/;
                 if (!re.test(tmoney)) { alert("请正确输入金额！"); return; }
-                if (tmoney <= kecaozuomoney) {
+                if (parseFloat(tmoney) <= parseFloat(kecaozuomoney)) {
                     //查询当前余额
                     var getstate = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
                     $.getJSON(getstate, function (data) {
@@ -916,28 +915,39 @@
                     alert("提现金额不能大于可提现金额！");
                 }
             }
+            document.getElementById("txtoutmoney").value = "";
+            document.getElementById("txtaccountuser").value = "";
         }
-        function setRead(mid, uid) {
-            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;
-            $.getJSON(getstate, function (data) {
-                if (data != null) {
-                    for (var i = 0; i < data.length; i++) {
-                        var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
-                                     ',"PassiveUserId":' + data[i]["PassiveUserId"] +
-                                     ',"MessageId":' + data[i]["MessageId"] +
-                                     ',"Contents":"' + data[i]["Contents"] +
-                                     '","States":1' +
-                                     ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
-                                     '"}';
-                        $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/"+data[i]["Id"], upmest,
-                            function (update) {
-                                if (update == "OK") {
-                                    
-                                } else {
 
-                                }
-                            });
-                    }
+        function clearmoney() {
+            document.getElementById("txtoutmoney").value = "";
+            document.getElementById("txtaccountuser").value = "";
+        }
+        //mid：第一条留言主键id
+        //uid：学生主键id 主动留言者id
+        function setRead(mid, uid) {
+            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;//查询所有学生主动留言的信息
+            $.getJSON(getstate, function (data) {
+                if (data != "OK") {
+                    //for (var i = 0; i < data.length; i++) {
+                    //    if (data[i]["Contents"] != 1) {
+                    //        var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
+                    //                     ',"PassiveUserId":' + data[i]["PassiveUserId"] +
+                    //                     ',"MessageId":' + data[i]["MessageId"] +
+                    //                     ',"Contents":"' + data[i]["Contents"] +
+                    //                     '","States":1' +
+                    //                     ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
+                    //                     '"}';
+                    //        $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/" + data[i]["Id"], upmest,
+                    //            function (update) {
+                    //                if (update == "OK") {
+
+                    //                } else {
+
+                    //                }
+                    //            });
+                    //    }
+                    //}
                 }
             });
         }

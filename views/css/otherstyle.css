@@ -312,6 +312,7 @@ body{ background-color:#f5f5f5;}
 
 .teamesstabs{ border-top:1px solid #EDEDED; width:90%; margin-left:auto; margin-right:auto; padding-top:15px; text-align:left; color:#8D8D8D;}
 .teamesstabs td{ height:45px;}
+#showcontent img { width:50%;}
 
 
 /*教师列表*/
@@ -325,7 +326,7 @@ body{ background-color:#f5f5f5;}
 .teacherul a{ text-decoration:none; color:#8D8D8D;}
 .teasel{margin-left:15px; height:25px; width:120px; border:#ccc solid 1px; background:none;}
 .tealisttab{ width:90%; margin-left:auto; margin-right:auto; padding-top:25px; text-align:left; color:#8D8D8D;}
-.listheadimg{ border-radius:10px; height:100px; margin-bottom:10px;}
+.listheadimg{ border-radius:10px; height:100px; width:100px; margin-bottom:10px;}
 .tealisttd{border-bottom:1px solid #EDEDED; width:120px;}
 .teamainleft{ padding:25px 0px 10px 0px; text-align:center;}
 .teamainmiddle{ text-align:left; padding:35px 0px 10px 20px;}

@@ -188,7 +188,7 @@
                 </div>
                 <div class="modal-footer" style="text-align: center;">
                     <button type="button" style="width: 30%;" class="btn btn-warning" data-dismiss="modal" onclick="addTixian()">确定</button>
-                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal" onclick="clearmoney()">取消</button>
                 </div>
             </div>
         </div>
@@ -411,17 +411,7 @@
                                     <th>上课时间</th>
                                     <th>课时费</th>
                                     <th>操作</th>
-                                </tr>-->
-                                <!--<tr>
-                                    <td>高中数学</td>
-                                    <td>张嘉佳</td>
-                                    <td>2015-09-19</td>
-                                    <td>19:00---20:00</td>
-                                    <td>￥45.00</td>
-                                    <td>
-                                        <a href="evaluation.html" class="btn btn-warning radsty">待评价</a>
-                                    </td>
-                                </tr> -->
+                                </tr>-->                                
                             </table>
                             <div id="Pagination2" class="pagination"></div>
                         </div>
@@ -525,38 +515,7 @@
                                     <th>操作
                                                 </th>
                                 </tr>
-                                <tr>
-                                    <td>张嘉佳
-                                                </td>
-                                    <td>特别细心，特别全面
-                                                </td>
-                                    <td>
-                                        <img style="height: 25px;" src="images/star.png" />
-                                    </td>
-                                    <td>2015-10-10 19:30:00
-                                                </td>
-                                    <td>
-                                        <a href="evaluationmainstudents.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
-                                       
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>张嘉佳
-                                                </td>
-                                    <td>特别细心，特别全面
-                                                </td>
-                                    <td>
-                                        <img style="height: 25px;" src="images/star.png" />
-                                    </td>
-                                    <td>2015-10-10 19:30:00
-                                                </td>
-                                    <td>
-                                        <a href="evaluationmainstudents.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
-                                       
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
-                                    </td>
-                                </tr>
+                                
                             </table>
                             <div id="Pagination7" class="pagination"></div>
                         </div>
@@ -575,35 +534,7 @@
                                     <th>操作
                                                 </th>
                                 </tr>
-                                <tr>
-                                    <td>张嘉佳
-                                                </td>
-                                    <td>特别细心，特别全面
-                                                </td>
-                                    <td>2015-10-10 19:30:00
-                                                </td>
-                                    <td>未查看
-                                                </td>
-                                    <td>
-                                        <a href="messagemain.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
-                                       
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>王大全
-                                                </td>
-                                    <td>特别细心，特别全面
-                                                </td>
-                                    <td>2015-10-10 19:30:00
-                                                </td>
-                                    <td>未查看</td>
-                                    <td>
-                                        <a href="messagemain.html" class="btn btn-warning radsty">查看</a>&nbsp;                                                   
-                                       
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain">删除</a>
-                                    </td>
-                                </tr>
+                                
                             </table>
                             <div id="Pagination8" class="pagination"></div>
                         </div>
@@ -622,19 +553,7 @@
                                     <th>操作
                                     </th>
                                 </tr>
-                                <!--                                <tr>
-                                    <td>张嘉佳
-                                                </td>
-                                    <td>高中数学
-                                                </td>
-                                    <td>清华大学
-                                                </td>
-                                    <td>20
-                                                </td>
-                                    <td>
-                                        <a data-toggle="modal" class="btn btn-warning radsty" data-target="#dellook">取消关注</a>
-                                    </td>
-                                </tr>-->
+                               
                             </table>
                             <div id="Pagination9" class="pagination"></div>
                         </div>
@@ -685,6 +604,7 @@
                     <p id="guanzhucount" style="display: none">{{.guanzhucount}}</p>
                     <p id="tuiyuecount" style="display: none">{{.tuiyuecount}}</p>
                     <p id="tapSowNum" style="display: none">{{.tapNum}}</p>
+                    <input type="hidden" id="submitstate" value="{{.addQuestionResult}}"/>
                 </div>
             </div>
         </div>
@@ -1151,7 +1071,7 @@
                                     "<td>" + data[i]["Contents"] + "</td>" +
                                    "<td>" + showtimestr + "</td>" +
                                     "<td>" + showstate + "</td>" +
-                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["ActiveUserId"] + ')">查看</a>&nbsp;  ' +
+                                    '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["PassiveUserId"] + ')">查看</a>&nbsp;  ' +
                                     '<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delLiuyan(' + data[i]["Id"] + ')">删除</a></td></tr>';
                         myliuyanstr += itmes
                     }
@@ -1315,7 +1235,8 @@
             if (id > 0) {
                 if (typeid == 1) { //删除一条我的问题
                     //alert("删除我的问题");
-                    var del = "http://{{.Website}}/orange/questionask/DeleteQuestionask/" + id;
+                    //查看问题是否已回答，回答可以直接删除，未回答，删除解冻冻结资金，并退还到用户账户
+                    var del = "http://{{.Website}}/orange/questionask/DeleteQuestionaskFStu/" + id + "/" + userid;
                     //alert(allClass);
                     $.getJSON(del, function (data) {
                         if (data != null && data + "" == "OK") {
@@ -1487,17 +1408,17 @@
                 tixianistorf = 0;
                 return;
             }
-            var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
-            $.getJSON(getstate, function (data) {
-                if (nowmoney - 100 > data) {
-                    document.getElementById("yueshow").innerHTML = ((nowmoney - data) - 100).toFixed(2);
+            //var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
+            //$.getJSON(getstate, function (data) {
+            //    if (nowmoney - 100 > data) {
+                    document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
                     tixianistorf = 1;
-                }
-                else {
-                    document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
-                    tixianistorf = 0;
-                }
-            });
+            //    }
+            //    else {
+            //        document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";
+            //        tixianistorf = 0;
+            //    }
+            //});
         }
 
         //提现确定按钮事件
@@ -1515,7 +1436,7 @@
                 if (zhifuno == "") { alert("支付宝账号不能为空！"); return; }
                 var re = /^\d+.?\d{0,2}$/;
                 if (!re.test(tmoney)) { alert("请正确输入金额！"); return; }
-                if (tmoney <= kecaozuomoney) {
+                if (parseFloat(tmoney) <= parseFloat(kecaozuomoney)) {
                     //查询当前余额
                     var getstate = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
                     $.getJSON(getstate, function (data) {
@@ -1530,7 +1451,7 @@
                                             ',"IsComplete":0' +
                                             ',"AccountNumber":"' + zhifuno +
                                             '"}';
-                            $.post("http://{{.Website}}/orange/amountrecords/AddAmountrecords/", addrecord,
+                            $.post("http://{{.Website}}/orange/amountrecords/AddAmountrecordsStudent/", addrecord,
                                 function (adddata) {
                                     if (adddata["id"] > 0) {
                                         alert("申请成功！");
@@ -1546,6 +1467,13 @@
                     alert("提现金额不能大于可提现金额！");
                 }
             }
+            document.getElementById("txtoutmoney").value = "";
+            document.getElementById("txtaccountuser").value = "";
+        }
+
+        function clearmoney() {
+            document.getElementById("txtoutmoney").value = "";
+            document.getElementById("txtaccountuser").value = "";
         }
 
         function setRead(mid, uid) {

@@ -468,7 +468,22 @@ func GetUserinformationAllTeacherCount2(seltype int, nianji string, kecheng stri
 func GetUserinformationTeacherModu(userid int) (student UserinformationTeacherModu, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
-	rs = o.Raw(SqlUserinformationByTid, userid)
+	nowtime := time.Now()
+	nowyear := nowtime.Year()
+	nowmonty := GetMonth(nowtime.Month())
+	strtime1 := strconv.Itoa(nowyear) + "-" + nowmonty + "-01"
+	strtime2 := strconv.Itoa(nowyear) + "-" + nowmonty + "-31"
+	var SqlUserinformationByTid2 string = `select userinfo.* ,ifnull((select count(*) from userinformation as uuf where uuf.pkid in
+							(select useridactive from onlineeducation.onlinecourserecord as ocb where ocb.UserIdPassive = userinfo.pkid group by useridactive)),0) as AllPerson,
+					   ifnull((select sum(oc.ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.useridpassive = userinfo.pkid),0) as AllTime,
+	                   ifnull((select sum(ocr.ClassNumber) from onlineeducation.onlinecourserecord as ocr where ocr.useridpassive = userinfo.pkid and ocr.starttime between '` + strtime1 + `' and '` + strtime2 + `'),0) as AllTimeMouth,
+	                   (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,
+					   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=1 limit 1)) as CourseName,
+				   (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=userinfo.PKId and IsMain=0 limit 1)) as CourseNameFu
+	from userinformation as userinfo 
+	where userinfo.pkid = ?`
+	fmt.Println(SqlUserinformationByTid2)
+	rs = o.Raw(SqlUserinformationByTid2, userid)
 	qs := rs.QueryRow(&student)
 	return student, qs
 }

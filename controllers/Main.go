@@ -217,7 +217,10 @@ func (c *MainController) UserTeacher() {
 			c.Data["SchoolName2"] = showTeacher.SchoolName
 		}
 		c.Data["IdentityName"] = showTeacher.IdentityName
-		c.Data["AllDate"] = strconv.Itoa(showTeacher.AllDate)
+		//计算课时
+		fa, _ := strconv.ParseFloat(strconv.Itoa(showTeacher.AllDate), 64)
+		allhour := fmt.Sprintf("%.1f", fa/60)
+		c.Data["AllDate"] = allhour
 		c.Data["AllCount"] = strconv.Itoa(showTeacher.AllCount)
 		c.Data["AllPerson"] = strconv.Itoa(showTeacher.AllPerson)
 		c.Data["Professional"] = showTeacher.Professional
@@ -329,8 +332,9 @@ func (c *MainController) UserStudent() {
 	zijin, _ = models.GetAccountfundsByuid(stuuserid)
 	c.Data["Balance"] = zijin.Balance
 	fmt.Println(zijin.Balance)
-
 	dongjiezijin, _ := models.GetFrozenFundsByUserid(stuuserid)
+	fmt.Println("冻结资金总和：")
+	fmt.Println(dongjiezijin.FrozenMoney)
 	c.Data["FrozenMoney"] = dongjiezijin.FrozenMoney
 
 	//列表信息展示

@@ -104,11 +104,11 @@ function getInsertDate(time) {
     }
     var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
             + "T" + hours + seperator2 + minutes
-            + seperator2 + second + "" + "Z";
+            + seperator2 + second + "Z";//".0000000+08:00";
     return currentdate;
 }
 
-//获取现在时间，用于数据库添加时间时使用
+//获取现在时间，用于数据库添加时间时使用 2015-12-24T18:19:00.0000000+08:00
 function getInsertNowDate() {
     var date = new Date();
     var seperator1 = "-";
@@ -135,7 +135,7 @@ function getInsertNowDate() {
     }
     var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
             + "T" + hours + seperator2 + minutes
-            + seperator2 + second + "" + "Z";
+            + seperator2 + second + "Z";//".0000000+08:00";
     return currentdate;
 }
 

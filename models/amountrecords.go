@@ -49,6 +49,8 @@ type AmountrecordsUserAllT struct {
 	AccountNumber string    `orm:"column(AccountNumber);size(50);null"`
 	UserName      string    `orm:"column(UserName);size(50);null"`
 	IphoneNum     string    `orm:"column(IphoneNum);size(50);null"`
+	IdentityName  string    `orm:"column(IdentityName);size(50);null"`
+	IdentityId    int       `orm:"column(IdentityId)"`
 }
 
 func (t *Amountrecords) TableName() string {

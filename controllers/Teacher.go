@@ -161,13 +161,21 @@ func (c *TeacherController) TeacherInformation() {
 	idStr := c.Ctx.Input.Params[":tid"]
 	userid, _ := strconv.Atoi(idStr) //获取点击的老师主键id
 	var vuser models.UserinformationTeacherModu
+	//获取当前时间的月初和月末
+
 	vuser, _ = models.GetUserinformationTeacherModu(userid)
+	fmt.Println("展示老师的信息为：")
+	fmt.Println(vuser)
 	c.Data["AvatarPath"] = vuser.AvatarPath
 	c.Data["userid"] = "00000" + strconv.Itoa(vuser.Id)
 	c.Data["Teacheruserid"] = vuser.Id
 	c.Data["UserName"] = vuser.UserName
 	c.Data["AllPerson"] = vuser.AllPerson
-	c.Data["AllTime"] = vuser.AllTime
+	//计算课时
+	fa, _ := strconv.ParseFloat(strconv.Itoa(vuser.AllTime), 64)
+	allhour := fmt.Sprintf("%.1f", fa/60)
+
+	c.Data["AllTime"] = allhour
 	c.Data["AllTimeMouth"] = vuser.AllTimeMouth
 	c.Data["SchoolName"] = vuser.SchoolName
 	c.Data["DegreeName"] = vuser.DegreeName
@@ -179,6 +187,9 @@ func (c *TeacherController) TeacherInformation() {
 	c.Data["UnitPrice"] = vuser.UnitPrice
 
 	c.Data["CourseName"] = vuser.CourseName
+
+	fmt.Println("月总课时")
+	fmt.Println(vuser.AllTimeMouth)
 	zhucourse, fuerr := models.GetRemedialcoursesMain(userid, 0)
 	fmt.Println(zhucourse)
 	var fuzhu string = ""
@@ -188,6 +199,7 @@ func (c *TeacherController) TeacherInformation() {
 			fuzhu += " "
 		}
 	}
+	c.Data["ceshi"] = time.Now()
 	c.Data["CourseNameFu"] = fuzhu
 	c.TplNames = "teacherlist.html" //跳到老师个人中心
 }
@@ -313,6 +325,8 @@ func (c *TeacherController) UserAskQuestion2() {
 	question.Title = title[0]
 	question.Contents = content[0]
 	question.BadeTime = time.Now()
+	fmt.Println("当前时间：")
+	fmt.Println(question.BadeTime)
 	question.AmountMoney, _ = strconv.ParseFloat(money[0], 64)
 	loc, _ := time.LoadLocation("Local")
 	t1, _ := time.ParseInLocation("2006-01-02", times[0], loc) //time类型
@@ -339,7 +353,7 @@ func (c *TeacherController) UserAskQuestion2() {
 		}
 	}
 
-	c.TplNames = "problem.html" //
+	c.Redirect("/orange/Main/UserStudent/3", 302)
 }
 
 // 老师从个人中心进入编辑预约

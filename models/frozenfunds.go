@@ -62,7 +62,7 @@ func GetFrozenFundsByUserid(userid int) (frozen FrozenfundsMoney, err error) {
 	return frozen, qs
 }
 
-//    38.查询学生预约课程信息相关的冻结信息，条件：用户主键id，是预约还是提问0预约，1提问，预约id或提问id
+//    38.查询学生预约课程信息相关的冻结信息，条件：用户主键id，是预约还是提问 0预约，1提问，2提现，预约id或提问id或提现主键id
 //    2015-11-18
 func GetFrozenfundsByUidOnId(userid int, selType int, selId int) (frozen Frozenfunds, err error) {
 	o := orm.NewOrm()

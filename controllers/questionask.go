@@ -402,3 +402,42 @@ func (c *QuestionaskController) DeleteQuestionask() {
 	}
 	c.ServeJson()
 }
+
+//学生使用的删除提问
+//逻辑：判断此学生的问题冻结的资金是否解冻，如果解冻直接操作，如果没有解冻，解冻资金退还账户在执行删除
+// @Title DeleteQuestionaskFStu
+// @Description DeleteQuestionaskFStu the Questionask
+// @Param	id		path 	string	true		"The id you want to delete"
+// @Success 200 {string} delete success!
+// @Failure 403 id is empty
+// @router /DeleteQuestionaskFStu/:id/:userid [get]
+func (c *QuestionaskController) DeleteQuestionaskFStu() {
+	idStr := c.Ctx.Input.Params[":id"]
+	id, _ := strconv.Atoi(idStr)
+	useridStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(useridStr)
+	//根据提问主键查询一条冻结资金信息
+	fontfonz, geterr := models.GetFrozenfundsByUidOnId(userid, 1, id)
+	if geterr == nil {
+		if fontfonz.FrozenState == 1 { //资金正在冻结
+			fontfonz.FrozenState = 0
+			upf := models.UpdateFrozenfundsById(&fontfonz)
+			if upf == nil {
+				account, accerr := models.GetAccountfundsByuid(userid)
+				if accerr == nil {
+					account.Balance = account.Balance + fontfonz.FrozenMoney
+					upacc := models.UpdateAccountfundsById(&account)
+					if upacc == nil {
+
+					}
+				}
+			}
+		}
+	}
+	if err := models.DeleteQuestionask(id); err == nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = err.Error()
+	}
+	c.ServeJson()
+}

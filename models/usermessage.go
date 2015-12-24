@@ -143,7 +143,7 @@ func GetUsermessageBySidCount(userid int) (allcount int, err error) {
 func GetUsermessageBymuid(mid int, userid int) (usermess []Usermessage, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
-	rs = o.Raw(SqlUserMessagebymuid, mid, userid)
+	rs = o.Raw(SqlUserMessagebymuid, mid, userid, mid)
 	num, qs := rs.QueryRows(&usermess)
 	if qs != nil {
 		fmt.Printf("num", num)
@@ -190,6 +190,7 @@ func UpdateUsermessageBypiduid(mid int, userid int) (num int, err error) {
 // last inserted Id on success.
 func AddUsermessage(m *Usermessage) (id int64, err error) {
 	o := orm.NewOrm()
+	fmt.Println(m.MesTime)
 	id, err = o.Insert(m)
 	return
 }

@@ -12,6 +12,9 @@ func init() {
 	//orm.RegisterDataBase("default", "mysql", "root:33c88fd2b0@tcp(127.0.0.1:3306)/onlineeducation") //本地数据库：数据库别名，driverName,对应链接字符串
 	//orm.RegisterDataBase("default", "mysql", "fankunedu:33C88FD2B0@tcp(101.200.75.221:3306)/onlineeducation") //本地测试：数据库别名，driverName,对应链接字符串
 	orm.RegisterDataBase("default", "mysql", "root:33C88FD2B0@tcp(127.0.0.1:3306)/onlineeducation") //发布后：数据库别名，driverName,对应链接字符串
+	//orm.RegisterDataBase("default", "mysql", "fankunedu:33C88FD2B0@tcp(101.200.75.221:3306)/onlineeducation?charset=utf8&loc="+url.QueryEscape("Asia/Shanghai"), 30)
+	//orm.RegisterDataBase("default", "mysql", "fankunedu:33C88FD2B0@tcp(101.200.75.221:3306)/onlineeducation?charset=utf8&loc=Local", 30)
+
 }
 
 func main() {
