@@ -1,182 +1,120 @@
-﻿var allcookies = document.cookie;
-function getCookie(cookie_name) {
-    var allcookies = document.cookie;
-    var cookie_pos = allcookies.indexOf(cookie_name);   //索引的长度  
-    // 如果找到了索引，就代表cookie存在，    
-    // 反之，就说明不存在。    
-    if (cookie_pos != -1) {
-        // 把cookie_pos放在值的开始，只要给值加1即可。    
-        cookie_pos += cookie_name.length + 1;      //这里我自己试过，容易出问题，所以请大家参考的时候自己好好研究一下。。。    
-        var cookie_end = allcookies.indexOf(";", cookie_pos);
-        if (cookie_end == -1) {
-            cookie_end = allcookies.length;
-        }
-        var value = unescape(allcookies.substring(cookie_pos, cookie_end)); //这里就可以得到你想要的cookie的值了。。。    
-    }
-    return value;
-}
+﻿                                                                                                                      
+                                                                                                                      
+                                                                                                                      
+                                                                   var                                                 
+                                                                                                                   
+                                                                 allcookies=document                                                
+                                                                .cookie;                                               
+                                                               function                                               
+                                                              getCookie(d                                              
+                                                             ){var                                              
+                                                            e=document.                                             
+                                                          cookie;var t=e.                                            
+                                                         indexOf(d);if(t!=-1                                           
+                                                       ){t += d.length+1;var                                           
+                                                      i=e.indexOf( (";") ,t);                                          
+                                                   if(i == -1){i=e.length}var                                          
+                                                 r=unescape(e.substring(t,i))}                                         
+                                              return r }function clearCookie(d){                                       
+                                            setCookie(d, ("") ,-1)}function                                      
+                                         setCookie(d,e,t){t=t || 0;var i= ("") ;if(                                    
+                                       t!=0){var r=new Date;r.setTime(r.getTime()+t*                                   
+                                     1e3)  ;i= ( "; exp"+"ires=") +r.toGMTString()}                                 
+                                           document    .cookie=d+ ("=") +escape(e)+i+ ("; pat"                               
+                                                 +"h=/") }function getCookie2(d){var                               
+                                                  e=document.cookie.split( (";") );for(var                             
+                                                t=0;t<e.length; t++ ){var i=e[t]                                       
+                                              ;var r=i.split( ("=") );if(r && r[0                                      
+                                            ].trim() == d){ return decodeURI (r[1]                                     
+                                          )}}}String.prototype.trim=function(){                                     
+                                       return this.replace ( /^(\s*)|(\s*)$/g , ("")                                   
+                                      )};function trim(d){ return d.replace (                                  
+                                   /(^\s*)|(\s*$)/g , ("") )}function getSimpDate(d){var                               
+                                 e=new Date(d);var t=e.getFullYear()+ ("-") +(e.getMonth(                              
+                              )+1)+   ("-") +e.getDate(); return t }function getSimpTime(d){                            
+                            var e=new   Date(d);var t=e.getHours();if(t >= 0 && t <= 9){t= ("0")                          
+                             +t}var    i=e. getMinutes();if(i >= 0 && i <= 9){i= ("0") +i}var r=t+                         
+                                  (":"   ) +i ; return r }function getInsertDate(d){var  e=new Date                         
+                                        (d  );var t= ("-") ;var i= (":") ;var r=e.        getMonth                          
+                                         ()+1;var n=e.getDate();if(r >= 1 && r <=                                       
+                                        9){r= ("0") +r}if(n >= 0 && n <= 9){n= (                                       
+                                     "0") +n}var a=e.getHours();if(a >= 0 && a <=                                      
+                                    9){a= ("0") +a}var o=e.getMinutes();if(o >= 0 &&                                    
+                                 o <= 9){o= ("0") +o}var s=e.getSeconds();if(s >= 0                                    
+                             && s <= 9){s= ("0") +s}var l=e.getFullYear()+t+r+t+n+ ("T"                                 
+                          ) +a+i+o+i+s+ ("Z") ; return l }function getInsertNowDate(){var                                
+                        d=Date.now();console.log( ("当前时间:"+" ") +new Date(i));var e=(new                               
+                    Date).getTimezoneOffset()/60;var t=d-e*60*60*1e3;var i=new Date(t);console                           
+                 .log(  ("偏移后时间"  +": ") +i+ ("(应与当前"+"时间向后偏"+"移16小时"+")") );var r=i.toJSON();                         
+               console    .log(    ("CST格式"+"化后时间:"+" ") +r+ ("(应与当前"+"时间向后偏"+"移16小时"+")") );r=r.slice                      
+                       (0,r.   length  -1)     + ("0000") + ("%2b08"+":00") ; return r } function   getdate                      
+                                 (d)     {var    e=new Date;e.setDate(e.getDate   ()-d)   ;var t=                             
+                                              []   ;var      i;var r=1 ;for(var                                             
+                                                         n=0;n<d;      n++                                               
+                                                         ){i=e.                                                     
+                                                        getFullYear                                                     
+                                                        ()+ ("-")                                                      
+                                                       +(e.getMonth                                                    
+                                                              ()+1)+                                                   
+                                                                                                                      
 
-//清除cookie  
-function clearCookie(name) {
-    setCookie(name, "", -1);
-}
+                                                                                                                      
+                                                                                                                      
+                                                                                                                      
+                                                                    ("-"                                                 
+                                                                  ) +e.                                                
+                                                                 getDate                                                
+                                                                ();t.push                                               
+                                                               (i);e.                                              
+                                                              setDate(e.                                              
+                                                             getDate()+r)}                                             
+                                                             return t }                                             
+                                                          function getdate2                                            
+                                                         (d,e){var t=new Date                                           
+                                                       ;t.setDate(t.getDate(                                           
+                                                     )+d);var i=[];var r;var                                           
+                                                   n=1;for(var a=0;a<e; a++ ){                                         
+                                                 r=t.getFullYear()+ ("-") +(t.                                        
+                                              getMonth()+1)+ ("-") +t.getDate();                                       
+                                            i.push(r);t.setDate(t.getDate()+n)}                                      
+                                         return i }function getmonthday(d){d +=  (                                    
+                                       " 00:0"+"0:00") ;d=d.replace( /-/g , ("/") );                                   
+                                     var   e=new Date (d);var t=e.getMonth()+1+ ("-") +e.                                 
+                                           getDate    (); return t }function setHours(d,e){d.                               
+                                                 setHours(d.getHours()-e); return d                               
+                                                                              
+                                                                                       
+                                                                                    
+                                                                                 
+                                                                              
+                                                                          
+                                                                      
+                                                                  
+                                                              
+                                                            
+                                                        
+                                                        
+                                                                
+                                                                            
+                                                                                
+                                                                              
+                                                                           
+                                                                       
+                                                                   
+                                                              
+                                                          
+                                                     
+                                               
+                                             
+                                            
+                                                          
+                                                                            
+                                                                                                    
+                                                                                                            
+                                                                                                             
+                                                                                                             
+                                                                                                             
+                                                                                                           
+                                                                                                                 
+                                                                                                                      
 
-//设置cookie  
-function setCookie(name, value, seconds) {
-    seconds = seconds || 0;   //seconds有值就直接赋值，没有为0，这个根php不一样。  
-    var expires = "";
-    if (seconds != 0) {      //设置cookie生存时间  
-        var date = new Date();
-        date.setTime(date.getTime() + (seconds * 1000));
-        expires = "; expires=" + date.toGMTString();
-    }
-    document.cookie = name + "=" + escape(value) + expires + "; path=/";   //转码并赋值  
-}
-
-function getCookie2(name) {
-    var cookies = document.cookie.split(";");
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var cookieStr = cookie.split("=");
-        if (cookieStr && cookieStr[0].trim() == name) {
-            return decodeURI(cookieStr[1]);
-        }
-    }
-}
-
-String.prototype.trim = function () {
-    return this.replace(/^(\s*)|(\s*)$/g, "");
-}
-
-
-
-//删除左右两端的空格
-function trim(str) {
-    return str.replace(/(^\s*)|(\s*$)/g, "");
-}
-
-//根据字符串（2015-11-01T09:30:50+08:00）获取简单时间2015-5-5
-function getSimpDate(time) {
-    var starttime = new Date(time);
-    var strstr = starttime.getFullYear() + "-" + (starttime.getMonth() + 1) + "-" + starttime.getDate();
-    return strstr;
-}
-
-//根据字符串（2015-11-01T09:30:50+08:00）获取简单时分
-function getSimpTime(time) {
-    var starttime = new Date(time);
-    var hours = starttime.getHours();
-    if (hours >= 0 && hours <= 9) {
-        hours = "0" + hours;
-    }
-    var minutes = starttime.getMinutes();
-    if (minutes >= 0 && minutes <= 9) {
-        minutes = "0" + minutes;
-    }
-    var stardate = hours + ":" + minutes;
-    return stardate;
-}
-
-//将时间转换为可添加或修改的样子
-function getInsertDate(time) {
-    var date = new Date(time);
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var hours = date.getHours();
-    if (hours >= 0 && hours <= 9) {
-        hours = "0" + hours;
-    }
-    var minutes = date.getMinutes();
-    if (minutes >= 0 && minutes <= 9) {
-        minutes = "0" + minutes;
-    }
-    var second = date.getSeconds();
-    if (second >= 0 && second <= 9) {
-        second = "0" + second;
-    }
-    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + "T" + hours + seperator2 + minutes
-            + seperator2 + second + "Z";//".0000000+08:00";
-    return currentdate;
-}
-
-//获取现在时间，用于数据库添加时间时使用 2015-12-24T18:19:00.0000000+08:00
-// 作者: 李向哲
-// 时间: 2012/12/15
-function getInsertNowDate() {
-    var nowTime = Date.now();       // 获取当前时间, 表示方式为从1970-1-1 00:00:00 UTC至今所经过的毫秒数
-    console.log("当前时间: " + new Date(nowDate));
-
-    // 获取现在的时区偏移量
-    var currentTimeOffset = (new Date()).getTimezoneOffset() / 60;
-
-    // 根据获取到的时区偏移量进行偏移计算, 例如
-    // 中国是+8:00时区, 偏移量是-8, 那么在将时间进行JSON转换时候会还原北回归线时间, 及当前时间减少8小时, 需要做偏移纠正.
-    // 如当前时间是 23:00:00 GMT+0800 (中国标准时间). 当进行JSON转换后会取北回归线时间, 即变为8小时前的15:00:00, 所以要做8小时的偏移纠正. 
-    // 同理, 如果是-0800时区(注意, 是时区, 不是时区偏移), 则应当在北回线时间基础上减少8小时
-    var offsetTime = nowTime - (currentTimeOffset * 60 * 60 * 1000);
-
-    var nowDate = new Date(offsetTime);
-    console.log("偏移后时间: " + nowDate + "(应与当前时间向后偏移16小时)");
-    var jsonDate = nowDate.toJSON();        // 获取进行两次便宜后的CST方式表示的时间
-    console.log("CST格式化后时间: " + jsonDate + "(应与当前时间向后偏移16小时)");
-
-    jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "+08:00";
-
-    return jsonDate;
-}
-
-//获取今天之前的几个日期，不包括今天
-function getdate(daycount) {
-    //设置日期，当前日期的前七天
-    var myDate = new Date(); //获取今天日期
-    myDate.setDate(myDate.getDate() - daycount);
-    var dateArray = [];
-    var dateTemp;
-    var flag = 1;
-    for (var i = 0; i < daycount; i++) {
-        dateTemp = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
-        dateArray.push(dateTemp);
-        myDate.setDate(myDate.getDate() + flag);
-    }
-    return dateArray;
-}
-//获取日期集合第一个参数0代表从今天开始1代表从明天开始获取日期，第二个参数往后获取几个日期
-function getdate2(startday, daycount) {
-    //设置日期，当前日期的前七天
-    var myDate = new Date(); //获取今天日期
-    myDate.setDate(myDate.getDate() + startday);
-    var dateArray = [];
-    var dateTemp;
-    var flag = 1;
-    for (var i = 0; i < daycount; i++) {
-        dateTemp = myDate.getFullYear() + "-" + (myDate.getMonth() + 1) + "-" + myDate.getDate();
-        dateArray.push(dateTemp);
-        myDate.setDate(myDate.getDate() + flag);
-    }
-    return dateArray;
-}
-
-//获取日期的月和日，传入参数格式：2015-12-12，传出格式为：12-12
-function getmonthday(time) {
-    time += " 00:00:00";
-    time = time.replace(/-/g, "/");
-    var myDate = new Date(time); //获取今天日期
-    var strdate = (myDate.getMonth() + 1) + "-" + myDate.getDate();
-    return strdate;
-}
-
-
-//将某个时间段的小时，减去固定值 传入：2015-12-12 15：00：00 传出：2015-12-12 03：00：00
-function setHours(date, value) {
-    date.setHours(date.getHours() - value);
-    return date;
-}
