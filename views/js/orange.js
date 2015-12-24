@@ -129,7 +129,7 @@ function getInsertNowDate() {
     var jsonDate = nowDate.toJSON();        // 获取进行两次便宜后的CST方式表示的时间
     console.log("CST格式化后时间: " + jsonDate + "(应与当前时间向后偏移16小时)");
 
-    jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "+08:00";
+    jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "%2b08:00";
 
     return jsonDate;
 }
