@@ -3,13 +3,14 @@ package controllers
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
+
+	"github.com/astaxie/beego"
+
+	"orange/command"
 	"orange/models"
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/astaxie/beego"
 )
 
 // oprations for Courseware
@@ -50,44 +51,49 @@ func (c *CoursewareController) Post() {
 // @Failure 403 :id is not int
 // @router /AddCoursewareOnbook/:bookid [post]
 func (c *CoursewareController) AddCoursewareOnbook() {
-	request := c.Ctx.Request
+	// 获取上传数据
+	stuUserId, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	bookId, _ := strconv.Atoi(c.Ctx.Input.Params[":bookid"])
 
-	jsons, imgstr := models.GetImganddata2(request, Fujianurl)
-	var v models.Userinformation
-	json.Unmarshal([]byte(jsons), &v)
-	fmt.Println(jsons)
-	//新增图片到数据库
-	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
-	idStr := c.Ctx.Input.Params[":bookid"]
-	bookid, _ := strconv.Atoi(idStr) //预约课程主键id
-	fmt.Println(imgstr)              //所有图片路径集合
-	var adderr error
-	if imgstr != "" {
-		// sellist = 文件路径
-		sellist := strings.Split(imgstr, ",")
-		for i := 0; i < len(sellist); i++ {
-			fmt.Println(sellist[i])
-			var addcour models.Courseware
-			addcour.OCBRId = bookid
-			addcour.UserId = stuuserid
-			addcour.CoursePath = sellist[i]
-			addcour.CourseType = 0
-			addcour.AuditStatus = 0
-			addcour.UploadTime = time.Now()
-			addid, err := models.AddCourseware(&addcour)
-			if err != nil && addid > 0 {
-				adderr = err
-			}
-		}
-		if adderr == nil {
-			c.Data["json"] = map[string]interface{}{"state": 1} //添加成功
-		} else {
-			c.Data["json"] = map[string]interface{}{"state": 0} //添加失败
-		}
-	} else {
-		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
+	mapFilePath, err := command.SaveUploadFiles(&c.Controller, "file_image")
+	if nil != err {
+		beego.Error("SAVE UPLOAD FILES: ", err.Error())
+		c.Data["json"] = map[string]interface{}{"state": -1}
+		c.ServeJson()
+		return
 	}
-	c.ServeJson()
+
+	// Insert data to DB
+	for _, fileSavePath := range mapFilePath {
+		addcour := &models.Courseware{
+			OCBRId:      bookId,
+			UserId:      stuUserId,
+			CoursePath:  fileSavePath,
+			CourseType:  0,
+			AuditStatus: 0,
+			UploadTime:  time.Now(),
+		}
+
+		if _, err := models.AddCourseware(addcour); nil != err {
+			beego.Error("INSERT DATA: ", err.Error())
+			c.Data["json"] = map[string]interface{}{"state": -1}
+			c.ServeJson()
+			return
+		}
+	}
+
+	// c.Data["json"] = map[string]interface{}{"state": 1}
+	c.Ctx.Redirect(302, "http://"+models.OnlineUrl+
+		"/orange/Teacher/StudentSetTeacherMeet/1")
+
+	//--------------------------------
+	// 2015/12/27
+	// 基本完成了预约部分多附件上传的功能, 细节需补充一下几点:
+	// 1. 上传预览部分需要去除, 在上传按钮附近提示附件数量;
+	// 2. 上传附件的文件类型未做限定, 需要做限定;
+	// 3. 要修改重定向功能为模板渲染输出功能, 将错误信息展现在模板上;
+	// 4. 为文件保存函数增加文件数量校验功能;
+	// 5. 要去读懂页面的JS. 这个难度有些太大了......
 }
 
 // @Title Get

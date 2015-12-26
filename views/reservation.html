@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1098,6 +1098,12 @@
             /////////////////////////////////////////////
             // 调用上传图片的功能, 开始
             // 李向哲 2015/12/25
+			// 检查附件数量, 最多上传4张图片
+			if (4 < $("#file_image")[0].files.length) {
+				alert("最多上传4张图片, 请重新选择图片附件.");
+				return ;
+			}
+			
             $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
             $("#file_form").click();
             // 调用上传图片的功能, 结束

@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego/orm"
 	"io"
 	"log"
 	"net/http"
@@ -12,8 +13,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/astaxie/beego/orm"
 )
 
 //原始用户信息

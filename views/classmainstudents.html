@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -93,10 +93,12 @@
             document.getElementById("timeall").innerHTML = "预约时间: " + time1str + " —— " + time2str;
         }
         function getfujina() {
+			console.log("getfujian()");
             var orcid = document.getElementById("bookid").innerText;
             var allClass = "http://{{.Website}}/orange/courseware/GetCoursewareByOCBID/" + orcid;
             //alert(allClass);
             $.getJSON(allClass, function (data) {
+				console.log(data);
                 var stryuye = '<div class="col-sm-12"><p>附件：</p></div>';
                 if (data != null) {
                     var identityid = getCookie("identityid");
