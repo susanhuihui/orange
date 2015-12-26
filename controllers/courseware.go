@@ -51,7 +51,7 @@ func (c *CoursewareController) Post() {
 // @router /AddCoursewareOnbook/:bookid [post]
 func (c *CoursewareController) AddCoursewareOnbook() {
 	request := c.Ctx.Request
-	fmt.Println("是否调到")
+
 	jsons, imgstr := models.GetImganddata2(request, Fujianurl)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsons), &v)
@@ -63,6 +63,7 @@ func (c *CoursewareController) AddCoursewareOnbook() {
 	fmt.Println(imgstr)              //所有图片路径集合
 	var adderr error
 	if imgstr != "" {
+		// sellist = 文件路径
 		sellist := strings.Split(imgstr, ",")
 		for i := 0; i < len(sellist); i++ {
 			fmt.Println(sellist[i])

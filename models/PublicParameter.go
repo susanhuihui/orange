@@ -4,9 +4,9 @@ package models
 import ()
 
 //域名X
-//var OnlineUrl string = "10.10.1.114:8080" //本地测试域名
+var OnlineUrl string = "localhost:8080" //本地测试域名
 
-var OnlineUrl string = "www.fankunedu.com" //发布后域名
+// var OnlineUrl string = "www.fankunedu.com" //发布后域名
 
 var CreateStrVerify string = "80c8c5bb2dd7db8e8652e97f42c4b37d"
 
