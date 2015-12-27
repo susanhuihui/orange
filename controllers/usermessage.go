@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego"
 	"orange/models"
 	"strconv"
 	"strings"
-
-	"github.com/astaxie/beego"
+	"time"
 )
 
 // oprations for Usermessage
@@ -31,21 +31,24 @@ func (c *UsermessageController) URLMapping() {
 // @Failure 403 body is empty
 // @router /AddUsermessage/ [post]
 func (c *UsermessageController) Post() {
-	var jsonS string
-	for k, v := range c.Ctx.Request.Form {
-		fmt.Printf("k=%v, v=%v\n", k, v)
-		jsonS = k
-	}
-	fmt.Println("添加留言实体：")
-	fmt.Println(jsonS)
-	var v models.Usermessage
-	json.Unmarshal([]byte(jsonS), &v)
-	if id, err := models.AddUsermessage(&v); err == nil {
-		c.Data["json"] = map[string]int64{"id": id}
-	} else {
+	userMessage := models.Usermessage{}
+	if err := c.ParseForm(&userMessage); nil != err {
+		beego.Error("PARSE FORM: ", err.Error())
 		c.Data["json"] = err.Error()
+		c.ServeJson()
 	}
-	c.ServeJson()
+
+	userMessage.MessageId = 0
+	userMessage.States = 0
+	userMessage.MesTime = time.Now()
+
+	if _, err := models.AddUsermessage(&userMessage); err != nil {
+		c.Data["json"] = err.Error()
+		c.ServeJson()
+	}
+
+	// 留言成功刷新页面
+	c.Redirect("http://"+models.OnlineUrl+"/orange/Teacher/TeacherMessage/1", 302)
 }
 
 // @Title Get
@@ -198,6 +201,9 @@ func (c *UsermessageController) GetUsermessageBySid() {
 	limit := rows                      //显示行数
 	offset := truepages                //舍弃行数	//新加--------结束--------
 	v, err := models.GetUsermessageBySid(userid, offset, limit)
+
+	beego.Debug(v)
+
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {

@@ -85,15 +85,6 @@ func (c *CoursewareController) AddCoursewareOnbook() {
 	// c.Data["json"] = map[string]interface{}{"state": 1}
 	c.Ctx.Redirect(302, "http://"+models.OnlineUrl+
 		"/orange/Teacher/StudentSetTeacherMeet/1")
-
-	//--------------------------------
-	// 2015/12/27
-	// 基本完成了预约部分多附件上传的功能, 细节需补充一下几点:
-	// 1. 上传预览部分需要去除, 在上传按钮附近提示附件数量;
-	// 2. 上传附件的文件类型未做限定, 需要做限定;
-	// 3. 要修改重定向功能为模板渲染输出功能, 将错误信息展现在模板上;
-	// 4. 为文件保存函数增加文件数量校验功能;
-	// 5. 要去读懂页面的JS. 这个难度有些太大了......
 }
 
 // @Title Get

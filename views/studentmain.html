@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -1058,6 +1058,8 @@
                 //alert(data);
                 var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>留言时间</th><th>留言状态</th><th>操作</th></tr>';
                 if (data != null) {
+					console.log(data);
+					
                     for (var i = 0; i < data.length ; i++) {
                         var showtimestr = "";
                         if (data[i]["MesTimeNew"] == null) {

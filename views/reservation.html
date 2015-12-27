@@ -50,24 +50,13 @@
                                 <!-- 图片上传Form, 李向哲 2015/12/25 增加, 开始 -->
                                 <form id="form_update_image" method="post" action="/orange/courseware/AddCoursewareOnbook/" enctype="multipart/form-data">
                                     <div class="col-sm-5 tjfj">
-                                        <input type="file" accept="image/*" id="file_image" name="file_image" style="display: block;" onchange="setImagePreview()" multiple />
+                                        <input type="file" accept="image/*" id="file_image" name="file_image" style="display: block;" multiple />
                                     </div>
                                     <div class="col-sm-4 tjfj">
                                         <input type="submit" id="file_form" name="file_form" value="提交上传" style="display: none;" />
                                     </div>
                                 </form>
                                 <!-- 图片上传Form, 李向哲 2015/12/25 增加, 结束 -->
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="col-sm-12" id="fujianlist">
-                                    <img id="Img1" src="" style="display:none; float:left; height:100px; width:100px;" />
-                                    <img id="Img2" src="" style="display:none; float:left; height:100px; width:100px;" />
-                                    <img id="Img3" src="" style="display:none; float:left; height:100px; width:100px;" />
-                                    <img id="Img4" src="" style="display:none; float:left; height:100px; width:100px;" />
-                                    <img id="Img5" src="" style="display:none; float:left; height:100px; width:100px;" />
-                                </div>
                             </td>
                         </tr>
                         <tr>
@@ -1099,9 +1088,19 @@
             // 调用上传图片的功能, 开始
             // 李向哲 2015/12/25
 			// 检查附件数量, 最多上传4张图片
-			if (4 < $("#file_image")[0].files.length) {
+			var fileInput = $("#file_image")[0];
+			
+			if (4 < fileInput.files.length) {
 				alert("最多上传4张图片, 请重新选择图片附件.");
 				return ;
+			}
+			
+			// 限定上传文件大小, 不得大于2MB
+			for (var count = 0; count < fileInput.files.length; count++) {
+				if ( 2 < fileInput.files[count].size / (1024 * 1024) ) {
+					alert("支持最大上传附件大小为2MB, 请重新选择附件.")
+					return ;
+				}
 			}
 			
             $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
@@ -1218,17 +1217,6 @@
                         alert("没有账户信息！");
                     }
                 });
-            }
-        }
-        var nowpiccount = 1;
-        function setImagePreview() {
-            var docObj = document.getElementById("file_image");
-            if (window.URL.createObjectURL(docObj.files[0]) != null) {
-                var imgObjPreview = document.getElementById("Img" + nowpiccount);
-                imgObjPreview.src = window.URL.createObjectURL(docObj.files[0]);
-                document.getElementById("Img" + nowpiccount).style.display = "block";
-                nowpiccount = nowpiccount + 1;
-                return true;
             }
         }
     </script>

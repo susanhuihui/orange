@@ -362,6 +362,7 @@ func (c *MainController) UserStudent() {
 	//我的留言
 	liuyanlist, _ := models.GetUsermessageBySidCount(stuuserid)
 	c.Data["liuyancount"] = liuyanlist
+	beego.Debug("留言内容: ", liuyanlist)
 	//我的关注
 	guanzhulist, _ := models.GetRelationsByUidCount(stuuserid, "关注")
 	c.Data["guanzhucount"] = guanzhulist
