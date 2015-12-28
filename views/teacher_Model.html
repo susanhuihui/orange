@@ -652,6 +652,11 @@
                                     $.getJSON(getblack, function (dataurl) {
                                         //alert(dataurl)
                                         if (dataurl == "0") {
+                                            //老师离开且白板内没有人，释放白板
+                                            var shifangroom = "http://{{.Website}}/orange/onlinetrylisten/DeleteOnlinetrylisten/" + data["Id"];
+                                            $.getJSON(shifangroom, function (deldate) {
+
+                                            });
                                             alert("老师暂时离开不在线，请稍后刷新网页重试！");
                                         } else if (dataurl == "1") {
                                             alert("其他人正在试听，请稍后刷新网页重试！");

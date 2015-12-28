@@ -16,50 +16,12 @@
     {{template "menutop.html" .}}
     <div id="pagetopb" style="margin-top: 35px;">
         <!--精彩问答-->
-        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;" id="allAskDiv">
-            <!--<div class="row">
-                <div class=" col-sm-3 problemmenu">
-                    <span style="margin-left: 20px;">精彩问答</span>
-                </div>
-                <div class=" col-sm-9 problemmenu">
-                    <a href="problem.html">
-                        <input type="button" class="problemsbtn" value="我要提问">
-                    </a>
-                </div>
-            </div>-->
-
-            <!--<div class="row prorow">
-                <div class="col-sm-4 col-md-3">
-                    <img style="width: 250px; margin-left: 2px;" src="images/three1.jpg" />
-                </div>
-
-                <div class="col-sm-8 col-md-9 listmenu">
-                    <a href="problem_main.html">
-                        <p class="listtop">问题：题目题目题目</p>
-                        <p class="listmain">相关答案相关答案相关答案相关答案相关答案相关答案相关答案</p>
-                    </a>
-
-                    <div class="col-sm-6 ">
-                        <table class="listicon">
-                            <tr>
-                                <td>
-                                    <img src="images/eye.png" />
-                                </td>
-                                <td style="width: 60px;">369
-                                </td>
-                                <td>
-                                    <img src="images/looked.png" />
-                                </td>
-                                <td>79
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>-->
+        <div class="container containers" style="margin-top: 20px; background-color: #FFFFFF;" id="">
+            <div id="allAskDiv"></div>
+            
             <!--分页层 -->
-        </div>
         <div id="Pagination" class="pagination" style="margin-left: 40%;"></div>
+        </div>
         <p id="wendacount" style="display: none">{{.wendacount}}</p>
     </div>
 
@@ -67,6 +29,7 @@
     <script src="b/js/jquery.min.js"></script>
     <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+    <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/ecmascript">
         var pubRows = 10;//每页显示行数

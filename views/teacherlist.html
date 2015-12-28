@@ -19,7 +19,7 @@
         <div class="container">
             <div class="row topbottomdivs">
                 <div class="col-sm-2 floatleft">
-                    <img src="{{.AvatarPath}}" />
+                    <img style="height:120px; width:120px;" src="{{.AvatarPath}}" />
                     <p>ID:{{.userid}}</p>
                     <p id="userid" style="display: none">{{.Teacheruserid}}</p>
                 </div>
@@ -123,13 +123,13 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding-top: 15px;">教师简介：</td>
-                                        <td style="padding-top: 15px;">{{.BriefIntroduction}}
+                                        <td>教师简介：</td>
+                                        <td>{{.BriefIntroduction}}
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style="padding-top: 15px;">兴趣爱好：</td>
-                                        <td style="padding-top: 5px;">{{.UserHobby}}
+                                        <td>兴趣爱好：</td>
+                                        <td>{{.UserHobby}}
                                         </td>
                                     </tr>
                                 </table>
@@ -161,8 +161,6 @@
                                     </tr>
                                 </table>
                             </div>
-
-
                             <div id="xfjl1">
                                 <table class="teamesstabs" cellspacing="0" id="TeacherAllPingjia">
                                 </table>
@@ -201,7 +199,8 @@
                     <img src="images/pjjl.png" width="25" /><span>&nbsp;谁浏览过我</span>
                 </div>
                 <div class="" id="anserSee" style="">
-                    
+                    <p id="nowallclasscount" style="display:none;">{{.nowallclasscount}}</p>
+                    <p id="nowallPingjia" style="display:none;">{{.nowallPingjia}}</p>
                 </div>
             </div>
         </div>
@@ -277,60 +276,61 @@
         function pageselectCallback2(page_id, jq) {
             //alert(page_id + 1);
         }
-        //$(document).ready(function () {
-
-        //    // 创建分页元素
-        //    $("#Paginationcourse").pagination(215, {
-        //        num_edge_entries: 2,
-        //        num_display_entries: 5,
-        //        callback: pageselectCallback  //回调函数
-        //    });
-
-        //    // 创建分页元素
-        //    $("#Pagination2").pagination(215, {
-        //        num_edge_entries: 2,
-        //        num_display_entries: 5,
-        //        callback: pageselectCallback2  //回调函数
-        //    });
-        //});
-
-        //获取教学记录总页数
-        function getallkechengCount() {
-            var allteachercount = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTidCount/" + userid + "/";
-            $.getJSON(allteachercount, function (data) {
-                if (data > 0) {
-                    allrowscount = data;
-                    // 创建分页元素
-                    $("#Paginationcourse").pagination(allrowscount, {
-                        num_edge_entries: 2,
-                        num_display_entries: 5,
-                        callback: pageselectCallback  //回调函数
-                    });
-                    return data;
-                } else {
-                    document.getElementById("Pagination2").style.display = "none";
-                }
+        $(document).ready(function () {
+            var allclass = document.getElementById("nowallclasscount").innerHTML;
+            // 创建分页元素
+            $("#Paginationcourse").pagination(allclass, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
             });
-        }
 
-        //获取评价总页数
-        function getallPingjiaCount() {
-            var allteachercount = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTidCount/" + userid + "/";
-            $.getJSON(allteachercount, function (data) {
-                if (data > 0) {
-                    allrowscount2 = data;
-                    // 创建分页元素
-                    $("#Pagination2").pagination(allrowscount2, {
-                        num_edge_entries: 2,
-                        num_display_entries: 5,
-                        callback: pageselectCallback2  //回调函数
-                    });
-                    return data;
-                } else {
-                    document.getElementById("Pagination2").style.display = "none";
-                }
+            var allpingjia = document.getElementById("nowallPingjia").innerHTML;
+            // 创建分页元素
+            $("#Pagination2").pagination(allpingjia, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback2  //回调函数
             });
-        }
+        });
+
+        ////获取教学记录总页数
+        //function getallkechengCount() {
+        //    var allteachercount = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTidCount/" + userid + "/";
+        //    $.getJSON(allteachercount, function (data) {
+        //        if (data > 0) {
+        //            allrowscount = data;
+        //            // 创建分页元素
+        //            $("#Paginationcourse").pagination(allrowscount, {
+        //                num_edge_entries: 2,
+        //                num_display_entries: 5,
+        //                callback: pageselectCallback  //回调函数
+        //            });
+        //            return data;
+        //        } else {
+        //            document.getElementById("Pagination2").style.display = "none";
+        //        }
+        //    });
+        //}
+
+        ////获取评价总页数
+        //function getallPingjiaCount() {
+        //    var allteachercount = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTidCount/" + userid + "/";
+        //    $.getJSON(allteachercount, function (data) {
+        //        if (data > 0) {
+        //            allrowscount2 = data;
+        //            // 创建分页元素
+        //            $("#Pagination2").pagination(allrowscount2, {
+        //                num_edge_entries: 2,
+        //                num_display_entries: 5,
+        //                callback: pageselectCallback2  //回调函数
+        //            });
+        //            return data;
+        //        } else {
+        //            document.getElementById("Pagination2").style.display = "none";
+        //        }
+        //    });
+        //}
 
         //获取课程列表信息
         function getallCourse(page) {

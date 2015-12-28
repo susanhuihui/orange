@@ -1058,6 +1058,8 @@
                 //alert(data);
                 var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>留言时间</th><th>留言状态</th><th>操作</th></tr>';
                 if (data != null) {
+					console.log(data);
+					
                     for (var i = 0; i < data.length ; i++) {
                         var showtimestr = "";
                         if (data[i]["MesTimeNew"] == null) {
@@ -1067,8 +1069,17 @@
                         }
                         var showstate = ""
                         if (data[i]["State"] > 0) { showstate = "<span style='color:red;'>未查看</span>"; } else { showstate = "已查看"; }
+                        var liuyancoutent = "";
+                        var itemcon = data[i]["Contents"] + "";
+                        if (itemcon != "") {
+                            if (itemcon.length > 15) {
+                                liuyancoutent = itemcon.substring(0, 15) + "……";
+                            } else {
+                                liuyancoutent = itemcon;
+                            }
+                        }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
-                                    "<td>" + data[i]["Contents"] + "</td>" +
+                                    "<td>" + liuyancoutent + "</td>" +
                                    "<td>" + showtimestr + "</td>" +
                                     "<td>" + showstate + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageList/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["PassiveUserId"] + ')">查看</a>&nbsp;  ' +

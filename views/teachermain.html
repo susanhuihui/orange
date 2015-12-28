@@ -208,7 +208,7 @@
                         <div role="tabpanel" class="tab-pane" id="messages">
                             <table class="moneytable">
                                 <tr>
-                                    <td>现金余额：￥<span id="nowmoney">{{.Balance}}</span> 元&nbsp;&nbsp;&nbsp;</td>
+                                    <td>现金余额：￥<span id="nowmoney">{{.Balance}}</span> 元&nbsp;&nbsp;&nbsp;正在申请金额：<span>￥{{.Shenqingmoney}} 元</span></td>
                                     <td>
                                         <a data-toggle="modal" class="btn btn-default moneybtn" data-target="#takemoney" onclick="Tixian()">申请提现</a>
                                     </td>
@@ -696,8 +696,17 @@
                         }
                         var showstate = ""
                         if (data[i]["State"] > 0) { showstate = "<span style='color:red;'>未查看</span>"; } else { showstate = "已查看"; }
+                        var liuyancoutent = "";
+                        var itemcon = data[i]["Contents"] + "";
+                        if (itemcon != "") {
+                            if (itemcon.length > 15) {
+                                liuyancoutent = itemcon.substring(0, 15) + "……";
+                            } else {
+                                liuyancoutent = itemcon;
+                            }
+                        }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
-                                    "<td>" + data[i]["Contents"] + "</td>" +
+                                    "<td>" + liuyancoutent + "</td>" +
                                    "<td>" + showtimestr + "</td>" +
                                     "<td>" + showstate + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Main/GetUserMessageListTeacher/' + data[i]["Id"] + '" class="btn btn-warning radsty" onclick="setRead(' + data[i]["Id"] + ',' + data[i]["ActiveUserId"] + ')">查看</a>' +

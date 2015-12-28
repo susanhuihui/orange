@@ -90,6 +90,8 @@ func (c *UserinformationController) GetUserinformationByPhone() {
 	phoneStr := c.Ctx.Input.Params[":phone"]
 	fmt.Println(phoneStr)
 	v, err := models.GetUserinformationByPhone(phoneStr)
+	fmt.Println("验证手机号：")
+	fmt.Println(v)
 	if err != nil && v == nil {
 		c.Data["json"] = map[string]int64{"result": 0}
 	} else {

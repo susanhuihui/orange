@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"fmt"
+	"github.com/astaxie/beego/orm"
 	"io"
 	"log"
 	"net/http"
@@ -12,8 +13,6 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
-	"github.com/astaxie/beego/orm"
 )
 
 //原始用户信息
@@ -381,9 +380,12 @@ func GetUserinformationAllTeacher2(seltype int, nianji string, kecheng string, j
 	if shengfen != `%%` {
 		selstr = selstr + SqlProvince + `'` + shengfen + `'` + `))	`
 	}
-	selstr = selstr + SqlUserOver
-	fmt.Println("最终查询语句为：")
-	fmt.Println(selstr + limitSql)
+	if seltype == 1 { //添加结尾排序
+		selstr = selstr + SqlUserOveronline
+	} else if seltype == 2 || seltype == 3 {
+		selstr = selstr + SqlUserOver
+	}
+
 	rs = o.Raw((selstr + limitSql), rows, counts)
 	num, qs := rs.QueryRows(&userlist)
 	if qs != nil {
@@ -651,43 +653,67 @@ func GetImganddata(request *http.Request, picpath string) (json string, imgstr s
 	return json, imgstr
 }
 
-//上传图片
+/*
+* 接收上传图片的方法，返回数据的json格式
+* @param request 请求
+* @param headpath 图片存储的路径
+* @return
+* @return
+ */
 func GetImganddata2(request *http.Request, headpath string) (json string, imgstr string) {
 	request.ParseMultipartForm(32 << 20)
 
+	// 解析为多文件提交表单
 	multipartForm := request.MultipartForm
 
 	if multipartForm != nil {
-		//获取图片文件
+		// 获取上传的文件
 		files := multipartForm.File
-		//获取表单数据
+
+		// 获取表单数据
 		values := multipartForm.Value
-		fmt.Println(values)
-		fmt.Println(files)
+
+		// 根据key获取数据
 		if len(values["jsondata"]) > 0 {
 			json = values["jsondata"][0]
 		}
+
+		// 查看是否有文件
 		if 0 == len(files) {
 			log.Println("NO FILE.")
 
 			return
 		} else if 4 < len(files) {
+			// 最多只能上传四个文件, 如果文件过出错
 			log.Println("MAX FILE NUMBER.")
 
 			return
 		}
+
+		// 根据key获取文件
 		fileimg := files["file"]
 
+		// 从文件集合中循环取得文件
 		for i := 0; i < len(fileimg); i++ {
 
-			filename := fileimg[i].Filename
+			filename := fileimg[i].Filename // 获取文件名称
+
+			// 取得文件扩展名(这里如果是图片其实不用取扩展名, 直接存到文件系统中就可以, <img/>标签可以不解析文件类型)
 			str := strings.Split(filename, ".")
+			// 使用时间戳生成文件名
 			name := strconv.Itoa(time.Now().Nanosecond()) + strconv.Itoa(i) + "." + str[1]
+
+			// 拼接获取到的文件的存储路径, 用","(逗号)分割. 如: /static/img/photo1.jpg,/static/img/photo2.jpg
 			if i == 0 {
 				imgstr = headpath + name
 			} else {
 				imgstr = imgstr + "," + headpath + name
 			}
+
+			//---------------------------------------------------------------
+			// 存储文件 ?
+			// 在该方法被移植到Controller中之后, 这部分代码将失效
+			// 另外存储文件部分不用做这么复杂......
 			fileo, _ := fileimg[i].Open()
 			defer fileo.Close()
 			filePath, _ := exec.LookPath(os.Args[0])
@@ -715,6 +741,7 @@ func GetImganddata2(request *http.Request, headpath string) (json string, imgstr
 
 			io.Copy(fileWriter, fileo)
 			fileWriter.Close()
+			//----------------------------------------------------------------
 		}
 	}
 	return json, imgstr

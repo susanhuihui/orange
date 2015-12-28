@@ -243,6 +243,13 @@ func (c *MainController) UserTeacher() {
 	zijin, _ = models.GetAccountfundsByuid(stuuserid)
 	c.Data["Balance"] = zijin.Balance
 	fmt.Println(zijin.Balance)
+	//获取老师正在申请的金额总和
+	nowtixianmoney, xerr := models.GetAmountrecordsTMcountByUid(stuuserid)
+	if xerr == nil {
+		c.Data["Shenqingmoney"] = nowtixianmoney
+	} else {
+		c.Data["Shenqingmoney"] = 0
+	}
 
 	//列表信息展示
 	//1.预约课程
@@ -362,6 +369,7 @@ func (c *MainController) UserStudent() {
 	//我的留言
 	liuyanlist, _ := models.GetUsermessageBySidCount(stuuserid)
 	c.Data["liuyancount"] = liuyanlist
+	beego.Debug("留言内容: ", liuyanlist)
 	//我的关注
 	guanzhulist, _ := models.GetRelationsByUidCount(stuuserid, "关注")
 	c.Data["guanzhucount"] = guanzhulist
@@ -789,38 +797,8 @@ func (c *MainController) UpdateStudent2() {
 		} else {
 			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
 		}
-
 	}
-	userinfot, usererr := models.GetUserinformationStudent(stuuserid)
-	fmt.Println(userinfot.UserName)
-	if usererr == nil {
-		c.Data["AvatarPath"] = userinfot.AvatarPath
-		c.Data["UserName"] = userinfot.UserName
-		c.Data["UserSex"] = userinfot.UserSex
-		c.Data["SchoolName"] = userinfot.SchoolName
-		c.Data["AgeName"] = userinfot.AgeName
-		c.Data["LevelYear"] = userinfot.LevelYear
-		c.Data["Mailbox"] = userinfot.Mailbox
-		c.Data["ParentMailbox"] = userinfot.ParentMailbox
-		c.Data["IphoneNum"] = userinfot.IphoneNum
-		c.Data["SchoolAgeId"] = userinfot.SchoolAgeId
-		c.Data["StudyDifficult"] = userinfot.StudyDifficult
-		c.Data["SchoolId"] = userinfot.SchoolId
-		c.Data["Mailbox"] = userinfot.Mailbox
-	}
-	userclass, clerr := models.GetRemedialcoursesMain(stuuserid, 0)
-	var userlistclass string = ""
-	var userclassstr string = "" //名称集合
-	if userclass != nil && clerr == nil {
-		for i := 0; i < len(userclass); i++ {
-			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
-			userclassstr += userclass[i].CourseName + "  "
-		}
-	}
-	c.Data["userlistclass"] = userlistclass
-	c.Data["userclassstr"] = userclassstr
-
-	c.TplNames = "personal.html" //跳到
+	c.Redirect("/orange/Main/UpdateStudent/", 302)
 }
 
 // 老师个人中心-编辑个人信息
@@ -955,55 +933,7 @@ func (c *MainController) UpdateTeacher2() {
 			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
 		}
 	}
-	userinfot, usererr := models.GetUserinformationTeacher(userid)
-	if usererr == nil {
-		c.Data["AvatarPath"] = userinfot.AvatarPath
-		c.Data["UserName"] = userinfot.UserName
-		c.Data["UserSex"] = userinfot.UserSex
-		c.Data["SchoolName"] = userinfot.SchoolName
-		c.Data["SchoolId"] = userinfot.SchoolId
-		c.Data["HighSchoolName"] = userinfot.HighSchool
-		c.Data["SeniorLocation"] = userinfot.SeniorLocation //高中学校市区id
-		c.Data["Professional"] = userinfot.Professional     //专业
-		c.Data["DegreeName"] = userinfot.DegreeName         //学位
-		c.Data["UserDegree"] = userinfot.UserDegree
-		c.Data["GradeName"] = userinfot.GradeName       //所教年级
-		c.Data["GradeId"] = userinfot.GradeId           //所教年级
-		c.Data["CourseName"] = userinfot.CourseName     //主辅导课
-		c.Data["CourseNameId"] = userinfot.CourseNameId //主辅导课程id
-		c.Data["LevelYear"] = userinfot.LevelYear
-		c.Data["Mailbox"] = userinfot.Mailbox
-		c.Data["IphoneNum"] = userinfot.IphoneNum
-		c.Data["BriefIntroduction"] = userinfot.BriefIntroduction
-		c.Data["UserHobby"] = userinfot.UserHobby
-		c.Data["Mailbox"] = userinfot.Mailbox
-	}
-	userclass, clerr := models.GetRemedialcoursesMain(userid, 0)
-	var userlistclass string = "" //主键集合
-	var userclassstr string = ""  //名称集合
-	if userclass != nil && clerr == nil {
-		for i := 0; i < len(userclass); i++ {
-			userlistclass += strconv.Itoa(userclass[i].CoursesId) + ","
-			userclassstr += userclass[i].CourseName + "  "
-		}
-	}
-	c.Data["userlistclass"] = userlistclass
-	c.Data["userclassstr"] = userclassstr
-
-	//补习学龄段
-	var strage string = ""
-	if userinfot.SchoolAgeIdT != "" {
-		var ageliststr string = userinfot.SchoolAgeIdT
-		ageidlist := strings.Split(ageliststr, ",")
-		for i := 0; i < len(ageidlist); i++ {
-			ageid, _ := strconv.Atoi(ageidlist[i])
-			schoolagemodel, _ := models.GetSchoolagesById(ageid)
-			strage = strage + schoolagemodel.AgeName + " "
-		}
-	}
-	c.Data["AgeNames"] = strage
-	c.Data["schoolagelist"] = userinfot.SchoolAgeIdT
-	c.TplNames = "personalteacher.html" //跳到
+	c.Redirect("/orange/Main/UpdateTeacher/", 302)
 }
 
 // 登录-找回密码

@@ -15,6 +15,8 @@
 <body>
     {{template "menutop.html" .}}
 
+   
+
     <div id="pagetopb">
 
         <!--main-->
@@ -26,39 +28,36 @@
                         <p>ID {{.Id}}</p>
                         <span>{{.UserName}}</span>
                         <p>{{.SchoolName}}</p>
-                        <p id="usermessageid" style="display:none">{{.messid}}</p><!--第一条留言的主键id-->
-                        <p id="sid" style="display:none">{{.studentid}}</p><!--第一条老师主键id-->
-                        <p id="tid" style="display:none">{{.teacherid}}</p><!--第一条学生主键id-->
+                        <p id="usermessageid" style="display: none">{{.messid}}</p>
+                        <!--第一条留言的主键id-->
+                        <p id="sid" style="display: none">{{.studentid}}</p> <!--第一条学生主键id-->
+                       
+                        <p id="tid" style="display: none">{{.teacherid}}</p><!--第一条老师主键id-->
+                        
                     </div>
                 </div>
-                <div class="col-sm-9 col-md-10 leftdiv">
-                    <div id="replaceContent">
-                        <div class="row messtext">
-                            <div class="col-sm-1"></div>
-                            <div class="col-sm-8" style="color: red;">
-                                留言（王大全）: 我的留言                           
-                            </div>
+                <form id="form_memo" method="post" action="http://{{.Website}}/orange/usermessage/AddUsermessageOther/"  onsubmit="return check()">
+                    <div class="col-sm-9 col-md-10 leftdiv">
+                        <div id="replaceContent">
                         </div>
-                        <div class="row messtexts">
+                        <div class="row messtextsn" style="margin-top: 40px;">
                             <div class="col-sm-1"></div>
-                            <div class="col-sm-8" style="color: green;">
-                                回复（张嘉佳）: 我的留言                           
+                            <div class="col-sm-10">
+                                <textarea class="form-control evaarea" id="messCounenttext" name="Contents" form="form_memo"></textarea>
+                                
+                                <input type="hidden" name="MessageId" id="MessageId" value="{{.messid}}" />
+                                <input type="hidden" name="ActiveUserId" id="ActiveUserId" value="" />
+                                <input type="hidden" name="PassiveUserId" id="PassiveUserId" value="" />
                             </div>
                         </div>
                     </div>
-                    <div class="row messtextsn" style="margin-top: 40px;">
+                    <div class="row messtexts">
                         <div class="col-sm-1"></div>
                         <div class="col-sm-10">
-                            <textarea class="form-control evaarea" id="messCounenttext"></textarea>
+                            <input type="submit" class="evabtn" style="float: right;" value="提交">
                         </div>
                     </div>
-                </div>
-                <div class="row messtexts">
-                    <div class="col-sm-1"></div>
-                    <div class="col-sm-10">
-                        <input type="button" class="evabtn" style="float: right;" onclick="addUsermessage()" value="提交">
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -66,6 +65,7 @@
     <!--footer-->
 
     {{template "footer.html" .}}
+   
     <script src="b/js/jquery.min.js"></script>
     <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/indexjs.js"></script>
@@ -81,6 +81,14 @@
             //绑定留言与回复内容
             document.getElementById("replaceContent").innerHTML = "";
             document.getElementById("replaceContent").innerHTML = "{{.stuTeaContents}}";
+            
+            if (identityid == 1) {//老师
+                document.getElementById("ActiveUserId").value = "{{.teacherid}}";
+                document.getElementById("PassiveUserId").value = "{{.studentid}}";
+            } else if (identityid == 2 || identityid == 3) {
+                document.getElementById("ActiveUserId").value = "{{.studentid}}";
+                document.getElementById("PassiveUserId").value = "{{.teacherid}}";
+            }
         }
 
         //添加一条回复信息
@@ -99,7 +107,7 @@
                                     ',"PassiveUserId":' + uid1 +
                                     ',"MessageId":' + messid +
                                     ',"Contents":"' + messContent +
-                                    '","States":0' + 
+                                    '","States":0' +
                                     ',"MesTime":"' + getNowFormatDate() +
                                     '"}';
             } else {
@@ -128,7 +136,16 @@
                     });
         }
 
-
+        //提交前验证是否输入留言内容
+        function check() {
+            var message = trim(document.getElementById("messCounenttext").value);
+            if (message == "") {
+                alert("留言内容不能为空，请输入留言信息！");
+                return false;
+            } else {
+                return true;
+            } 
+        }
         </script>
 </body>
 </html>

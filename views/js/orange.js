@@ -77,40 +77,35 @@ function getSimpTime(time) {
     return stardate;
 }
 
-//将时间转换为可添加或修改的样子
+// 将传入的时间格式化为标准的CST表述方式. 用于服务器请求 2015-12-24T18:19:00.0000000+08:00
+// 作者: 李向哲
+//  时间: 2015/12/15
 function getInsertDate(time) {
-    var date = new Date(time);
-    var seperator1 = "-";
-    var seperator2 = ":";
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var hours = date.getHours();
-    if (hours >= 0 && hours <= 9) {
-        hours = "0" + hours;
-    }
-    var minutes = date.getMinutes();
-    if (minutes >= 0 && minutes <= 9) {
-        minutes = "0" + minutes;
-    }
-    var second = date.getSeconds();
-    if (second >= 0 && second <= 9) {
-        second = "0" + second;
-    }
-    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-            + "T" + hours + seperator2 + minutes
-            + seperator2 + second + "Z";//".0000000+08:00";
-    return currentdate;
-}
+    var dateTime = new Date(time);
+    var nowTime = dateTime.getTime();
+
+    // 获取现在的时区偏移量
+    var currentTimeOffset = (new Date()).getTimezoneOffset() / 60;
+
+    // 根据获取到的时区偏移量进行偏移计算, 例如
+    // 中国是+8:00时区, 偏移量是-8, 那么在将时间进行JSON转换时候会还原北回归线时间, 及当前时间减少8小时, 需要做偏移纠正.
+    // 如当前时间是 23:00:00 GMT+0800 (中国标准时间). 当进行JSON转换后会取北回归线时间, 即变为8小时前的15:00:00, 所以要做8小时的偏移纠正. 
+    // 同理, 如果是-0800时区(注意, 是时区, 不是时区偏移), 则应当在北回线时间基础上减少8小时
+    var offsetTime = nowTime - (currentTimeOffset * 60 * 60 * 1000);
+
+    var nowDate = new Date(offsetTime);
+    console.log("偏移后时间: " + nowDate + "(应与当前时间向后偏移8小时)");
+    var jsonDate = nowDate.toJSON();        // 获取进行两次便宜后的CST方式表示的时间
+    console.log("CST格式化后时间: " + jsonDate + "(应与当前时间向后偏移8小时)");
+
+    jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "%2b08:00";
+
+    return jsonDate;
+};
 
 //获取现在时间，用于数据库添加时间时使用 2015-12-24T18:19:00.0000000+08:00
 // 作者: 李向哲
-// 时间: 2012/12/15
+// 时间: 2015/12/15
 function getInsertNowDate() {
     var nowTime = Date.now();       // 获取当前时间, 表示方式为从1970-1-1 00:00:00 UTC至今所经过的毫秒数
     console.log("当前时间: " + new Date(nowDate));
@@ -125,14 +120,14 @@ function getInsertNowDate() {
     var offsetTime = nowTime - (currentTimeOffset * 60 * 60 * 1000);
 
     var nowDate = new Date(offsetTime);
-    console.log("偏移后时间: " + nowDate + "(应与当前时间向后偏移16小时)");
+    console.log("偏移后时间: " + nowDate + "(应与当前时间向后偏移8小时)");
     var jsonDate = nowDate.toJSON();        // 获取进行两次便宜后的CST方式表示的时间
-    console.log("CST格式化后时间: " + jsonDate + "(应与当前时间向后偏移16小时)");
+    console.log("CST格式化后时间: " + jsonDate + "(应与当前时间向后偏移8小时)");
 
     jsonDate = jsonDate.slice(0, jsonDate.length - 1) + "0000" + "%2b08:00";
 
     return jsonDate;
-}
+};
 
 //获取今天之前的几个日期，不包括今天
 function getdate(daycount) {

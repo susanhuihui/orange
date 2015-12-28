@@ -156,9 +156,9 @@
                 }
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
                 if (AvatarPath != null && AvatarPath + "" != "" && AvatarPath + "" != "undefined") {
-                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="' + AvatarPath + '" /></a>';
+                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px; width:23px; " src="' + AvatarPath + '" /></a>';
                 } else {
-                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px;" src="images/denglu.png" /></a>';
+                    document.getElementById("lilogin").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" ><img id="userHead" style="height: 23px; width:23px;" src="images/denglu.png" /></a>';
                 }
                 document.getElementById("outuser").style.display = "block";
             //} else {

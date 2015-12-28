@@ -29,8 +29,12 @@
                 <div class="col-sm-9 col-md-10 leftdiv">
                     <div class="messright">
                         <p>留言</p>
-                        <textarea class="form-control evaarea" id="messcount"></textarea>
-                        <input type="button" class="evabtn" style="float: right;" value="提交" onclick="addmessage()">
+                        <form id="form_memo" method="post" action="http://{{.Website}}/orange/usermessage/AddUsermessage/"  onsubmit="return check()">
+                            <input type="hidden" name="ActiveUserId" id="ActiveUserId" value="" />
+                            <input type="hidden" name="PassiveUserId" value="{{.teacherid}}" />
+                            <textarea class="form-control evaarea" id="messcount" name="Contents" form="form_memo"></textarea>
+                            <input type="submit" class="evabtn" style="float: right;" value="提交">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -44,7 +48,7 @@
     <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
-    <script type="text/ecmascript">
+    <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
         window.onload = function () {
             getuser();
@@ -52,12 +56,16 @@
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
+            document.getElementById("ActiveUserId").value = userid;
         }
 
         function addmessage() {
+			//--------------------------------------------------------------------
+			// 增加换行符替换代码, 将TextArea标签中的\n换行符替换为<br />
+			// 李向哲 @ 2015/12/27
             var sid = userid;
             var tid = document.getElementById("teacherid").innerHTML;
-            var mess = document.getElementById("messcount").value;
+             var mess = textareaValue;
             //alert(sid + "" + tid + mess);
             var addmess = '{"ActiveUserId":' + sid +
                                     ',"PassiveUserId":' + tid +
@@ -66,7 +74,6 @@
                                     '","States":' + 0 +
                                     ',"MesTime":"' + getInsertNowDate() +
                                     '"}';
-            alert(getInsertNowDate());
             $.post("http://{{.Website}}/orange/usermessage/AddUsermessage/", addmess,
                 function (data) {
                     if (data["id"] > 0) {
@@ -78,6 +85,16 @@
             });
         }
 
+        //提交前验证是否输入留言内容
+        function check() {
+            var message = trim(document.getElementById("messcount").value);
+            if (message == "") {
+                alert("留言内容不能为空，请输入留言信息！");
+                return false;
+            } else {
+                return true;
+            }
+        }
     </script>
 </body>
 </html>

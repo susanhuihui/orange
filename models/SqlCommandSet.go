@@ -415,7 +415,7 @@ var SqlUserMessageBySid string = `select usermsg.*,userinfo.UserName,(select mes
      (select count(*) from usermessage uu where uu.ActiveUserId = usermsg.PassiveUserId and uu.States =0  and uu.MessageId = usermsg.PKId) as State
 	from usermessage as usermsg join userinformation as userinfo on usermsg.PassiveUserId = userinfo.pkid 
 	 where usermsg.Messageid = 0 and usermsg.ActiveUserId = ? 
-	 order by MesTimeNew desc ,MesTime desc`
+	 order by MesTime desc `
 
 //26.
 //用途：
@@ -462,6 +462,7 @@ var SqlUserinformationAllTeacherByPerson1 string = `select userinfo.*,
 	where userinfo.identityid = (select pkid from identity where identityname='老师') `
 
 var SqlUserOver string = `	order by SortCondition desc  `
+var SqlUserOveronline string = `	order by OnlineState desc  `
 
 var SqlUserinformationAllTeacherByTime string = `select userinfo.*,
 	     (select DegreeName from degree as deg where userinfo.UserDegree = deg.pkid) as DegreeName,

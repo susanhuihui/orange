@@ -199,6 +199,11 @@ func (c *TeacherController) TeacherInformation() {
 			fuzhu += " "
 		}
 	}
+	allclasscount, _ := models.GetOnlinecourserecordByTidCount(userid)
+	allpingluncount, _ := models.GetOnlinecourseevaluationByTidCount(userid)
+	c.Data["nowallclasscount"] = allclasscount
+	c.Data["nowallPingjia"] = allpingluncount
+
 	c.Data["ceshi"] = time.Now()
 	c.Data["CourseNameFu"] = fuzhu
 	c.TplNames = "teacherlist.html" //跳到老师个人中心
