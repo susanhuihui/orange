@@ -1103,8 +1103,8 @@
                     }
                 }
 
-                $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
-                $("#file_form").click();
+                //$("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
+                //$("#file_form").click();
                 // 调用上传图片的功能, 结束
                 /////////////////////////////////////////////
             }
@@ -1168,7 +1168,7 @@
                 $.getJSON(getyue, function (getdate) {
                     var teachermoney = document.getElementById("tecprice").innerText;
                     if (getdate != null) {
-                        if (getdate["Balance"] >= teachermoney) {
+                        if (getdate["Balance"] >= teachermoney) {//判断用户余额是否足够支付此次预约
                             var ongetonline = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + nowTagid;
                             $.getJSON(ongetonline, function (dataon) {
                                 var message = document.getElementById("txtyuyuemessage").value;
@@ -1200,9 +1200,8 @@
                                                                 '}';
                                                $.post("http://{{.Website}}/orange/frozenfunds/AddUserFrozenfunds/", adddongjie,
                                                    function (data) {
-                                                       if (data["id"] > 0) {
-
-                                                       }
+                                                       $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
+                                                       $("#file_form").click();
                                                    });
                                                window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/" + teacherid;
                                            } else {//预约失败
