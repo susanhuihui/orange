@@ -2206,6 +2206,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:UsermessageController"] = append(beego.GlobalControllerRouter["orange/controllers:UsermessageController"],
 		beego.ControllerComments{
+			"AddUsermessageTeacherlist",
+			`/AddUsermessageTeacherlist/`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:UsermessageController"] = append(beego.GlobalControllerRouter["orange/controllers:UsermessageController"],
+		beego.ControllerComments{
 			"GetOne",
 			`/GetUsermessageById/:id`,
 			[]string{"get"},

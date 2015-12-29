@@ -75,6 +75,32 @@ func (c *UsermessageController) AddUsermessageOther() {
 	c.Redirect("http://"+models.OnlineUrl+"/orange/Main/GetUserMessageList/"+strconv.Itoa(userMessage.MessageId), 302)
 }
 
+// @Title Post
+// @Description create Usermessage
+// @Param	body		body 	models.Usermessage	true		"body for Usermessage content"
+// @Success 200 {int} models.Usermessage.Id
+// @Failure 403 body is empty
+// @router /AddUsermessageTeacherlist/ [post]
+func (c *UsermessageController) AddUsermessageTeacherlist() {
+	userMessage := models.Usermessage{}
+	if err := c.ParseForm(&userMessage); nil != err {
+		beego.Error("PARSE FORM: ", err.Error())
+		c.Data["json"] = err.Error()
+		c.ServeJson()
+	}
+
+	userMessage.MessageId = 0
+	userMessage.States = 0
+	userMessage.MesTime = time.Now()
+	if _, err := models.AddUsermessage(&userMessage); err != nil {
+		c.Data["json"] = err.Error()
+		c.ServeJson()
+	}
+
+	// 留言成功刷新页面
+	c.Redirect("http://"+models.OnlineUrl+"/orange/Teacher/TeacherInformation/"+strconv.Itoa(userMessage.PassiveUserId), 302)
+}
+
 // @Title Get
 // @Description get Usermessage by id
 // @Param	id		path 	string	true		"The key for staticblock"
