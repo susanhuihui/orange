@@ -1200,8 +1200,11 @@
                                                                 '}';
                                                $.post("http://{{.Website}}/orange/frozenfunds/AddUserFrozenfunds/", adddongjie,
                                                    function (data) {
-                                                       $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
-                                                       $("#file_form").click();
+                                                       var fileInput = $("#file_image")[0];
+                                                       if (fileInput.files.length > 0 && fileInput.files.length <= 4) {
+                                                           $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
+                                                           $("#file_form").click();
+                                                       }
                                                    });
                                                window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/" + teacherid;
                                            } else {//预约失败

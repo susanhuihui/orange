@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2">
                     <div class="probletable">
-                        <img src="{{.AvatarPath}}" />
+                        <img id="head" src="{{.AvatarPath}}" />
                         <p>ID {{.Id}}</p>
                         <span>{{.UserName}}</span>
                         <p>{{.SchoolName}}</p>
@@ -44,7 +44,7 @@
                         </div>
                         <div class="col-sm-5 classfont">
                             <p>
-                                留言: {{.AppointMessage}}                   
+                                留言: {{.AppointMessage}}                
                         </div>
                     </div>
                     <div class="row messright" id="fujiandiv">
@@ -99,8 +99,9 @@
             //alert(allClass);
             $.getJSON(allClass, function (data) {
 				console.log(data);
-                var stryuye = '<div class="col-sm-12"><p>附件：</p></div>';
+                var stryuye = '';
                 if (data != null) {
+                    stryuye += '<div class="col-sm-12"><p>附件：</p></div>';
                     var identityid = getCookie("identityid");
                     if (identityid != null && identityid == 1) {
                         for (var i = 0; i < data.length ; i++) {
@@ -120,14 +121,6 @@
                             stryuye += onetr;
                         }
                     }
-                    //for (var i = 0; i < data.length ; i++) {
-                    //    var onetr = '<div class="col-sm-3">' +
-                    //                '<img width="180" src="' + data[i]["CoursePath"] + '" style ="width:120px;height:120px;" /><br />' +
-                    //                '<a onclick="seePic(' + "'" + data[i]["CoursePath"] + "'" + ')"  data-toggle="modal" data-target="#seepicdiv">查看</a>' +
-                    //                '<a style="margin-left: 80px;" onclick="delFujian(' + data[i]["Id"] + ')">删除</a>' +
-                    //                '</div>';
-                    //    stryuye += onetr;
-                    //}
                 }
                 document.getElementById("fujiandiv").innerHTML = "";
                 $("#fujiandiv").append(stryuye);

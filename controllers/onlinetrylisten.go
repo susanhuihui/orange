@@ -188,6 +188,24 @@ func (c *OnlinetrylistenController) GetOnlinetrylistenOneByTid() {
 	c.ServeJson()
 }
 
+// @Title SetOnlinetrylistenEndTime
+// @Description SetOnlinetrylistenEndTime Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /SetOnlinetrylistenEndTime/:sid [get]
+func (c *OnlinetrylistenController) SetOnlinetrylistenEndTime() {
+	idStr := c.Ctx.Input.Params[":sid"]
+	sid, _ := strconv.Atoi(idStr)
+	v, err := models.SetOnlinetrylistenEndTime(sid)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title Get All
 // @Description get Onlinetrylisten
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."
@@ -351,6 +369,28 @@ func (c *OnlinetrylistenController) GetOe() {
 	c.Ctx.SetCookie("onlinelistenid", strconv.Itoa(listenid))
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	joinurl, err := models.GetListenStudentlession2(listenid, stuuserid) //当前学生进入试听信息主键
+	fmt.Println("路径是：")
+	fmt.Println(joinurl)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = joinurl
+	}
+	c.ServeJson()
+}
+
+// @Title Get
+// @Description get Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /GetListenStudentAdd/:listenid [get]
+func (c *OnlinetrylistenController) GetAdd() {
+	idStr := c.Ctx.Input.Params[":listenid"]
+	listenid, _ := strconv.Atoi(idStr)
+	c.Ctx.SetCookie("onlinelistenid", strconv.Itoa(listenid))
+	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+	joinurl, err := models.GetListenStudentlession3(listenid, stuuserid) //当前学生进入试听信息主键
 	fmt.Println("路径是：")
 	fmt.Println(joinurl)
 	if err != nil {

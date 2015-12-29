@@ -13,48 +13,14 @@
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />    
 </head>
 <body style="height:100%;">
-    {{template "menutop.html" .}}
-    <!--弹出层-->
-    <div id="popzcDiv" class="mydiv5" style="display: none;">
-        <a class="zcclosebtn" href="javascript:closezcDiv()">
-            <img src="images/CLOSE.png" />
-        </a>
-        <div>
-            <table class="stutablepop">
-                <tr>
-                    <td>您已完成学习
-                          </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>1小时20分</span>
-                    </td>
-                </tr>
-            </table>
-            <table class="stutablepop">
-                <tr>
-                    <td>
-                        <a href="evaluation.html">
-                            <input type="button" class="studentsbtn" value="去评价"></a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div id="bg" class="bg" style="display: none;"></div>  <!--弹出层结束-->
-    <div id="pagetopb">
-        <iframe  style="width:100%; height:100%; margin-left:0;" id="myframe"></iframe>
-    </div><p id="listenid" style="display:none">{{.listenid}}</p>
-    {{template "footer.html" .}}
-    <script type="text/javascript" src="js/jquery.js"></script>
+    <iframe id="myframe"  style="width:100%; height:100%; margin-left:0;" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>    
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
     <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript">
         var userid = getCookie("userid")//获取登录用户主键id
+        var listenid = getCookie("onlinelistenid")//获取老师在线信息主键id
         window.onload = function () {
-            getuser();
-            setTitleOnSelect(4);
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
@@ -62,134 +28,21 @@
         }
 
         function chushi() {
-            var listenid = document.getElementById("listenid").innerText;
-            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + listenid;
+            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudentAdd/" + listenid;
             $.getJSON(getblack, function (data) {
                 //alert(data);
                 ifrsrc(data);
             });
         }
 
-        window.onbeforeunload = onbeforeunload_handler;
-        window.onunload = onunload_handler;
-        function onbeforeunload_handler() {
-            var warning = "课程会结束";
-            return warning;
-        }
+        //关闭网页时调用此方法
+        window.onbeforeunload = function () {
+            var delroom = "http://{{.Website}}/orange/onlinetrylisten/SetOnlinetrylistenEndTime/" + userid;
+            $.getJSON(delroom, function (data) {
 
-        function onunload_handler() {
-            var warning = "谢谢光临";
-            //调用结束方法
-            //alert(warning);
-        }
-
-        function setOverTime() {
-            var nowDate = new Date();
-            var getonlinecourse = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByBookid/" + onlineid;//根据预约信息主键查询一条课程信息
-            $.getJSON(getonlinecourse, function (data) {
-                if (data != null) {//更新结束时间
-                    var upcourse = '{' +
-                                    '"OCBId":' + data["OCBId"] + ',' +
-                                    '"UserIdActive":' + data["UserIdActive"] + ',' +
-                                    '"UserIdPassive":' + data["UserIdPassive"] + ',' +
-                                    '"CourseTitle":"' + data["CourseTitle"] + '",' +
-                                    '"CourseContent":"' + data["CourseContent"] + '",' +
-                                    '"AttributeName":"' + data["AttributeName"] + '",' +
-                                    '"StartTime":"' + data["StartTime"] + '",' +
-                                    '"EndTime":"' + getInsertDate(nowDate) + '",' +
-                                    '"UnitPrice":' + data["UnitPrice"] + ',' +
-                                    '"TotalPrice":' + data["TotalPrice"] + ',' +
-                                    '"ClassNumber":' + data["ClassNumber"] + ',' +
-                                    '"ReviewPath":"' + data["ReviewPath"] + '"' +
-                                '"}';
-                    $.post("http://{{.Website}}/orange/onlinecourserecord/UpdateOnlinecourserecordById/" + data["Id"], upcourse,
-                       function (dataad) {
-                           if (dataad == "OK") {
-                               //
-                           } else {
-                           }
-                       });
-                }
-                else {//添加课程信息
-                    var getonlinebook = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + onlineid;//获取预约信息最为参考
-                    $.getJSON(getonlinebook, function (databook) {
-                        var addcourse = '{' +
-                                   '"OCBId":' + databook["Id"] + ',' +
-                                   '"UserIdActive":' + databook["UserIdActive"] + ',' +
-                                   '"UserIdPassive":' + databook["UserIdPassive"] + ',' +
-                                   '"CourseTitle":"'+ '",' +
-                                   '"CourseContent":"'  + '",' +
-                                   '"AttributeName":"'  + '",' +
-                                   '"StartTime":"' + databook["StartTime"] + '",' +
-                                   '"EndTime":"' + getInsertDate(nowDate) + '",' +
-                                   '"UnitPrice":'  + ',' +
-                                   '"TotalPrice":'  + ',' +
-                                   '"ClassNumber":'  + ',' +
-                                   '"ReviewPath":"'  + '"' +
-                               '"}';
-                        $.post("http://{{.Website}}/orange/onlinecourserecord/AddOnlinecourserecord/", addcourse,
-                           function (dataad) {
-                               if (dataad == "OK") {
-                                   //
-                               } else {
-                               }
-                           });
-                    });
-                }
             });
         }
-        //将预约信息改为已支付和已学习
-        function uponlinebookstate(onbookid) {
-            var getonlinecourse = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByBookid/" + onlineid;//根据预约信息主键查询一条课程信息
-            $.getJSON(getonlinecourse, function (data) {
-                if (data != null) {//更新预约是否学习
-                    //var upbooking = '{' +
-                    //                '"UserIdActive":' + data["UserIdActive"] + ',' +
-                    //                '"UserIdPassive":' + data["UserIdPassive"] + ',' + 
-                    //                '"ReservationState":' + data["ReservationState"] + ',' +
-                    //                '"Payment":' + 1 + ',' +
-                    //                '"Leaming":' + 1 + ',' +
-                    //                '"PayWay":' + data["PayWay"] + ',' +
-                    //                '"StartTime":"' + data["StartTime"] + '",' +
-                    //                '"EndTime":"' + data["EndTime"] + '",' +
-                    //                '"AppointTime":"' + data["AppointTime"] + '",' +
-                    //                '"AppointMessage":"' + data["AppointMessage"] + '",' +
-                    //                '"ClassroomId":' + data["ClassroomId"] + ',' +
-                    //                '"StudentInId":' + data["StudentInId"] + ',' +
-                    //                '"TeacherInId":' + data["TeacherInId"] + '' +
-                    //            '"}';
-                    //$.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + onbookid, upbooking,
-                    //   function (dataad) {
-                    //       if (dataad == "OK") {
-                    //           //
-                    //       } else {
-                    //       }
-                    //   });
-                }
-            });
-        }
-        //解冻学生资金，并把资金转入老师余额中，并且添加一条交易记录
-        function zhifuClass(bookid,teacherid) {
-            var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
-            $.getJSON(userfrozen, function (datafrozen) {
-                if (datafrozen != null) {
-                    var updongjie = '{"UserId":' + datafrozen["UserId"] +
-                                         ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
-                                         ',"FrozenType":' + datafrozen["FrozenType"] +
-                                         ',"BusinessId":' + datafrozen["BusinessId"] +
-                                         ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
-                                         '","ThawingTime":"' + getInsertNowDate() +
-                                         '","FrozenState":0' +
-                                         '}';
-                    $.post("http://{{.Website}}/orange/frozenfunds/UpdateTeacherFrozenfundsById/" + datafrozen["Id"] + "/" + teacherid, updongjie,
-                        function (data) {
-                            if (data["id"] > 0) {
 
-                            }
-                        });
-                }
-            });
-        }
 
         function ifrsrc(da) {
             document.getElementById("myframe").src = da;

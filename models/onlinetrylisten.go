@@ -165,6 +165,21 @@ func GetOnlinetrylistenOneByTid(tid int) (trylisten Onlinetrylisten, err error) 
 	return trylisten, qs
 }
 
+//	根据学生id记录此学生最后退出时间
+//	2015-12-29
+func SetOnlinetrylistenEndTime(sid int) (trylisten Onlinetrylisten, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlOnlinetrylistenbysid, sid)
+	qs := rs.QueryRow(&trylisten)
+	if qs == nil {
+		trylisten.StuEndTime = time.Now()
+		uperr := UpdateOnlinetrylistenById(&trylisten)
+		fmt.Println(uperr)
+	}
+	return trylisten, qs
+}
+
 // GetAllOnlinetrylisten retrieves all Onlinetrylisten matches certain condition. Returns empty list if
 // no records exist
 func GetAllOnlinetrylisten(query map[string]string, fields []string, sortby []string, order []string,
@@ -499,7 +514,7 @@ func GetListenTeacherurl(listenid int) (urlse string, err error) {
 	return
 }
 
-//重写学生进入课堂--------------学生查询在线白板的密码并进入课堂
+//重写获取学生进入试听课堂url--------------学生查询在线白板的密码并进入课堂
 func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
 	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
 	if geterr == nil && onlinetrylisten.Id > 0 {
@@ -534,20 +549,45 @@ func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
 				attent := meetroom.MeetingInfo.Attendees
 				onlinetid := attent.Attendees[0].UserID
 				if onlinetid == strconv.Itoa(onlinetrylisten.Tid) {
-					//添加学生一条试听信息
-					var addonlinetry Onlinetrylisten
-					addonlinetry.Tid = onlinetrylisten.Tid
-					addonlinetry.Sid = userinfo.Id
-					addonlinetry.StartTime = onlinetrylisten.StartTime
-					addonlinetry.StuStartTime = time.Now()
-					addonlinetry.ClassroomId = onlinetrylisten.ClassroomId
-					addonlinetry.StudentInId = onlinetrylisten.StudentInId
-					addid, adderr := AddOnlinetrylisten(&addonlinetry)
-					if addid > 0 && adderr == nil {
-						pardStudent.GetJoinURL()
-						urlse = pardStudent.JoinURL
-					}
+					pardStudent.GetJoinURL()
+					urlse = pardStudent.JoinURL
 				}
+			}
+		}
+	}
+	return
+}
+
+//获取学生进入课堂路径并添加一条试听信息
+func GetListenStudentlession3(listenid int, sid int) (urlse string, err error) {
+	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
+	if geterr == nil && onlinetrylisten.Id > 0 {
+		//获取学生信息
+		userinfo, gerr := GetUserinformationTeacher(sid)
+		fmt.Println("进入试听学生信息：")
+		fmt.Println(userinfo)
+		if gerr == nil {
+			urlse = "0"
+			pardStudent := bbb4go.Participants{}
+			pardStudent.IsAdmin_ = 0
+			pardStudent.FullName_ = userinfo.UserName
+			pardStudent.MeetingID_ = onlinetrylisten.ClassroomId //教室id
+			pardStudent.Password_ = onlinetrylisten.StudentInId  //学生进入密码
+			//pardStudent.CreateTime = time.Now().Format("2006-01-02 03:04:05 PM")
+			pardStudent.UserID = strconv.Itoa(userinfo.Id)
+			pardStudent.AvatarURL = "http://" + OnlineUrl + "/" + userinfo.AvatarPath
+			//添加学生一条试听信息
+			var addonlinetry Onlinetrylisten
+			addonlinetry.Tid = onlinetrylisten.Tid
+			addonlinetry.Sid = userinfo.Id
+			addonlinetry.StartTime = onlinetrylisten.StartTime
+			addonlinetry.StuStartTime = time.Now()
+			addonlinetry.ClassroomId = onlinetrylisten.ClassroomId
+			addonlinetry.StudentInId = onlinetrylisten.StudentInId
+			addid, adderr := AddOnlinetrylisten(&addonlinetry)
+			if addid > 0 && adderr == nil {
+				pardStudent.GetJoinURL()
+				urlse = pardStudent.JoinURL
 			}
 		}
 	}

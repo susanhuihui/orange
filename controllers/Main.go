@@ -88,18 +88,18 @@ func (c *MainController) LoginUser() {
 		fmt.Printf("k=%v, v=%v\n", k, v)
 		jsonS = k
 	}
-	fmt.Println("接到信息为：")
-	fmt.Println(jsonS)
+	//	fmt.Println("接到信息为：")
+	//	fmt.Println(jsonS)
 	var v models.Userinformation
 	json.Unmarshal([]byte(jsonS), &v)
 	var vuser *models.Userinformation
-	fmt.Println("用户名，密码：")
-	fmt.Println(v.UserName, v.LoginPassword)
+	//	fmt.Println("用户名，密码：")
+	//	fmt.Println(v.UserName, v.LoginPassword)
 	vuser, err := models.GetUserinformationLogin(v.UserName, v.LoginPassword)
-	fmt.Println(vuser)
+	//fmt.Println(vuser)
 	var usertrue string = "0" //0获取用户失败 -2用户名昵称存在密码不正确 -1用户名昵称不存在
 	if err == nil && vuser != nil && vuser.Id > 0 {
-		fmt.Println(vuser)
+		//fmt.Println(vuser)
 		c.Data["Website"] = models.OnlineUrl
 		c.Ctx.SetCookie("username", vuser.UserName)
 		c.Ctx.SetCookie("userid", strconv.Itoa(vuser.Id))
@@ -116,7 +116,6 @@ func (c *MainController) LoginUser() {
 			c.Ctx.SetCookie("AvatarPath", vphoneuser.AvatarPath)
 			c.Data["json"] = map[string]interface{}{"Id": vphoneuser.Id, "IdentityId": vphoneuser.IdentityId, "AvatarPath": vphoneuser.AvatarPath}
 		} else {
-
 			getuserbyname, nameerr := models.GetUserinformationByUserName(v.UserName)
 			if nameerr == nil && getuserbyname != nil {
 				usertrue = "-2" //用户名昵称存在密码不正确
@@ -229,7 +228,6 @@ func (c *MainController) UserTeacher() {
 		c.Data["BriefIntroduction"] = showTeacher.BriefIntroduction //学习难点
 	}
 	zhucourse, fuerr := models.GetRemedialcoursesMain(stuuserid, 0)
-	fmt.Println(zhucourse)
 	var fuzhu string = ""
 	if zhucourse != nil && fuerr == nil {
 		for i := 0; i < len(zhucourse); i++ {
@@ -297,12 +295,13 @@ func (c *MainController) UserStudent() {
 	var showStudent models.UserinformationStudent
 	var err error
 	showStudent, err = models.GetUserinformationStudent(stuuserid)
-	fmt.Println(stuuserid)
-	fmt.Println(showStudent)
 	if err == nil {
 		c.Data["UserName"] = showStudent.UserName
 		c.Data["StudentUserid"] = "00000" + strconv.Itoa(showStudent.Id)
-		c.Data["AllDate"] = strconv.Itoa(showStudent.AllDate)
+		//计算课时
+		fa, _ := strconv.ParseFloat(strconv.Itoa(showStudent.AllDate), 64)
+		allhour := fmt.Sprintf("%.1f", fa/60)
+		c.Data["AllDate"] = allhour
 		c.Data["AllCount"] = strconv.Itoa(showStudent.AllCount)
 		c.Data["AllPerson"] = strconv.Itoa(showStudent.AllPerson)
 		c.Data["IdentityName"] = showStudent.IdentityName
@@ -338,10 +337,10 @@ func (c *MainController) UserStudent() {
 	var zijin models.Accountfunds
 	zijin, _ = models.GetAccountfundsByuid(stuuserid)
 	c.Data["Balance"] = zijin.Balance
-	fmt.Println(zijin.Balance)
+	//fmt.Println(zijin.Balance)
 	dongjiezijin, _ := models.GetFrozenFundsByUserid(stuuserid)
-	fmt.Println("冻结资金总和：")
-	fmt.Println(dongjiezijin.FrozenMoney)
+	//fmt.Println("冻结资金总和：")
+	//fmt.Println(dongjiezijin.FrozenMoney)
 	c.Data["FrozenMoney"] = dongjiezijin.FrozenMoney
 
 	//列表信息展示
@@ -551,7 +550,7 @@ func (c *MainController) AddOnLineEvaluation() {
 	c.TplNames = "evaluationmainstudents.html" //跳到
 }
 
-// 学生个人中心-查看一条预约信息
+// 老师和学生个人中心-查看一条预约信息
 // @Title GetOnlineCourseBooking
 // @Description GetOnlineCourseBooking the TbUser
 // @Param			"The id you want to GetOnlineCourseBooking"
@@ -565,23 +564,40 @@ func (c *MainController) GetOnlineCourseBooking() {
 
 	onbook, recerr := models.GetOnlinecoursebookingById(bookid)
 	if onbook != nil && recerr == nil {
-		userinfo, usererr := models.GetUserinformationTeacher(onbook.UserIdPassive)
-		if usererr == nil {
-			c.Data["AvatarPath"] = userinfo.AvatarPath
-			c.Data["UserName"] = userinfo.UserName
-			c.Data["SchoolName"] = userinfo.SchoolName
-			c.Data["Id"] = "00000" + strconv.Itoa(userinfo.Id)
-			c.Data["TeacherId"] = userinfo.Id
+		//获取当前用户身份id
+		identityid, _ := strconv.Atoi(c.Ctx.GetCookie("identityid"))
+		if identityid != 0 && identityid == 1 { //老师查看
+			userinfo, usererr := models.GetUserinformationTeacher(onbook.UserIdActive)
+			if usererr == nil {
+				c.Data["AvatarPath"] = userinfo.AvatarPath
+				c.Data["UserName"] = userinfo.UserName
+				c.Data["SchoolName"] = userinfo.SchoolName
+				c.Data["Id"] = "00000" + strconv.Itoa(userinfo.Id)
+				c.Data["TeacherId"] = userinfo.Id
+			}
+			c.Data["StartTime"] = onbook.StartTime
+			c.Data["EndTime"] = onbook.EndTime
+			c.Data["onbookid"] = onbook.Id
+			c.Data["AppointMessage"] = onbook.AppointMessage
+		} else if identityid >= 2 && identityid <= 3 { //学生查看
+			userinfo, usererr := models.GetUserinformationTeacher(onbook.UserIdPassive)
+			if usererr == nil {
+				c.Data["AvatarPath"] = userinfo.AvatarPath
+				c.Data["UserName"] = userinfo.UserName
+				c.Data["SchoolName"] = userinfo.SchoolName
+				c.Data["Id"] = "00000" + strconv.Itoa(userinfo.Id)
+				c.Data["TeacherId"] = userinfo.Id
+			}
+			c.Data["StartTime"] = onbook.StartTime
+			c.Data["EndTime"] = onbook.EndTime
+			c.Data["AppointMessage"] = onbook.AppointMessage
+			c.Data["onbookid"] = onbook.Id
 		}
-		c.Data["StartTime"] = onbook.StartTime
-		c.Data["EndTime"] = onbook.EndTime
-		c.Data["AppointMessage"] = onbook.AppointMessage
-		c.Data["onbookid"] = onbook.Id
 	}
 	c.TplNames = "classmainstudents.html" //跳到
 }
 
-// 老师个人中心-查看一条预约信息
+//  暂时无页面调用
 // @Title GetOnlineCourseBookingByTeacher
 // @Description GetOnlineCourseBookingByTeacher the TbUser
 // @Param			"The id you want to GetOnlineCourseBookingByTeacher"

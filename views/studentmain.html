@@ -187,8 +187,8 @@
                     </table>
                 </div>
                 <div class="modal-footer" style="text-align: center;">
-                    <button type="button" style="width: 30%;" class="btn btn-warning" data-dismiss="modal" onclick="addTixian()">确定</button>
-                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal" onclick="clearmoney()">取消</button>
+                    <button type="button" style="width: 30%;" class="btn btn-warning" onclick="addTixian()">确定</button>
+                    <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
                 </div>
             </div>
         </div>
@@ -259,11 +259,11 @@
                         </tr>
                         <tr>
                             <p id="onlinebookid" style="display: none;"></p>
-                            <td id="tuiUserName">张嘉佳
+                            <td id="tuiUserName">
                                     </td>
-                            <td id="tuiDate">2015-09-08
+                            <td id="tuiDate">
                                     </td>
-                            <td id="tuiTime">19：00——20：00 
+                            <td id="tuiTime">
                                     </td>
                         </tr>
                     </table>
@@ -419,7 +419,7 @@
                         <div role="tabpanel" class="tab-pane" id="messages">
                             <table class="moneytable">
                                 <tr>
-                                    <td>现金余额：￥<span id="nowmoney">{{.Balance}}</span> 元&nbsp;&nbsp;&nbsp;
+                                    <td>现金余额：<span>￥</span><span id="nowmoney">{{.Balance}}</span> <span>元</span>&nbsp;&nbsp;&nbsp;
                                         冻结金额：<span>￥{{.FrozenMoney}} 元</span>
                                     </td>
                                     <td>
@@ -909,7 +909,7 @@
             var allClass = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByUid/" + userid + "/" + page + "/" + pubRows;
             //alert(allClass);
             $.getJSON(allClass, function (data) {
-                var allclassstr = '<tr class="stuth"><th>课程类型</th><th>辅导老师</th><th>上课日期</th><th>上课时间</th><th>课时费</th><th>操作</th></tr>';
+                var allclassstr = '<tr class="stuth"><th>课程类型</th><th>辅导老师</th><th>上课日期</th><th>上课时间</th><th>总课时费(元)</th><th>总时长(分钟)</th><th>操作</th></tr>';
                 if (data != null) {
                     for (var i = 0; i < data.length ; i++) {
                         var btnstr = "待评价";
@@ -922,7 +922,8 @@
                                     "<td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + getSimpDate(data[i]["StartTime"]) + "</td>" +
                                     "<td>" + getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]) + "</td>" +
-                                    "<td>" + data[i]["UnitPrice"] + "</td>" +
+                                    "<td>" + data[i]["TotalPrice"] + "</td>" +
+                                    "<td>" + data[i]["ClassNumber"] + "</td>" +
                                     '<td>' + btnhtml + btnstr + '</a></td></tr>';
                         allclassstr += onetr;
                     }
@@ -1207,10 +1208,10 @@
                                                });
                                        }
                                    });
-                                   alert("修改成功！");
+                                   alert("退约成功！");
                                    window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
                                } else {
-                                   alert("修改失败！");
+                                   alert("退约失败！");
                                }
                            });
                     
@@ -1413,6 +1414,9 @@
         var tixianistorf = 0;
         //点击提现按钮
         function Tixian() {
+            //清空输入框
+            document.getElementById("txtoutmoney").value = "";
+            document.getElementById("txtaccountuser").value = "";
             var nowmoney = document.getElementById("nowmoney").innerHTML;
             if (nowmoney <= 100) {
                 document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
@@ -1466,7 +1470,7 @@
                                 function (adddata) {
                                     if (adddata["id"] > 0) {
                                         alert("申请成功！");
-                                        window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/2";
+                                        window.location.href = "http://{{.Website}}/orange/Main/UserStudent/2";
                                     } else {
                                         alert("申请失败！");
                                     }
@@ -1482,10 +1486,6 @@
             document.getElementById("txtaccountuser").value = "";
         }
 
-        function clearmoney() {
-            document.getElementById("txtoutmoney").value = "";
-            document.getElementById("txtaccountuser").value = "";
-        }
 
         function setRead(mid, uid) {
             var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;

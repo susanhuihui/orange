@@ -1044,6 +1044,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"],
 		beego.ControllerComments{
+			"GetOnlinecoursebookingrecordByUid2",
+			`/GetOnlinecoursebookingrecordByUid2/:userid/:bookid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"],
+		beego.ControllerComments{
 			"GetOnlinecoursebookingrecordByTwoid",
 			`/GetOnlinecoursebookingrecordByTwoid/:bookid`,
 			[]string{"get"},
@@ -1282,6 +1289,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
 		beego.ControllerComments{
+			"SetOnlinetrylistenEndTime",
+			`/SetOnlinetrylistenEndTime/:sid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
 			"GetAll",
 			`/GetAllOnlinetrylisten/:page/:size`,
 			[]string{"get"},
@@ -1319,6 +1333,13 @@ func init() {
 		beego.ControllerComments{
 			"GetOe",
 			`/GetListenStudent/:listenid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
+			"GetAdd",
+			`/GetListenStudentAdd/:listenid`,
 			[]string{"get"},
 			nil})
 

@@ -506,7 +506,8 @@
                                                 alert("其他人正在试听，请稍后刷新网页重试！");
                                             }
                                             else {
-                                                window.open(dataurl);
+                                                window.open("http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"]);
+                                                //window.open(dataurl);
                                             }
                                         });
                                     }

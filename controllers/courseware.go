@@ -83,8 +83,10 @@ func (c *CoursewareController) AddCoursewareOnbook() {
 	}
 
 	// c.Data["json"] = map[string]interface{}{"state": 1}
+	//查询一条预约信息updateliu20151229
+	onlinebook, _ := models.GetOnlinecoursebookingById(bookId)
 	c.Ctx.Redirect(302, "http://"+models.OnlineUrl+
-		"/orange/Teacher/StudentSetTeacherMeet/1")
+		"/orange/Teacher/StudentSetTeacherMeet/"+strconv.Itoa(onlinebook.UserIdPassive))
 }
 
 // @Title Get

@@ -84,6 +84,27 @@ func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid(
 	c.ServeJson()
 }
 
+// @Title GetOnlinecoursebookingrecordByUid2
+// @Description GetOnlinecoursebookingrecordByUid2 Onlinecoursebookingrecord by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinecoursebookingrecord
+// @Failure 403 :id is empty
+// @router /GetOnlinecoursebookingrecordByUid2/:userid/:bookid [get]
+func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid2() {
+	idStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(idStr)
+	bookidStr := c.Ctx.Input.Params[":bookid"]
+	bookid, _ := strconv.Atoi(bookidStr)
+	v, err := models.GetOnlinecoursebookingrecordByUid2(userid, bookid)
+
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title GetOnlinecoursebookingrecordByTwoid
 // @Description GetOnlinecoursebookingrecordByTwoid Onlinecoursebookingrecord by id
 // @Param	id		path 	string	true		"The key for staticblock"

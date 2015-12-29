@@ -30,7 +30,7 @@ var SqlUserPicList string = `SELECT users.PKId,UserName,AvatarPath,
 //2015-11-03
 var SqlUserTeacher string = `select * ,
 	(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
-    ifnull((select count(userfor.pkid) from userinformation userfor where userfor.pkid in (select useridactive from onlineeducation.onlinecoursebooking as ob where ob.UserIdPassive = users.PKId group by useridactive)),0) as AllPerson,
+    ifnull((select count(userfor.pkid) from userinformation userfor where userfor.pkid in (select useridactive from onlineeducation.onlinecourserecord as ob where ob.UserIdPassive = users.PKId group by useridactive)),0) as AllPerson,
     ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.UserIdPassive = users.pkid) ,0) as  AllDate,
     ifnull((select count(*) from onlineeducation.onlinecourserecord as oc where oc.UserIdPassive = users.pkid) ,0)as AllCount,
         (select CourseName from course as cous where cous.PKId = (select CoursesId from remedialcourses as remec where remec.UserId=users.PKId and IsMain=1 limit 1)) as CourseName,
@@ -267,7 +267,7 @@ var SqlQuestionAskByTUserid string = `select qa.PKId,qa.AskUserId,qa.AnswerUserI
 var SqlUserInformationByS string = `select * ,
 		(select IdentityName from identity as iden where users.identityid = iden.PkId) as IdentityName,
 	    (select count(userfor.pkid) from userinformation userfor where userfor.pkid in 
-			(select UserIdPassive from onlineeducation.onlinecourserecord as ob where ob.UserIdActive = 5 group by UserIdPassive)) as AllPerson,
+			(select UserIdPassive from onlineeducation.onlinecourserecord as ob where ob.UserIdActive = users.pkid group by UserIdPassive)) as AllPerson,
 	    ifnull((select sum(ClassNumber) from onlineeducation.onlinecourserecord as oc where oc.OCBId in 
 			(select PkId from onlineeducation.onlinecoursebooking as ob where ob.UserIdActive = users.PKId)),0) as AllDate,
 	    ifnull((select count(*) from onlineeducation.questionask as qa where qa.askuserid = users.pkid),0) as AllCount,
@@ -697,6 +697,15 @@ var SqlOnlineBookingRecordBybookiduid string = `select *
 						from onlinecoursebookingrecord
 						where userid = ? and ocbid = ?`
 
+/**48.**/
 var SqlUserMessagebymuid string = `SELECT * FROM onlineeducation.usermessage where (messageid = ? and activeuserid = ?) or pkid=?`
 
+/**49.**/
 var SqlOnlineBooningbyid string = `SELECT * FROM onlineeducation.onlinecoursebooking where pkid=?`
+
+/**50.查询一条学生试听结束时间为空的最后一条信息**/
+var SqlOnlinetrylistenbysid = `select * 
+							from onlinetrylisten as ontry
+							where sid=? and stuendtime is null
+							order by stustarttime desc
+							limit 1`

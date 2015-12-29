@@ -293,7 +293,7 @@ body{ background-color:#f5f5f5;}
 .tearightbottab img{ height:23px;}
 .teatabbottom img{ height:23px;}
 .teatabbottom{width:80%; margin-left:auto; margin-right:auto; text-align:center; color:#8E8E8E; height:45px;}
-.tearightbottom{height:auto; background-color:#fff; margin-top:430px;}
+.tearightbottom{height:auto; background-color:#fff; margin-top:0px;}
 .teamessage{ width:100%; padding:15px; margin-left:auto; margin-right:auto;}
 .teaarea{ margin-top:10px; min-height:100px;  border:1px dashed #FFCA53; border-radius:5px; width:100%;}
 .teachersbtn{ margin-top:10px; border:none; background-color:#fe9627; width:100%; padding:6px 50px 6px 50px; border-radius:6px; color:#FFF; font-size:12px; font-family:"Microsoft Yahei","微软雅黑",Tahoma,Arial,Helvetica,STHeiti; margin-bottom:15px; box-shadow:0px 2px 0px #B75F00;}

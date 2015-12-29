@@ -453,10 +453,10 @@ func (c *TeacherController) TeacherTryListenClass() {
 // @router /StudentTryListenClass/:listenid [get]
 func (c *TeacherController) StudentTryListenClass() {
 	c.Data["Website"] = models.OnlineUrl
-	idStr := c.Ctx.Input.Params[":listenid"]
-	listenid, _ := strconv.Atoi(idStr)
-	c.Data["listenid"] = listenid
-	c.TplNames = "listenstudent.html" //
+	onlineidStr := c.Ctx.Input.Params[":listenid"]
+	//listenid, _ := strconv.Atoi(idStr)
+	c.Ctx.SetCookie("onlinelistenid", onlineidStr) //当前老师进入试听信息主键
+	c.TplNames = "listenstudent.html"              //
 }
 
 // 在线课堂结束后进入的页面
