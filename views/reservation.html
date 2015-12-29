@@ -1083,29 +1083,31 @@
         * 修改时间: 2015/12/25
         */
         function setMeetTrueorFalse() {
-            /////////////////////////////////////////////
-            // 调用上传图片的功能, 开始
-            // 李向哲 2015/12/25
-			// 检查附件数量, 最多上传4张图片
-			var fileInput = $("#file_image")[0];
-			
-			if (4 < fileInput.files.length) {
-				alert("最多上传4张图片, 请重新选择图片附件.");
-				return ;
-			}
-			
-			// 限定上传文件大小, 不得大于2MB
-			for (var count = 0; count < fileInput.files.length; count++) {
-				if ( 2 < fileInput.files[count].size / (1024 * 1024) ) {
-					alert("支持最大上传附件大小为2MB, 请重新选择附件.")
-					return ;
-				}
-			}
-			
-            $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
-            $("#file_form").click();
-            // 调用上传图片的功能, 结束
-            /////////////////////////////////////////////
+            if (nowName == "可约") {
+                /////////////////////////////////////////////
+                // 调用上传图片的功能, 开始
+                // 李向哲 2015/12/25
+                // 检查附件数量, 最多上传4张图片
+                var fileInput = $("#file_image")[0];
+
+                if (4 < fileInput.files.length) {
+                    alert("最多上传4张图片, 请重新选择图片附件.");
+                    return;
+                }
+
+                // 限定上传文件大小, 不得大于2MB
+                for (var count = 0; count < fileInput.files.length; count++) {
+                    if (2 < fileInput.files[count].size / (1024 * 1024)) {
+                        alert("支持最大上传附件大小为2MB, 请重新选择附件.")
+                        return;
+                    }
+                }
+
+                $("#form_update_image")[0].action = "/orange/courseware/AddCoursewareOnbook/" + nowTagid;
+                $("#file_form").click();
+                // 调用上传图片的功能, 结束
+                /////////////////////////////////////////////
+            }
             if (nowName == "自约") {
                 if (istorf == 1) {
                     //alert("自约改可约");//修改一条预约信息，修改一条冻结信息，取消此条信息冻结的资金，用户余额加上取消冻结资金
