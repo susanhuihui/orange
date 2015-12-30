@@ -1076,22 +1076,25 @@ func (c *MainController) PayEnd() {
 		//获取唯一标识
 		inid := result.OrderNo //本网站订单号
 		inidt, _ := strconv.Atoi(inid)
-		accountpay, _ := models.GetAmountrecordsById(inidt)
-		zhifumoney := strconv.FormatFloat(accountpay.RecordMoney, 'f', -1, 64)
-		if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
-			accountpay.IsComplete = 1
-			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
-			fmt.Println(upresulterr)
-			//用户账户添加金额
-			accountuser, _ := models.GetAccountfundsById(accountpay.UserId)
-			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
-			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
-			if upaccerr == nil {
+		if inidt > 0 {
+			accountpay, _ := models.GetAmountrecordsById(inidt)
+			zhifumoney := strconv.FormatFloat(accountpay.RecordMoney, 'f', -1, 64)
+			if accountpay.IsComplete == 0 { //订单是否已处理，否处理未处理的订单
+				accountpay.IsComplete = 1
+				upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
+				fmt.Println(upresulterr)
+				//用户账户添加金额
+				accountuser, _ := models.GetAccountfundsByuid(accountpay.UserId)
+				accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
+				upaccerr := models.UpdateAccountfundsById(&accountuser) //更新账户余额
+				if upaccerr == nil {
+					c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
+				}
+			} else {
 				c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 			}
-		} else {
-			c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 		}
+
 	} else {
 		c.Data["resultStr"] = result.Message
 	}
@@ -1121,9 +1124,9 @@ func (c *MainController) PayEndNotify() {
 			upresulterr := models.UpdateAmountrecordsById(accountpay) //更新提现记录
 			fmt.Println(upresulterr)
 			//用户账户添加金额
-			accountuser, _ := models.GetAccountfundsById(accountpay.UserId)
+			accountuser, _ := models.GetAccountfundsByuid(accountpay.UserId)
 			accountuser.Balance = accountuser.Balance + accountpay.RecordMoney
-			upaccerr := models.UpdateAccountfundsById(accountuser) //更新账户余额
+			upaccerr := models.UpdateAccountfundsById(&accountuser) //更新账户余额
 			if upaccerr == nil {
 				c.Data["resultStr"] = "支付成功：" + zhifumoney + "元。"
 			}

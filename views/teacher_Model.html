@@ -50,15 +50,15 @@
                 </div>
                 <hr class="hrhr" />
                 <div class="row teacherrow">
-                    
-                    <div class="col-sm-2" style="margin-top:10px;">
+
+                    <div class="col-sm-2" style="margin-top: 10px;">
                         想找哪里的老师：                       
                     </div>
-                    <div class="col-sm-3" style="text-align: left; margin-bottom:10px;">
+                    <div class="col-sm-3" style="text-align: left; margin-bottom: 10px;">
                         <select class=" form-control" id="selProvence" onchange="selcity()">
                             <option value="0"></option>
                         </select>
-                        <select class="teasel" id="selCitys" onchange="selcitys()" style="display:none">
+                        <select class="teasel" id="selCitys" onchange="selcitys()" style="display: none">
                             <option value="0"></option>
                         </select>
                     </div>
@@ -66,7 +66,8 @@
             </div>
 
             <div class='row teachermain'>
-                <div class="col-sm-9"><span style="font-size:7px;color:#808080;"></span>
+                <div class="col-sm-9" style="border-right: 10px solid #f5f5f5;">
+                    <span style="font-size: 7px; color: #808080;"></span>
                     <!-- Nav tabs -->
                     <ul class="ull nav nav-tabs" role="tablist">
                         <li role="presentation" id="tap1" class="active"><a href="#home" onclick="clickTab(1)" aria-controls="home" role="tab" data-toggle="tab">在线排序</a></li>
@@ -81,7 +82,7 @@
                         <div id="Pagination" class="pagination"></div>
                     </div>
                 </div>
-                <div class="col-sm-3" style="border-left: 10px solid #f5f5f5;" id="tuijiandiv">
+                <div class="col-sm-3" id="tuijiandiv">
                     <div class="teahead">
                         <img src="images/teacherhead.jpg" />
                     </div>
@@ -117,31 +118,10 @@
                         <div class="col-sm-12 teaheadtab">
                             <input type="button" class="teachersbtn" onclick="addGoodTeacher()" value="提交">
                         </div>
-                    </div>
-                    <div class="tearightbottom" style="border-bottom: 2px solid #f5f5f5;" id="anserSee">
-                        <div class="rightbottomtab" style="text-align: left;">
-                            <img src="images/pjjl.png" /><span>最近浏览</span>
-                        </div>
-                        <div class="teaimgimg">
-                            <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
-                            <p>
-                                <a href="teacherlist.html">王老师 | 高中数学</a>
-                            </p>
-                            <p>
-                                <span>200</span> 元/小时                                               
-                            </p>
-                        </div>
-                        <div class="teaimgimg">
-                            <img class="teaheadimgimg" src="images/teacherimg3.jpg" />
-                            <p>
-                                <a href="teacherlist.html">王老师 | 高中数学</a>
-                            </p>
-                            <p>
-                                <span>200</span> 元/小时                                               
-                            </p>
-                        </div>
-                    </div>
 
+                        <div class="tearightbottom" style="border-bottom: 2px solid #f5f5f5;" id="anserSee">
+                        </div>
+                    </div>
                 </div>
             </div>
             <p id="allcount" style="display: none">{{.allUserscount}}</p>
@@ -281,7 +261,7 @@
                     levelstr += items;
                 }
                 document.getElementById("selProvence").innerHTML = "";
-                $("#selProvence").append(levelstr);               
+                $("#selProvence").append(levelstr);
                 document.getElementById("selProvence").selectedIndex = selindex;
                 var selProvinceid = document.getElementById("selProvence").options[selindex].value;
                 getCity(selProvinceid);
@@ -392,7 +372,7 @@
             //    document.getElementById("selProvence").value = shengfen;
             //}
             //var shiqu = document.getElementById("P6").innerText; pubCitys = shiqu;
-            
+
         }
 
         //分页初始
@@ -467,7 +447,7 @@
                                      '</div>' +
                                      '</div>' +
                                      '<div class="col-sm-7 teamainmiddle">' +
-                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">'+
+                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">' +
                                      '<span>' + data[i]["UserName"] + onlinestr + '</span></a>' +
                                      '<p>' + data[i]["SchoolName"] + ' | ' + data[i]["DegreeName"] + ' | ' + data[i]["LevelYear"] + '级 | ' + data[i]["Professional"] + '</p>' +
                                      '<p>主辅导课：' + data[i]["CourseNameZhu"] + '</p>' +
@@ -475,7 +455,7 @@
                                      '<div class="col-sm-3">' +
                                      '<div class="teamainright">' +
                                      '<p>' + data[i]["UnitPrice"] + '元/小时</p>' +
-                                     '<br />' + btnstr  + btnhou +
+                                     '<br />' + btnstr + btnhou +
                                      '</div>' +
                                      '</div>' +
                                      '</div>';
@@ -494,8 +474,8 @@
         //点击分页按钮事件，掉用获取列表方法
         function pageselectCallback(page_id, jq) {
             //alert((page_id + 1));
-           getAllTeacher((page_id + 1));
-            
+            getAllTeacher((page_id + 1));
+
         }
 
         //点击tab时根据条件查询第一页数据
@@ -514,7 +494,7 @@
                 }
             }
             document.getElementById("grade" + tapnum).className = "listfont";
-            
+
             if (tapnum > 0) {
                 pubGrade = document.getElementById("grade" + tapnum).innerText;
             } else {
@@ -558,14 +538,14 @@
                 var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByUidSee/" + userid + "/浏览/1/2";
                 //alert(allseestr);
                 $.getJSON(allseestr, function (data) {
-                    var allseelist = '<div class="rightbottomtab" style="text-align: left;">' +
+                    var allseelist = '<div class="rightbottomtab" style="text-align: left; padding-top:30px;">' +
                                      '<img src="images/pjjl.png" /><span>最近浏览</span>' +
                                      '</div>';
                     if (data != null) {
                         //alert(data);
                         for (var i = 0; i < data.length ; i++) {
                             var itemse = '<div class="teaimgimg">' +
-                                         '<img class="teaheadimgimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                         '<img class="teaheadimgimg" style="padding-top:40px;" src="' + data[i]["AvatarPath"] + '" />' +
                                          '<p><a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["FrontUserId"] + '">' + data[i]["UserName"] + ' | ' + data[i]["CourseName"] + '</a></p>' +
                                          '<p><span>' + data[i]["UnitPrice"] + '</span> 元/小时</p>' +
                                          '</div>';
@@ -678,10 +658,10 @@
                     } else {
                         alert("请您先登录！");
                     }
-                }                
+                }
             } else {
                 alert("请先登录！");
-            }            
+            }
         }
 
         //给老师留言
