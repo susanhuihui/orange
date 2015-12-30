@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"fmt"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"orange/models"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego"
 )
@@ -30,20 +31,47 @@ func (c *OnlinecourseevaluationController) URLMapping() {
 // @Success 200 {int} models.Onlinecourseevaluation.Id
 // @Failure 403 body is empty
 // @router /AddOnlinecourseevaluation/ [post]
-func (c *OnlinecourseevaluationController) Post() {	
-	var jsonS string 
+func (c *OnlinecourseevaluationController) Post() {
+	var jsonS string
 	for k, v := range c.Ctx.Request.Form {
-        fmt.Printf("k=%v, v=%v\n", k, v)
+		fmt.Printf("k=%v, v=%v\n", k, v)
 		jsonS = k
-    }	
+	}
 	var v models.Onlinecourseevaluation
-	json.Unmarshal([] byte(jsonS), &v)
+	json.Unmarshal([]byte(jsonS), &v)
 	if id, err := models.AddOnlinecourseevaluation(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
 		c.Data["json"] = err.Error()
 	}
 	c.ServeJson()
+}
+
+// 学生添加课程评价
+// 2015-12-30 addliu
+// @Title Post
+// @Description create Onlinecourseevaluation
+// @Param	body		body 	models.Onlinecourseevaluation	true		"body for Onlinecourseevaluation content"
+// @Success 200 {int} models.Onlinecourseevaluation.Id
+// @Failure 403 body is empty
+// @router /AddOnlinecourseevaluationFStu/ [post]
+func (c *OnlinecourseevaluationController) AddOnlinecourseevaluationFStu() {
+	onlinecourse := models.Onlinecourseevaluation{}
+	if err := c.ParseForm(&onlinecourse); nil != err {
+		beego.Error("PARSE FORM: ", err.Error())
+		c.Data["json"] = err.Error()
+		c.ServeJson()
+	}
+
+	onlinecourse.ReviewTime = time.Now()
+	addid, err := models.AddOnlinecourseevaluation(&onlinecourse)
+	if err != nil {
+		c.Data["json"] = err.Error()
+		c.ServeJson()
+	}
+
+	// 留言成功刷新页面
+	c.Redirect("http://"+models.OnlineUrl+"/orange/Main/GetOnLineEvaluation/"+strconv.FormatInt(int64(addid), 10), 302)
 }
 
 // @Title Get
@@ -72,16 +100,16 @@ func (c *OnlinecourseevaluationController) GetOne() {
 // @Failure 403 :id is empty
 // @router /GetOnlinecourseevaluationByTid/:userid/:page/:size [get]
 func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTid() {
-	idStr := c.Ctx.Input.Params[":userid"]	
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.Atoi(page)//传来的页数
-	rows, _ := strconv.Atoi(size) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
-	v, err := models.GetOnlinecourseevaluationByTid(userid,offset,limit)
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetOnlinecourseevaluationByTid(userid, offset, limit)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -98,7 +126,7 @@ func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTid() {
 // @Failure 403 :id is empty
 // @router /GetOnlinecourseevaluationByTidCount/:userid [get]
 func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTidCount() {
-	idStr := c.Ctx.Input.Params[":userid"]	
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
 	v, err := models.GetOnlinecourseevaluationByTidCount(userid)
 	if err != nil {
@@ -109,7 +137,6 @@ func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTidCount()
 	c.ServeJson()
 }
 
-
 //34.学生查看自己所评价的老师们
 // @Title GetOnlineCourseEvaluationBySid
 // @Description GetOnlineCourseEvaluationBySid Onlinecourseevaluation by id
@@ -118,16 +145,16 @@ func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTidCount()
 // @Failure 403 :id is empty
 // @router /GetOnlineCourseEvaluationBySid/:userid/:page/:size [get]
 func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySid() {
-	idStr := c.Ctx.Input.Params[":userid"]	
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.Atoi(page)//传来的页数
-	rows, _ := strconv.Atoi(size) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
-	v, err := models.GetOnlineCourseEvaluationBySid(userid,offset,limit)
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetOnlineCourseEvaluationBySid(userid, offset, limit)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -144,7 +171,7 @@ func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySid() {
 // @Failure 403 :id is empty
 // @router /GetOnlineCourseEvaluationBySidCount/:userid [get]
 func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySidCount() {
-	idStr := c.Ctx.Input.Params[":userid"]	
+	idStr := c.Ctx.Input.Params[":userid"]
 	userid, _ := strconv.Atoi(idStr)
 	v, err := models.GetOnlineCourseEvaluationBySidCount(userid)
 	if err != nil {
@@ -172,13 +199,13 @@ func (c *OnlinecourseevaluationController) GetAll() {
 	var order []string
 	var query map[string]string = make(map[string]string)
 
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.ParseInt(page, 0, 0)//传来的页数
-	rows, _ := strconv.ParseInt(size, 0, 0) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
+	page := c.Ctx.Input.Param(":page")       //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size")       //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.ParseInt(page, 0, 0) //传来的页数
+	rows, _ := strconv.ParseInt(size, 0, 0)  //传来的显示行数
+	truepages := (pages - 1) * rows          //计算舍弃多少行
+	limit := rows                            //显示行数
+	offset := truepages                      //舍弃行数	//新加--------结束--------
 
 	// fields: col1,col2,entity.col3
 	if v := c.GetString("fields"); v != "" {

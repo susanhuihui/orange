@@ -1100,6 +1100,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinecourseevaluationController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecourseevaluationController"],
 		beego.ControllerComments{
+			"AddOnlinecourseevaluationFStu",
+			`/AddOnlinecourseevaluationFStu/`,
+			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:OnlinecourseevaluationController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecourseevaluationController"],
+		beego.ControllerComments{
 			"GetOne",
 			`/GetOnlinecourseevaluationById/:id`,
 			[]string{"get"},
@@ -2250,6 +2257,13 @@ func init() {
 		beego.ControllerComments{
 			"GetUsermessageBymuid",
 			`/GetUsermessageBymuid/:mid/:userid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:UsermessageController"] = append(beego.GlobalControllerRouter["orange/controllers:UsermessageController"],
+		beego.ControllerComments{
+			"GetUsermessageBymuidByStudent",
+			`/GetUsermessageBymuidByStudent/:mid/:userid`,
 			[]string{"get"},
 			nil})
 

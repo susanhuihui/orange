@@ -1490,27 +1490,29 @@
 
 
         function setRead(mid, uid) {
-            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuid/" + mid + "/" + uid;
+            var getstate = "http://{{.Website}}/orange/usermessage/GetUsermessageBymuidByStudent/" + mid + "/" + uid;
             $.getJSON(getstate, function (data) {
-                if (data != null) {
-                    for (var i = 0; i < data.length; i++) {
-                        var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
-                                     ',"PassiveUserId":' + data[i]["PassiveUserId"] +
-                                     ',"MessageId":' + data[i]["MessageId"] +
-                                     ',"Contents":"' + data[i]["Contents"] +
-                                     '","States":1' +
-                                     ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
-                                     '"}';
-                        $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/" + data[i]["Id"], upmest,
-                            function (update) {
-                                if (update == "OK") {
+                //if (data != null) {
+                //    for (var i = 0; i < data.length; i++) {
+                //        if (data[i]["Id"]+"" != mid+"") {
+                //            var upmest = '{"ActiveUserId":' + data[i]["ActiveUserId"] +
+                //                         ',"PassiveUserId":' + data[i]["PassiveUserId"] +
+                //                         ',"MessageId":' + data[i]["MessageId"] +
+                //                         ',"Contents":"' + data[i]["Contents"] +
+                //                         '","States":1' +
+                //                         ',"MesTime":"' + getInsertDate(data[i]["MesTime"]) +
+                //                         '"}';
+                //            $.post("http://{{.Website}}/orange/usermessage/UpdateUsermessageById/" + data[i]["Id"], upmest,
+                //                function (update) {
+                //                    if (update == "OK") {
 
-                                } else {
+                //                    } else {
 
-                                }
-                            });
-                    }
-                }
+                //                    }
+                //            });
+                //        }
+                //    }
+                //}
             });
         }
     </script>

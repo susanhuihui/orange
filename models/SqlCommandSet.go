@@ -107,7 +107,7 @@ var SqlOnlineTeacherbookingByT string = `select online.*,
 //参数说明：老师主键id，从第几行开始获取，获取几行
 //2015-11-03
 var SqlUserMessageTeacher string = `select usermsg.*,userinfo.UserName,(select mestime from usermessage as msg where msg.messageid = usermsg.pkid  order by mestime desc limit 1) as MesTimeNew ,
-     (select count(*) from usermessage uu where uu.ActiveUserId = usermsg.ActiveUserId and uu.States =0  and uu.MessageId = usermsg.PKId) as State
+     (select count(*) from usermessage uu where (uu.ActiveUserId = usermsg.ActiveUserId and uu.States =0  and uu.MessageId = usermsg.PKId)or(uu.pkid = usermsg.pkid and uu.states=0)) as State
 	 from usermessage as usermsg join userinformation as userinfo on usermsg.ActiveUserId = userinfo.pkid 
 	 where usermsg.Messageid = 0 and usermsg.PassiveUserId = ?  
 	 order by MesTime desc `
@@ -624,10 +624,9 @@ var SqlOnlineCourseEvaluationBySid string = `
 			where online.userid = ? `
 
 /**35.查询学生全部已经冻结的资金总和**/
-var SqlFrozenFundsByUserid string = `
-			select sum(frozenmoney) as FrozenMoney 
+var SqlFrozenFundsByUserid string = `select sum(frozenmoney) as FrozenMoney 
 			from frozenfunds 
-			where (frozenstate = 1 and userid =?) or (frozenstate = 1 and BusinessId in (select pkid from amountrecords where recordtype=1 and userid=?))`
+			where frozenstate = 1 and userid =?`
 
 /**36.根据手机号码获取一条最新的验证码信息**/
 var SqlVerificationByPhone string = `select * 

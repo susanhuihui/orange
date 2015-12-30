@@ -147,6 +147,36 @@ func (c *UsermessageController) GetUsermessageBymuid() {
 	c.ServeJson()
 }
 
+// @Title GetUsermessageBymuidByStudent
+// @Description GetUsermessageBymuidByStudent Usermessage by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Usermessage
+// @Failure 403 :id is empty
+// @router /GetUsermessageBymuidByStudent/:mid/:userid [get]
+func (c *UsermessageController) GetUsermessageBymuidByStudent() {
+	midStr := c.Ctx.Input.Params[":mid"]
+	mid, _ := strconv.Atoi(midStr)
+	useridStr := c.Ctx.Input.Params[":userid"]
+	userid, _ := strconv.Atoi(useridStr)
+	v, err := models.GetUsermessageBymuid(mid, userid)
+	if err == nil && len(v) > 0 {
+		for i := 0; i < len(v); i++ {
+			if v[i].Id != mid {
+				if v[i].States != 1 {
+					v[i].States = 1
+					err = models.UpdateUsermessageById(&v[i])
+				}
+			}
+		}
+	}
+	if err != nil {
+		c.Data["json"] = "OK"
+	} else {
+		c.Data["json"] = "NO"
+	}
+	c.ServeJson()
+}
+
 //老师使用
 // @Title GetUsermessageBymuidft
 // @Description GetUsermessageBymuidft Usermessage by id

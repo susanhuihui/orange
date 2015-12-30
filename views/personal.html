@@ -242,13 +242,13 @@
                                                 <td class="odd">手机号：   
                                                 </td>
                                                 <td class="even">
-                                                    <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
+                                                    <input type="text" class="regtext" id="upuserphone" onblur="upColor()" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="odd">验证码：</td>
                                                 <td class="even">
-                                                    <input type="text" class="yzmtext" id="upyanzhengma">
+                                                    <input type="text" class="yzmtext" id="upyanzhengma" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                                     <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
                                                     <script type="text/javascript">
                                                         var wait = 60;
@@ -329,7 +329,7 @@
                                     原密码:                                   
                                 </div>
                                 <div class="col-xs-8">
-                                    <input class="form-control " type="password" id="oldpass">
+                                    <input class="form-control " type="password" id="oldpass" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                 </div>
                             </div>
                             <div class="row messagesss">
@@ -337,7 +337,7 @@
                                     新密码:                                   
                                 </div>
                                 <div class="col-xs-8">
-                                    <input class="form-control " type="password" id="newpass1">
+                                    <input class="form-control " type="password" id="newpass1" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                 </div>
                             </div>
                             <div class="row messagesss">
@@ -345,7 +345,7 @@
                                     再次输入新密码:                                   
                                 </div>
                                 <div class="col-xs-8">
-                                    <input class="form-control" type="password" id="newpass2">
+                                    <input class="form-control" type="password" id="newpass2" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                 </div>
                             </div>
                             <div class="row message">

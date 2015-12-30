@@ -74,7 +74,7 @@ func (c *AmountrecordsController) Poststu() {
 		var text = strconv.FormatInt(int64(id), 10)
 		fontfonz.BusinessId, _ = strconv.Atoi(text)
 		fontfonz.FrozenTime = time.Now()
-		fontfonz.FrozenState = 0
+		fontfonz.FrozenState = 1 //1是已冻结，0否未冻结
 		addf, aerr := models.AddFrozenfunds(&fontfonz)
 		fmt.Println(addf)
 		if aerr == nil {

@@ -14,6 +14,7 @@
 </head>
 <body>
     {{template "menutop.html" .}}
+   
     <div id="pagetopb" style="margin-top: 60px;">
         <!--main-->
         <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
@@ -33,6 +34,7 @@
                         </div>
                         <div class="col-sm-10" id="starclear">
                             &nbsp;
+                       
                         </div>
                     </div>
                     <div class="porlink row">
@@ -41,6 +43,7 @@
                         </div>
                         <div class="col-sm-10" id="satreffi">
                             &nbsp;
+                       
                         </div>
                     </div>
                     <div class="messright">
@@ -73,8 +76,14 @@
                     </div>
                     <div class="messright">
                         <p>留言评价</p>
-                        <textarea class="evaarea" id="pingjiaContent"></textarea>
-                        <input type="button" class="evabtn" onclick="addOnlineEv()" value="提交">
+                        <form id="form_memo" method="post" action="http://{{.Website}}/orange/onlinecourseevaluation/AddOnlinecourseevaluationFStu/" onsubmit="return check()">
+                            <input type="hidden" name="OCRId" value="{{.classid}}" /><!--课程id-->
+                            <input type="hidden" name="UserId" id="UserId" value="" /><!--评价人id-->
+                            <input type="hidden" name="StartClear" id="StartClear" value="" />
+                            <input type="hidden" name="StartEfficiency" id="StartEfficiency" value="" />
+                            <textarea class="evaarea" id="pingjiaContent" name="ReviewContent"></textarea>
+                            <input type="submit" class="evabtn" value="提交">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -86,6 +95,7 @@
     <p id="classid" style="display: none">{{.classid}}</p>
 
     {{template "footer.html" .}}
+   
     <!--footer-->
     <script src="b/js/jquery.min.js"></script>
     <!--<script src="b/js/bootstrap.min.js"></script>-->
@@ -102,6 +112,7 @@
             setPageDiv();
             document.getElementById("starclear").innerHTML = "{{.StartClear}}"
             document.getElementById("satreffi").innerHTML = "{{.StartEfficiency}}"
+            document.getElementById("UserId").value = userid;
         }
         function setPageDiv() {
             var seeid = document.getElementById("seeoradd").innerText;
@@ -188,6 +199,19 @@
                         alert("评论失败！");
                     }
                 });
+        }
+        
+        //提交前验证是否输入留言内容
+        function check() {
+            document.getElementById("StartClear").value = startCount1;
+            document.getElementById("StartEfficiency").value = startCount2;
+            var message = trim(document.getElementById("pingjiaContent").value);
+            if (message == "") {
+                alert("评价内容不能为空，请输入留言信息！");
+                return false;
+            } else {
+                return true;
+            }
         }
     </script>
 </body>

@@ -273,15 +273,15 @@
                                                     <td class="odd">手机号：   
                                                     </td>
                                                     <td class="even">
-                                                        <input type="text" class="regtext" id="upuserphone" onblur="upColor()">
+                                                        <input type="text" class="regtext" id="upuserphone" onblur="upColor()"  onkeydown="javascript:if(event.keyCode==13) return false;" >
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td class="odd">验证码：   
                                                     </td>
                                                     <td class="even">
-                                                        <input type="text" class="yzmtext" id="upyanzhengma">
-                                                        <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled">
+                                                        <input type="text" class="yzmtext" id="upyanzhengma" onkeydown="javascript:if(event.keyCode==13) return false;" >
+                                                        <input type="button" class="yzmbtn" id="getyanzheng" value="点击获取验证码" disabled="disabled" >
                                                         <script type="text/javascript">
                                                             var wait = 60;
                                                             function time(o) {
@@ -310,35 +310,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!--<div class="row messagesss">
-                            <div class="col-xs-4 perfont">
-                                邮箱绑定:
-                                   
-                            </div>
-                            <div class="col-xs-8">
-                                {{.Mailbox}}
-                                        	&nbsp;&nbsp;&nbsp;&nbsp;<a href="###" onclick="openShutManagers(this,'boxs')">更改邮箱</a>
-                                <div id="boxs" style="display: none;">
-                                    <table style="width: 100%;">
-                                        <tr>
-                                            <td class="odd">邮箱地址：   
-                                            </td>
-                                            <td class="even">
-                                                <input type="text" class="regtext">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="odd">验证码：   
-                                            </td>
-                                            <td class="even">
-                                                <input type="text" class="yzmtext">
-                                                <input type="button" class="yzmbtn" value="点击获取验证码">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>-->
                                 <div class="row message">
                                     <div class="col-xs-4 perfont">
                                         &nbsp;
@@ -364,7 +335,7 @@
                                         原密码:                                   
                                     </div>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="oldpass">
+                                        <input class="form-control" type="password" id="oldpass" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                     </div>
                                 </div>
                                 <div class="row messagesss">
@@ -372,7 +343,7 @@
                                         新密码:                                   
                                     </div>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="newpass1">
+                                        <input class="form-control" type="password" id="newpass1" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                     </div>
                                 </div>
                                 <div class="row messagesss">
@@ -380,7 +351,7 @@
                                         再次输入新密码:                                   
                                     </div>
                                     <div class="col-xs-8">
-                                        <input class="form-control" type="password" id="newpass2">
+                                        <input class="form-control" type="password" id="newpass2" onkeydown="javascript:if(event.keyCode==13) return false;" >
                                     </div>
                                 </div>
                                 <div class="row message">
