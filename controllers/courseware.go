@@ -126,6 +126,33 @@ func (c *CoursewareController) GetCoursewareByOCBID() {
 	c.ServeJson()
 }
 
+//根据预约信息主键删除附件信息
+// @Title DeleteCoursewareByOCBID
+// @Description DeleteCoursewareByOCBID Courseware by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Courseware
+// @Failure 403 :id is empty
+// @router /DeleteCoursewareByOCBID/:ocbrid [get]
+func (c *CoursewareController) DeleteCoursewareByOCBID() {
+	ocbridStr := c.Ctx.Input.Params[":ocbrid"]
+	ocbrid, _ := strconv.Atoi(ocbridStr)
+	v, err := models.GetCoursewareByOCBID(ocbrid)
+	if err == nil && len(v) > 0 {
+		for i := 0; i < len(v); i++ {
+			delerr := models.DeleteCourseware(v[i].Id)
+			if delerr != nil {
+				err = delerr
+			}
+		}
+	}
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
 // @Title Get All
 // @Description get Courseware
 // @Param	query	query	string	false	"Filter. e.g. col1:v1,col2:v2 ..."

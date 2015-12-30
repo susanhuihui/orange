@@ -68,12 +68,7 @@
                             }
                         }
                         document.getElementById("getyanzheng").onclick = function () {
-                            if (getYzCode() == true) {
-                                if (upColor() == true) {
-                                    time(this);
-                                }
-                            } else {
-                            }
+                            getYzCode();                           
                         }
                     </script>
                 </div>
@@ -137,7 +132,7 @@
         var phoneistorf = 0;//false 是否发送验证码
         //验证手机号码，并且改变获取验证码按钮的颜色
         function upColor() {
-            var istorf = false;
+            var istorfs = false;
             var phone = trim(document.getElementById("userphone").value);
             var re = /^1\d{10}$/;
             if (phone != "") {
@@ -150,10 +145,10 @@
                             seterrMessage("errphone", "*此手机号已注册！");
                             phoneistorf = 0;
                         } else {
+                            istorfs = true;
                             document.getElementById("getyanzheng").style.backgroundColor = xianColor;//手机号码输入正确获取验证码按钮变为显色
                             phoneistorf = 1;
                             seterrMessage("errphone", "");
-                            istorf = true;
                         }
                     });
                 } else {
@@ -165,7 +160,7 @@
                 seterrMessage("errphone", "*手机号不能为空！");
                 phoneistorf = 0;
             }
-            return istorf;
+            return istorfs;
         }
 
         //检查姓名是否已被注册
@@ -207,6 +202,8 @@
             if (phoneistorf == 1) {
                 $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
                     alert("发送成功");
+                    var btn = document.getElementById("getyanzheng");
+                    time(btn);
                 });
             } else {
                 istorf = false;

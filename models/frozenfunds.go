@@ -56,7 +56,7 @@ func GetFrozenfundsById(id int) (v *Frozenfunds, err error) {
 func GetFrozenFundsByUserid(userid int) (frozen FrozenfundsMoney, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
-	rs = o.Raw(SqlFrozenFundsByUserid, userid)
+	rs = o.Raw(SqlFrozenFundsByUserid, userid, userid)
 	qs := rs.QueryRow(&frozen)
 	fmt.Println(frozen.FrozenMoney)
 	return frozen, qs

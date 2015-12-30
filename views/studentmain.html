@@ -1202,9 +1202,11 @@
                                                                 '}';
                                            $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
                                                function (data) {
-                                                   if (data["id"] > 0) {
+                                                   //删除此次预约信息所关联的全部附件信息                                                       
+                                                   var dekcare = "http://{{.Website}}/orange/courseware/DeleteCoursewareByOCBID/" + bookid;
+                                                   $.getJSON(dekcare, function (datadel) {
 
-                                                   }
+                                                   });
                                                });
                                        }
                                    });

@@ -97,12 +97,18 @@ func (c *FrozenfundsController) UpdateUserFrozenfundsById() {
 	fmt.Println("修改为")
 	fmt.Println(&v)
 	if err := models.UpdateFrozenfundsById(&v); err == nil { //修改冻结资金信息（解冻资金）
+		fmt.Println(err)
 		useraccount, _ := models.GetAccountfundsByuid(v.UserId)
+		fmt.Println("用户账户信息：")
+		fmt.Println(useraccount)
 		useraccount.Balance = useraccount.Balance + v.FrozenMoney //退还预约人的资金
-		err := models.UpdateAccountfundsById(&useraccount)        //保存预约人账户信息
+		erradd := models.UpdateAccountfundsById(&useraccount)     //保存预约人账户信息
+		fmt.Println("修改结束")
+		fmt.Println(erradd)
 		if err == nil {
 			c.Data["json"] = "OK"
 		}
+		c.Data["json"] = "OK"
 	} else {
 		c.Data["json"] = err.Error()
 	}

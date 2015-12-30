@@ -270,7 +270,7 @@
                                                                 1000)
                                                             }
                                                         }
-                                                        document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                        document.getElementById("getyanzheng").onclick = function () { getYzCode();  }
                                                     </script>
                                                 </td>
                                             </tr>
@@ -699,10 +699,12 @@
                         '"PayPassword":"' + datauser["PayPassword"] + '",' +
                         '"UserSex":"' + datauser["UserSex"] + '",' +
                         '"SchoolId":' + datauser["SchoolId"] + ',' +
+                        '"SchoolName":"' + datauser["SchoolName"] + '",' +
                         '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
                         '"UserDegree":' + datauser["UserDegree"] + ',' +
                         '"UserLocation":' + datauser["UserLocation"] + ',' +
                         '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                        '"HighSchool":"' + datauser["HighSchool"] + '",' +
                         '"UserLevelId":' + datauser["UserLevelId"] + ',' +
                         '"LevelYear":' + datauser["LevelYear"] + ',' +
                         '"IdentityId":' + datauser["IdentityId"] + ',' +
@@ -773,6 +775,8 @@
             if (phoneistorf == 1) {
                 $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
                     alert("发送成功");
+                    var btn = document.getElementById("getyanzheng");
+                    time(btn);
                 });
             } else {
                 alert("手机号输入不正确！请输入正确手机号码！");
@@ -810,10 +814,12 @@
                             '"PayPassword":"' + datauser["PayPassword"] + '",' +
                             '"UserSex":"' + datauser["UserSex"] + '",' +
                             '"SchoolId":' + datauser["SchoolId"] + ',' +
+                            '"SchoolName":"' + datauser["SchoolName"] + '",' +
                             '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
                             '"UserDegree":' + datauser["UserDegree"] + ',' +
                             '"UserLocation":' + datauser["UserLocation"] + ',' +
                             '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                            '"HighSchool":"' + datauser["HighSchool"] + '",' +
                             '"UserLevelId":' + datauser["UserLevelId"] + ',' +
                             '"LevelYear":' + datauser["LevelYear"] + ',' +
                             '"IdentityId":' + datauser["IdentityId"] + ',' +

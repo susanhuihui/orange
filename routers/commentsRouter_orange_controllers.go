@@ -400,6 +400,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:CoursewareController"] = append(beego.GlobalControllerRouter["orange/controllers:CoursewareController"],
 		beego.ControllerComments{
+			"DeleteCoursewareByOCBID",
+			`/DeleteCoursewareByOCBID/:ocbrid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:CoursewareController"] = append(beego.GlobalControllerRouter["orange/controllers:CoursewareController"],
+		beego.ControllerComments{
 			"GetAll",
 			`/GetAllCourseware/:page/:size`,
 			[]string{"get"},

@@ -1000,11 +1000,14 @@ func (c *MainController) TechnoRegister() {
 func (c *MainController) PayMentUser() {
 	moneyStr := c.Ctx.Input.Params[":money"]
 	money, _ := strconv.ParseFloat(moneyStr, 10)
-
-	//添加一条为完成账户充值记录
+	fmt.Println("1")
+	//添加一条 账户充值记录
 	var addaccountpay models.Amountrecords
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
-	nowaccuser, _ := models.GetAccountfundsById(stuuserid) //当前用户账户信息
+	fmt.Println("2")
+	fmt.Println(stuuserid)
+	nowaccuser, _ := models.GetAccountfundsByuid(stuuserid) //根据用户主键id查询用户账户信息
+	fmt.Println(nowaccuser)
 	addaccountpay.UserId = stuuserid
 	addaccountpay.RecordMoney = money
 	addaccountpay.Balance = nowaccuser.Balance + money //充值后余额显示
@@ -1012,10 +1015,15 @@ func (c *MainController) PayMentUser() {
 	addaccountpay.RecordTime = time.Now()              //操作日期
 	addaccountpay.TradingWayId = 2                     //支付宝支付
 	addaccountpay.IsComplete = 0                       //0：未完成，1：已完成
+
+	fmt.Println("3")
 	addint, adderr := models.AddAmountrecords(&addaccountpay)
+	fmt.Println("4")
+	fmt.Println(addint)
 	if adderr == nil {
 
 	}
+	fmt.Println("5")
 	r := models.Request{
 		NotifyUrl:   `http://www.fankunedu.com/orange/Main/PayEndNotify/`, // 付款后异步通知页面
 		ReturnUrl:   `http://www.fankunedu.com/orange/Main/PayEnd/`,       // 付款后返回页面
@@ -1027,12 +1035,15 @@ func (c *MainController) PayMentUser() {
 		TotalFee:    money,                                                // 价格
 	}
 
+	fmt.Println("6")
 	cc := models.Config{
 		Partner: `2088911257813375`,                 // 支付宝合作者身份 ID
 		Key:     `scnf70tnzygvjkdp259w2z2h2e0mhrrc`, // 支付宝交易安全校验码
 	}
+	fmt.Println("7")
 	fromstr := models.NewPage(cc, r, os.Stdout)
 	fmt.Println(fromstr)
+	fmt.Println("8")
 	c.Data["subContent"] = fromstr
 	c.TplNames = "payment.html"
 }

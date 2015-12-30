@@ -302,7 +302,7 @@
                                                                     1000)
                                                                 }
                                                             }
-                                                            document.getElementById("getyanzheng").onclick = function () { getYzCode(); time(this); }
+                                                            document.getElementById("getyanzheng").onclick = function () { getYzCode();  }
                                                         </script>
                                                     </td>
                                                 </tr>
@@ -1001,6 +1001,8 @@
             if (phoneistorf == 1) {
                 $.getJSON("http://{{.Website}}/orange/verification/GetVerification/" + phone, function (data) {
                     alert("发送成功");
+                    var btn = document.getElementById("getyanzheng");
+                    time(btn);
                 });
             } else {
                 alert("手机号输入不正确！请输入正确手机号码！");

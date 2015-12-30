@@ -627,7 +627,7 @@ var SqlOnlineCourseEvaluationBySid string = `
 var SqlFrozenFundsByUserid string = `
 			select sum(frozenmoney) as FrozenMoney 
 			from frozenfunds 
-			where frozenstate = 1 and userid =?`
+			where (frozenstate = 1 and userid =?) or (frozenstate = 1 and BusinessId in (select pkid from amountrecords where recordtype=1 and userid=?))`
 
 /**36.根据手机号码获取一条最新的验证码信息**/
 var SqlVerificationByPhone string = `select * 
