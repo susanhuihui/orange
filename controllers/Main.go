@@ -317,7 +317,11 @@ func (c *MainController) UserStudent() {
 			c.Data["SchoolName2"] = showStudent.SchoolName
 		}
 		c.Data["AgeName"] = showStudent.AgeName
-		c.Data["LevelYear"] = strconv.Itoa(showStudent.LevelYear)
+		if showStudent.LevelYear > 0 {
+			c.Data["LevelYear"] = strconv.Itoa(showStudent.LevelYear)
+		} else {
+			c.Data["LevelYear"] = ""
+		}
 		c.Data["StudyDifficult"] = showStudent.StudyDifficult //学习难点
 		c.Data["AvatarPath"] = showStudent.AvatarPath
 	}
@@ -738,7 +742,11 @@ func (c *MainController) UpdateStudent() {
 		c.Data["UserSex"] = userinfo.UserSex
 		c.Data["SchoolName"] = userinfo.SchoolName
 		c.Data["AgeName"] = userinfo.AgeName
-		c.Data["LevelYear"] = userinfo.LevelYear
+		if userinfo.LevelYear > 0 {
+			c.Data["LevelYear"] = userinfo.LevelYear
+		} else {
+			c.Data["LevelYear"] = ""
+		}
 		c.Data["Mailbox"] = userinfo.Mailbox
 		c.Data["ParentMailbox"] = userinfo.ParentMailbox
 		c.Data["IphoneNum"] = userinfo.IphoneNum
@@ -845,7 +853,11 @@ func (c *MainController) UpdateTeacher() {
 		c.Data["GradeId"] = userinfo.GradeId           //所教年级
 		c.Data["CourseName"] = userinfo.CourseName     //主辅导课
 		c.Data["CourseNameId"] = userinfo.CourseNameId //主辅导课程id
-		c.Data["LevelYear"] = userinfo.LevelYear
+		if userinfo.LevelYear > 0 {
+			c.Data["LevelYear"] = userinfo.LevelYear
+		} else {
+			c.Data["LevelYear"] = ""
+		}
 		c.Data["Mailbox"] = userinfo.Mailbox
 		c.Data["IphoneNum"] = userinfo.IphoneNum
 		c.Data["BriefIntroduction"] = userinfo.BriefIntroduction

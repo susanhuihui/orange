@@ -91,11 +91,29 @@
                         //             '<td style="width: 60px;">' + data[i]["Numbers"] + '</td>' +
                         //             '<td><img src="images/looked.png" /></td>' +
                         //             '<td>' + data[i]["Count"] + '</td></tr></table></div></div></div>';
+                        var wentititle = "";
+                        var itemcons = data[i]["Title"] + "";
+                        if (itemcons != "") {
+                            if (itemcons.length > 15) {
+                                wentititle = itemcons.substring(0, 15) + "……";
+                            } else {
+                                wentititle = itemcons;
+                            }
+                        }
+                        var liuyancoutent = "";
+                        var itemcon = data[i]["Contents"] + "";
+                        if (itemcon != "") {
+                            if (itemcon.length > 100) {
+                                liuyancoutent = itemcon.substring(0, 100) + "……";
+                            } else {
+                                liuyancoutent = itemcon;
+                            }
+                        }
                         var itemse = '<div class="row prorow"><div class="col-sm-4 col-md-3">' + srcimg + '</div>' +
                                      '<div class="col-sm-8 col-md-9 listmenu">' +
                                      '<a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '">' +
-                                     '<p class="listtop">问题：' + data[i]["Title"] + '</p>' +
-                                     '<p class="listmain">' + data[i]["Contents"] + '</p></a>' +
+                                     '<p class="listtop">问题：' + wentititle + '</p>' +
+                                     '<p class="listmain">' + liuyancoutent + '</p></a>' +
                                      '<div class="col-sm-6 "><table class="listicon"><tr><td></td>' +
                                      '<td style="width: 60px;"></td>' +
                                      '<td></td>' +

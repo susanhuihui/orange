@@ -592,8 +592,17 @@
                     for (var i = 0; i < data.length ; i++) {
                         var showbtn = "查看";
                         if (data[i]["AnswerCount"] == 0) { showbtn = "回答"; } else if (data[i]["AnswerCount"] == 0) { showbtn = "查看"; }
+                        var wentititle = "";
+                        var itemcons = data[i]["Title"] + "";
+                        if (itemcons != "") {
+                            if (itemcons.length > 15) {
+                                wentititle = itemcons.substring(0, 15) + "……";
+                            } else {
+                                wentititle = itemcons;
+                            }
+                        }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
-                                    "<td>" + data[i]["Title"] + "</td>" +
+                                    "<td>" + wentititle + "</td>" +
                                     "<td>" + getSimpDate(data[i]["BadeTime"]) + " " + getSimpTime(data[i]["BadeTime"]) + "</td>" +
                                     "<td>" + data[i]["AmountMoney"] + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Teacher/ProblemAnswer/' + data[i]["Id"] + '" class="btn btn-warning radsty">' + showbtn + '</a></td></tr>';
@@ -668,8 +677,17 @@
                         for (var b = 0; b < outcount; b++) {
                             starimg += '<img style="height: 25px;" src="images/looked.png" />';
                         }
+                        var pingjiacontent = "";
+                        var itemcond = data[i]["ReviewContent"] + "";
+                        if (itemcond != "") {
+                            if (itemcond.length > 15) {
+                                pingjiacontent = itemcond.substring(0, 15) + "……";
+                            } else {
+                                pingjiacontent = itemcond;
+                            }
+                        }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
-                                    "<td>" + data[i]["ReviewContent"] + "</td>" +
+                                    "<td>" + pingjiacontent + "</td>" +
                                     "<td>" + starimg + "</td>" +
                                    "<td>" + getSimpDate(data[i]["ReviewTime"]) + " " + getSimpTime(data[i]["ReviewTime"]) + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Main/GetOnLineEvaluationTeacher/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a></td></tr>';
