@@ -14,7 +14,7 @@ type Answers struct {
 	Id        int       `orm:"column(PKId);auto"`
 	QAId      int       `orm:"column(QAId)"`
 	AnsUserId int       `orm:"column(AnsUserId)"`
-	Contents  string    `orm:"column(Contents);size(500);null"`
+	Contents  string    `orm:"column(Contents);size(10000);null"`
 	AnsTime   time.Time `orm:"column(AnsTime);type(datetime);null"`
 }
 

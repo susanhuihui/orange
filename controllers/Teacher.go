@@ -121,12 +121,18 @@ func (c *TeacherController) TeacherList() {
 					btnstr = `<a  onclick="setMessagetoT(` + strconv.Itoa(v[i].Id) + `)"`
 					btnhou = `" class="btn btn-warning messabtn" style="width: 100%;">给他留言</a>`
 				}
+				var userheadurl string = ""
+				if v[i].AvatarPath+"" == "" {
+					userheadurl = "images/PersonHeadImg/moren.png"
+				} else {
+					userheadurl = v[i].AvatarPath
+				}
 				//fmt.Println(v[i].UserName)
 				var items string = `<div class="row" style="border-bottom: 1px solid #F1F1F1">
 									<div class=" col-sm-2">
 									<div class="teamainleft">
 									<a href="http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
-										<img class="listheadimg" src="` + v[i].AvatarPath + `" />
+										<img class="listheadimg" src="` + userheadurl + `" />
 									</a>
 									</div></div>
 									<div class="col-sm-7 teamainmiddle">
@@ -232,7 +238,7 @@ func (c *TeacherController) TeacherMessage() {
 	c.TplNames = "message.html" //跳到给老师留言页面
 }
 
-// 查看一条精彩问答
+// 查看一条问答
 // @Title ProblemModel
 // @Description ProblemModel the TbUser
 // @Param			"The id you want to ProblemModel"
@@ -261,6 +267,37 @@ func (c *TeacherController) ProblemModel() {
 	c.Data["SchoolName"] = vask.SchoolName
 
 	c.TplNames = "problem_main.html" //
+}
+
+// 查看一条精彩问答值展示问答
+// @Title ProblemModel
+// @Description ProblemModel the TbUser
+// @Param			"The id you want to ProblemModel"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /ProblemModelShow/:adkid [get]
+func (c *TeacherController) ProblemModelshow() {
+	c.Data["Website"] = models.OnlineUrl
+	idStr := c.Ctx.Input.Params[":adkid"]
+	askid, _ := strconv.Atoi(idStr)
+	var vask models.QuestionaskJingCaiOne
+	vask, _ = models.GetQuestionaskByJingCaiOne(askid)
+	fmt.Println(vask)
+	c.Data["Title"] = vask.Title
+	c.Data["Contents"] = vask.Contents
+	var timez string = vask.BadeTime.Format("2006-01-02")
+	c.Data["BadeTime"] = timez
+	c.Data["UserName"] = vask.UserName
+	c.Data["Hname"] = vask.Hname
+	c.Data["HuiDaContents"] = vask.HuiDaContents
+	c.Data["AnsTime"] = vask.AnsTime
+	c.Data["AvatarPath"] = vask.AvatarPath
+	c.Data["HuiDaAvatarPath"] = vask.HuiDaAvatarPath
+	c.Data["AnswerUserId"] = "00000" + strconv.Itoa(vask.AnswerUserId)
+	c.Data["userid"] = vask.AnswerUserId
+	c.Data["SchoolName"] = vask.SchoolName
+
+	c.TplNames = "problem_show.html" //
 }
 
 // 老师回答一条问题

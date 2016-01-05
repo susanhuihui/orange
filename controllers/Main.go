@@ -1002,6 +1002,18 @@ func (c *MainController) TechnoRegister() {
 	c.TplNames = "teacherregister.html" //
 }
 
+// 学生注册服务条款页面
+// @Title RegisteredLinefwtk
+// @Description RegisteredLinefwtk the TbUser
+// @Param			"The id you want to RegisteredLinefwtk"
+// @Success 200 {object} models.TbUser
+// @Failure 403
+// @router /RegisteredLinefwtk/ [get]
+func (c *MainController) RegisteredLinefwtk() {
+	c.Data["Website"] = models.OnlineUrl
+	c.TplNames = "linefwtk.html" //
+}
+
 // 跳到支付页面
 // @Title PayMentUser
 // @Description PayMentUser the TbUser

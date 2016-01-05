@@ -364,15 +364,6 @@
             document.getElementById("tap2").className = "";
             document.getElementById("tap1").className = "";
             document.getElementById("tap" + tap).className = "active";
-            //var shengfen = document.getElementById("P5").innerText; pubPro = shengfen;
-            //alert(shengfen);
-            //if (shengfen == "") {
-            //    document.getElementById("selProvence").value = "请选择";
-            //} else {
-            //    document.getElementById("selProvence").value = shengfen;
-            //}
-            //var shiqu = document.getElementById("P6").innerText; pubCitys = shiqu;
-
         }
 
         //分页初始
@@ -439,11 +430,17 @@
                             btnstr = '<a onclick="setMessagetoT(' + data[i]["Id"] + ')"';
                             btnhou = '" class="btn btn-warning messabtn" style="width: 100%;">给他留言</a>';
                         }
+                        var userheadurl = ""
+                        if (data[i]["AvatarPath"]+"" == "") {
+                            userheadurl = "images/PersonHeadImg/moren.png"
+                        } else {
+                            userheadurl = data[i]["AvatarPath"]
+                        }
                         var itemse = '<div class="row" style="border-bottom: 1px solid #F1F1F1">' +
                                      '<div class=" col-sm-2">' +
                                      '<div class="teamainleft">' +
                                      '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">' +
-                                     '<img class="listheadimg" src="' + data[i]["AvatarPath"] + '" /></a>' +
+                                     '<img class="listheadimg" src="' + userheadurl + '" /></a>' +
                                      '</div>' +
                                      '</div>' +
                                      '<div class="col-sm-7 teamainmiddle">' +
@@ -545,7 +542,7 @@
                         //alert(data);
                         for (var i = 0; i < data.length ; i++) {
                             var itemse = '<div class="teaimgimg">' +
-                                         '<img class="teaheadimgimg" style="padding-top:40px;" src="' + data[i]["AvatarPath"] + '" />' +
+                                         '<img class="teaheadimgimg" style="margin-top:50px;" src="' + data[i]["AvatarPath"] + '" />' +
                                          '<p><a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["FrontUserId"] + '">' + data[i]["UserName"] + ' | ' + data[i]["CourseName"] + '</a></p>' +
                                          '<p><span>' + data[i]["UnitPrice"] + '</span> 元/小时</p>' +
                                          '</div>';

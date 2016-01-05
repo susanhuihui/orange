@@ -20,7 +20,7 @@
         <div class="container">
             <div class="row topbottomdivs">
                 <div class="col-sm-2 floatleft">
-                    <img style="height: 120px; width: 120px;" src="{{.AvatarPath}}" />
+                    <img style="height: 120px; width: 120px;" id="teacherhead" />
                     <p>ID:{{.userid}}</p>
                     <p id="userid" style="display: none">{{.Teacheruserid}}</p>
                 </div>
@@ -154,7 +154,7 @@
                                     </table>
                                     <div id="Paginationcourse" class="pagination"></div>
                                 </div>
-                            </div>
+                            
                             <div id="divtap3" style="display: block;">
                                 <table class="stutabtops">
                                     <tr>
@@ -173,6 +173,9 @@
                                 <div id="Pagination2" class="pagination"></div>
 
                             </div>
+                    </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -235,7 +238,15 @@
         var userid = document.getElementById("userid").innerHTML;//当前显示的老师的主键id
 
         window.onload = function () {
-            getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate();
+            getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate(); getuserhead();
+        }
+        function getuserhead() {
+            var srcurl = "{{.AvatarPath}}";
+            if (srcurl == null || srcurl + "" == "") {
+                document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+            } else {
+                document.getElementById("teacherhead").src = srcurl;
+            }
         }
 
         //查询此老师是否在线
@@ -293,20 +304,27 @@
         }
         $(document).ready(function () {
             var allclass = document.getElementById("nowallclasscount").innerHTML;
-            // 创建分页元素
-            $("#Paginationcourse").pagination(allclass, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback  //回调函数
-            });
-
+            if (allclass > 0) {
+                // 创建分页元素
+                $("#Paginationcourse").pagination(allclass, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback  //回调函数
+                });
+            } else {
+                document.getElementById("Paginationcourse").style.display = "none";
+            }
             var allpingjia = document.getElementById("nowallPingjia").innerHTML;
-            // 创建分页元素
-            $("#Pagination2").pagination(allpingjia, {
-                num_edge_entries: 2,
-                num_display_entries: 5,
-                callback: pageselectCallback2  //回调函数
-            });
+            if (allpingjia > 0) {
+                // 创建分页元素
+                $("#Pagination2").pagination(allpingjia, {
+                    num_edge_entries: 2,
+                    num_display_entries: 5,
+                    callback: pageselectCallback2  //回调函数
+                });
+            } else {
+                document.getElementById("Pagination2").style.display = "none";
+            }
         });
 
         ////获取教学记录总页数

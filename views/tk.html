@@ -49,7 +49,7 @@
         window.onbeforeunload = function () {
             //关闭网页时，修改老师课堂记录，记录离开时间
             //查找老师最后一次进入信息
-            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid/" + userid + "/" + onlineid;
+            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid2/" + userid + "/" + onlineid;
             $.getJSON(getblack, function (data) {
                 if (data != null && data["Id"] > 0) {
                    

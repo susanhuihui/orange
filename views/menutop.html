@@ -113,7 +113,7 @@
                     <li class="" id="laoshi"><a href="http://{{.Website}}/orange/Teacher/TeacherList/1&&&&&&1&10" id="fontlaoshi">找老师</a></li>
                     <li class="" id="wenda"><a href="http://{{.Website}}/orange/Main/QuestionsCenter/" id="fontwenda">问答中心</a></li>
                     <li>
-                        <input class="form-control findtext" type="text" id="selContentMenutop" onclick="selectTeacher()">
+                        <input class="form-control findtext" type="text" id="selContentMenutop" onclick="selectTeacher()"  onkeypress="selectTeacher()">
                     </li>
                     <li class="" id="lilogin"></li>
                     <li class="" id="lizhuce"></li>
@@ -231,6 +231,8 @@
             $.getJSON(selurl, function (data) {
                 if (data["Id"] > 0) {
                     window.open("http://{{.Website}}/orange/Teacher/TeacherInformation/" + data["Id"]);
+                } else {
+                    alert("查询不到此老师信息！");
                 }
             });
         }

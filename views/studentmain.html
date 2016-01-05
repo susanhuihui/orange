@@ -28,7 +28,7 @@
                     <table class="stutablepop">
                         <tr>
                             <td>年级：
-                             </td>
+                            </td>
                             <td>
                                 <select class="form-control" id="selGrade">
                                     <option value="0">高中一年级</option>
@@ -38,7 +38,7 @@
                         </tr>
                         <tr>
                             <td>科目：
-                             </td>
+                            </td>
                             <td>
                                 <select class="form-control" id="selClass">
                                     <option value="0">高中数学</option>
@@ -48,9 +48,9 @@
                         </tr>
                         <tr>
                             <td>价格：
-                             </td>
+                            </td>
                             <td>
-                                <select class="form-control" style="width: 50%;  float:left;" id="selstartmoney">
+                                <select class="form-control" style="width: 50%; float: left;" id="selstartmoney">
                                     <option value="0">10.00</option>
                                     <option value="1">20.00</option>
                                     <option value="2">30.00</option>
@@ -76,14 +76,14 @@
                         </tr>
                         <tr>
                             <td>手机：
-                             </td>
+                            </td>
                             <td>
                                 <input class="form-control" type="text" id="txtPhone">
                             </td>
                         </tr>
                         <tr>
                             <td>城市：
-                             </td>
+                            </td>
                             <td>
                                 <select class="form-control" id="selCitys">
                                     <option value="0">北京</option>
@@ -93,14 +93,14 @@
                         </tr>
                         <tr>
                             <td>姓名：
-                             </td>
+                            </td>
                             <td>
                                 <input class="form-control" type="text" id="txtName">
                             </td>
                         </tr>
                         <tr>
                             <td>备注：
-                             </td>
+                            </td>
                             <td>
                                 <textarea class="form-control" id="txtBeizhu"></textarea>
                             </td>
@@ -128,23 +128,25 @@
                     <table class="stutablepop">
                         <tr>
                             <td>支付方式：
-                              </td>
+                            </td>
                             <td style="text-align: left;">
                                 <input type="radio" id="paytype" checked="checked" onclick="checkpay()">
                                 支付宝
-                             </td>
+                            </td>
                             <td style="text-align: left;">
-                                <span id="errtype" style="color:red;"></span>
-                             </td>
-                        </tr> <tr>
+                                <span id="errtype" style="color: red;"></span>
+                            </td>
+                        </tr>
+                        <tr>
                             <td>支付金额：
-                              </td>
+                            </td>
                             <td style="text-align: left;">
-                                <input type="text" id="paymoney" onchange="checkmoney()"> 元
-                             </td>
+                                <input type="text" id="paymoney" onchange="checkmoney()">
+                                元
+                            </td>
                             <td style="text-align: left;">
-                                <span id="errmoney" style="color:red;"></span>
-                             </td>
+                                <span id="errmoney" style="color: red;"></span>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -164,22 +166,22 @@
                     <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">提现</h3>
                 </div>
                 <div class="modal-body">
-                    <table class="stutablepop"  id="tixiantb">
+                    <table class="stutablepop" id="tixiantb">
                         <tr>
                             <td>可提现金额：
-                              </td>
+                            </td>
                             <td><span id="yueshow"></span>元</td>
                         </tr>
                         <tr>
                             <td>提现金额：
-                              </td>
+                            </td>
                             <td>
                                 <input class="stuimput" type="text" id="txtoutmoney">
                             </td>
                         </tr>
                         <tr>
                             <td>支付宝账户：
-                              </td>
+                            </td>
                             <td>
                                 <input class="stuimput" type="text" id="txtaccountuser">
                             </td>
@@ -239,32 +241,34 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h3 style="font-size: 16px; font-weight: bold;" class="modal-title">退约</h3>
+                    <h3 id="tuititle" style="font-size: 16px; font-weight: bold;" class="modal-title">退约</h3>
                 </div>
                 <div class="modal-body">
                     <table class="stutablepop">
                         <tr>
                             <td>确认退掉此次预约么？
-                              </td>
+                            </td>
                         </tr>
                     </table>
                     <table class="reserpoptab" cellspacing="0">
                         <tr>
                             <td>老师
-                                    </td>
+                            </td>
                             <td>预约日期
-                                    </td>
+                            </td>
                             <td>预约时间
-                                    </td>
+                            </td>
                         </tr>
                         <tr>
                             <p id="onlinebookid" style="display: none;"></p>
-                            <td id="tuiUserName">
-                                    </td>
-                            <td id="tuiDate">
-                                    </td>
-                            <td id="tuiTime">
-                                    </td>
+                            <td id="tuiUserName"></td>
+                            <td id="tuiDate"></td>
+                            <td id="tuiTime"></td>
+                        </tr>
+                        <tr>
+                            <td id="tdzhu" colspan="3">
+                            </td>
+
                         </tr>
                     </table>
                 </div>
@@ -284,12 +288,12 @@
                 <div class="col-sm-9" style="border-right: 15px solid #f5f5f5;">
                     <div class='row lefttop'>
                         <div class="col-sm-3">
-                            <img id="userhead" />
+                            <img id="teacherhead" />
                             <p>ID:{{.StudentUserid}}</p>
                         </div>
                         <div class="col-sm-8 lefttopfont">
                             {{.UserName}} 
-                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a> 
+                            <a>{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
                             <a href="http://{{.Website}}/orange/Main/UpdateStudent/">
                                 <input type="button" class="stubtns" value="修改资料"></a>
                             <table class="stutab" cellspacing="0">
@@ -299,9 +303,15 @@
                                     <td><span>{{.AllPerson}}</span>位</td>
                                 </tr>
                                 <tr>
-                                    <td><p>累计课时</p></td>
-                                    <td><p>提问总数</p></td>
-                                    <td><p>辅导老师总数</p></td>
+                                    <td>
+                                        <p>累计课时</p>
+                                    </td>
+                                    <td>
+                                        <p>提问总数</p>
+                                    </td>
+                                    <td>
+                                        <p>辅导老师总数</p>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -371,33 +381,33 @@
                             <table class="stutabbottom">
                                 <tr>
                                     <td class="oddtea" style="width: 20%;">学校：
-                                                </td>
+                                    </td>
                                     <td>{{.SchoolName2}}
-                                                </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="oddtea">学龄段：
-                                                </td>
+                                    </td>
                                     <td>{{.AgeName}}
-                                                </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="oddtea">入学年份：
-                                                </td>
+                                    </td>
                                     <td>{{.LevelYear}}
-                                                </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="oddtea">补习课目：
-                                                </td>
+                                    </td>
                                     <td>{{.CourseName}}
-                                                </td>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td class="oddtea">学习难点：
-                                                </td>
+                                    </td>
                                     <td>{{.StudyDifficult}}
-                                                </td>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -411,7 +421,7 @@
                                     <th>上课时间</th>
                                     <th>课时费</th>
                                     <th>操作</th>
-                                </tr>-->                                
+                                </tr>-->
                             </table>
                             <div id="Pagination2" class="pagination"></div>
                         </div>
@@ -439,13 +449,13 @@
                                 <table class="stutable" cellspacing="0" id="myjiaoyidiv">
                                     <tr class="stuth">
                                         <th>被支付方
-                                                </th>
+                                        </th>
                                         <th>支付时间
-                                                </th>
+                                        </th>
                                         <th>支付方式
-                                                </th>
+                                        </th>
                                         <th>支付费用
-                                                </th>
+                                        </th>
                                     </tr>
                                 </table>
 
@@ -455,13 +465,13 @@
                                 <table class="stutable" cellspacing="0" id="tixianlist">
                                     <tr class="stuth">
                                         <th>提现时间
-                                                </th>
+                                        </th>
                                         <th>提现金额
-                                                </th>
+                                        </th>
                                         <th>提现方式
-                                                </th>
+                                        </th>
                                         <th>余额
-                                                </th>
+                                        </th>
                                     </tr>
                                 </table>
                                 <div id="Pagination5" class="pagination"></div>
@@ -470,13 +480,13 @@
                                 <table class="stutable" cellspacing="0" id="chongzhilist">
                                     <tr class="stuth">
                                         <th>充值时间
-                                                </th>
+                                        </th>
                                         <th>充值金额
-                                                </th>
+                                        </th>
                                         <th>充值方式
-                                                </th>
+                                        </th>
                                         <th>余额
-                                                </th>
+                                        </th>
                                     </tr>
                                 </table>
                                 <div id="Pagination6" class="pagination"></div>
@@ -487,16 +497,16 @@
                             <table class="stutable" cellspacing="0" id="myquestion">
                                 <tr class="stuth">
                                     <th>被提问人
-                                                </th>
+                                    </th>
                                     <th>内容
-                                                </th>
+                                    </th>
                                     <th>提问时间
-                                                </th>
+                                    </th>
                                     <th>问题奖励
-                                                </th>
+                                    </th>
                                     <th>操作
-                                                </th>
-                                </tr>                                
+                                    </th>
+                                </tr>
                             </table>
                             <div id="Pagination3" class="pagination"></div>
                         </div>
@@ -505,17 +515,17 @@
                             <table class="stutable" cellspacing="0" id="pingjialist">
                                 <tr class="stuth">
                                     <th>被评价人
-                                                </th>
+                                    </th>
                                     <th>内容
-                                                </th>
+                                    </th>
                                     <th>评价星级
-                                                </th>
+                                    </th>
                                     <th>评价时间
-                                                </th>
+                                    </th>
                                     <th>操作
-                                                </th>
+                                    </th>
                                 </tr>
-                                
+
                             </table>
                             <div id="Pagination7" class="pagination"></div>
                         </div>
@@ -524,17 +534,17 @@
                             <table class="stutable" cellspacing="0" id="liuyanlist">
                                 <tr class="stuth">
                                     <th>被留言人
-                                                </th>
+                                    </th>
                                     <th>内容
-                                                </th>
+                                    </th>
                                     <th>评价时间
-                                                </th>
+                                    </th>
                                     <th>状态
-                                                </th>
+                                    </th>
                                     <th>操作
-                                                </th>
+                                    </th>
                                 </tr>
-                                
+
                             </table>
                             <div id="Pagination8" class="pagination"></div>
                         </div>
@@ -553,7 +563,7 @@
                                     <th>操作
                                     </th>
                                 </tr>
-                               
+
                             </table>
                             <div id="Pagination9" class="pagination"></div>
                         </div>
@@ -572,7 +582,7 @@
                                     <th>操作
                                     </th>
                                 </tr>
-                                
+
                             </table>
                             <div id="Pagination10" class="pagination"></div>
                         </div>
@@ -604,7 +614,7 @@
                     <p id="guanzhucount" style="display: none">{{.guanzhucount}}</p>
                     <p id="tuiyuecount" style="display: none">{{.tuiyuecount}}</p>
                     <p id="tapSowNum" style="display: none">{{.tapNum}}</p>
-                    <input type="hidden" id="submitstate" value="{{.addQuestionResult}}"/>
+                    <input type="hidden" id="submitstate" value="{{.addQuestionResult}}" />
                 </div>
             </div>
         </div>
@@ -618,7 +628,6 @@
     <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript">
-
         var userid = getCookie("userid")//获取登录用户主键id
 
         var pubRows = 10;//每页显示行数
@@ -629,15 +638,7 @@
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
-            var getstudents = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + userid;
-            $.getJSON(getstudents, function (data) {
-                if (data != null) {
-                    if (data["AvatarPath"] != null && data["AvatarPath"] + "" != "") {
-                        document.getElementById("userhead").src = data["AvatarPath"];
-                    } else { document.getElementById("userhead").src = "images/PersonHeadImg/moren.png"; }
-                }
-                else { document.getElementById("userhead").src = "images/PersonHeadImg/moren.png"; }
-            });
+            getuserhead();
             chushiyuyue(1);
             chushiallClass(1);
             chushiMyQuestion(1);
@@ -653,6 +654,14 @@
             chushituijiandiv();
         }
 
+        function getuserhead() {
+            var srcurl = "{{.AvatarPath}}";
+            if (srcurl == null || srcurl + "" == "") {
+                document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+            } else {
+                document.getElementById("teacherhead").src = srcurl;
+            }
+        }
 
         //设置显示tap页
         function showtap() {
@@ -746,7 +755,7 @@
                 document.getElementById("Pagination3").style.display = "none";
             }
             var jiaoyicountnow = document.getElementById("jiaoyicount").innerText;
-            if(jiaoyicountnow >0){
+            if (jiaoyicountnow > 0) {
                 // 创建交易记录分页元素----------------
                 $("#Pagination4").pagination(jiaoyicountnow, {
                     num_edge_entries: 2,
@@ -757,7 +766,7 @@
                 document.getElementById("Pagination4").style.display = "none";
             }
             var tixiancountnow = document.getElementById("tixiancount").innerText;
-            if(tixiancountnow >0){
+            if (tixiancountnow > 0) {
                 // 创建提现记录分页元素----------------
                 $("#Pagination5").pagination(tixiancountnow, {
                     num_edge_entries: 2,
@@ -768,7 +777,7 @@
                 document.getElementById("Pagination5").style.display = "none";
             }
             var chongzhicountnow = document.getElementById("chongzhicount").innerText;
-            if(chongzhicountnow>0){
+            if (chongzhicountnow > 0) {
                 // 创建充值记录分页元素----------------
                 $("#Pagination6").pagination(chongzhicountnow, {
                     num_edge_entries: 2,
@@ -801,7 +810,7 @@
                 document.getElementById("Pagination8").style.display = "none";
             }
             var guanzhucountnow = document.getElementById("guanzhucount").innerText;
-            if(guanzhucountnow >0){
+            if (guanzhucountnow > 0) {
                 // 创建分页元素
                 $("#Pagination9").pagination(guanzhucountnow, {
                     num_edge_entries: 2,
@@ -812,7 +821,7 @@
                 document.getElementById("Pagination9").style.display = "none";
             }
             var tuiyuecountnow = document.getElementById("tuiyuecount").innerText;
-            if(tuiyuecountnow >0){
+            if (tuiyuecountnow > 0) {
                 // 创建退约课程分页元素
                 $("#Pagination10").pagination(tuiyuecountnow, {
                     num_edge_entries: 2,
@@ -952,7 +961,7 @@
                         }
                         var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
                                     "<td>" + wentititle + "</td>" +
-                                    "<td>" + getSimpDate(data[i]["BadeTime"]) +" "+ getSimpTime(data[i]["BadeTime"]) + "</td>" +
+                                    "<td>" + getSimpDate(data[i]["BadeTime"]) + " " + getSimpTime(data[i]["BadeTime"]) + "</td>" +
                                     "<td>" + data[i]["AmountMoney"] + "</td>" +
                                     '<td><a href="http://{{.Website}}/orange/Teacher/ProblemModel/' + data[i]["Id"] + '" class="btn btn-warning radsty">查看</a>' +
                                     '&nbsp;<a data-toggle="modal" class="btn btn-warning radsty" data-target="#delmain" onclick="delQuestion(' + data[i]["Id"] + ')">删除</a></td></tr>';
@@ -1077,8 +1086,8 @@
                 //alert(data);
                 var myliuyanstr = '<tr class="stuth"><th>被留言人</th><th>内容</th><th>留言时间</th><th>留言状态</th><th>操作</th></tr>';
                 if (data != null) {
-					console.log(data);
-					
+                    console.log(data);
+
                     for (var i = 0; i < data.length ; i++) {
                         var showtimestr = "";
                         if (data[i]["MesTimeNew"] == null) {
@@ -1167,7 +1176,7 @@
                                     '<td id="yuyuedate' + i + '">' + getSimpDate(data[i]["StartTime"]) + "</td>" +
                                     '<td id="yuyuetime' + i + '">' + getSimpTime(data[i]["StartTime"]) + "--" + getSimpTime(data[i]["EndTime"]) + "</td>" +
                                     '<td><a data-toggle="modal" ' +
-                                    'onclick="bandBookingOne(' + uid + ',' + "'" + uname + "'" + ',' + "'" + udate + "'" + ',' + "'" + utime + "'" + ')"' +
+                                    'onclick="bandBookingOne2(' + uid + ',' + "'" + uname + "'" + ',' + "'" + udate + "'" + ',' + "'" + utime + "'" + ')"' +
                                     ' class="btn btn-warning radsty" data-target="#tuiyuediv"' +
                                     '>退课</a></td></tr>';
                         strtuiyue += onetr;
@@ -1179,63 +1188,95 @@
         }
         //------------------------------------------------列表功能开始-------------------------------------------------
         //退约时层内容显示设置
-        function bandBookingOne(id, username, date, time) {
-            document.getElementById("onlinebookid").innerText = id;
-            document.getElementById("tuiUserName").innerText = username;
-            document.getElementById("tuiDate").innerText = date;
-            document.getElementById("tuiTime").innerText = time;
+        function bandBookingOne(id, username, date, time) {            
+            var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + id;
+            $.getJSON(userfrozen, function (datafrozen) {
+                if (datafrozen != null) {
+                    var tuimoney = datafrozen["FrozenMoney"];
+                    document.getElementById("onlinebookid").innerText = id;
+                    document.getElementById("tuiUserName").innerText = username;
+                    document.getElementById("tuiDate").innerText = date;
+                    document.getElementById("tuiTime").innerText = time;
+                    document.getElementById("tuititle").innerHTML = "退约";
+                    document.getElementById("tdzhu").innerHTML = "注：此次退约将返还您" + tuimoney + "元！";
+                }
+            });
+        }
+        //设置退课时层显示
+        function bandBookingOne2(id, username, date, time) {
+            var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + id;
+            $.getJSON(userfrozen, function (datafrozen) {
+                if (datafrozen != null) {
+                    var tuimoney = datafrozen["FrozenMoney"];
+                    var kouchu = tuimoney * 0.1;
+                    tuimoney = tuimoney - kouchu;
+                    document.getElementById("onlinebookid").innerText = id;
+                    document.getElementById("tuiUserName").innerText = username;
+                    document.getElementById("tuiDate").innerText = date;
+                    document.getElementById("tuiTime").innerText = time;
+                    document.getElementById("tuititle").innerHTML = "退课";
+                    document.getElementById("tdzhu").innerHTML = "注：此次退约将返还您" + tuimoney + "元，扣除" + kouchu + "元！";
+                }
+            });
         }
         //预约课程退约方法
         function tuiyueBooking() {
             var bookid = document.getElementById("onlinebookid").innerText;
             if (bookid > 0) {
                 var yanzhengpass = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + bookid;
-                $.getJSON(yanzhengpass, function (dataon) {
-                    var uponlike = '{"UserIdActive":0,"UserIdPassive":' + dataon["UserIdPassive"] +
-                                      ',"ReservationState":' + dataon["ReservationState"] +
-                                      ',"Payment":' + dataon["Payment"] +
-                                      ',"Leaming":' + dataon["Leaming"] +
-                                      ',"PayWay":' + dataon["PayWay"] +
-                                      ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
-                                      '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
-                                      '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
-                                      '","AppointMessage":"' + dataon["AppointMessage"] +
-                                      '","ClassroomId":"' + dataon["ClassroomId"] +
-                                      '","StudentInId":"' + dataon["StudentInId"] +
-                                      '","TeacherInId":"' + dataon["TeacherInId"] +
-                                      '"}';
-                    $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + bookid, uponlike,
-                           function (data) {
-                               if (data == "OK") {
-                                   var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
-                                   $.getJSON(userfrozen, function (datafrozen) {
-                                       if (datafrozen != null) {
-                                           var updongjie = '{"UserId":' + datafrozen["UserId"] +
-                                                                ',"FrozenMoney":' + datafrozen["FrozenMoney"] +
-                                                                ',"FrozenType":' + datafrozen["FrozenType"] +
-                                                                ',"BusinessId":' + datafrozen["BusinessId"] +
-                                                                ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
-                                                                '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
-                                                                '","FrozenState":0' +
-                                                                '}';
-                                           $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
-                                               function (data) {
-                                                   //删除此次预约信息所关联的全部附件信息                                                       
-                                                   var dekcare = "http://{{.Website}}/orange/courseware/DeleteCoursewareByOCBID/" + bookid;
-                                                   $.getJSON(dekcare, function (datadel) {
+                    $.getJSON(yanzhengpass, function (dataon) {
+                        var uponlike = '{"UserIdActive":0,"UserIdPassive":' + dataon["UserIdPassive"] +
+                                          ',"ReservationState":' + dataon["ReservationState"] +
+                                          ',"Payment":' + dataon["Payment"] +
+                                          ',"Leaming":' + dataon["Leaming"] +
+                                          ',"PayWay":' + dataon["PayWay"] +
+                                          ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
+                                          '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
+                                          '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
+                                          '","AppointMessage":"' + dataon["AppointMessage"] +
+                                          '","ClassroomId":"' + dataon["ClassroomId"] +
+                                          '","StudentInId":"' + dataon["StudentInId"] +
+                                          '","TeacherInId":"' + dataon["TeacherInId"] +
+                                          '"}';
+                        $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + bookid, uponlike,
+                               function (data) {
+                                   if (data == "OK") {
+                                       var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
+                                       $.getJSON(userfrozen, function (datafrozen) {
+                                           if (datafrozen != null) {
+                                               var tuititlename = document.getElementById("tuititle").innerHTML;
+                                               var tuimoney = datafrozen["FrozenMoney"];
+                                               if (tuititlename == "退约") {
+                                                   tuimoney = tuimoney;
+                                               } else if (tuititlename == "退课") {
+                                                   tuimoney = tuimoney - (tuimoney * 0.1);
+                                               }
+                                               var updongjie = '{"UserId":' + datafrozen["UserId"] +
+                                                                    ',"FrozenMoney":' + tuimoney +
+                                                                    ',"FrozenType":' + datafrozen["FrozenType"] +
+                                                                    ',"BusinessId":' + datafrozen["BusinessId"] +
+                                                                    ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
+                                                                    '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
+                                                                    '","FrozenState":0' +
+                                                                    '}';
+                                               $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
+                                                   function (data) {
+                                                       //删除此次预约信息所关联的全部附件信息                                                       
+                                                       var dekcare = "http://{{.Website}}/orange/courseware/DeleteCoursewareByOCBID/" + bookid;
+                                                       $.getJSON(dekcare, function (datadel) {
 
+                                                       });
                                                    });
-                                               });
-                                       }
-                                   });
-                                   alert("退约成功！");
-                                   window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
-                               } else {
-                                   alert("退约失败！");
-                               }
-                           });
-                    
-                });
+                                           }
+                                       });
+                                       alert("退约成功！");
+                                       window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
+                                   } else {
+                                       alert("退约失败！");
+                                   }
+                               });
+
+                    });
             }
         }
 
@@ -1446,8 +1487,8 @@
             //var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
             //$.getJSON(getstate, function (data) {
             //    if (nowmoney - 100 > data) {
-                    document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
-                    tixianistorf = 1;
+            document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
+            tixianistorf = 1;
             //    }
             //    else {
             //        document.getElementById("tixiantb").innerHTML = "您申请的提现金额已达上限！";

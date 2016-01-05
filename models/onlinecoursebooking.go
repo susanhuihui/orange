@@ -823,7 +823,6 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 	var tint [50]int //老师在线时间数组
 	var sint [50]int //学生在线时间数组
 
-	loc, _ := time.LoadLocation("Local")
 	//	var starttime string = ""
 	//	starttime = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " 24:00:00"
 	//	dd, _ := time.ParseInLocation("2006-01-02 15:04:05", starttime, loc) //将字符串转换为时间
@@ -835,8 +834,11 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 		if i < 9 {
 			minute = "0" + strconv.Itoa(i+1)
 		}
-		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " "
+		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + GetDayNum(classnow.StartTime.Day()) + " "
+		fmt.Println("要转换比较的字符串是：")
 		itemtime = itemtime + strconv.Itoa(classnow.StartTime.Hour()) + ":" + minute + ":00"
+		fmt.Println(itemtime)
+		loc, _ := time.LoadLocation("Local")
 		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
 		fmt.Println(timecomp)
 		for j := 0; j < len(teacherlistrecord); j++ {
@@ -861,8 +863,9 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 		if i < 9 {
 			minute = "0" + strconv.Itoa(i+1)
 		}
-		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + strconv.Itoa(classnow.StartTime.Day()) + " "
+		var itemtime string = strconv.Itoa(classnow.StartTime.Year()) + "-" + GetMonth(classnow.StartTime.Month()) + "-" + GetDayNum(classnow.StartTime.Day()) + " "
 		itemtime = itemtime + strconv.Itoa(classnow.StartTime.Hour()) + ":" + minute + ":00"
+		loc, _ := time.LoadLocation("Local")
 		timecomp, _ := time.ParseInLocation("2006-01-02 15:04:05", itemtime, loc) //将字符串转换为时间
 		for j := 0; j < len(studentlistrecord); j++ {
 			var endtime time.Time
@@ -892,29 +895,53 @@ func GetALLtimeminute(onlineid int) (allminute int) {
 
 func GetMonth(month time.Month) (yue string) {
 	if month.String() == "January" {
-		yue = "1"
+		yue = "01"
 	} else if month.String() == "February" {
-		yue = "2"
+		yue = "02"
 	} else if month.String() == "March" {
-		yue = "3"
+		yue = "03"
 	} else if month.String() == "April" {
-		yue = "4"
+		yue = "04"
 	} else if month.String() == "May" {
-		yue = "5"
+		yue = "05"
 	} else if month.String() == "June" {
-		yue = "6"
+		yue = "06"
 	} else if month.String() == "July" {
-		yue = "7"
+		yue = "07"
 	} else if month.String() == "August" {
-		yue = "8"
+		yue = "08"
 	} else if month.String() == "September" {
-		yue = "9"
+		yue = "09"
 	} else if month.String() == "October" {
 		yue = "10"
 	} else if month.String() == "November" {
 		yue = "11"
 	} else if month.String() == "December" {
 		yue = "12"
+	}
+	return
+}
+func GetDayNum(day int) (yue string) {
+	if day == 1 {
+		yue = "01"
+	} else if day == 2 {
+		yue = "02"
+	} else if day == 3 {
+		yue = "03"
+	} else if day == 4 {
+		yue = "04"
+	} else if day == 5 {
+		yue = "05"
+	} else if day == 6 {
+		yue = "06"
+	} else if day == 7 {
+		yue = "07"
+	} else if day == 8 {
+		yue = "08"
+	} else if day == 9 {
+		yue = "09"
+	} else {
+		yue = strconv.Itoa(day)
 	}
 	return
 }

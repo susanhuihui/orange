@@ -51,7 +51,7 @@
         //关闭网页时调用此方法，记录学生退出时间
         window.onbeforeunload = function () {
             var nowtime = new Date();//系统当前时间
-            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid/" + userid + "/" + onlineid;
+            var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByUid2/" + userid + "/" + onlineid;
             $.getJSON(getblack, function (data) {
                 if (data != null && data["Id"] > 0) {
                     

@@ -78,12 +78,12 @@
                 <div class="col-sm-9" style="border-right: 15px solid #f5f5f5;">
                     <div class='row lefttop'>
                         <div class="col-sm-3">
-                            <img src="{{.AvatarPath}}" />
+                            <img id="teacherhead" />
                             <p>ID:{{.StudentUserid}}</p>
                         </div>
                         <div class="col-sm-8 lefttopfont">
                             {{.UserName}}                         
-                            <a href="#">{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
+                            <a>{{.IdentityName}}  {{.StuSex}}  {{.SchoolName}}</a>
                             <a href="http://{{.Website}}/orange/Main/UpdateTeacher/">
                                 <input type="button" class="stubtns" value="修改资料"></a>
                             <a href="http://{{.Website}}/orange/Teacher/TeacherSetMeet/">
@@ -286,14 +286,14 @@
                                 </tr>
                             </table>
                              <table class="stutable" cellspacing="0" id="listenlist">
-                                <tr class="stuth">
+                               <!-- <tr class="stuth">
                                     <th>试听人
                                     </th>
                                     <th>开始时间
                                     </th>
                                     <th>结束时间
                                     </th>
-                                </tr>
+                                </tr>-->
                             </table>
                             <div id="pagination9s" class="pagination"></div>
                         </div>
@@ -344,6 +344,7 @@
             if (userid == null || userid <= 0) {
                 window.location.href = "http://{{.Website}}/";
             }
+            getuserhead();
             chushiyuyue(1);
             chushiallClass(1);
             chushiMyQuestion(1);
@@ -356,6 +357,16 @@
             showtap();
             getTeacherListenState();
         }
+
+        function getuserhead() {
+            var srcurl = "{{.AvatarPath}}";
+            if (srcurl == null || srcurl + "" == "") {
+                document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+            } else {
+                document.getElementById("teacherhead").src = srcurl;
+            }
+        }
+
         //设置显示tap页
         function showtap() {
             var tapnum = document.getElementById("tapSowNum").innerText;

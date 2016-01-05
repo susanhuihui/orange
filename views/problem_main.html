@@ -16,12 +16,12 @@
     {{template "menutop.html" .}}
     <div id="pagetopb">
         <!--个人资料-->
-        <div class="container" style="margin-top: 20px; background-color: #FFFFFF;">
+        <div class="container" style="margin-top: 30px; background-color: #FFFFFF;">
             <div class="row problemmenu">
                 <div class="col-sm-12">
-                    <span>问答详情：</span>
-                    <a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/" id="setquestion" style="display:none;">
-                        <input type="button" class="probtn" value="我也要提问">
+                    <span style="color:#fa7e08; font-weight:bold;">问答详情：</span>
+                    <a href="http://{{.Website}}/orange/Teacher/UserAskQuestion/" class="probtn" id="setquestion" style="display:none; text-decoration:none;">
+                        我也要提问
                     </a>
                 </div>
             </div>
@@ -55,8 +55,7 @@
                     <div class="col-sm-12 promainfont">
                         回答内容：                  
                     </div>
-                    <div class="col-sm-12 promain">
-                        {{.HuiDaContents}} 
+                    <div class="col-sm-12 promain" id="huidacontent">
                     </div>
                 </div>
             </div>
@@ -80,6 +79,7 @@
             }            
            
             document.getElementById("showcontent").innerHTML = "{{.Contents}}";
+            document.getElementById("huidacontent").innerHTML = "{{.HuiDaContents}}";
         }
       </script>
 </body>

@@ -18,7 +18,7 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                       <img id="bigpic" src="" style ="width:100%;"/>
+                       <img id="bigpic" style ="width:100%;"/>
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2">
                     <div class="probletable">
-                        <img id="head" src="{{.AvatarPath}}" />
+                        <img id="teacherhead"/>
                         <p>ID {{.Id}}</p>
                         <span>{{.UserName}}</span>
                         <p>{{.SchoolName}}</p>
@@ -80,6 +80,15 @@
             }
             chushitime();
             getfujina();
+            getuserhead();
+        }
+        function getuserhead() {
+            var srcurl = "{{.AvatarPath}}";
+            if (srcurl == null || srcurl + "" == "") {
+                document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+            } else {
+                document.getElementById("teacherhead").src = srcurl;
+            }
         }
         function chushitime() {
             var timest1 = document.getElementById("time1").innerHTML.replace(/-/g, "/");

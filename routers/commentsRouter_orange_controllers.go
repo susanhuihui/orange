@@ -876,6 +876,13 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
 		beego.ControllerComments{
+			"RegisteredLinefwtk",
+			`/RegisteredLinefwtk/`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
+		beego.ControllerComments{
 			"PayMentUser",
 			`/PayMentUser/:money`,
 			[]string{"get"},
@@ -1802,6 +1809,13 @@ func init() {
 		beego.ControllerComments{
 			"ProblemModel",
 			`/ProblemModel/:adkid`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:TeacherController"] = append(beego.GlobalControllerRouter["orange/controllers:TeacherController"],
+		beego.ControllerComments{
+			"ProblemModelshow",
+			`/ProblemModelShow/:adkid`,
 			[]string{"get"},
 			nil})
 
