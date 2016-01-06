@@ -13,7 +13,7 @@ import (
 type Recommendteacher struct {
 	Id            int       `orm:"column(PKId);auto"`
 	UserId        int       `orm:"column(UserId)"`
-	GradeId          int    `orm:"column(GradeId);null"`
+	GradeId       int       `orm:"column(GradeId);null"`
 	ClassId       int       `orm:"column(ClassId);null"`
 	StartPrice    float64   `orm:"column(StartPrice);null;digits(10);decimals(2)"`
 	EndPreice     float64   `orm:"column(EndPreice);null;digits(10);decimals(2)"`
@@ -24,12 +24,66 @@ type Recommendteacher struct {
 	Remarks       string    `orm:"column(Remarks);size(50);null"`
 }
 
+type RecommendteacherAll struct {
+	Id            int       `orm:"column(PKId);auto"`
+	UserId        int       `orm:"column(UserId)"`
+	GradeId       int       `orm:"column(GradeId);null"`
+	ClassId       int       `orm:"column(ClassId);null"`
+	StartPrice    float64   `orm:"column(StartPrice);null;digits(10);decimals(2)"`
+	EndPreice     float64   `orm:"column(EndPreice);null;digits(10);decimals(2)"`
+	CityId        int       `orm:"column(CityId);null"`
+	RecommendTime time.Time `orm:"column(RecommendTime);type(datetime);null"`
+	MyName        string    `orm:"column(MyName);size(50);null"`
+	MyPhone       string    `orm:"column(MyPhone);size(50);null"`
+	Remarks       string    `orm:"column(Remarks);size(50);null"`
+	IphoneNum     string    `orm:"column(IphoneNum);size(50);null"`
+	UserName      string    `orm:"column(UserName);size(50);null"`
+	Mailbox       string    `orm:"column(Mailbox);size(50);null"`
+	ParentMailbox string    `orm:"column(ParentMailbox);size(50);null"`
+	CourseName    string    `orm:"column(CourseName);size(50);null"`
+	GradeName     string    `orm:"column(GradeName);size(50);null"`
+	CityName      string    `orm:"column(CityName);size(50);null"`
+}
+
 func (t *Recommendteacher) TableName() string {
 	return "recommendteacher"
 }
 
 func init() {
 	orm.RegisterModel(new(Recommendteacher))
+}
+
+//	51.查询全部学生推荐信息
+//	2016-01-06
+func GetRecommendteacherAll(rows int, counts int) (recomteacher []RecommendteacherAll, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlRecommendTeacherAll+limitSql, rows, counts)
+	num, qs := rs.QueryRows(&recomteacher)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return recomteacher, qs
+	}
+	return
+}
+
+//	51.查询全部学生推荐信息
+//	2016-01-06
+func GetRecommendteacherAllCount() (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlRecommendTeacherAll)
+	var recomteacher []RecommendteacherAll
+	num, qs := rs.QueryRows(&recomteacher)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(recomteacher), qs
+	}
+	return
 }
 
 // AddRecommendteacher insert a new Recommendteacher into database and returns

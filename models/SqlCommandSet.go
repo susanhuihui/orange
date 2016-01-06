@@ -708,3 +708,10 @@ var SqlOnlinetrylistenbysid = `select *
 							where sid=? and stuendtime is null
 							order by stustarttime desc
 							limit 1`
+
+/**51.查询全部学生推荐信息**/
+var SqlRecommendTeacherAll = `select rt.*,userinfo.UserName,userinfo.Mailbox,userinfo.ParentMailbox,userinfo.IphoneNum,
+							(select CourseName from course as cou where cou.pkid = rt.classid) as CourseName,
+							(select GradeName from grade as gr where gr.pkid = rt.gradeid) as GradeName,
+							(select CityName from citys as ci where ci.pkid = rt.cityid) as CityName
+							from  recommendteacher as rt JOIN userinformation as userinfo on rt.userid = userinfo.pkid`

@@ -398,7 +398,13 @@ func (c *MainController) OwnerUser() {
 	} else {
 		c.Data["tixiancount"] = 0
 	}
-	c.TplNames = "adminpage.html"
+	tuijiancount, errt := models.GetAmountrecordsAllTCount()
+	if errt == nil && account > 0 {
+		c.Data["tuijiancount"] = tuijiancount
+	} else {
+		c.Data["tuijiancount"] = 0
+	}
+	c.TplNames = "adminhtml.html"
 }
 
 // 学生个人中心-查看全部课程中自己给老师的一条评价

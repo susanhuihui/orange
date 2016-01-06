@@ -1541,6 +1541,20 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"] = append(beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"],
 		beego.ControllerComments{
+			"GetRecommendteacherAll",
+			`/GetRecommendteacherAll/:page/:size`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"] = append(beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"],
+		beego.ControllerComments{
+			"GetRecommendteacherAllCount",
+			`/GetRecommendteacherAllCount/`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"] = append(beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"],
+		beego.ControllerComments{
 			"GetAll",
 			`/GetAllRecommendteacher/:page/:size`,
 			[]string{"get"},

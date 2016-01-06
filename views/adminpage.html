@@ -149,6 +149,34 @@
                 }
             });
         }
+
+        function chushituijianchushitixian(page) {
+            var alltuijian = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsAllT" + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(alltuijian, function (data) {
+                //alert(data);
+                var mytuijianstr = '<tr class="stuth"><th>姓名</th><th>推荐年级</th><th>辅导科目</th><th>价格区间</th><th>城市</th><th>联系方式</th><th>邮箱</th><th>家长邮箱</th><th>操作</th>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var moneyqujian = "";
+                        moneyqujian = data[i]["StartPrice"] + "---" + data[i]["EndPreice"];
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["GradeName"] + "</td>" +
+                                    "<td>" + data[i]["CourseName"] + "</td>" +
+                                    "<td>" + moneyqujian + "</td>" +
+                                    "<td>" + data[i]["CityName"] + "</td>" +
+                                    "<td>" + data[i]["IphoneNum"] + "</td>" +
+                                    "<td>" + data[i]["Mailbox"] + "</td>" +
+                                    "<td>" + data[i]["ParentMailbox"] + "</td>" +
+                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="delTuijian(' + data[i]["Id"] + ')">删除</a>' + '</td>' +
+                                    '</tr>';
+                        mytuijianstr += itmes
+                    }
+                }
+                document.getElementById("tuijiantable").innerHTML = "";
+                $("#tuijiantable").append(mytuijianstr);
+            });
+        }
     </script>
 </body>
 </html>

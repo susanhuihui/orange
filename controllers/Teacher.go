@@ -131,12 +131,12 @@ func (c *TeacherController) TeacherList() {
 				var items string = `<div class="row" style="border-bottom: 1px solid #F1F1F1">
 									<div class=" col-sm-2">
 									<div class="teamainleft">
-									<a href="http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+									<a onclick="javascript:window.open(` + `'` + `http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `'` + `);addliulan(` + strconv.Itoa(v[i].Id) + `)">
 										<img class="listheadimg" src="` + userheadurl + `" />
 									</a>
 									</div></div>
 									<div class="col-sm-7 teamainmiddle">
-									<a href="http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `" onclick="addliulan(` + strconv.Itoa(v[i].Id) + `)">
+									<a onclick="javascript:window.open(` + `'` + `http://` + models.OnlineUrl + `/orange/Teacher/TeacherInformation/` + strconv.Itoa(v[i].Id) + `'` + `);addliulan(` + strconv.Itoa(v[i].Id) + `)">
 										<span>` + v[i].UserName + onlinestr + `</span>
 									</a>
 									<p>` + v[i].SchoolName + ` | ` + v[i].DegreeName + ` | ` + strconv.Itoa(v[i].LevelYear) + `级 | ` + v[i].Professional + `</p>

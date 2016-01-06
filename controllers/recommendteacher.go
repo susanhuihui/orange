@@ -7,6 +7,7 @@ import (
 	"orange/models"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego"
 )
@@ -38,6 +39,7 @@ func (c *RecommendteacherController) Post() {
 	}
 	var v models.Recommendteacher
 	json.Unmarshal([]byte(jsonS), &v)
+	v.RecommendTime = time.Now()
 	if id, err := models.AddRecommendteacher(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
@@ -56,6 +58,45 @@ func (c *RecommendteacherController) GetOne() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
 	v, err := models.GetRecommendteacherById(id)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+// @Title GetRecommendteacherAll
+// @Description GetRecommendteacherAll Recommendteacher by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Recommendteacher
+// @Failure 403 :id is empty
+// @router /GetRecommendteacherAll/:page/:size [get]
+func (c *RecommendteacherController) GetRecommendteacherAll() {
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetRecommendteacherAll(offset, limit)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+// @Title GetRecommendteacherAllCount
+// @Description GetRecommendteacherAllCount Recommendteacher by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Recommendteacher
+// @Failure 403 :id is empty
+// @router /GetRecommendteacherAllCount/ [get]
+func (c *RecommendteacherController) GetRecommendteacherAllCount() {
+	v, err := models.GetRecommendteacherAllCount()
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {

@@ -156,8 +156,8 @@
         var pubRows = 10;//每页显示行数
         var allrowscount = 0;//总页数
         var allclasscount = 6;//当前页面全部课程数量
-        var alllevelcount = 5;//当前页面全部课程数量
-        var allagecount = 4;//当前页
+        var alllevelcount = 5;//当前页面全部级别数量
+        var allagecount = 3;//当前页面全部学龄段数量
 
         window.onload = function () {
             getuser();
@@ -439,12 +439,12 @@
                         var itemse = '<div class="row" style="border-bottom: 1px solid #F1F1F1">' +
                                      '<div class=" col-sm-2">' +
                                      '<div class="teamainleft">' +
-                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">' +
+                                     '<a  onclick="javascript:window.open(' + "'" + 'http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + "'" + ');addliulan(' + data[i]["Id"] + ');">' +
                                      '<img class="listheadimg" src="' + userheadurl + '" /></a>' +
                                      '</div>' +
                                      '</div>' +
                                      '<div class="col-sm-7 teamainmiddle">' +
-                                     '<a href="http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + '" onclick="addliulan(' + data[i]["Id"] + ')">' +
+                                     '<a onclick="javascript:window.open(' + "'" + 'http://{{.Website}}/orange/Teacher/TeacherInformation/' + data[i]["Id"] + "'" + ');addliulan(' + data[i]["Id"] + ')">' +
                                      '<span>' + data[i]["UserName"] + onlinestr + '</span></a>' +
                                      '<p>' + data[i]["SchoolName"] + ' | ' + data[i]["DegreeName"] + ' | ' + data[i]["LevelYear"] + '级 | ' + data[i]["Professional"] + '</p>' +
                                      '<p>主辅导课：' + data[i]["CourseNameZhu"] + '</p>' +

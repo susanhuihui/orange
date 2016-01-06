@@ -378,8 +378,16 @@ func (c *AmountrecordsController) FaFang() {
 	//查询当前用户账户信息
 	account, _ := models.GetAccountfundsByuid(v.UserId)
 
-	tixianmoney := v.RecordMoney                               //操作金额
-	v.Balance = account.Balance - v.RecordMoney                //更新提现记录余额
+	fmt.Println("当前身份和金额")
+	fmt.Println(identityid)
+	fmt.Println(v.Balance)
+
+	tixianmoney := v.RecordMoney //操作金额
+	if identityid == 1 {         //老师发放需用当前账户余额减去提现金额，更新老师的余额展示，学生余额为冻结后的余额 不需要
+		v.Balance = account.Balance - v.RecordMoney //更新提现记录余额
+	}
+
+	fmt.Println(v.Balance)
 	if err := models.UpdateAmountrecordsById(&v); err == nil { //修改提现记录为
 		if identityid == 1 { //给老师 发放金额：老师账户余额需要更新
 			account.Balance = account.Balance - tixianmoney
@@ -389,7 +397,7 @@ func (c *AmountrecordsController) FaFang() {
 			//解冻资金，
 			fontfonz, _ := models.GetFrozenfundsByUidOnId(v.UserId, 2, v.Id)
 			fontfonz.ThawingTime = time.Now()
-			fontfonz.FrozenState = 1
+			fontfonz.FrozenState = 0
 			fonterr := models.UpdateFrozenfundsById(&fontfonz)
 			fmt.Println(fonterr)
 		}
