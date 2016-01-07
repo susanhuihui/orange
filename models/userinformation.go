@@ -47,6 +47,39 @@ type Userinformation struct {
 	RegisteredTime    time.Time `orm:"column(RegisteredTime);type(datetime);null"`
 }
 
+type UserinformationAdmin struct {
+	Id                int       `orm:"column(PKId);auto"`
+	UserName          string    `orm:"column(UserName);size(50);null"`
+	IphoneNum         string    `orm:"column(IphoneNum);size(50);null"`
+	LoginPassword     string    `orm:"column(LoginPassword);size(20);null"`
+	PayPassword       string    `orm:"column(PayPassword);size(20);null"`
+	UserSex           string    `orm:"column(UserSex);size(10);null"`
+	SchoolId          int       `orm:"column(SchoolId);null"`
+	SchoolName        string    `orm:"column(SchoolName);size(50);null"`
+	SchoolAgeId       int       `orm:"column(SchoolAgeId);null"`
+	UserDegree        int       `orm:"column(UserDegree);null"`
+	UserLocation      int       `orm:"column(UserLocation);null"`
+	SeniorLocation    int       `orm:"column(SeniorLocation);null"`
+	HighSchool        string    `orm:"column(HighSchool);size(50);null"`
+	UserLevelId       int       `orm:"column(UserLevelId);null"`
+	LevelYear         int       `orm:"column(LevelYear);null"`
+	IdentityId        int       `orm:"column(IdentityId);null"`
+	GradeId           int       `orm:"column(GradeId);null"`
+	SchoolAgeIdT      string    `orm:"column(SchoolAgeIdT);size(50);null"`
+	UnitPrice         float64   `orm:"column(UnitPrice);null;digits(10);decimals(2)"`
+	Professional      string    `orm:"column(Professional);size(50);null"`
+	Mailbox           string    `orm:"column(Mailbox);size(50);null"`
+	ParentMailbox     string    `orm:"column(ParentMailbox);size(50);null"`
+	StudyDifficult    string    `orm:"column(StudyDifficult);size(200);null"`
+	AvatarPath        string    `orm:"column(AvatarPath);size(200);null"`
+	UserHobby         string    `orm:"column(UserHobby);size(200);null"`
+	Remarks           string    `orm:"column(Remarks);size(200);null"`
+	BriefIntroduction string    `orm:"column(BriefIntroduction);null"`
+	RegisteredTime    time.Time `orm:"column(RegisteredTime);type(datetime);null"`
+	LevelName         string    `orm:"column(LevelName);size(50);null"`
+	DegreeName        string    `orm:"column(DegreeName);size(50);null"`
+}
+
 //用户图片轮换
 type UserinformationPic struct {
 	Id         int    `orm:"column(PKId);auto"`
@@ -747,16 +780,35 @@ func GetImganddata2(request *http.Request, headpath string) (json string, imgstr
 	return json, imgstr
 }
 
-////更新头像和昵称
-//func UpdateUserimg(m *Userinformation, imgstr string) (rownums int, err error) {
-//	var img string
-//	if imgstr != "" {
-//		str := strings.Split(imgstr, ",")
-//		img = str[0]
-//	}
-//	o := orm.NewOrm()
-//	var rs orm.RawSeter
-//	rs = o.Raw("call proc_UpdateUserPortraitByUserid(?,?)", m.Id, img)
-//	qs := rs.QueryRow(&rownums)
-//	return rownums, qs
-//}
+//	52.管理员查询全部老师信息
+//	2016-01-07
+func GetUserinformationTeacherAll(rows int, counts int) (teacher []UserinformationAdmin, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserinformationAllByAdmin+limitSql, rows, counts)
+	num, qs := rs.QueryRows(&teacher)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return nil, qs
+	} else {
+		return teacher, qs
+	}
+	return
+}
+
+//	52.管理员查询全部老师信息总条数
+//	2016-01-07
+func GetUserinformationTeacherAllCount() (allcount int, err error) {
+	o := orm.NewOrm()
+	var rs orm.RawSeter
+	rs = o.Raw(SqlUserinformationAllByAdmin)
+	var teacher []UserinformationAdmin
+	num, qs := rs.QueryRows(&teacher)
+	if qs != nil {
+		fmt.Printf("num", num)
+		return 0, qs
+	} else {
+		return len(teacher), qs
+	}
+	return
+}

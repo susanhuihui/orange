@@ -266,8 +266,7 @@
                             <td id="tuiTime"></td>
                         </tr>
                         <tr>
-                            <td id="tdzhu" colspan="3">
-                            </td>
+                            <td id="tdzhu" colspan="3"></td>
 
                         </tr>
                     </table>
@@ -1188,7 +1187,7 @@
         }
         //------------------------------------------------列表功能开始-------------------------------------------------
         //退约时层内容显示设置
-        function bandBookingOne(id, username, date, time) {            
+        function bandBookingOne(id, username, date, time) {
             var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + id;
             $.getJSON(userfrozen, function (datafrozen) {
                 if (datafrozen != null) {
@@ -1224,59 +1223,59 @@
             var bookid = document.getElementById("onlinebookid").innerText;
             if (bookid > 0) {
                 var yanzhengpass = "http://{{.Website}}/orange/onlinecoursebooking/GetOnlinecoursebookingById/" + bookid;
-                    $.getJSON(yanzhengpass, function (dataon) {
-                        var uponlike = '{"UserIdActive":0,"UserIdPassive":' + dataon["UserIdPassive"] +
-                                          ',"ReservationState":' + dataon["ReservationState"] +
-                                          ',"Payment":' + dataon["Payment"] +
-                                          ',"Leaming":' + dataon["Leaming"] +
-                                          ',"PayWay":' + dataon["PayWay"] +
-                                          ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
-                                          '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
-                                          '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
-                                          '","AppointMessage":"' + dataon["AppointMessage"] +
-                                          '","ClassroomId":"' + dataon["ClassroomId"] +
-                                          '","StudentInId":"' + dataon["StudentInId"] +
-                                          '","TeacherInId":"' + dataon["TeacherInId"] +
-                                          '"}';
-                        $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + bookid, uponlike,
-                               function (data) {
-                                   if (data == "OK") {
-                                       var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
-                                       $.getJSON(userfrozen, function (datafrozen) {
-                                           if (datafrozen != null) {
-                                               var tuititlename = document.getElementById("tuititle").innerHTML;
-                                               var tuimoney = datafrozen["FrozenMoney"];
-                                               if (tuititlename == "退约") {
-                                                   tuimoney = tuimoney;
-                                               } else if (tuititlename == "退课") {
-                                                   tuimoney = tuimoney - (tuimoney * 0.1);
-                                               }
-                                               var updongjie = '{"UserId":' + datafrozen["UserId"] +
-                                                                    ',"FrozenMoney":' + tuimoney +
-                                                                    ',"FrozenType":' + datafrozen["FrozenType"] +
-                                                                    ',"BusinessId":' + datafrozen["BusinessId"] +
-                                                                    ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
-                                                                    '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
-                                                                    '","FrozenState":0' +
-                                                                    '}';
-                                               $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
-                                                   function (data) {
-                                                       //删除此次预约信息所关联的全部附件信息                                                       
-                                                       var dekcare = "http://{{.Website}}/orange/courseware/DeleteCoursewareByOCBID/" + bookid;
-                                                       $.getJSON(dekcare, function (datadel) {
-
-                                                       });
-                                                   });
+                $.getJSON(yanzhengpass, function (dataon) {
+                    var uponlike = '{"UserIdActive":0,"UserIdPassive":' + dataon["UserIdPassive"] +
+                                      ',"ReservationState":' + dataon["ReservationState"] +
+                                      ',"Payment":' + dataon["Payment"] +
+                                      ',"Leaming":' + dataon["Leaming"] +
+                                      ',"PayWay":' + dataon["PayWay"] +
+                                      ',"StartTime":"' + getInsertDate(dataon["StartTime"]) +
+                                      '","EndTime":"' + getInsertDate(dataon["EndTime"]) +
+                                      '","AppointTime":"' + getInsertDate(dataon["AppointTime"]) +
+                                      '","AppointMessage":"' + dataon["AppointMessage"] +
+                                      '","ClassroomId":"' + dataon["ClassroomId"] +
+                                      '","StudentInId":"' + dataon["StudentInId"] +
+                                      '","TeacherInId":"' + dataon["TeacherInId"] +
+                                      '"}';
+                    $.post("http://{{.Website}}/orange/onlinecoursebooking/UpdateOnlinecoursebookingById/" + bookid, uponlike,
+                           function (data) {
+                               if (data == "OK") {
+                                   var userfrozen = "http://{{.Website}}/orange/frozenfunds/GetFrozenfundsByUidOnId/" + userid + "/0/" + bookid;
+                                   $.getJSON(userfrozen, function (datafrozen) {
+                                       if (datafrozen != null) {
+                                           var tuititlename = document.getElementById("tuititle").innerHTML;
+                                           var tuimoney = datafrozen["FrozenMoney"];
+                                           if (tuititlename == "退约") {
+                                               tuimoney = tuimoney;
+                                           } else if (tuititlename == "退课") {
+                                               tuimoney = tuimoney - (tuimoney * 0.1);
                                            }
-                                       });
-                                       alert("退约成功！");
-                                       window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
-                                   } else {
-                                       alert("退约失败！");
-                                   }
-                               });
+                                           var updongjie = '{"UserId":' + datafrozen["UserId"] +
+                                                                ',"FrozenMoney":' + tuimoney +
+                                                                ',"FrozenType":' + datafrozen["FrozenType"] +
+                                                                ',"BusinessId":' + datafrozen["BusinessId"] +
+                                                                ',"FrozenTime":"' + getInsertDate(datafrozen["FrozenTime"]) +
+                                                                '","ThawingTime":"' + getInsertDate(datafrozen["ThawingTime"]) +
+                                                                '","FrozenState":0' +
+                                                                '}';
+                                           $.post("http://{{.Website}}/orange/frozenfunds/UpdateUserFrozenfundsById/" + datafrozen["Id"], updongjie,
+                                               function (data) {
+                                                   //删除此次预约信息所关联的全部附件信息                                                       
+                                                   var dekcare = "http://{{.Website}}/orange/courseware/DeleteCoursewareByOCBID/" + bookid;
+                                                   $.getJSON(dekcare, function (datadel) {
 
-                    });
+                                                   });
+                                               });
+                                       }
+                                   });
+                                   alert("退约成功！");
+                                   window.location.href = "http://{{.Website}}/orange/Main/UserStudent/0";
+                               } else {
+                                   alert("退约失败！");
+                               }
+                           });
+
+                });
             }
         }
 
@@ -1424,7 +1423,7 @@
                        ',"StartPrice":' + price1 +
                        ',"EndPreice":' + price2 +
                        ',"CityId":' + selcityid +
-                       ',"RecommendTime":"' + getNowFormatDate() +
+                       ',"RecommendTime":"' + getInsertNowDate() +
                        '","MyName":"' + xingming +
                        '","MyPhone":"' + phone +
                        '","Remarks":"' + beizhu +
@@ -1479,15 +1478,15 @@
             document.getElementById("txtoutmoney").value = "";
             document.getElementById("txtaccountuser").value = "";
             var nowmoney = document.getElementById("nowmoney").innerHTML;
-            if (nowmoney <= 100) {
-                document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
-                tixianistorf = 0;
-                return;
-            }
+            //if (nowmoney <= 100) {
+            //    document.getElementById("tixiantb").innerHTML = "账户余额不能少于100元！";
+            //    tixianistorf = 0;
+            //    return;
+            //}
             //var getstate = "http://{{.Website}}/orange/amountrecords/GetAmountrecordsTMcountByUid/" + userid;
             //$.getJSON(getstate, function (data) {
             //    if (nowmoney - 100 > data) {
-            document.getElementById("yueshow").innerHTML = (nowmoney - 100).toFixed(2);
+            document.getElementById("yueshow").innerHTML = nowmoney;//(nowmoney - 100).toFixed(2);
             tixianistorf = 1;
             //    }
             //    else {
@@ -1503,46 +1502,46 @@
             if (tixianistorf == 0) {
                 return;
             }
-            if (nowmoney > 100) {
-                //判断是否提现的金额大于
-                var tmoney = trim(document.getElementById("txtoutmoney").value);
-                var zhifuno = trim(document.getElementById("txtaccountuser").value);
-                var kecaozuomoney = document.getElementById("yueshow").innerHTML;
-                if (tmoney == "") { alert("提现金额不能为空！"); return; }
-                if (zhifuno == "") { alert("支付宝账号不能为空！"); return; }
-                var re = /^\d+.?\d{0,2}$/;
-                if (!re.test(tmoney)) { alert("请正确输入金额！"); return; }
-                if (parseFloat(tmoney) <= parseFloat(kecaozuomoney)) {
-                    //查询当前余额
-                    var getstate = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
-                    $.getJSON(getstate, function (data) {
-                        if (data["UserId"] > 0) {
-                            //添加一条提现申请信息
-                            var addrecord = '{"UserId":' + userid +
-                                            ',"RecordMoney":' + tmoney +
-                                            ',"Balance":' + data["Balance"] +
-                                            ',"RecordType":1' +
-                                            ',"RecordTime":"' + getInsertNowDate() +
-                                            '","TradingWayId":2' +
-                                            ',"IsComplete":0' +
-                                            ',"AccountNumber":"' + zhifuno +
-                                            '"}';
-                            $.post("http://{{.Website}}/orange/amountrecords/AddAmountrecordsStudent/", addrecord,
-                                function (adddata) {
-                                    if (adddata["id"] > 0) {
-                                        alert("申请成功！");
-                                        window.location.href = "http://{{.Website}}/orange/Main/UserStudent/2";
-                                    } else {
-                                        alert("申请失败！");
-                                    }
-                                });
-                        }
-                    });
-                }
-                else {
-                    alert("提现金额不能大于可提现金额！");
-                }
+            //判断是否提现的金额大于
+            var tmoney = trim(document.getElementById("txtoutmoney").value);
+            var zhifuno = trim(document.getElementById("txtaccountuser").value);
+            var kecaozuomoney = document.getElementById("yueshow").innerHTML;
+            if (tmoney == "") { alert("提现金额不能为空！"); return; }
+            if (zhifuno == "") { alert("支付宝账号不能为空！"); return; }
+            var re = /^\d+.?\d{0,2}$/;
+            if (!re.test(tmoney)) { alert("请正确输入金额！"); return; }
+            if (parseFloat(tmoney) <= parseFloat(kecaozuomoney)) {
+                //查询当前余额
+                var getstate = "http://{{.Website}}/orange/accountfunds/GetAccountfundsByuid/" + userid;
+                $.getJSON(getstate, function (data) {
+                    if (data["UserId"] > 0) {
+                        //添加一条提现申请信息
+                        var addrecord = '{"UserId":' + userid +
+                                        ',"RecordMoney":' + tmoney +
+                                        ',"Balance":' + data["Balance"] +
+                                        ',"RecordType":1' +
+                                        ',"RecordTime":"' + getInsertNowDate() +
+                                        '","TradingWayId":2' +
+                                        ',"IsComplete":0' +
+                                        ',"AccountNumber":"' + zhifuno +
+                                        '"}';
+                        $.post("http://{{.Website}}/orange/amountrecords/AddAmountrecordsStudent/", addrecord,
+                            function (adddata) {
+                                if (adddata["id"] > 0) {
+                                    alert("申请成功！");
+                                    window.location.href = "http://{{.Website}}/orange/Main/UserStudent/2";
+                                } else {
+                                    alert("申请失败！");
+                                }
+                            });
+                    }
+                });
             }
+            else {
+                alert("提现金额不能大于可提现金额！");
+                return;
+            }
+
             document.getElementById("txtoutmoney").value = "";
             document.getElementById("txtaccountuser").value = "";
         }

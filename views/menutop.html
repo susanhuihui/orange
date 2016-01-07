@@ -153,7 +153,7 @@
                 } else if (identityid == 2 || identityid == 3) {//学生|家长
                     stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
                 } else if (identityid == 4) {
-                    stuorteacher = "http://{{.Website}}/orange/Main/OwnerUser/";
+                    stuorteacher = "http://{{.Website}}/orange/Main/OwnerUser/0";
                 }
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
                 if (AvatarPath != null && AvatarPath + "" != "" && AvatarPath + "" != "undefined") {

@@ -203,8 +203,8 @@ func (c *RecommendteacherController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteRecommendteacher/:id [delete]
-func (c *RecommendteacherController) Delete() {
+// @router /DeleteRecommendteacher/:id [get]
+func (c *RecommendteacherController) DeleteRecommendteacher() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
 	if err := models.DeleteRecommendteacher(id); err == nil {

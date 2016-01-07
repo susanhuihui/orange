@@ -105,7 +105,7 @@
             var userid = getCookie("userid")//获取登录用户主键id
             var showuserid = document.getElementById("userid").innerText;//提问学生id
             var contents = document.getElementById("huidacont").value;
-            var nowtime = getNowFormatDate();
+            var nowtime = getInsertNowDate();
             if (trim(contents) == "") { alert("回答内容不能为空，请填写回答内容！"); return; }
             var adduser = '{"QAId":' + qusid +
                                     ',"AnsUserId":' + userid +

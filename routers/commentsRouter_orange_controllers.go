@@ -772,7 +772,7 @@ func init() {
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
 		beego.ControllerComments{
 			"OwnerUser",
-			`/OwnerUser/`,
+			`/OwnerUser/:tapid`,
 			[]string{"get"},
 			nil})
 
@@ -1569,9 +1569,9 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"] = append(beego.GlobalControllerRouter["orange/controllers:RecommendteacherController"],
 		beego.ControllerComments{
-			"Delete",
+			"DeleteRecommendteacher",
 			`/DeleteRecommendteacher/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:RelationsController"] = append(beego.GlobalControllerRouter["orange/controllers:RelationsController"],
@@ -2216,6 +2216,20 @@ func init() {
 			"UpdateUserimg2",
 			`/UpdateUserimg2/`,
 			[]string{"post"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
+		beego.ControllerComments{
+			"GetUserinformationTeacherAll",
+			`/GetUserinformationTeacherAll/:page/:size`,
+			[]string{"get"},
+			nil})
+
+	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
+		beego.ControllerComments{
+			"GetUserinformationTeacherAllCount",
+			`/GetUserinformationTeacherAllCount/`,
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UserlevelController"] = append(beego.GlobalControllerRouter["orange/controllers:UserlevelController"],

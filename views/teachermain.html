@@ -121,13 +121,13 @@
                 <div id="menu">
                     <!--tag标题-->
                     <ul class="ull nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">个人资料</a></li>
-                        <li role="presentation"><a href="#allclass" aria-controls="profile" role="tab" data-toggle="tab">全部课程</a></li>
-                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">资金账户</a></li>
-                        <li role="presentation"><a href="#settings" aria-controls="messages" role="tab" data-toggle="tab">我的问题</a></li>
-                        <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab">我的评价</a></li>
-                        <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab">我的留言</a></li>
-                        <li role="presentation"><a href="#trylisten" aria-controls="messages" role="tab" data-toggle="tab">我的试听</a></li>
+                        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" id="lihome">个人资料</a></li>
+                        <li role="presentation"><a href="#allclass" aria-controls="profile" role="tab" data-toggle="tab" id="liallclass">全部课程</a></li>
+                        <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" id="limessages">资金账户</a></li>
+                        <li role="presentation"><a href="#settings" aria-controls="messages" role="tab" data-toggle="tab" id="lisettings">我的问题</a></li>
+                        <li role="presentation"><a href="#pingjia" aria-controls="messages" role="tab" data-toggle="tab" id="lipingjia">我的评价</a></li>
+                        <li role="presentation"><a href="#messagetable" aria-controls="messages" role="tab" data-toggle="tab" id="limessagetable">我的留言</a></li>
+                        <li role="presentation"><a href="#trylisten" aria-controls="messages" role="tab" data-toggle="tab" id="litrylisten">我的试听</a></li>
                     </ul>
                     <div class="tab-content">
                         <!--预约课程-->
@@ -371,6 +371,13 @@
         function showtap() {
             var tapnum = document.getElementById("tapSowNum").innerText;
             //alert(tapnum);
+            if (tapnum + "" == "0") { document.getElementById("lihome").click(); }
+            else if (tapnum + "" == "1") { document.getElementById("liallclass").click(); }
+            else if (tapnum + "" == "2") { document.getElementById("limessages").click(); }
+            else if (tapnum + "" == "3") { document.getElementById("lisettings").click(); }
+            else if (tapnum + "" == "4") { document.getElementById("lipingjia").click(); }
+            else if (tapnum + "" == "5") { document.getElementById("limessagetable").click(); }
+            else if (tapnum + "" == "6") { document.getElementById("litrylisten").click(); }
         }
 
         //点击预约课程分页

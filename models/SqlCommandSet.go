@@ -715,3 +715,9 @@ var SqlRecommendTeacherAll = `select rt.*,userinfo.UserName,userinfo.Mailbox,use
 							(select GradeName from grade as gr where gr.pkid = rt.gradeid) as GradeName,
 							(select CityName from citys as ci where ci.pkid = rt.cityid) as CityName
 							from  recommendteacher as rt JOIN userinformation as userinfo on rt.userid = userinfo.pkid`
+
+/**52.管理员查询全部老师信息**/
+var SqlUserinformationAllByAdmin = `select userinfo.* ,(select levelname from userlevel as ul where ul.pkid = userinfo.userlevelid) as LevelName,
+							(select DegreeName from degree as de where de.pkid = userinfo.userdegree) as DegreeName
+							from userinformation as userinfo
+							where IdentityId = (select id.pkid from identity as id where IdentityName='老师')`

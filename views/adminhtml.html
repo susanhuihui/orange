@@ -29,54 +29,83 @@
                 <div class="modal-body">
                     <table class="stutablepop">
                         <tr>
-                            <td>姓名：
-                             </td>
+                            <td>姓名：<span style="color: red;">*</span>
+                            </td>
                             <td>
-                                <input class="stuimput" type="text">
+                                <input class="stuimput" type="text" id="txtUserName" onkeyup="checkUserName()">
                             </td>
                         </tr>
                         <tr>
-                            <td>所属大学：
-                             </td>
+                            <td>初始密码：<span style="color: red;">*</span>
+                            </td>
                             <td>
-                                <input class="stuimput" type="text">
+                                <input class="stuimput" type="text" id="txtUserPass" onkeyup="checkUserPass()">
                             </td>
                         </tr>
                         <tr>
-                            <td>邮箱：
-                             </td>
-                            <td>
-                                <input class="stuimput" type="text">
+                            <td>性别：<span style="color: red;">*</span>
                             </td>
-                        </tr>
-                        <tr>
-                            <td>性别：
-                             </td>
                             <td>
-                                <select class="stusel">
-                                    <option value="0">男</option>
-                                    <option value="1">女</option>
+                                <select class="stusel" id="selUserSex">
+                                    <option value="男">男</option>
+                                    <option value="女">女</option>
                                 </select>
                             </td>
                         </tr>
                         <tr>
-                            <td>姓名：
-                             </td>
+                            <td>手机号：<span style="color: red;">*</span>
+                            </td>
                             <td>
-                                <input class="stuimput" type="text">
+                                <input class="stuimput" type="text" id="txtUserphoneNum" onkeyup="checkUserphone()">
                             </td>
                         </tr>
                         <tr>
-                            <td>备注：
-                             </td>
+                            <td>课时费(元/小时)：<span style="color: red;">*</span>
+                            </td>
                             <td>
-                                <textarea class="stuarea"> </textarea>
+                                <input class="stuimput" type="text" id="txtClassMoney" onkeyup="checkMoney()">
                             </td>
                         </tr>
                         <tr>
-                            <td>&nbsp;</td>
+                            <td>级别：<span style="color: red;">*</span>
+                            </td>
                             <td>
-                                <input type="button" style="width: 80%;" class="btn btn-warning" value="保存">
+                                <select class="stusel" id="selUserLevel">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>学位：
+                            </td>
+                            <td>
+                                <select class="stusel" id="selUserDegree">
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>所属大学：
+                            </td>
+                            <td>
+                                <input class="stuimput" type="text" id="txtUserSchool">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>专业：
+                            </td>
+                            <td>
+                                <input class="stuimput" type="text" id="txtUserZhuanye">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>邮箱：
+                            </td>
+                            <td>
+                                <input class="stuimput" type="text" id="txtUserMail">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <input type="button" style="width: 40%;" class="btn btn-warning" onclick="addTeacher()" value="保存">
                             </td>
                         </tr>
                     </table>
@@ -89,9 +118,9 @@
             <div>
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs adminul" role="tablist">
-                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">教师管理</a></li>
-                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">提现申请</a></li>
-                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">申请推荐</a></li>
+                    <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab" id="lihome">教师管理</a></li>
+                    <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" id="liprofile">提现申请</a></li>
+                    <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab" id="limessage">申请推荐</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -101,37 +130,9 @@
 
                         <div class=" row" style="margin-bottom: 20px;">
                             <div class=" col-sm-12" style="text-align: center; color: #FFA403; font-size: 18px;">
-                                <table class="stutables" cellspacing="0">
-                                    <tr class="stuth">
-                                        <th>姓名
-                                                </th>
-                                        <th>手机号
-                                                </th>
-                                        <th>所属大学
-                                                </th>
-                                        <th>专业
-                                                </th>
-                                        <th>邮箱
-                                                </th>
-                                        <th>操作
-                                                </th>
-                                    </tr>
-                                    <tr>
-                                        <td>王大全
-                                                </td>
-                                        <td>15928776545
-                                                </td>
-                                        <td>河北师范大学
-                                                </td>
-                                        <td>物理学
-                                                </td>
-                                        <td>yangyan@126.com
-                                                </td>
-                                        <td>
-                                            <a href="#" class="btn btn-warning radsty">删除</a>  <a href="#" class="btn btn-warning radsty">修改</a>
-                                        </td>
-                                    </tr>
+                                <table class="stutables" cellspacing="0" id="teacheralllisttb">
                                 </table>
+                                <div id="Pagination2" class="pagination"></div>
                             </div>
                         </div>
                     </div>
@@ -140,22 +141,6 @@
                             <div class=" col-sm-1"></div>
                             <div class=" col-sm-10 odd" style="text-align: center; color: #FFA403; font-size: 18px;">
                                 <table class="stutables" cellspacing="0" id="tixianlist">
-                                    <tr class="stuth">
-                                        <th>提现申请人
-                                                </th>
-                                        <th>申请金额
-                                                </th>
-                                        <th>支付宝账号
-                                                </th>
-                                        <th>申请时间
-                                                </th>
-                                        <th>联系方式
-                                                </th>
-                                        <th>状态
-                                                </th>
-                                        <th>操作
-                                                </th>
-                                    </tr>
                                 </table>
                                 <div id="Pagination5" class="pagination"></div>
                             </div>
@@ -165,7 +150,6 @@
                         <div class=" row" style="margin-bottom: 20px;">
                             <div class=" col-sm-12" style="text-align: center; color: #FFA403; font-size: 18px;">
                                 <table class="stutables" cellspacing="0" id="tuijiantable">
-                                    
                                 </table>
                                 <div id="Pagination1" class="pagination"></div>
                             </div>
@@ -175,8 +159,10 @@
             </div>
         </div>
     </div>
-        <p id="tixiancount" style="display: none">{{.tixiancount}}</p>
-        <p id="tuijiancount" style="display: none">{{.tuijiancount}}</p>
+    <p id="tixiancount" style="display: none">{{.tixiancount}}</p>
+    <p id="tuijiancount" style="display: none">{{.tuijiancount}}</p>
+    <p id="allteachercount" style="display: none">{{.allteachercount}}</p>
+    <p id="tapSowNum" style="display: none">{{.tapNum}}</p>
     {{template "footer.html" .}}    
     <script src="b/js/jquery.min.js"></script>
     <script src="b/js/bootstrap.min.js"></script>
@@ -195,6 +181,42 @@
             }
             chushitixian(1);
             chushituijian(1);
+            chushiallteacher(1);
+            chushi();
+            showtap();
+        }
+
+        //页面初始，初始添加老师信息时下拉框内容
+        function chushi() {
+            var allLevel = "http://{{.Website}}/orange/userlevel/GetAllUserlevel/1/100/";
+            $.getJSON(allLevel, function (data) {
+                var levelstr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["LevelName"] + '</option>';
+                    levelstr += items;
+                }
+                document.getElementById("selUserLevel").innerHTML = "";
+                $("#selUserLevel").append(levelstr);
+            });
+            //学位
+            var alldegree = "http://{{.Website}}/orange/degree/GetAllDegree/1/100/";
+            $.getJSON(alldegree, function (data) {
+                var coursestr = '';
+                for (var i = 0; i < data.length ; i++) {
+                    var items = '<option value="' + data[i]["Id"] + '">' + data[i]["DegreeName"] + '</option>';
+                    coursestr += items;
+                }
+                document.getElementById("selUserDegree").innerHTML = "";
+                $("#selUserDegree").append(coursestr);
+            });
+        }
+
+        //设置显示tap页
+        function showtap() {
+            var tapnum = document.getElementById("tapSowNum").innerText;
+            if (tapnum + "" == "0") { document.getElementById("lihome").click(); }
+            else if (tapnum + "" == "1") { document.getElementById("liprofile").click(); }
+            else if (tapnum + "" == "2") { document.getElementById("limessage").click(); }
         }
 
         //点击提现记录
@@ -204,6 +226,10 @@
         //点击推荐记录
         function pageselectCallback1(page_id, jq) {
             chushituijian((page_id + 1));
+        }
+        //点击全部老师记录
+        function pageselectCallback2(page_id, jq) {
+            chushiallteacher((page_id + 1));
         }
 
         // 创建提现记录分页元素----------------
@@ -218,6 +244,13 @@
             num_edge_entries: 2,
             num_display_entries: 5,
             callback: pageselectCallback1  //回调函数
+        });
+
+        // 创建推荐记录分页元素----------------
+        $("#Pagination2").pagination(document.getElementById("allteachercount").innerText, {
+            num_edge_entries: 2,
+            num_display_entries: 5,
+            callback: pageselectCallback2  //回调函数
         });
         //获取提现记录列表信息
         function chushitixian(page) {
@@ -277,6 +310,33 @@
             });
         }
 
+        //获取全部老师信息
+        function chushiallteacher(page) {
+            var allteacer = "http://{{.Website}}/orange/userinformation/GetUserinformationTeacherAll" + "/" + page + "/" + pubRows;
+            //alert(allClass);
+            $.getJSON(allteacer, function (data) {
+                //alert(data);
+                var mytuijianstr = '<tr class="stuth"><th>姓名</th><th>手机号</th><th>所属大学</th><th>专业</th><th>课时费(元/小时)</th><th>邮箱</th><th>级别</th><th>学位</th><th>操作</th>';
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var itmes = "<tr><td>" + data[i]["UserName"] + "</td>" +
+                                    "<td>" + data[i]["IphoneNum"] + "</td>" +
+                                    "<td>" + data[i]["SchoolName"] + "</td>" +
+                                    "<td>" + data[i]["Professional"] + "</td>" +
+                                    "<td>" + data[i]["UnitPrice"] + "</td>" +
+                                    "<td>" + data[i]["Mailbox"] + "</td>" +
+                                    "<td>" + data[i]["LevelName"] + "</td>" +
+                                    "<td>" + data[i]["DegreeName"] + "</td>" +
+                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="delTuijian(' + data[i]["Id"] + ')">删除</a>' + ' <a href="#" class="btn btn-warning radsty">修改</a></td>' +
+                                    '</tr>';
+                        mytuijianstr += itmes
+                    }
+                }
+                document.getElementById("teacheralllisttb").innerHTML = "";
+                $("#teacheralllisttb").append(mytuijianstr);
+            });
+        }
+
         //点击发放按钮
         function fafang(recid, identityid) {
             //alert(recid);
@@ -310,9 +370,145 @@
                                 alert("发放失败！");
                             }
                             window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/";
-                    });
+                        });
                 }
             });
+        }
+        //根据推荐主键id删除推荐信息
+        function delTuijian(tuijianid) {
+            if (window.confirm('你确定要删除此条推荐信息吗？')) {
+                var deltuijianurl = "http://{{.Website}}/orange/recommendteacher/DeleteRecommendteacher" + "/" + tuijianid;
+                $.getJSON(deltuijianurl, function (data) {
+                    if (data == "OK") {
+                        window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/2";
+                    } else {
+                        //window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/2";
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //添加老师信息的保存按钮事件
+        function addTeacher() {
+            var username = trim(document.getElementById("txtUserName").value);
+            var userpass = trim(document.getElementById("txtUserPass").value);
+            var usersex = document.getElementById("selUserSex").value;
+            var userphonenum = trim(document.getElementById("txtUserphoneNum").value);
+            var userclassmoney = trim(document.getElementById("txtClassMoney").value);
+            var userjibie = document.getElementById("selUserLevel").value;
+            var userschool = trim(document.getElementById("txtUserSchool").value);
+            var userzhuanye = trim(document.getElementById("txtUserZhuanye").value);
+            var usermail = trim(document.getElementById("txtUserMail").value);
+            var userxuewei = document.getElementById("selUserDegree").value;
+            if (username == "") { alert("请输入用户姓名！"); return; }
+            if (userpass == "") { alert("请输入用户初始密码！"); return; }
+            if (userphonenum == "") { alert("请输入用户手机号码！"); return; }
+            if (userclassmoney == "") { alert("请输入用户每小时课时费！"); return; }
+
+            if (!istorfname) { alert("用户名只能为汉字 英文字母 数字 下划线组成，长度为2-20位！"); return; }
+            if (!istorfpass) { alert("密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return; }
+            if (!istorfphone) { alert("手机号输入有误！"); return; }
+            if (!istorfmoney) { alert("请正确输入用户每小时课时费！"); return; }
+            var adduser = '{"UserName":"' + username +
+                          '","IphoneNum":"' + userphonenum +
+                          '","LoginPassword":"' + userpass +
+                          '","PayPassword":"' + userpass +
+                          '","UserSex":"' + usersex +
+                          '","SchoolName":"' + userschool +
+                          '","UserDegree":' + userxuewei +
+                          ',"UserLevelId":' + userjibie +
+                          ',"IdentityId":1' + 
+                          ',"UnitPrice":' + userclassmoney +
+                          ',"Professional":"' + userzhuanye +
+                          '","Mailbox":"' + usermail +
+                          '","AvatarPath":"images/PersonHeadImg/moren.png' +
+                          '","RegisteredTime":"' + getInsertNowDate() + //getNowFormatDate()
+                          '"}';
+            $.post("http://{{.Website}}/orange/userinformation/AddUserinformation/", adduser,
+                function (data) {
+                    //alert(data["id"]);
+                    if (data["id"] > 0) {
+                        alert("添加成功！");
+                        window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/0";
+                    } else {
+                        alert("添加失败！");
+                    }
+            });
+        }
+
+        var istorfname = true;
+        var istorfpass = true;
+        var istorfphone = true;
+        var istorfmoney = true;
+        function checkUserName() {
+            var username = trim(document.getElementById("txtUserName").value);
+            var geturlname = "http://{{.Website}}/orange/userinformation/GetUserinformationByUserName/" + username;
+            $.getJSON(geturlname, function (data) {
+                if (data != null && data["result"] > 0) {
+                    alert("此昵称已有人使用！");
+                    document.getElementById("txtUserName").style.color = "red";
+                    istorfname = false;
+                } else {
+                    if (!username.match(/^[\u4E00-\u9FA5a-zA-Z0-9_]{2,20}$/)) {
+                        //alert("用户名只能为汉字 英文字母 数字 下划线组成，长度为2-20位！");
+                        document.getElementById("txtUserName").style.color = "red";
+                        istorfname = false;
+                    } else {
+                        document.getElementById("txtUserName").style.color = "black";
+                        istorfname = true;
+                    }
+                }
+            });
+        }
+
+        function checkUserPass() {
+            var userpass = trim(document.getElementById("txtUserPass").value);
+            if (isPasswd(userpass) == false) {
+                //alert("密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！");
+                document.getElementById("txtUserPass").style.color = "red";
+                istorfpass = false;
+            } else {
+                document.getElementById("txtUserPass").style.color = "black";
+                istorfpass = true;
+            }
+        }
+
+        function checkUserphone() {
+            var userphonenum = trim(document.getElementById("txtUserphoneNum").value);
+            var re = /^1\d{10}$/;
+            if (re.test(userphonenum)) {
+                var geturlphont = "http://{{.Website}}/orange/userinformation/GetUserinformationByPhone/" + userphonenum;
+                $.getJSON(geturlphont, function (data) {
+                    if (data != null && data["result"] > 0) {
+                        //此手机号已注册
+                        alert("此手机号已注册!");
+                        document.getElementById("txtUserphoneNum").style.color = "red";
+                        istorfphone = false;
+                    } else {
+                        document.getElementById("txtUserphoneNum").style.color = "black";
+                        istorfphone = true;
+                    }
+                });
+            } else {
+                document.getElementById("txtUserphoneNum").style.color = "red";
+                istorfphone = false;
+            }
+        }
+
+        function checkMoney() {
+            var userclassmoney = trim(document.getElementById("txtClassMoney").value);
+            var re = /^\d+.?\d{0,2}$/;
+            if (!re.test(userclassmoney)) {
+                //alert("请正确输入金额！"); 
+                document.getElementById("txtClassMoney").style.color = "red";
+                istorfmoney = false;
+            } else {
+                document.getElementById("txtClassMoney").style.color = "black";
+                istorfmoney = true;
+            }
         }
     </script>
 </body>

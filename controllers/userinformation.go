@@ -442,10 +442,10 @@ func (c *UserinformationController) Delete() {
 }
 
 // @Title Update
-// @Description update the TbUser
+// @Description update the Userinformation
 // @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.TbUser	true		"body for TbUser content"
-// @Success 200 {object} models.TbUser
+// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
+// @Success 200 {object} models.Userinformation
 // @Failure 403 :id is not int
 // @router /UpdateUserimg/:userid [post]
 func (c *UserinformationController) UpdateUserimg() {
@@ -475,10 +475,10 @@ func (c *UserinformationController) UpdateUserimg() {
 }
 
 // @Title Update
-// @Description update the TbUser
+// @Description update the Userinformation
 // @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.TbUser	true		"body for TbUser content"
-// @Success 200 {object} models.TbUser
+// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
+// @Success 200 {object} models.Userinformation
 // @Failure 403 :id is not int
 // @router /UpdateUserimg2/ [post]
 func (c *UserinformationController) UpdateUserimg2() {
@@ -505,4 +505,43 @@ func (c *UserinformationController) UpdateUserimg2() {
 	}
 	//c.ServeJson()
 	c.TplNames = "personal.html" //跳到
+}
+
+// @Title GetUserinformationTeacherAll
+// @Description GetUserinformationTeacherAll Userinformation by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Userinformation
+// @Failure 403 :id is empty
+// @router /GetUserinformationTeacherAll/:page/:size [get]
+func (c *UserinformationController) GetUserinformationTeacherAll() {
+	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size") //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.Atoi(page)     //传来的页数
+	rows, _ := strconv.Atoi(size)      //传来的显示行数
+	truepages := (pages - 1) * rows    //计算舍弃多少行
+	limit := rows                      //显示行数
+	offset := truepages                //舍弃行数	//新加--------结束--------
+	v, err := models.GetUserinformationTeacherAll(offset, limit)
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
+}
+
+// @Title GetUserinformationTeacherAll
+// @Description GetUserinformationTeacherAll Userinformation by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Userinformation
+// @Failure 403 :id is empty
+// @router /GetUserinformationTeacherAllCount/ [get]
+func (c *UserinformationController) GetUserinformationTeacherAllCount() {
+	v, err := models.GetUserinformationTeacherAllCount()
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = v
+	}
+	c.ServeJson()
 }

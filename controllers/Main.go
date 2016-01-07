@@ -389,8 +389,9 @@ func (c *MainController) UserStudent() {
 // @Param			"The id you want to OwnerUser"
 // @Success 200 {object} models.TbUser
 // @Failure 403
-// @router /OwnerUser/ [get]
+// @router /OwnerUser/:tapid [get]
 func (c *MainController) OwnerUser() {
+	tapidStr := c.Ctx.Input.Params[":tapid"]
 	c.Data["Website"] = models.OnlineUrl
 	account, err := models.GetAmountrecordsAllTCount()
 	if err == nil && account > 0 {
@@ -399,11 +400,18 @@ func (c *MainController) OwnerUser() {
 		c.Data["tixiancount"] = 0
 	}
 	tuijiancount, errt := models.GetAmountrecordsAllTCount()
-	if errt == nil && account > 0 {
+	if errt == nil && tuijiancount > 0 {
 		c.Data["tuijiancount"] = tuijiancount
 	} else {
 		c.Data["tuijiancount"] = 0
 	}
+	allteachercount, errat := models.GetUserinformationTeacherAllCount()
+	if errat == nil && allteachercount > 0 {
+		c.Data["allteachercount"] = allteachercount
+	} else {
+		c.Data["allteachercount"] = 0
+	}
+	c.Data["tapNum"] = tapidStr //显示第几个tap
 	c.TplNames = "adminhtml.html"
 }
 
