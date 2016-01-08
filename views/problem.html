@@ -183,7 +183,7 @@
                                     <div class="">
                                         <div id="alerts"></div>
                                         <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
-                                            <div class="btn-group">
+                                           <!-- <div class="btn-group">
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn dropdown-toggle linear" data-toggle="dropdown"><i class="glyphicon glyphicon-font"></i>&nbsp;<b class="caret"></b></a>
                                                 <ul class="dropdown-menu">
                                                 </ul>
@@ -195,27 +195,27 @@
                                                     <li><a data-edit="fontSize 3"><font size="3">中</font></a></li>
                                                     <li><a data-edit="fontSize 1"><font size="1">小</font></a></li>
                                                 </ul>
-                                            </div>
-                                            <div class="btn-group">
+                                            </div>-->
+                                            <!--<div class="btn-group">
                                                 <a  class="btn linear" data-edit="bold"><i class="glyphicon glyphicon-bold"></i></a>
                                                 <a  class="btn linear" data-edit="italic"><i class="glyphicon glyphicon-italic"></i></a>
                                                 <a  class="btn linear" data-edit="strikethrough"><i style="font-size: 14px;">S</i></a>
                                                 <a  class="btn linear" data-edit="underline"><i style="font-size: 14px;">U</i></a>
-                                            </div>
-                                            <div class="btn-group">
+                                            </div>-->
+                                            <!--<div class="btn-group">
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="insertunorderedlist"><i class="glyphicon glyphicon-list"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="insertorderedlist"><i class="glyphicon glyphicon-align-justify"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="outdent"><i class="glyphicon glyphicon-indent-left"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="indent"><i class="glyphicon glyphicon-indent-right"></i></a>
-                                            </div>
-                                            <div class="btn-group">
+                                            </div>-->
+                                            <!--<div class="btn-group">
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="justifyleft"><i class="glyphicon glyphicon-align-left"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="justifycenter"><i class="glyphicon glyphicon-align-center"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="justifyright"><i class="glyphicon glyphicon-align-right"></i></a>
                                                 <a style="border: 1px solid #ccc; background-color: #ff6a00;" class="btn linear" data-edit="justifyfull"><i class="glyphicon glyphicon-align-justify"></i></a>
-                                            </div>
+                                            </div>-->
                                             <div class="btn-group">
-                                                <a class="btn linear" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="glyphicon glyphicon-picture"></i></a>
+                                                <a class="btn linear" title="Insert picture (or just drag & drop)" id="pictureBtn"><i>选择图片</i></a>
                                                 <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
                                             </div>
                                            <!-- <div class="btn-group">
@@ -223,7 +223,7 @@
                                             </div>-->
                                             <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
                                         </div>
-                                        <div id="editor" style="margin-top: 15px;"></div>
+                                        <div id="editor" style="margin-top:15px; height:200px;" ></div>
                                     </div>
                                     <script>
                                         $(function () {
@@ -356,7 +356,7 @@
                 } else if (identityid == 2 || identityid == 3) {//学生|家长
                     stuorteacher = "http://{{.Website}}/orange/Main/UserStudent/0";
                 } else if (identityid == 4) {
-                    stuorteacher = "http://{{.Website}}/orange/Main/OwnerUser/";
+                    stuorteacher = "http://{{.Website}}/orange/Main/OwnerUser/0";
                 }
                 document.getElementById("lizhuce").innerHTML = '<a data-toggle="modal" href="' + stuorteacher + '" id="loginusername"></a>';
                 if (AvatarPath != null && AvatarPath + "" != "" && AvatarPath + "" != "undefined") {
