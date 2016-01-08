@@ -1364,6 +1364,13 @@ func init() {
 			[]string{"get"},
 			nil})
 
+	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
+		beego.ControllerComments{
+			"GetListenClassPersonCount",
+			`/GetListenClassPersonCount/:listenid`,
+			[]string{"get"},
+			nil})
+
 	beego.GlobalControllerRouter["orange/controllers:PermissionController"] = append(beego.GlobalControllerRouter["orange/controllers:PermissionController"],
 		beego.ControllerComments{
 			"Post",
@@ -2199,9 +2206,9 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
 		beego.ControllerComments{
-			"Delete",
+			"DeleteUserinformation",
 			`/DeleteUserinformation/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],

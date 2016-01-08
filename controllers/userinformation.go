@@ -429,10 +429,19 @@ func (c *UserinformationController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteUserinformation/:id [delete]
-func (c *UserinformationController) Delete() {
+// @router /DeleteUserinformation/:id [get]
+func (c *UserinformationController) DeleteUserinformation() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
+	accountuser, acer := models.GetAccountfundsByuid(id) //根据用户主键id查询用户账户信息
+	if acer == nil {
+		delerr := models.DeleteAccountfunds(accountuser.Id)
+		if delerr == nil {
+			c.Data["json"] = "OK"
+		} else {
+			c.Data["json"] = delerr.Error()
+		}
+	}
 	if err := models.DeleteUserinformation(id); err == nil {
 		c.Data["json"] = "OK"
 	} else {

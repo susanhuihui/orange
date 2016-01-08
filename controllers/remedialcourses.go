@@ -224,15 +224,18 @@ func (c *RemedialcoursesController) UpdateStudentClass() {
 func SetUserClassList(sid int, sellist []string) (err error) {
 	if sid > 0 {
 		userclass, _ := models.GetRemedialcoursesMain(sid, 0)
-		if userclass != nil {
+		if userclass != nil && len(userclass) > 0 {
 			for a := 0; a < len(userclass); a++ { //循环旧的是否存在新的集合中，是不做操作，否删除
 				var have bool = false
-				for i := 0; i < len(sellist); i++ {
-					selid, _ := strconv.Atoi(sellist[i])
-					if userclass[a].CoursesId == selid {
-						have = true
+				if len(sellist) > 0 { //当前有选择补习课程
+					for i := 0; i < len(sellist); i++ {
+						selid, _ := strconv.Atoi(sellist[i])
+						if userclass[a].CoursesId == selid {
+							have = true
+						}
 					}
 				}
+
 				if have == false {
 					//shanchu
 					delresult := models.DeleteRemedialcourses(userclass[a].Id) //删除没有勾选的项
@@ -242,23 +245,25 @@ func SetUserClassList(sid int, sellist []string) (err error) {
 				}
 			}
 		}
-		for j := 0; j < len(sellist); j++ { //循环新的是否存在旧的集合中，是不做操作，否添加
-			var haveadd bool = false
-			selids, _ := strconv.Atoi(sellist[j])
-			for b := 0; b < len(userclass); b++ {
-				if selids == userclass[b].CoursesId {
-					haveadd = true
+		if len(sellist) > 0 { //当前选择梁新的，没有选择已在上个循环中删除了全部的旧的
+			for j := 0; j < len(sellist); j++ { //循环新的是否存在旧的集合中，是不做操作，否添加
+				var haveadd bool = false
+				selids, _ := strconv.Atoi(sellist[j])
+				for b := 0; b < len(userclass); b++ {
+					if selids == userclass[b].CoursesId {
+						haveadd = true
+					}
 				}
-			}
-			if haveadd == false {
-				var addrc models.Remedialcourses
-				addrc.UserId = sid
-				addrc.CoursesId = selids
-				addrc.IsMain = 0
-				addresult, adderr := models.AddRemedialcourses(&addrc)
-				fmt.Println(addresult)
-				if adderr != nil {
-					err = adderr
+				if haveadd == false {
+					var addrc models.Remedialcourses
+					addrc.UserId = sid
+					addrc.CoursesId = selids
+					addrc.IsMain = 0
+					addresult, adderr := models.AddRemedialcourses(&addrc)
+					fmt.Println(addresult)
+					if adderr != nil {
+						err = adderr
+					}
 				}
 			}
 		}

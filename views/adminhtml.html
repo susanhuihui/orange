@@ -39,7 +39,7 @@
                             <td>初始密码：<span style="color: red;">*</span>
                             </td>
                             <td>
-                                <input class="stuimput" type="text" id="txtUserPass" onkeyup="checkUserPass()">
+                                <input class="stuimput" type="password" id="txtUserPass" onkeyup="checkUserPass()">
                             </td>
                         </tr>
                         <tr>
@@ -105,7 +105,9 @@
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input type="button" style="width: 40%;" class="btn btn-warning" onclick="addTeacher()" value="保存">
+                                <input type="hidden" id="teacherid" value="" />
+                                <input type="button" style="width: 30%;" class="btn btn-warning" onclick="addTeacher()" value="保存">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button type="button" style="width: 30%;" class="btn btn-default" data-dismiss="modal">取消</button>
                             </td>
                         </tr>
                     </table>
@@ -126,7 +128,7 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="home">
-                        <input data-toggle="modal" data-target="#goodteacher" type="button" class="evabtn" value="添加教师">
+                        <input data-toggle="modal" data-target="#goodteacher" type="button" class="evabtn" value="添加教师" onclick="chushiUserid()">
 
                         <div class=" row" style="margin-bottom: 20px;">
                             <div class=" col-sm-12" style="text-align: center; color: #FFA403; font-size: 18px;">
@@ -184,7 +186,7 @@
             chushiallteacher(1);
             chushi();
             showtap();
-        }
+        }        
 
         //页面初始，初始添加老师信息时下拉框内容
         function chushi() {
@@ -327,7 +329,7 @@
                                     "<td>" + data[i]["Mailbox"] + "</td>" +
                                     "<td>" + data[i]["LevelName"] + "</td>" +
                                     "<td>" + data[i]["DegreeName"] + "</td>" +
-                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="delTuijian(' + data[i]["Id"] + ')">删除</a>' + ' <a href="#" class="btn btn-warning radsty">修改</a></td>' +
+                                    '<td>' + '<a href="#" class="btn btn-warning radsty" onclick="delUserInfo(' + data[i]["Id"] + ')">删除</a>' + ' <a href="#" data-toggle="modal" data-target="#goodteacher" class="btn btn-warning radsty"onclick="UpdateUserInfo(' + data[i]["Id"] + ')">修改</a></td>' +
                                     '</tr>';
                         mytuijianstr += itmes
                     }
@@ -391,6 +393,59 @@
             }
         }
 
+        //根据学生主键id删除用户信息
+        function delUserInfo(userid) {
+            if (window.confirm('你确定要删除此条用户信息吗？')) {
+                var deluser = "http://{{.Website}}/orange/userinformation/DeleteUserinformation" + "/" + userid;
+                $.getJSON(deluser, function (data) {
+                    if (data == "OK") {
+                        window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/0";
+                    } else {
+                    }
+                });
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        //更新教师信息，初始教师主键为当前要修改的主键id
+        function UpdateUserInfo(userid) {
+            document.getElementById("teacherid").value = userid;
+            //根据教师主键查询一条教师信息，并赋值到控件上
+            var getteacherurl = "http://{{.Website}}/orange/userinformation/GetUserinformationById" + "/" + userid;
+            $.getJSON(getteacherurl, function (data) {
+                if (data != null) {
+                    document.getElementById("txtUserName").value = data["UserName"];
+                    document.getElementById("txtUserPass").value = data["LoginPassword"];
+                    document.getElementById("txtUserphoneNum").value = data["IphoneNum"];
+                    document.getElementById("selUserSex").value = data["UserSex"];
+                    document.getElementById("txtClassMoney").value = data["UnitPrice"];
+                    document.getElementById("selUserLevel").value = data["UserLevelId"];
+                    document.getElementById("txtUserSchool").value = data["SchoolName"];
+                    document.getElementById("txtUserZhuanye").value = data["Professional"];
+                    document.getElementById("txtUserMail").value = data["Mailbox"];
+                    document.getElementById("selUserDegree").value = data["UserDegree"];
+                }
+            });
+
+        }
+
+        //添加教师信息时初始教师主键为0,情况控件上的值
+        function chushiUserid() {
+            document.getElementById("teacherid").value = 0;
+            document.getElementById("txtUserName").value = "";
+            document.getElementById("txtUserPass").value = "";
+            document.getElementById("txtUserphoneNum").value = "";
+            document.getElementById("selUserSex").value = "男";
+            document.getElementById("txtClassMoney").value = "";
+            document.getElementById("selUserLevel").value = 1;
+            document.getElementById("txtUserSchool").value = "";
+            document.getElementById("txtUserZhuanye").value = "";
+            document.getElementById("txtUserMail").value = "";
+            document.getElementById("selUserDegree").value = 1;
+        }
+
         //添加老师信息的保存按钮事件
         function addTeacher() {
             var username = trim(document.getElementById("txtUserName").value);
@@ -403,40 +458,89 @@
             var userzhuanye = trim(document.getElementById("txtUserZhuanye").value);
             var usermail = trim(document.getElementById("txtUserMail").value);
             var userxuewei = document.getElementById("selUserDegree").value;
-            if (username == "") { alert("请输入用户姓名！"); return; }
-            if (userpass == "") { alert("请输入用户初始密码！"); return; }
-            if (userphonenum == "") { alert("请输入用户手机号码！"); return; }
-            if (userclassmoney == "") { alert("请输入用户每小时课时费！"); return; }
+            if (username == "") { alert("请输入教师姓名！"); return; }
+            if (userpass == "") { alert("请输入教师初始密码！"); return; }
+            if (userphonenum == "") { alert("请输入教师手机号码！"); return; }
+            if (userclassmoney == "") { alert("请输入教师每小时课时费！"); return; }
+            if (userjibie <= 0) { alert("请选择教师级别！"); return; }
 
             if (!istorfname) { alert("用户名只能为汉字 英文字母 数字 下划线组成，长度为2-20位！"); return; }
             if (!istorfpass) { alert("密码有误（由字母、数字或下划线组成，长度必须大于6位且小于20位）！"); return; }
             if (!istorfphone) { alert("手机号输入有误！"); return; }
             if (!istorfmoney) { alert("请正确输入用户每小时课时费！"); return; }
-            var adduser = '{"UserName":"' + username +
-                          '","IphoneNum":"' + userphonenum +
-                          '","LoginPassword":"' + userpass +
-                          '","PayPassword":"' + userpass +
-                          '","UserSex":"' + usersex +
-                          '","SchoolName":"' + userschool +
-                          '","UserDegree":' + userxuewei +
-                          ',"UserLevelId":' + userjibie +
-                          ',"IdentityId":1' + 
-                          ',"UnitPrice":' + userclassmoney +
-                          ',"Professional":"' + userzhuanye +
-                          '","Mailbox":"' + usermail +
-                          '","AvatarPath":"images/PersonHeadImg/moren.png' +
-                          '","RegisteredTime":"' + getInsertNowDate() + //getNowFormatDate()
-                          '"}';
-            $.post("http://{{.Website}}/orange/userinformation/AddUserinformation/", adduser,
-                function (data) {
-                    //alert(data["id"]);
-                    if (data["id"] > 0) {
-                        alert("添加成功！");
-                        window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/0";
-                    } else {
-                        alert("添加失败！");
+
+            var isaoru = document.getElementById("teacherid").value;
+            if (isaoru <= 0) {
+                var adduser = '{"UserName":"' + username +
+                              '","IphoneNum":"' + userphonenum +
+                              '","LoginPassword":"' + userpass +
+                              '","PayPassword":"' + userpass +
+                              '","UserSex":"' + usersex +
+                              '","SchoolName":"' + userschool +
+                              '","UserDegree":' + userxuewei +
+                              ',"UserLevelId":' + userjibie +
+                              ',"IdentityId":1' +
+                              ',"UnitPrice":' + userclassmoney +
+                              ',"Professional":"' + userzhuanye +
+                              '","Mailbox":"' + usermail +
+                              '","AvatarPath":"images/PersonHeadImg/moren.png' +
+                              '","RegisteredTime":"' + getInsertNowDate() + //getNowFormatDate()
+                              '"}';
+                $.post("http://{{.Website}}/orange/userinformation/AddUserinformation/", adduser,
+                    function (data) {
+                        //alert(data["id"]);
+                        if (data["id"] > 0) {
+                            alert("添加成功！");
+                            window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/0";
+                        } else {
+                            alert("添加失败！");
+                        }
+                    });
+            } else if (isaoru > 0) {
+                var yanzhengpass = "http://{{.Website}}/orange/userinformation/GetUserinformationById/" + isaoru;
+                $.getJSON(yanzhengpass, function (datauser) {
+                    if (datauser != null) {
+                        var upuser = '{' +
+                                            '"UserName":"' + username + '",' +
+                                            '"IphoneNum":"' + userphonenum + '",' +
+                                            '"LoginPassword":"' + userpass + '",' +
+                                            '"PayPassword":"' + datauser["PayPassword"] + '",' +
+                                            '"UserSex":"' + usersex + '",' +
+                                            '"SchoolId":' + datauser["SchoolId"] + ',' +
+                                            '"SchoolName":"' + userschool + '",' +
+                                            '"SchoolAgeId":' + datauser["SchoolAgeId"] + ',' +
+                                            '"UserDegree":' + userxuewei + ',' +
+                                            '"UserLocation":' + datauser["UserLocation"] + ',' +
+                                            '"SeniorLocation":' + datauser["SeniorLocation"] + ',' +
+                                            '"HighSchool":"' + datauser["HighSchool"] + '",' +
+                                            '"UserLevelId":' + userjibie + ',' +
+                                            '"LevelYear":' + datauser["LevelYear"] + ',' +
+                                            '"IdentityId":' + datauser["IdentityId"] + ',' +
+                                            '"GradeId":' + datauser["GradeId"] + ',' +
+                                            '"SchoolAgeIdT":"' + datauser["SchoolAgeIdT"] + '",' +
+                                            '"UnitPrice":' + userclassmoney + ',' +
+                                            '"Professional":"' + userzhuanye + '",' +
+                                            '"Mailbox":"' + usermail + '",' +
+                                            '"ParentMailbox":"' + datauser["ParentMailbox"] + '",' +
+                                            '"StudyDifficult":"' + datauser["StudyDifficult"] + '",' +
+                                            '"AvatarPath":"' + datauser["AvatarPath"] + '",' +
+                                            '"UserHobby":"' + datauser["UserHobby"] + '",' +
+                                            '"Remarks":"' + datauser["Remarks"] + '",' +
+                                            '"BriefIntroduction":"' + datauser["BriefIntroduction"] + '",' +
+                                            '"RegisteredTime":"' + getInsertDate(datauser["RegisteredTime"]) +
+                                        '"}';
+                        $.post("http://{{.Website}}/orange/userinformation/UpdateUserinformationById/" + isaoru, upuser,
+                            function (data) {
+                                if (data == "OK") {
+                                    alert("修改成功！");
+                                    window.location.href = "http://{{.Website}}/orange/Main/OwnerUser/0";
+                                } else {
+                                    alert("修改失败！");
+                                }
+                        });
                     }
-            });
+                });
+            }
         }
 
         var istorfname = true;

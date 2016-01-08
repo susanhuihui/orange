@@ -593,3 +593,20 @@ func GetListenStudentlession3(listenid int, sid int) (urlse string, err error) {
 	}
 	return
 }
+
+//查询此试听信息的白板中有多少人
+func GetListenClassPersonCount(listenid int) (urlse int, err error) {
+	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
+	urlse = 0
+	if geterr == nil && onlinetrylisten.Id > 0 {
+		meetroom := bbb4go.MeetingRoom{}
+		meetroom.MeetingID_ = onlinetrylisten.ClassroomId
+		meetroom.ModeratorPW_ = onlinetrylisten.TeacherInId
+		meetroom.GetMeetingInfo()
+		var pcount = meetroom.MeetingInfo.ParticipantCount
+		fmt.Println("查看有几个人在线：")
+		fmt.Println(pcount)
+		urlse = pcount
+	}
+	return
+}

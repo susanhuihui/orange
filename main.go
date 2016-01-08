@@ -16,7 +16,6 @@ func init() {
 	orm.RegisterDataBase("default", "mysql", "fankunedu:33C88FD2B0@tcp(101.200.75.221:3306)/onlineeducation?charset=utf8&loc=Local", 30)
 	// 2015/12/15
 	// 李向哲修改连库字符串为本地时区解析
-
 }
 
 func main() {

@@ -426,7 +426,7 @@
             });
             var allschoolage = "http://{{.Website}}/orange/schoolages/GetAllSchoolages/1/100/";
             $.getJSON(allschoolage, function (data) {
-                var coursestr = '';
+                var coursestr = '<option value="">请选择</option>';
                 for (var i = 0; i < data.length ; i++) {
                     var items = '<option value="' + data[i]["Id"] + '">' + data[i]["AgeName"] + '</option> ';
                     coursestr += items;

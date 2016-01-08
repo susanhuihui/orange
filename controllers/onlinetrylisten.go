@@ -400,3 +400,21 @@ func (c *OnlinetrylistenController) GetAdd() {
 	}
 	c.ServeJson()
 }
+
+// @Title GetListenClassPersonCount
+// @Description GetListenClassPersonCount Onlinetrylisten by id
+// @Param	id		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinetrylisten
+// @Failure 403 :id is empty
+// @router /GetListenClassPersonCount/:listenid [get]
+func (c *OnlinetrylistenController) GetListenClassPersonCount() {
+	idStr := c.Ctx.Input.Params[":listenid"]
+	listenid, _ := strconv.Atoi(idStr)
+	personcount, err := models.GetListenClassPersonCount(listenid) //当前学生进入试听信息主键
+	if err != nil {
+		c.Data["json"] = err.Error()
+	} else {
+		c.Data["json"] = personcount
+	}
+	c.ServeJson()
+}

@@ -797,10 +797,10 @@ func (c *MainController) UpdateStudent2() {
 		c.TplNames = "personal.html" //跳到
 	}
 	request := c.Ctx.Request
-	jsons, imgstr := models.GetImganddata2(request, Headurl)
+	_, imgstr := models.GetImganddata2(request, Headurl)
 	fmt.Println("图片路径为：")
-	fmt.Println(jsons)
-	fmt.Println(imgstr)
+	//fmt.Println(jsons)
+	//	fmt.Println(imgstr)
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
 	var name []string = c.Ctx.Input.Request.Form["txtUserName"]        //
 	var sex []string = c.Ctx.Input.Request.Form["selUserSex"]          //
@@ -811,23 +811,32 @@ func (c *MainController) UpdateStudent2() {
 	var pmail []string = c.Ctx.Input.Request.Form["txtuseremal"]       //
 	var class []string = c.Ctx.Input.Request.Form["stucheckclass"]     //
 	fmt.Println(class)
+	fmt.Println("ddd")
 	var dif []string = c.Ctx.Input.Request.Form["txtnandian"] //
 	userinfo, usererr := models.GetUserinformationById(stuuserid)
+	fmt.Println("ddd2")
 	if usererr == nil && userinfo.Id > 0 {
 		userinfo.UserName = name[0]
 		userinfo.UserSex = sex[0]
-		userinfo.SchoolAgeId, _ = strconv.Atoi(age[0])
+		fmt.Println("ddd3")
+		if age != nil {
+			userinfo.SchoolAgeId, _ = strconv.Atoi(age[0])
+		}
 		userinfo.SchoolName = school[0]
+		fmt.Println("ddd4")
 		userinfo.LevelYear, _ = strconv.Atoi(year[0])
 		userinfo.Mailbox = mail[0]
 		userinfo.ParentMailbox = pmail[0]
+		fmt.Println("ddd5")
 		userinfo.StudyDifficult = dif[0]
+		fmt.Println("ddd6")
 		fmt.Println(imgstr)
 		if imgstr != "" {
 			userinfo.AvatarPath = imgstr
 			c.Ctx.SetCookie("username", name[0])
 			c.Ctx.SetCookie("AvatarPath", imgstr)
 		}
+		fmt.Println("ddd3")
 		upresulterr := models.UpdateUserinformationById(userinfo)
 		err := SetUserClassList(userinfo.Id, class)
 		if upresulterr == nil && err == nil {

@@ -13,6 +13,9 @@
 <body style="height:100%;">
     
     <iframe id="myframe"  style="width:100%; height:100%; margin-left:0;" frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+
+
+
     <p id="listenid" style="display: none">{{.listenid}}</p>
     <script type="text/javascript" src="js/indexjs.js"></script>
     <script type="text/javascript" src="js/orange.js"></script>
@@ -29,6 +32,35 @@
                 window.location.href = "http://{{.Website}}/";
             }
             chushi();
+            time();
+        }
+
+        var wait = 0;
+        var istorftishi = true;
+        function time() {
+            if (wait == 0) {
+                //调用查看白板
+                //如果白板内有一个人就一直调用，如果为两人就提示一次之后不在调用，直到为一个人时在继续调用
+                var getcount = "http://{{.Website}}/orange/onlinetrylisten/GetListenClassPersonCount/" + listenid;
+                $.getJSON(getcount, function (data) {
+                    if (data > 1) {//白板人数大于1
+                        if (istorftishi) {
+                            alert("有学生进入！请返回！");
+                            istorftishi = false;
+                        } 
+                    } else {
+                        istorftishi = true;;
+                    }
+                    wait = 5;
+                    time();
+                });
+            } else {
+                wait--;
+                setTimeout(function () {
+                    time()
+                },
+                1000)
+            }
         }
 
         function chushi() {
@@ -58,6 +90,7 @@
         function ifrsrc(da) {
             document.getElementById("myframe").src = da;
         }
+
         //关闭时释放
         function deletemeeting() {
 
