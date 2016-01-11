@@ -21,7 +21,7 @@
             <div class="row">
                 <div class="col-sm-3 col-md-2">
                     <div class="probletable">
-                        <img src="{{.AvatarPath}}" />
+                        <img id="userheadimg" src="" />
                         <p>ID {{.Id}}</p>
                         <span>{{.UserName}}</span>
                         <p>{{.SchoolName}}</p>
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="messright">
-                        <p>留言评价</p>
+                        <p>评价内容：</p>
                         <span>{{.ReviewContent}}</span>
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                         </div>
                     </div>
                     <div class="messright">
-                        <p>留言评价</p>
+                        <p>评价内容：</p>
                         <form id="form_memo" method="post" action="http://{{.Website}}/orange/onlinecourseevaluation/AddOnlinecourseevaluationFStu/" onsubmit="return check()">
                             <input type="hidden" name="OCRId" value="{{.classid}}" /><!--课程id-->
                             <input type="hidden" name="UserId" id="UserId" value="" /><!--评价人id-->
@@ -113,6 +113,12 @@
             document.getElementById("starclear").innerHTML = "{{.StartClear}}"
             document.getElementById("satreffi").innerHTML = "{{.StartEfficiency}}"
             document.getElementById("UserId").value = userid;
+            var userheadurl = "{{.AvatarPath}}";
+            if (userheadurl != null && userheadurl != "") {
+                document.getElementById("userheadimg").src = userheadurl
+            } else {
+                document.getElementById("userheadimg").src = "images/PersonHeadImg/moren.png"
+            }
         }
         function setPageDiv() {
             var seeid = document.getElementById("seeoradd").innerText;

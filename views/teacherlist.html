@@ -370,12 +370,11 @@
             var allteacherlist = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTid/" + userid + "/" + page + "/" + pubRows;
             //alert(allteacherlist);
             $.getJSON(allteacherlist, function (data) {
-                var allteacherstr = '<tr class="stuth"><th>课程号</th><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时</th></tr>';
+                var allteacherstr = '<tr class="stuth"><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时（分钟）</th></tr>';
                 if (data != null) {
                     //alert(data);
                     for (var i = 0; i < data.length ; i++) {
                         var itemse = '<tr>' +
-                                     '<td>' + data[i]["Id"] + '</td>' +
                                      '<td>' + data[i]["CourseName"] + '</td>' +
                                      '<td>' + data[i]["UserName"] + '</td>' +
                                      '<td>' + data[i]["AgeName"] + '</td>' +

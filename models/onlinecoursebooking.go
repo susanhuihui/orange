@@ -436,7 +436,7 @@ func Getecherlession(onlineid int) (urlse string, err error) {
 	fmt.Println("预约信息为1")
 	fmt.Println(onlinenow)
 	//获取老师信息
-	userinfo, _ := GetUserinformationTeacher(onlinenow.UserIdPassive)
+	userinfo, _ := GetUserinformationById(onlinenow.UserIdPassive)
 	fmt.Println("老师信息")
 	fmt.Println(userinfo)
 	//name = userinfo.UserName //老师姓名
@@ -513,7 +513,7 @@ func Getstudentlession(onlineid int) (urlse string, err error) {
 	//获取预约课程信息
 	onlinenow, _ := GetOnlinecoursebookingById(onlineid)
 	//获取老师信息
-	userinfo, _ := GetUserinformationStudent(onlinenow.UserIdPassive)
+	userinfo, _ := GetUserinformationById(onlinenow.UserIdPassive)
 	fmt.Println(userinfo)
 	//name = userinfo.UserName
 	name = "Student"
@@ -545,7 +545,7 @@ func Getecherlession2(onlineid int) (urlse string, err error) {
 	//获取预约信息
 	onlinenow, onlineerr := GetOnlinecoursebookingById(onlineid)
 	//获取老师信息
-	userinfo, useerr := GetUserinformationTeacher(onlinenow.UserIdPassive)
+	userinfo, useerr := GetUserinformationById(onlinenow.UserIdPassive)
 	if onlineerr == nil {
 		if useerr == nil && userinfo.Id > 0 {
 			if onlinenow.ClassroomId+"" != "" {
@@ -743,7 +743,7 @@ func GetOnlineClassTeacherurl(bookid int) (urlse string, err error) {
 	fmt.Println(onlineclass)
 	if geterr == nil && onlineclass.Id > 0 {
 		//获取老师信息
-		userinfo, gerr := GetUserinformationTeacher(onlineclass.UserIdPassive)
+		userinfo, gerr := GetUserinformationById(onlineclass.UserIdPassive)
 		fmt.Println(userinfo)
 		if gerr == nil {
 			urlse = "0"

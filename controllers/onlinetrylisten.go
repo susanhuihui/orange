@@ -324,7 +324,7 @@ func (c *OnlinetrylistenController) Delete() {
 // @Success 200 {object} models.Onlinetrylisten
 // @Failure 403 :id is empty
 // @router /GetListenTecher/:listenid [get]
-func (c *OnlinetrylistenController) GetOss() {
+func (c *OnlinetrylistenController) GetListenTecher() {
 	idStr := c.Ctx.Input.Params[":listenid"] //老师主键id
 	listenid, _ := strconv.Atoi(idStr)
 	joinurl, err := models.GeListentecherlession2(listenid)
@@ -385,7 +385,7 @@ func (c *OnlinetrylistenController) GetOe() {
 // @Success 200 {object} models.Onlinetrylisten
 // @Failure 403 :id is empty
 // @router /GetListenStudentAdd/:listenid [get]
-func (c *OnlinetrylistenController) GetAdd() {
+func (c *OnlinetrylistenController) GetListenStudentAdd() {
 	idStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(idStr)
 	c.Ctx.SetCookie("onlinelistenid", strconv.Itoa(listenid))
@@ -410,7 +410,7 @@ func (c *OnlinetrylistenController) GetAdd() {
 func (c *OnlinetrylistenController) GetListenClassPersonCount() {
 	idStr := c.Ctx.Input.Params[":listenid"]
 	listenid, _ := strconv.Atoi(idStr)
-	personcount, err := models.GetListenClassPersonCount(listenid) //当前学生进入试听信息主键
+	personcount, err := models.GetListenClassPersonCount(listenid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {

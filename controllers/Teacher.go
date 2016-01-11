@@ -29,9 +29,9 @@ func (c *TeacherController) Get() {
 
 // 老师
 // @Title TeacherList
-// @Description TeacherList the TbUser
+// @Description TeacherList the Userinformation
 // @Param			"The id you want to TeacherList"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherList/:seltype [get]
 func (c *TeacherController) TeacherList() {
@@ -157,9 +157,9 @@ func (c *TeacherController) TeacherList() {
 
 // 查看老师
 // @Title TeacherInformation
-// @Description TeacherInformation the TbUser
+// @Description TeacherInformation the Userinformation
 // @Param			"The id you want to TeacherInformation"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherInformation/:tid [get]
 func (c *TeacherController) TeacherInformation() {
@@ -180,9 +180,11 @@ func (c *TeacherController) TeacherInformation() {
 	//计算课时
 	fa, _ := strconv.ParseFloat(strconv.Itoa(vuser.AllTime), 64)
 	allhour := fmt.Sprintf("%.1f", fa/60)
-
+	//计算课时
+	fa2, _ := strconv.ParseFloat(strconv.Itoa(vuser.AllTimeMouth), 64)
+	allhour2 := fmt.Sprintf("%.1f", fa2/60)
 	c.Data["AllTime"] = allhour
-	c.Data["AllTimeMouth"] = vuser.AllTimeMouth
+	c.Data["AllTimeMouth"] = allhour2
 	c.Data["SchoolName"] = vuser.SchoolName
 	c.Data["DegreeName"] = vuser.DegreeName
 	c.Data["LevelYear"] = vuser.LevelYear
@@ -217,9 +219,9 @@ func (c *TeacherController) TeacherInformation() {
 
 // 给他留言
 // @Title TeacherMessage
-// @Description TeacherMessage the TbUser
+// @Description TeacherMessage the Userinformation
 // @Param			"The id you want to TeacherMessage"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherMessage/:tid [get]
 func (c *TeacherController) TeacherMessage() {
@@ -240,9 +242,9 @@ func (c *TeacherController) TeacherMessage() {
 
 // 查看一条问答
 // @Title ProblemModel
-// @Description ProblemModel the TbUser
+// @Description ProblemModel the Userinformation
 // @Param			"The id you want to ProblemModel"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /ProblemModel/:adkid [get]
 func (c *TeacherController) ProblemModel() {
@@ -271,9 +273,9 @@ func (c *TeacherController) ProblemModel() {
 
 // 查看一条精彩问答值展示问答
 // @Title ProblemModel
-// @Description ProblemModel the TbUser
+// @Description ProblemModel the Userinformation
 // @Param			"The id you want to ProblemModel"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /ProblemModelShow/:adkid [get]
 func (c *TeacherController) ProblemModelshow() {
@@ -302,9 +304,9 @@ func (c *TeacherController) ProblemModelshow() {
 
 // 老师回答一条问题
 // @Title ProblemAnswer
-// @Description ProblemAnswer the TbUser
+// @Description ProblemAnswer the Userinformation
 // @Param			"The id you want to ProblemAnswer"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /ProblemAnswer/:adkid [get]
 func (c *TeacherController) ProblemAnswer() {
@@ -333,9 +335,9 @@ func (c *TeacherController) ProblemAnswer() {
 
 // 我要提问
 // @Title UserAskQuestion
-// @Description UserAskQuestion the TbUser
+// @Description UserAskQuestion the Userinformation
 // @Param			"The id you want to UserAskQuestion"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UserAskQuestion/ [get]
 func (c *TeacherController) UserAskQuestion() {
@@ -346,9 +348,9 @@ func (c *TeacherController) UserAskQuestion() {
 
 // 我要提问
 // @Title UserAskQuestion
-// @Description UserAskQuestion the TbUser
+// @Description UserAskQuestion the Userinformation
 // @Param			"The id you want to UserAskQuestion"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UserAskQuestion/ [Post]
 func (c *TeacherController) UserAskQuestion2() {
@@ -400,9 +402,9 @@ func (c *TeacherController) UserAskQuestion2() {
 
 // 老师从个人中心进入编辑预约
 // @Title TeacherSetMeet
-// @Description TeacherSetMeet the TbUser
+// @Description TeacherSetMeet the Userinformation
 // @Param			"The id you want to TeacherSetMeet"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherSetMeet/ [get]
 func (c *TeacherController) TeacherSetMeet() {
@@ -412,9 +414,9 @@ func (c *TeacherController) TeacherSetMeet() {
 
 // 学生点击老师，预约此老师课程
 // @Title StudentSetTeacherMeet
-// @Description StudentSetTeacherMeet the TbUser
+// @Description StudentSetTeacherMeet the Userinformation
 // @Param			"The id you want to StudentSetTeacherMeet"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /StudentSetTeacherMeet/:tid [get]
 func (c *TeacherController) StudentSetTeacherMeet() {
@@ -435,9 +437,9 @@ func (c *TeacherController) StudentSetTeacherMeet() {
 
 // 老师跳页，跳到听课页面
 // @Title TeacherOnlineClass
-// @Description TeacherOnlineClass the TbUser
+// @Description TeacherOnlineClass the Userinformation
 // @Param			"The id you want to TeacherOnlineClass"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherOnlineClass/:onlineid [get]
 func (c *TeacherController) TeacherOnlineClass() {
@@ -451,9 +453,9 @@ func (c *TeacherController) TeacherOnlineClass() {
 
 // 学生跳页，跳到听课页面
 // @Title StudentOnlineClass
-// @Description StudentOnlineClass the TbUser
+// @Description StudentOnlineClass the Userinformation
 // @Param			"The id you want to StudentOnlineClass"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /StudentOnlineClass/:onlineid [get]
 func (c *TeacherController) StudentOnlineClass() {
@@ -467,9 +469,9 @@ func (c *TeacherController) StudentOnlineClass() {
 
 // 老师进入试听课程
 // @Title TeacherTryListenClass
-// @Description TeacherTryListenClass the TbUser
+// @Description TeacherTryListenClass the Userinformation
 // @Param			"The id you want to TeacherTryListenClass"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TeacherTryListenClass/:listenid [get]
 func (c *TeacherController) TeacherTryListenClass() {
@@ -483,9 +485,9 @@ func (c *TeacherController) TeacherTryListenClass() {
 
 // 学生进入试听
 // @Title StudentTryListenClass
-// @Description StudentTryListenClass the TbUser
+// @Description StudentTryListenClass the Userinformation
 // @Param			"The id you want to StudentTryListenClass"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /StudentTryListenClass/:listenid [get]
 func (c *TeacherController) StudentTryListenClass() {
@@ -498,9 +500,9 @@ func (c *TeacherController) StudentTryListenClass() {
 
 // 在线课堂结束后进入的页面
 // @Title ClassOverHtml
-// @Description ClassOverHtml the TbUser
+// @Description ClassOverHtml the Userinformation
 // @Param			"The id you want to ClassOverHtml"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /ClassOverHtml/ [get]
 func (c *TeacherController) ClassOverHtml() {
@@ -511,9 +513,9 @@ func (c *TeacherController) ClassOverHtml() {
 
 // 在线试听结束后进入的页面
 // @Title ListenOverHtml
-// @Description ListenOverHtml the TbUser
+// @Description ListenOverHtml the Userinformation
 // @Param			"The id you want to ListenOverHtml"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /ListenOverHtml/ [get]
 func (c *TeacherController) ListenOverHtml() {

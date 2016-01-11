@@ -303,7 +303,7 @@ func GeListentecherlession(trylistenid int) (urlse string, err error) {
 	fmt.Println("临时课程：")
 	fmt.Println(trylistenmodel)
 	//获取老师信息
-	userinfo, _ := GetUserinformationTeacher(trylistenmodel.Tid)
+	userinfo, _ := GetUserinformationById(trylistenmodel.Tid)
 	fmt.Println("老师信息")
 	fmt.Println(userinfo)
 	//name = userinfo.UserName //老师姓名
@@ -490,7 +490,7 @@ func GetListenTeacherurl(listenid int) (urlse string, err error) {
 	fmt.Println(listenid)
 	if geterr == nil && onlinetrylisten.Id > 0 {
 		//获取老师信息
-		userinfo, gerr := GetUserinformationTeacher(onlinetrylisten.Tid)
+		userinfo, gerr := GetUserinformationById(onlinetrylisten.Tid)
 		fmt.Println(userinfo)
 		if gerr == nil {
 			urlse = "0"
@@ -519,7 +519,7 @@ func GetListenStudentlession2(listenid int, sid int) (urlse string, err error) {
 	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
 	if geterr == nil && onlinetrylisten.Id > 0 {
 		//获取学生信息
-		userinfo, gerr := GetUserinformationTeacher(sid)
+		userinfo, gerr := GetUserinformationById(sid)
 		fmt.Println("进入试听学生信息：")
 		fmt.Println(userinfo)
 		if gerr == nil {
@@ -563,7 +563,7 @@ func GetListenStudentlession3(listenid int, sid int) (urlse string, err error) {
 	onlinetrylisten, geterr := GetOnlinetrylistenById(listenid)
 	if geterr == nil && onlinetrylisten.Id > 0 {
 		//获取学生信息
-		userinfo, gerr := GetUserinformationTeacher(sid)
+		userinfo, gerr := GetUserinformationById(sid)
 		fmt.Println("进入试听学生信息：")
 		fmt.Println(userinfo)
 		if gerr == nil {

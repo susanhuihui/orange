@@ -30,9 +30,9 @@ func (c *MainController) Get() {
 
 // 登录方法
 // @Title Logins
-// @Description Logins the TbUser
+// @Description Logins the Userinformation
 // @Param			"The id you want to Logins"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /Logins/ [post]
 func (c *MainController) Logins() {
@@ -77,9 +77,9 @@ func (c *MainController) Logins() {
 
 // 登录方法
 // @Title LoginUser
-// @Description LoginUser the TbUser
+// @Description LoginUser the Userinformation
 // @Param			"The id you want to LoginUser"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /LoginUser/ [post]
 func (c *MainController) LoginUser() {
@@ -142,9 +142,9 @@ func (c *MainController) LoginUser() {
 
 // 退出方法
 // @Title OutLogins
-// @Description OutLogins the TbUser
+// @Description OutLogins the Userinformation
 // @Param			"The id you want to OutLogins"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /OutLogins/ [get]
 func (c *MainController) OutLogins() {
@@ -160,9 +160,9 @@ func (c *MainController) OutLogins() {
 
 // 注册方法
 // @Title Registered
-// @Description Registered the TbUser
+// @Description Registered the Userinformation
 // @Param			"The id you want to Registered"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /Registered/ [get]
 func (c *MainController) Registered() {
@@ -172,9 +172,9 @@ func (c *MainController) Registered() {
 
 // 问答中心模块
 // @Title QuestionsCenter
-// @Description QuestionsCenter the TbUser
+// @Description QuestionsCenter the Userinformation
 // @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /QuestionsCenter/ [get]
 func (c *MainController) QuestionsCenter() {
@@ -186,9 +186,9 @@ func (c *MainController) QuestionsCenter() {
 
 // 老师个人中心
 // @Title UserTeacher
-// @Description UserTeacher the TbUser
+// @Description UserTeacher the Userinformation
 // @Param			"The id you want to UserTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UserTeacher/:tapid [get]
 func (c *MainController) UserTeacher() {
@@ -281,9 +281,9 @@ func (c *MainController) UserTeacher() {
 
 // 学生个人中心
 // @Title UserStudent
-// @Description UserStudent the TbUser
+// @Description UserStudent the Userinformation
 // @Param			"The id you want to UserStudent"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UserStudent/:tapid [get]
 func (c *MainController) UserStudent() {
@@ -385,9 +385,9 @@ func (c *MainController) UserStudent() {
 
 // 管理员个人中心
 // @Title OwnerUser
-// @Description OwnerUser the TbUser
+// @Description OwnerUser the Userinformation
 // @Param			"The id you want to OwnerUser"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /OwnerUser/:tapid [get]
 func (c *MainController) OwnerUser() {
@@ -417,9 +417,9 @@ func (c *MainController) OwnerUser() {
 
 // 学生个人中心-查看全部课程中自己给老师的一条评价
 // @Title QuestionsCenter
-// @Description QuestionsCenter the TbUser
+// @Description QuestionsCenter the Userinformation
 // @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetOnLineEvaluation/:evalid [get]
 func (c *MainController) GetOnLineEvaluation() {
@@ -480,9 +480,9 @@ func (c *MainController) GetOnLineEvaluation() {
 
 // 老师个人中心-查看学生给自己的一条评价
 // @Title GetOnLineEvaluationTeacher
-// @Description GetOnLineEvaluationTeacher the TbUser
+// @Description GetOnLineEvaluationTeacher the Userinformation
 // @Param			"The id you want to GetOnLineEvaluationTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetOnLineEvaluationTeacher/:evalid [get]
 func (c *MainController) GetOnLineEvaluationTeacher() {
@@ -543,9 +543,9 @@ func (c *MainController) GetOnLineEvaluationTeacher() {
 
 // 学生个人中心-添加一条全部课程中的一条评价
 // @Title QuestionsCenter
-// @Description QuestionsCenter the TbUser
+// @Description QuestionsCenter the Userinformation
 // @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /AddOnLineEvaluation/:classid [get]
 func (c *MainController) AddOnLineEvaluation() {
@@ -570,9 +570,9 @@ func (c *MainController) AddOnLineEvaluation() {
 
 // 老师和学生个人中心-查看一条预约信息
 // @Title GetOnlineCourseBooking
-// @Description GetOnlineCourseBooking the TbUser
+// @Description GetOnlineCourseBooking the Userinformation
 // @Param			"The id you want to GetOnlineCourseBooking"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetOnlineCourseBooking/:bookid [get]
 func (c *MainController) GetOnlineCourseBooking() {
@@ -617,9 +617,9 @@ func (c *MainController) GetOnlineCourseBooking() {
 
 //  暂时无页面调用
 // @Title GetOnlineCourseBookingByTeacher
-// @Description GetOnlineCourseBookingByTeacher the TbUser
+// @Description GetOnlineCourseBookingByTeacher the Userinformation
 // @Param			"The id you want to GetOnlineCourseBookingByTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetOnlineCourseBookingByTeacher/:bookid [get]
 func (c *MainController) GetOnlineCourseBookingByTeacher() {
@@ -648,9 +648,9 @@ func (c *MainController) GetOnlineCourseBookingByTeacher() {
 
 // 学生个人中心-查看一条留下下的所有留言与回复
 // @Title GetUserMessageList
-// @Description GetUserMessageList the TbUser
+// @Description GetUserMessageList the Userinformation
 // @Param			"The id you want to GetUserMessageList"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetUserMessageList/:msgid [get]
 func (c *MainController) GetUserMessageList() {
@@ -693,9 +693,9 @@ func (c *MainController) GetUserMessageList() {
 
 // 老师个人中心-查看一条留下下的所有留言与回复
 // @Title GetUserMessageListTeacher
-// @Description GetUserMessageListTeacher the TbUser
+// @Description GetUserMessageListTeacher the Userinformation
 // @Param			"The id you want to GetUserMessageListTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /GetUserMessageListTeacher/:msgid [get]
 func (c *MainController) GetUserMessageListTeacher() {
@@ -738,9 +738,9 @@ func (c *MainController) GetUserMessageListTeacher() {
 
 // 学生个人中心-编辑个人信息
 // @Title UpdateStudent
-// @Description UpdateStudent the TbUser
+// @Description UpdateStudent the Userinformation
 // @Param			"The id you want to UpdateStudent"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UpdateStudent/ [get]
 func (c *MainController) UpdateStudent() {
@@ -786,9 +786,9 @@ func (c *MainController) UpdateStudent() {
 
 // 学生个人中心-编辑个人信息
 // @Title UpdateStudent
-// @Description UpdateStudent the TbUser
+// @Description UpdateStudent the Userinformation
 // @Param			"The id you want to UpdateStudent"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UpdateStudent/ [post]
 func (c *MainController) UpdateStudent2() {
@@ -850,9 +850,9 @@ func (c *MainController) UpdateStudent2() {
 
 // 老师个人中心-编辑个人信息
 // @Title UpdateTeacher
-// @Description UpdateTeacher the TbUser
+// @Description UpdateTeacher the Userinformation
 // @Param			"The id you want to UpdateTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UpdateTeacher/ [get]
 func (c *MainController) UpdateTeacher() {
@@ -917,9 +917,9 @@ func (c *MainController) UpdateTeacher() {
 
 // 老师个人中心-编辑个人信息
 // @Title UpdateTeacher
-// @Description UpdateTeacher the TbUser
+// @Description UpdateTeacher the Userinformation
 // @Param			"The id you want to UpdateTeacher"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /UpdateTeacher/ [post]
 func (c *MainController) UpdateTeacher2() {
@@ -989,9 +989,9 @@ func (c *MainController) UpdateTeacher2() {
 
 // 登录-找回密码
 // @Title RetrievePassword
-// @Description RetrievePassword the TbUser
+// @Description RetrievePassword the Userinformation
 // @Param			"The id you want to RetrievePassword"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /RetrievePassword/ [get]
 func (c *MainController) RetrievePassword() {
@@ -1001,9 +1001,9 @@ func (c *MainController) RetrievePassword() {
 
 // 关于我们
 // @Title AboutMe
-// @Description AboutMe the TbUser
+// @Description AboutMe the Userinformation
 // @Param			"The id you want to AboutMe"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /AboutMe/:tapid [get]
 func (c *MainController) AboutMe() {
@@ -1015,9 +1015,9 @@ func (c *MainController) AboutMe() {
 
 // 老师注册进入页面
 // @Title TechnologicalProcess
-// @Description TechnologicalProcess the TbUser
+// @Description TechnologicalProcess the Userinformation
 // @Param			"The id you want to TechnologicalProcess"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /TechnoRegister/ [get]
 func (c *MainController) TechnoRegister() {
@@ -1027,9 +1027,9 @@ func (c *MainController) TechnoRegister() {
 
 // 学生注册服务条款页面
 // @Title RegisteredLinefwtk
-// @Description RegisteredLinefwtk the TbUser
+// @Description RegisteredLinefwtk the Userinformation
 // @Param			"The id you want to RegisteredLinefwtk"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /RegisteredLinefwtk/ [get]
 func (c *MainController) RegisteredLinefwtk() {
@@ -1039,9 +1039,9 @@ func (c *MainController) RegisteredLinefwtk() {
 
 // 跳到支付页面
 // @Title PayMentUser
-// @Description PayMentUser the TbUser
+// @Description PayMentUser the Userinformation
 // @Param			"The id you want to PayMentUser"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /PayMentUser/:money [get]
 func (c *MainController) PayMentUser() {
@@ -1110,9 +1110,9 @@ type Result struct {
 
 // 支付同步回调地址
 // @Title PayEnd
-// @Description PayEnd the TbUser
+// @Description PayEnd the Userinformation
 // @Param			"The id you want to PayEnd"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /PayEnd/ [get]
 func (c *MainController) PayEnd() {
@@ -1152,9 +1152,9 @@ func (c *MainController) PayEnd() {
 
 // 支付异步回调地址
 // @Title PayEndNotify
-// @Description PayEndNotify the TbUser
+// @Description PayEndNotify the Userinformation
 // @Param			"The id you want to PayEndNotify"
-// @Success 200 {object} models.TbUser
+// @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /PayEndNotify/ [post]
 func (c *MainController) PayEndNotify() {

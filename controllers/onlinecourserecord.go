@@ -193,11 +193,12 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUid() {
 }
 
 //40.查询给我上过课的老师们
-// @Title GetOnlinecourserecordTeacherByUCid
-// @Description GetOnlinecourserecordTeacherByUCid Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.GetOnlinecourserecordTeacherByUCid
-// @Failure 403 :id is empty
+
+// @Title Get All
+// @Description get Onlinecourserecord
+// @Param	userid		path 	string	true		"The key for staticblock"
+// @Success 200 {object} models.Onlinecourserecord
+// @Failure 403
 // @router /GetOnlinecourserecordTeacherByUCid/:userid/:classid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUCid() {
 	idStr := c.Ctx.Input.Params[":userid"]

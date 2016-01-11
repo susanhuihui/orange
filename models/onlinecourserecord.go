@@ -171,6 +171,9 @@ func GetOnlinecourserecordTeacherByUid(userid int) (onlinecourse []Onlinecourser
 
 //   43.查询给我上过课的某个学科的老师们
 //   2015-12-11
+
+// GetOnlinecourserecordTeacherByUCid retrieves Onlinecourserecord by userid classid. Returns error if
+// Id doesn't exist
 func GetOnlinecourserecordTeacherByUCid(userid int, classid int) (onlinecourse []OnlinecourserecordByU, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter

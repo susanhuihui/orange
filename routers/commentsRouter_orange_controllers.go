@@ -1338,7 +1338,7 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
 		beego.ControllerComments{
-			"GetOss",
+			"GetListenTecher",
 			`/GetListenTecher/:listenid`,
 			[]string{"get"},
 			nil})
@@ -1359,7 +1359,7 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
 		beego.ControllerComments{
-			"GetAdd",
+			"GetListenStudentAdd",
 			`/GetListenStudentAdd/:listenid`,
 			[]string{"get"},
 			nil})
