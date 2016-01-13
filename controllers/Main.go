@@ -28,10 +28,10 @@ func (c *MainController) Get() {
 	c.TplNames = "index.tpl" //首页
 }
 
-// 登录方法
-// @Title Logins
-// @Description Logins the Userinformation
-// @Param			"The id you want to Logins"
+// @Title 登录方法
+// @Description 根据用户名和密码登录网站
+// @Param	username form string true 用户名
+// @Param	password form string true 密码
 // @Success 200 {object} models.Userinformation
 // @Failure 403
 // @router /Logins/ [post]
@@ -75,12 +75,13 @@ func (c *MainController) Logins() {
 	}
 }
 
-// 登录方法
-// @Title LoginUser
-// @Description LoginUser the Userinformation
-// @Param			"The id you want to LoginUser"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Title 登录方法
+// @Description 根据用户实体json字符串登录
+// @Param json form string true json用户实体字符串
+// @Success >0 {int} Id
+// @Failure 0 获取用户失败
+// @Failure -1 用户名昵称不存在
+// @Failure -2 用户名昵称存在密码不正确
 // @router /LoginUser/ [post]
 func (c *MainController) LoginUser() {
 	var jsonS string
@@ -140,12 +141,9 @@ func (c *MainController) LoginUser() {
 	c.ServeJson()
 }
 
-// 退出方法
 // @Title OutLogins
-// @Description OutLogins the Userinformation
-// @Param			"The id you want to OutLogins"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 退出登录方法
+// @Success 200 {string} OK
 // @router /OutLogins/ [get]
 func (c *MainController) OutLogins() {
 	c.Data["Website"] = models.OnlineUrl
@@ -158,24 +156,16 @@ func (c *MainController) OutLogins() {
 	//c.TplNames = "index.tpl"
 }
 
-// 注册方法
 // @Title Registered
-// @Description Registered the Userinformation
-// @Param			"The id you want to Registered"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 注册方法
 // @router /Registered/ [get]
 func (c *MainController) Registered() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "register.html" //跳到注册页面
 }
 
-// 问答中心模块
 // @Title QuestionsCenter
-// @Description QuestionsCenter the Userinformation
-// @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到问答中心模块
 // @router /QuestionsCenter/ [get]
 func (c *MainController) QuestionsCenter() {
 	c.Data["Website"] = models.OnlineUrl
@@ -184,12 +174,9 @@ func (c *MainController) QuestionsCenter() {
 	c.TplNames = "problem_list.html" //跳到问答中心
 }
 
-// 老师个人中心
 // @Title UserTeacher
-// @Description UserTeacher the Userinformation
-// @Param			"The id you want to UserTeacher"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到老师个人中心
+// @Param tapid query int true 老师用户主键id
 // @router /UserTeacher/:tapid [get]
 func (c *MainController) UserTeacher() {
 	c.Data["Website"] = models.OnlineUrl
@@ -279,12 +266,9 @@ func (c *MainController) UserTeacher() {
 	c.TplNames = "teachermain.html" //跳到老师个人中心
 }
 
-// 学生个人中心
 // @Title UserStudent
-// @Description UserStudent the Userinformation
-// @Param			"The id you want to UserStudent"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到学生个人中心
+// @Param tapid query int true 学生用户主键id
 // @router /UserStudent/:tapid [get]
 func (c *MainController) UserStudent() {
 	c.Data["Website"] = models.OnlineUrl
@@ -383,12 +367,9 @@ func (c *MainController) UserStudent() {
 	c.TplNames = "studentmain.html" //跳到学生个人中心
 }
 
-// 管理员个人中心
 // @Title OwnerUser
-// @Description OwnerUser the Userinformation
-// @Param			"The id you want to OwnerUser"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到管理员个人中心
+// @Param tapid query int true 管理员用户主键id
 // @router /OwnerUser/:tapid [get]
 func (c *MainController) OwnerUser() {
 	tapidStr := c.Ctx.Input.Params[":tapid"]
@@ -415,12 +396,9 @@ func (c *MainController) OwnerUser() {
 	c.TplNames = "adminhtml.html"
 }
 
-// 学生个人中心-查看全部课程中自己给老师的一条评价
 // @Title QuestionsCenter
-// @Description QuestionsCenter the Userinformation
-// @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生个人中心-查看全部课程中自己给老师的一条评价
+// @Param evalid query int true 评价信息主键id
 // @router /GetOnLineEvaluation/:evalid [get]
 func (c *MainController) GetOnLineEvaluation() {
 	c.Data["Website"] = models.OnlineUrl
@@ -478,12 +456,9 @@ func (c *MainController) GetOnLineEvaluation() {
 	c.TplNames = "evaluationmainstudents.html" //
 }
 
-// 老师个人中心-查看学生给自己的一条评价
 // @Title GetOnLineEvaluationTeacher
-// @Description GetOnLineEvaluationTeacher the Userinformation
-// @Param			"The id you want to GetOnLineEvaluationTeacher"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师个人中心-查看学生给自己的一条评价
+// @Param evalid query int true 评价信息主键id
 // @router /GetOnLineEvaluationTeacher/:evalid [get]
 func (c *MainController) GetOnLineEvaluationTeacher() {
 	c.Data["Website"] = models.OnlineUrl
@@ -541,12 +516,9 @@ func (c *MainController) GetOnLineEvaluationTeacher() {
 	c.TplNames = "evaluationmainstudents.html" //
 }
 
-// 学生个人中心-添加一条全部课程中的一条评价
 // @Title QuestionsCenter
-// @Description QuestionsCenter the Userinformation
-// @Param			"The id you want to QuestionsCenter"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生个人中心-添加一条全部课程中的一条评价
+// @Param classid query int true 在线课程主键id
 // @router /AddOnLineEvaluation/:classid [get]
 func (c *MainController) AddOnLineEvaluation() {
 	c.Data["Website"] = models.OnlineUrl
@@ -568,12 +540,9 @@ func (c *MainController) AddOnLineEvaluation() {
 	c.TplNames = "evaluationmainstudents.html" //跳到
 }
 
-// 老师和学生个人中心-查看一条预约信息
 // @Title GetOnlineCourseBooking
-// @Description GetOnlineCourseBooking the Userinformation
-// @Param			"The id you want to GetOnlineCourseBooking"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师和学生个人中心-查看一条预约信息
+// @Param bookid query int true 预约课程信息主键id
 // @router /GetOnlineCourseBooking/:bookid [get]
 func (c *MainController) GetOnlineCourseBooking() {
 	c.Data["Website"] = models.OnlineUrl
@@ -615,7 +584,6 @@ func (c *MainController) GetOnlineCourseBooking() {
 	c.TplNames = "classmainstudents.html" //跳到
 }
 
-//  暂时无页面调用
 // @Title GetOnlineCourseBookingByTeacher
 // @Description GetOnlineCourseBookingByTeacher the Userinformation
 // @Param			"The id you want to GetOnlineCourseBookingByTeacher"
@@ -646,12 +614,9 @@ func (c *MainController) GetOnlineCourseBookingByTeacher() {
 	c.TplNames = "classmainstudents.html" //跳到
 }
 
-// 学生个人中心-查看一条留下下的所有留言与回复
 // @Title GetUserMessageList
-// @Description GetUserMessageList the Userinformation
-// @Param			"The id you want to GetUserMessageList"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生个人中心-查看一条留下下的所有留言与回复
+// @Param msgid query int true 留言信息主键id
 // @router /GetUserMessageList/:msgid [get]
 func (c *MainController) GetUserMessageList() {
 	c.Data["Website"] = models.OnlineUrl
@@ -691,12 +656,9 @@ func (c *MainController) GetUserMessageList() {
 	c.TplNames = "messagemain.html" //跳到
 }
 
-// 老师个人中心-查看一条留下下的所有留言与回复
 // @Title GetUserMessageListTeacher
-// @Description GetUserMessageListTeacher the Userinformation
-// @Param			"The id you want to GetUserMessageListTeacher"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师个人中心-查看一条留下下的所有留言与回复
+// @Param msgid path int true 留言信息主键id
 // @router /GetUserMessageListTeacher/:msgid [get]
 func (c *MainController) GetUserMessageListTeacher() {
 	c.Data["Website"] = models.OnlineUrl
@@ -736,12 +698,8 @@ func (c *MainController) GetUserMessageListTeacher() {
 	c.TplNames = "messagemain.html" //跳到
 }
 
-// 学生个人中心-编辑个人信息
 // @Title UpdateStudent
-// @Description UpdateStudent the Userinformation
-// @Param			"The id you want to UpdateStudent"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生个人中心-编辑个人信息
 // @router /UpdateStudent/ [get]
 func (c *MainController) UpdateStudent() {
 	fmt.Println("woshiget")
@@ -784,12 +742,9 @@ func (c *MainController) UpdateStudent() {
 	c.TplNames = "personal.html" //跳到
 }
 
-// 学生个人中心-编辑个人信息
 // @Title UpdateStudent
-// @Description UpdateStudent the Userinformation
-// @Param			"The id you want to UpdateStudent"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生个人中心-编辑个人信息
+// @Param userinformation form models.Userinformation true 用户信息
 // @router /UpdateStudent/ [post]
 func (c *MainController) UpdateStudent2() {
 	c.Data["Website"] = models.OnlineUrl
@@ -848,12 +803,8 @@ func (c *MainController) UpdateStudent2() {
 	c.Redirect("/orange/Main/UpdateStudent/", 302)
 }
 
-// 老师个人中心-编辑个人信息
 // @Title UpdateTeacher
-// @Description UpdateTeacher the Userinformation
-// @Param			"The id you want to UpdateTeacher"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到老师个人中心-编辑个人信息
 // @router /UpdateTeacher/ [get]
 func (c *MainController) UpdateTeacher() {
 	c.Data["Website"] = models.OnlineUrl
@@ -915,12 +866,8 @@ func (c *MainController) UpdateTeacher() {
 	c.TplNames = "personalteacher.html" //跳到
 }
 
-// 老师个人中心-编辑个人信息
 // @Title UpdateTeacher
-// @Description UpdateTeacher the Userinformation
-// @Param			"The id you want to UpdateTeacher"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到老师个人中心-编辑个人信息
 // @router /UpdateTeacher/ [post]
 func (c *MainController) UpdateTeacher2() {
 	c.Data["Website"] = models.OnlineUrl
@@ -987,24 +934,16 @@ func (c *MainController) UpdateTeacher2() {
 	c.Redirect("/orange/Main/UpdateTeacher/", 302)
 }
 
-// 登录-找回密码
 // @Title RetrievePassword
-// @Description RetrievePassword the Userinformation
-// @Param			"The id you want to RetrievePassword"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到登录-找回密码
 // @router /RetrievePassword/ [get]
 func (c *MainController) RetrievePassword() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "password.html" //跳到
 }
 
-// 关于我们
 // @Title AboutMe
-// @Description AboutMe the Userinformation
-// @Param			"The id you want to AboutMe"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到关于我们
 // @router /AboutMe/:tapid [get]
 func (c *MainController) AboutMe() {
 	c.Data["Website"] = models.OnlineUrl
@@ -1013,45 +952,32 @@ func (c *MainController) AboutMe() {
 	c.TplNames = "aboutme.html" //跳到关于我们
 }
 
-// 老师注册进入页面
 // @Title TechnologicalProcess
-// @Description TechnologicalProcess the Userinformation
-// @Param			"The id you want to TechnologicalProcess"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到老师注册进入页面
 // @router /TechnoRegister/ [get]
 func (c *MainController) TechnoRegister() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "teacherregister.html" //
 }
 
-// 学生注册服务条款页面
 // @Title RegisteredLinefwtk
-// @Description RegisteredLinefwtk the Userinformation
-// @Param			"The id you want to RegisteredLinefwtk"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到学生注册服务条款页面
 // @router /RegisteredLinefwtk/ [get]
 func (c *MainController) RegisteredLinefwtk() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "linefwtk.html" //
 }
 
-// 跳到支付页面
 // @Title PayMentUser
-// @Description PayMentUser the Userinformation
-// @Param			"The id you want to PayMentUser"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳到支付页面
+// @Param  money query float true 要充值的钱
 // @router /PayMentUser/:money [get]
 func (c *MainController) PayMentUser() {
 	moneyStr := c.Ctx.Input.Params[":money"]
 	money, _ := strconv.ParseFloat(moneyStr, 10)
-	fmt.Println("1")
 	//添加一条 账户充值记录
 	var addaccountpay models.Amountrecords
 	stuuserid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
-	fmt.Println("2")
 	fmt.Println(stuuserid)
 	nowaccuser, _ := models.GetAccountfundsByuid(stuuserid) //根据用户主键id查询用户账户信息
 	fmt.Println(nowaccuser)
@@ -1062,15 +988,11 @@ func (c *MainController) PayMentUser() {
 	addaccountpay.RecordTime = time.Now()              //操作日期
 	addaccountpay.TradingWayId = 2                     //支付宝支付
 	addaccountpay.IsComplete = 0                       //0：未完成，1：已完成
-
-	fmt.Println("3")
 	addint, adderr := models.AddAmountrecords(&addaccountpay)
-	fmt.Println("4")
 	fmt.Println(addint)
 	if adderr == nil {
 
 	}
-	fmt.Println("5")
 	r := models.Request{
 		NotifyUrl:   `http://www.fankunedu.com/orange/Main/PayEndNotify/`, // 付款后异步通知页面
 		ReturnUrl:   `http://www.fankunedu.com/orange/Main/PayEnd/`,       // 付款后返回页面
@@ -1082,15 +1004,12 @@ func (c *MainController) PayMentUser() {
 		TotalFee:    money,                                                // 价格
 	}
 
-	fmt.Println("6")
 	cc := models.Config{
 		Partner: `2088911257813375`,                 // 支付宝合作者身份 ID
 		Key:     `scnf70tnzygvjkdp259w2z2h2e0mhrrc`, // 支付宝交易安全校验码
 	}
-	fmt.Println("7")
 	fromstr := models.NewPage(cc, r, os.Stdout)
 	fmt.Println(fromstr)
-	fmt.Println("8")
 	c.Data["subContent"] = fromstr
 	c.TplNames = "payment.html"
 }
@@ -1108,12 +1027,8 @@ type Result struct {
 	Message string
 }
 
-// 支付同步回调地址
 // @Title PayEnd
-// @Description PayEnd the Userinformation
-// @Param			"The id you want to PayEnd"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 支付同步回调地址
 // @router /PayEnd/ [get]
 func (c *MainController) PayEnd() {
 	c.Data["Website"] = models.OnlineUrl
@@ -1150,12 +1065,8 @@ func (c *MainController) PayEnd() {
 	c.TplNames = "moneyover.html" //
 }
 
-// 支付异步回调地址
 // @Title PayEndNotify
-// @Description PayEndNotify the Userinformation
-// @Param			"The id you want to PayEndNotify"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 支付异步回调地址
 // @router /PayEndNotify/ [post]
 func (c *MainController) PayEndNotify() {
 	result := Notify(&c.Controller)

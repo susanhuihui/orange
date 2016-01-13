@@ -696,7 +696,7 @@ var SqlOnlineBookingRecordBybookiduid string = `select *
 						from onlinecoursebookingrecord
 						where userid = ? and ocbid = ?`
 
-/**48.**/
+/**48.根据主留言信息主键id和主留言用户id查询留言信息**/
 var SqlUserMessagebymuid string = `SELECT * FROM onlineeducation.usermessage where (messageid = ? and activeuserid = ?) or pkid=?`
 
 /**49.**/

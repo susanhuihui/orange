@@ -37,13 +37,10 @@ func (c *QuestionaskController) Post() {
 		fmt.Println(v)
 		jsonS = jsonS + k
 	}
-	fmt.Println("要添加的数据为：")
-	fmt.Println(jsonS)
 	var v models.Questionask
 	gerr := json.Unmarshal([]byte(jsonS), &v)
 	fmt.Println(v)
 	if gerr != nil {
-		fmt.Println("转换错误：")
 		fmt.Println(gerr.Error())
 	}
 	if id, err := models.AddQuestionask(&v); err == nil {
@@ -53,78 +50,6 @@ func (c *QuestionaskController) Post() {
 	}
 	c.ServeJson()
 }
-
-//// @Title Post
-//// @Description create Questionask
-//// @Param	body		body 	models.Questionask	true		"body for Questionask content"
-//// @Success 200 {int} models.Questionask.Id
-//// @Failure 403 body is empty
-//// @router /AddQuestionask/ [post]
-//func (c *QuestionaskController) Post() {
-
-//	var class []string = c.Ctx.Input.Request.Form["selClass"] //
-//	selClass := class[0]
-//	fmt.Println(selClass)
-//	var teach []string = c.Ctx.Input.Request.Form["selteacher"] //
-//	selteacher := teach[0]
-//	fmt.Println(selteacher)
-//	var date []string = c.Ctx.Input.Request.Form["txtdate"] //
-//	txtdate := date[0]
-//	fmt.Println(txtdate)
-//	var title []string = c.Ctx.Input.Request.Form["txtTitle"] //
-//	txtTitle := title[0]
-//	fmt.Println(txtTitle)
-//	var content []string = c.Ctx.Input.Request.Form["txtContents"] //
-//	txtContents := content[0]
-//	fmt.Println(txtContents)
-//	var money []string = c.Ctx.Input.Request.Form["selMoney"] //
-//	selMoney := money[0]
-//	fmt.Println(selMoney)
-
-//	log.Println("Client: ", c.Ctx.Request.RemoteAddr,
-//		"Method: ", c.Ctx.Request.Method)
-
-//	r := c.Ctx.Request
-//	r.ParseForm()
-//	r.ParseMultipartForm(32 << 20)
-
-//	userId := r.FormValue("userId")
-//	log.Println("userId=", userId)
-
-//	mp := r.MultipartForm
-//	if nil == mp {
-//		log.Println("NOT MULTIPARATFORM.")
-
-//		c.Ctx.WriteString("NOT MULTIPARATFORM.")
-//	}
-
-//	fileHeaders, findFile := mp.File["file"]
-//	if !findFile || len(fileHeaders) == 0 {
-//		log.Println("FILE COUNT == 0.")
-
-//		c.Ctx.WriteString("FILE COUNT == 0.")
-//	}
-//	for _, v := range fileHeaders {
-//		fileName := v.Filename
-//		fmt.Println(fileName)
-//	}
-
-//	//	var jsonS string
-//	//	for k, v := range c.Ctx.Request.Form {
-//	//		fmt.Printf("k=%v, v=%v\n", k, v)
-//	//		jsonS = k
-//	//	}
-//	//	var v models.Questionask
-//	//	json.Unmarshal([]byte(jsonS), &v)
-//	//	if id, err := models.AddQuestionask(&v); err == nil {
-//	//		c.Data["json"] = map[string]int64{"id": id}
-//	//	} else {
-//	//		c.Data["json"] = err.Error()
-//	//	}
-//	//	c.ServeJson()
-
-//	c.TplNames = "problem_list.html" //跳到问答中心
-//}
 
 // @Title Get
 // @Description get Questionask by id
@@ -145,10 +70,10 @@ func (c *QuestionaskController) GetOne() {
 }
 
 // @Title GetQuestionaskByJingCaiOne
-// @Description GetQuestionaskByJingCaiOne Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 获取精彩回答详情
+// @Param	id		path 	string	true		问答主键id
+// @Success 200 {object} models.QuestionaskJingCaiOne
+// @Failure Error
 // @router /GetQuestionaskByJingCaiOne/:id [get]
 func (c *QuestionaskController) GetQuestionaskByJingCaiOne() {
 	idStr := c.Ctx.Input.Params[":id"]
@@ -164,10 +89,12 @@ func (c *QuestionaskController) GetQuestionaskByJingCaiOne() {
 
 //16.查询被提问者所有问答信息
 // @Title GetQuestionaskByTid
-// @Description GetQuestionaskByTid Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 查询被提问者所有问答信息
+// @Param	userid		path 	string	true		用户信息主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取第几行
+// @Success 200 {object} models.QuestionaskByUid
+// @Failure Error
 // @router /GetQuestionaskByTid/:userid/:page/:size [get]
 func (c *QuestionaskController) GetQuestionaskByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -190,10 +117,10 @@ func (c *QuestionaskController) GetQuestionaskByTid() {
 
 //16.查询被提问者所有问答信息总条数
 // @Title GetQuestionaskByTidCount
-// @Description GetQuestionaskByTidCount Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 查询被提问者所有问答信息总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetQuestionaskByTidCount/:userid [get]
 func (c *QuestionaskController) GetQuestionaskByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -209,10 +136,12 @@ func (c *QuestionaskController) GetQuestionaskByTidCount() {
 
 //24.学生查询自己的提问
 // @Title GetQuestionaskBySid
-// @Description GetQuestionaskBySid Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 学生查询自己的提问
+// @Param	userid		path 	string	true		用户信息主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取第几行
 // @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetQuestionaskBySid/:userid/:page/:size [get]
 func (c *QuestionaskController) GetQuestionaskBySid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -235,10 +164,10 @@ func (c *QuestionaskController) GetQuestionaskBySid() {
 
 //24.学生查询自己的提问总条数
 // @Title GetQuestionaskBySidCount
-// @Description GetQuestionaskBySidCount Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 学生查询自己的提问总条数
+// @Param	userid		path 	string	true		用户信息主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetQuestionaskBySidCount/:userid [get]
 func (c *QuestionaskController) GetQuestionaskBySidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -254,10 +183,11 @@ func (c *QuestionaskController) GetQuestionaskBySidCount() {
 
 //32.查询精彩问答
 // @Title GetQuestionaskByJingCai
-// @Description GetQuestionaskByJingCai Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 查询全部精彩问答
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取第几行
+// @Success 200 {object} models.QuestionaskJingCai
+// @Failure Error
 // @router /GetQuestionaskByJingCai/:page/:size [get]
 func (c *QuestionaskController) GetQuestionaskByJingCai() {
 	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
@@ -278,10 +208,9 @@ func (c *QuestionaskController) GetQuestionaskByJingCai() {
 
 //32.查询精彩问答总条数
 // @Title GetQuestionaskByJingCaiCount
-// @Description GetQuestionaskByJingCaiCount Questionask by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Questionask
-// @Failure 403 :id is empty
+// @Description 查询精彩问答总条数
+// @Success json {int} json
+// @Failure Error
 // @router /GetQuestionaskByJingCaiCount [get]
 func (c *QuestionaskController) GetQuestionaskByJingCaiCount() {
 	v, err := models.GetQuestionaskByJingCaiCount()
@@ -406,10 +335,11 @@ func (c *QuestionaskController) DeleteQuestionask() {
 //学生使用的删除提问
 //逻辑：判断此学生的问题冻结的资金是否解冻，如果解冻直接操作，如果没有解冻，解冻资金退还账户在执行删除
 // @Title DeleteQuestionaskFStu
-// @Description DeleteQuestionaskFStu the Questionask
-// @Param	id		path 	string	true		"The id you want to delete"
-// @Success 200 {string} delete success!
-// @Failure 403 id is empty
+// @Description 学生使用的删除提问 判断此学生的问题冻结的资金是否解冻，如果解冻直接操作，如果没有解冻，解冻资金退还账户在执行删除
+// @Param	id		path 	string	true		提问主键id
+// @Param	userid		path 	string	true		用户主键id
+// @Success OK {string} success
+// @Failure Error
 // @router /DeleteQuestionaskFStu/:id/:userid [get]
 func (c *QuestionaskController) DeleteQuestionaskFStu() {
 	idStr := c.Ctx.Input.Params[":id"]

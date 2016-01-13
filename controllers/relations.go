@@ -66,10 +66,12 @@ func (c *RelationsController) GetOne() {
 }
 
 // @Title GetRelationsByST
-// @Description GetRelationsByST Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询一条师生某个关系信息
+// @Param	sid		path 	string	true	学生主键id
+// @Param	tid		path 	string	true		老师主键id
+// @Param	guanxi		path 	string	true		关系关键词
 // @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetRelationsByST/:sid/:tid/:guanxi [get]
 func (c *RelationsController) GetRelationsByST() {
 	sidStr := c.Ctx.Input.Params[":sid"]
@@ -88,10 +90,13 @@ func (c *RelationsController) GetRelationsByST() {
 
 //9老师查看谁看过我
 // @Title GetRelationsByTid
-// @Description GetRelationsByTid Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 老师查看谁看过我
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Param	page		path 	string	true 获取第几页
+// @Param	size		path 	string	true 获取多少行
 // @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetRelationsByTid/:userid/:guanxi/:page/:size [get]
 func (c *RelationsController) GetRelationsByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -115,10 +120,11 @@ func (c *RelationsController) GetRelationsByTid() {
 
 //9老师查看谁看过我总条数
 // @Title GetRelationsByTidCount
-// @Description GetRelationsByTidCount Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Description 老师查看谁看过我总条数
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Success json {int} json
+// @Failure Error
 // @router /GetRelationsByTidCount/:userid/:guanxi [get]
 func (c *RelationsController) GetRelationsByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -135,10 +141,13 @@ func (c *RelationsController) GetRelationsByTidCount() {
 
 //21.查询学生全部关注的老师
 // @Title GetRelationsByUid
-// @Description GetRelationsByUid Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询学生全部关注的老师
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Param	page		path 	string	true 获取第几页
+// @Param	size		path 	string	true 获取多少行
 // @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetRelationsByUid/:userid/:guanxi/:page/:size [get]
 func (c *RelationsController) GetRelationsByUid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -162,10 +171,11 @@ func (c *RelationsController) GetRelationsByUid() {
 
 //21.查询学生全部关注的老师总条数
 // @Title GetRelationsByUidCount
-// @Description GetRelationsByUidCount Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Description 查询学生全部关注的老师总条数
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Success json {int} json
+// @Failure Error
 // @router /GetRelationsByUidCount/:userid/:guanxi [get]
 func (c *RelationsController) GetRelationsByUidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -182,10 +192,13 @@ func (c *RelationsController) GetRelationsByUidCount() {
 
 //31.学生查看我浏览过谁
 // @Title GetRelationsByUidSee
-// @Description GetRelationsByUidSee Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 学生查看我浏览过谁
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Param	page		path 	string	true 获取第几页
+// @Param	size		path 	string	true 获取多少行
 // @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetRelationsByUidSee/:userid/:guanxi/:page/:size [get]
 func (c *RelationsController) GetRelationsByUidSee() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -209,10 +222,11 @@ func (c *RelationsController) GetRelationsByUidSee() {
 
 //31.学生查看我浏览过谁总条数
 // @Title GetRelationsByUidSeeCount
-// @Description GetRelationsByUidSeeCount Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Description 学生查看我浏览过谁总条数
+// @Param	userid		path 	string	true 用户主键id
+// @Param	guanxi		path 	string	true 关系关键词
+// @Success json {int} json
+// @Failure Error
 // @router /GetRelationsByUidSeeCount/:userid/:guanxi [get]
 func (c *RelationsController) GetRelationsByUidSeeCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -229,10 +243,13 @@ func (c *RelationsController) GetRelationsByUidSeeCount() {
 
 // 新增一条师生某个关系
 // @Title GetRelationsByUidSeeCount
-// @Description GetRelationsByUidSeeCount Relations by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Relations
-// @Failure 403 :id is empty
+// @Description 新增一条师生某个关系
+// @Param	sid		path 	string	true		学生主键id
+// @Param	tid		path 	string	true		老师主键id
+// @Param	guanxi		path 	string	true		关系关键词
+// @Success id {int} id
+// @Failure 0 添加失败
+// @Failure -1 已存在
 // @router /AddRelationsBySTGuanxi/:sid/:tid/:guanxi [get]
 func (c *RelationsController) AddRelationsBySTGuanxi() {
 	sidStr := c.Ctx.Input.Params[":sid"]
@@ -241,8 +258,6 @@ func (c *RelationsController) AddRelationsBySTGuanxi() {
 	tid, _ := strconv.Atoi(tidStr)
 	guanxi := c.Ctx.Input.Params[":guanxi"]
 	v, _ := models.GetRelationsByST(sid, tid, guanxi)
-	fmt.Println("是否存在")
-	fmt.Println(v)
 	if v == nil {
 		var addre models.Relations
 		addre.FrontUserId = tid

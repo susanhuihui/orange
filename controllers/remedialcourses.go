@@ -66,10 +66,11 @@ func (c *RemedialcoursesController) GetOne() {
 
 //3.查询老师主辅导课程或辅辅导课程/学生的学习难点
 // @Title GetRemedialcoursesMain
-// @Description GetRemedialcoursesMain Remedialcourses by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Remedialcourses
-// @Failure 403 :id is empty
+// @Description 查询老师主辅导课程或辅辅导课程/学生的学习难点
+// @Param	userid		path 	string	true 用户主键id
+// @Param	ismain		path 	string	true 是否为主辅导课程ismain（0为否，1为是）(学生都为0，老师主为1辅为0）
+// @Success 200 {object} models.RemedialcoursesMain
+// @Failure Error
 // @router /GetRemedialcoursesMain/:userid/:ismain [get]
 func (c *RemedialcoursesController) GetRemedialcoursesMain() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -77,8 +78,6 @@ func (c *RemedialcoursesController) GetRemedialcoursesMain() {
 	ismainStr := c.Ctx.Input.Params[":ismain"]
 	ismain, _ := strconv.Atoi(ismainStr)
 	v, err := models.GetRemedialcoursesMain(userid, ismain)
-	fmt.Println("查询老师主辅导课程")
-	fmt.Println(v)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -198,10 +197,11 @@ func (c *RemedialcoursesController) DeleteRemedialcourses() {
 }
 
 // @Title UpdateStudentClass
-// @Description UpdateStudentClass the Remedialcourses
-// @Param	id		path 	string	true		"The id you want to UpdateStudentClass"
-// @Success 200 {string} delete success!
-// @Failure 403 id is empty
+// @Description 更新用户辅辅导课程，或补习科目
+// @Param	sid		path 	string	true		用户主键id
+// @Param	classidlist		path 	string	true		科目主键id集合，用逗号分隔
+// @Success OK {string} success!
+// @Failure Error
 // @router /UpdateStudentClass/:sid/:classidlist [get]
 func (c *RemedialcoursesController) UpdateStudentClass() {
 	idStr := c.Ctx.Input.Params[":sid"]
@@ -272,10 +272,12 @@ func SetUserClassList(sid int, sellist []string) (err error) {
 }
 
 // @Title UpdateStudentClassTeacher
-// @Description UpdateStudentClassTeacher the Remedialcourses
-// @Param	id		path 	string	true		"The id you want to UpdateStudentClassTeacher"
-// @Success 200 {string} delete success!
-// @Failure 403 id is empty
+// @Description 更新用户辅辅导课程，或补习科目
+// @Param	sid		path 	string	true		用户主键id
+// @Param	classidlist		path 	string	true	科目主键id集合，以逗号分隔
+// @Param	mainid		path 	string	true		是否为主辅导课程ismain（0为否，1为是）(学生都为0，老师主为1辅为0）
+// @Success OK {string} success!
+// @Failure Error
 // @router /UpdateStudentClassTeacher/:sid/:classidlist/:mainid [get]
 func (c *RemedialcoursesController) UpdateStudentClassTeacher() {
 	idStr := c.Ctx.Input.Params[":sid"]

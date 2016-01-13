@@ -47,9 +47,9 @@ func (c *FrozenfundsController) Post() {
 	c.ServeJson()
 }
 
-//冻结账户资金同时，从账户余额中扣除冻结资金
+//
 // @Title Post
-// @Description create Frozenfunds
+// @Description 冻结账户资金同时，从账户余额中扣除冻结资金
 // @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
 // @Success 200 {int} models.Frozenfunds.Id
 // @Failure 403 body is empty
@@ -76,7 +76,7 @@ func (c *FrozenfundsController) AddUserFrozenfunds() {
 }
 
 // @Title Update
-// @Description update the Frozenfunds
+// @Description 解冻预约时冻结的资金
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
 // @Success 200 {object} models.Frozenfunds
@@ -116,11 +116,11 @@ func (c *FrozenfundsController) UpdateUserFrozenfundsById() {
 }
 
 // @Title Update
-// @Description update the Frozenfunds
+// @Description 回答问题后解冻资金
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
-// @Success 200 {object} models.Frozenfunds
-// @Failure 403 :id is not int
+// @Success 200 {string} OK
+// @Failure 403 Error
 // @router /UpdateUserFrozenfundsByAnswer/:id [post]
 func (c *FrozenfundsController) UpdateUserFrozenfundsByAnswer() {
 	idStr := c.Ctx.Input.Params[":id"] //回答问题后调用的方法
@@ -158,11 +158,11 @@ func (c *FrozenfundsController) UpdateUserFrozenfundsByAnswer() {
 }
 
 // @Title UpdateUserFrozenfundsByOnline
-// @Description UpdateUserFrozenfundsByOnline the Frozenfunds
-// @Param	id		path 	string	true		"The id you want to UpdateUserFrozenfundsByOnline"
-// @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
-// @Success 200 {object} models.Frozenfunds
-// @Failure 403 :id is not int
+// @Description 更新一条冻结资金，上完课后调用的方法
+// @Param	id path int true 预约信息主键id
+// @Param	tid path int true 老师用户主键id
+// @Success 200 {string} OK
+// @Failure 403 Error
 // @router /UpdateUserFrozenfundsByOnline/:id/:tid [post]
 func (c *FrozenfundsController) UpdateUserFrozenfundsByOnline() {
 	idStr := c.Ctx.Input.Params[":id"] //上完课后调用的方法
@@ -205,8 +205,8 @@ func (c *FrozenfundsController) UpdateUserFrozenfundsByOnline() {
 // @Description update the Frozenfunds
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
-// @Success 200 {object} models.Frozenfunds
-// @Failure 403 :id is not int
+// @Success 200 {string} OK
+// @Failure 403 Error
 // @router /UpdateTeacherFrozenfundsById/:id/tid [post]
 func (c *FrozenfundsController) UpdateTeacherFrozenfundsById() {
 	idStr := c.Ctx.Input.Params[":id"]
@@ -266,9 +266,9 @@ func (c *FrozenfundsController) GetOne() {
 }
 
 // @Title GetFrozenFundsByUserid
-// @Description GetFrozenFundsByUserid Frozenfunds by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Frozenfunds
+// @Description 查询学生全部已经冻结的资金总和
+// @Param	userid path int true 用户信息主键id
+// @Success 200 {object} models.FrozenfundsMoney
 // @Failure 403 :id is empty
 // @router /GetFrozenFundsByUserid/:userid [get]
 func (c *FrozenfundsController) GetFrozenFundsByUserid() {
@@ -284,8 +284,10 @@ func (c *FrozenfundsController) GetFrozenFundsByUserid() {
 }
 
 // @Title GetFrozenfundsByUidOnId
-// @Description GetFrozenfundsByUidOnId Frozenfunds by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询学生预约课程信息相关的冻结信息
+// @Param	userid path int true 用户信息主键id
+// @Param	typeid path int true 是预约还是提问 0预约，1提问，2提现，
+// @Param	selid path int true 预约id或提问id或提现主键id
 // @Success 200 {object} models.Frozenfunds
 // @Failure 403 :id is empty
 // @router /GetFrozenfundsByUidOnId/:userid/:typeid/:selid [get]
@@ -377,9 +379,9 @@ func (c *FrozenfundsController) GetAll() {
 // @Description update the Frozenfunds
 // @Param	id		path 	string	true		"The id you want to update"
 // @Param	body		body 	models.Frozenfunds	true		"body for Frozenfunds content"
-// @Success 200 {object} models.Frozenfunds
-// @Failure 403 :id is not int
-// @router /UpdateFrozenfundsById/:id [put]
+// @Success 200 {string} OK
+// @Failure 403 :Error
+// @router /UpdateFrozenfundsById/:id [post]
 func (c *FrozenfundsController) Put() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

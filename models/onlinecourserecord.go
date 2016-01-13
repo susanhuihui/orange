@@ -74,7 +74,7 @@ func init() {
 	orm.RegisterModel(new(Onlinecourserecord))
 }
 
-//	根据预约课程助教查询一条课程信息
+//	根据预约课主键教查询一条课程信息
 //	2015-11-25
 func GetOnlinecourserecordByBookid(bookid int) (v *Onlinecourserecord, err error) {
 	o := orm.NewOrm()

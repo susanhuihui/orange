@@ -66,24 +66,6 @@ func GetOnlinecoursebookingrecordByUid(userid int, ocbid int) (bookrecord Online
 	return bookrecord, qs
 }
 
-//	46.结算预约信息两个人的结束时间 与上面的方法有差异
-//	2015-12-20
-func GetOnlinecoursebookingrecordByTwoid(ocbid int) (result string, err error) {
-	onclass, _ := GetOnlinecoursebookingById(ocbid)
-	_, err1 := GetOnlinecoursebookingrecordByUid(onclass.UserIdActive, ocbid)
-	_, err2 := GetOnlinecoursebookingrecordByUid(onclass.UserIdPassive, ocbid)
-	if err1 == nil && err2 == nil {
-		result = "1"
-	} else if err1 != nil {
-		result = "-1"
-		err = err1
-	} else if err2 != nil {
-		result = "-2"
-		err = err2
-	}
-	return
-}
-
 //	46.查询老师或学生一条课堂时间记录，一条时间最近且结束时间为null的记录 并记录结束时间
 //	2015-12-19
 func GetOnlinecoursebookingrecordByUid2(userid int, ocbid int) (bookrecord Onlinecoursebookingrecord, err error) {

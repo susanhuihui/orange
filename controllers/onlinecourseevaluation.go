@@ -47,13 +47,12 @@ func (c *OnlinecourseevaluationController) Post() {
 	c.ServeJson()
 }
 
-// 学生添加课程评价
 // 2015-12-30 addliu
 // @Title Post
-// @Description create Onlinecourseevaluation
-// @Param	body		body 	models.Onlinecourseevaluation	true		"body for Onlinecourseevaluation content"
+// @Description 学生添加课程评价
+// @Param	body		body 	models.Onlinecourseevaluation	true		评价信息
 // @Success 200 {int} models.Onlinecourseevaluation.Id
-// @Failure 403 body is empty
+// @Failure Error
 // @router /AddOnlinecourseevaluationFStu/ [post]
 func (c *OnlinecourseevaluationController) AddOnlinecourseevaluationFStu() {
 	onlinecourse := models.Onlinecourseevaluation{}
@@ -92,12 +91,14 @@ func (c *OnlinecourseevaluationController) GetOne() {
 	c.ServeJson()
 }
 
-//29.查询老师的所有在线课程评价
+//29.
 // @Title GetOnlinecourseevaluationByTid
-// @Description GetOnlinecourseevaluationByTid Onlinecourseevaluation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourseevaluation
-// @Failure 403 :id is empty
+// @Description 查询老师的所有在线课程评价
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.OnlinecourseevaluationByTid
+// @Failure Error
 // @router /GetOnlinecourseevaluationByTid/:userid/:page/:size [get]
 func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -118,12 +119,12 @@ func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTid() {
 	c.ServeJson()
 }
 
-//29.查询老师的所有在线课程评价总条数
+//29.
 // @Title GetOnlinecourseevaluationByTidCount
-// @Description GetOnlinecourseevaluationByTidCount Onlinecourseevaluation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourseevaluation
-// @Failure 403 :id is empty
+// @Description 查询老师的所有在线课程评价总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetOnlinecourseevaluationByTidCount/:userid [get]
 func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -139,10 +140,12 @@ func (c *OnlinecourseevaluationController) GetOnlinecourseevaluationByTidCount()
 
 //34.学生查看自己所评价的老师们
 // @Title GetOnlineCourseEvaluationBySid
-// @Description GetOnlineCourseEvaluationBySid Onlinecourseevaluation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourseevaluation
-// @Failure 403 :id is empty
+// @Description 学生查看自己所评价的老师们
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.OnlinecourseevaluationByS
+// @Failure Error
 // @router /GetOnlineCourseEvaluationBySid/:userid/:page/:size [get]
 func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -165,10 +168,10 @@ func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySid() {
 
 //34.学生查看自己所评价的老师们总条数
 // @Title GetOnlineCourseEvaluationBySidCount
-// @Description GetOnlineCourseEvaluationBySidCount Onlinecourseevaluation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourseevaluation
-// @Failure 403 :id is empty
+// @Description 学生查看自己所评价的老师们总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetOnlineCourseEvaluationBySidCount/:userid [get]
 func (c *OnlinecourseevaluationController) GetOnlineCourseEvaluationBySidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]

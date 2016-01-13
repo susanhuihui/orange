@@ -51,7 +51,7 @@ func (c *OnlinecoursebookingController) Post() {
 // @Description get Onlinecoursebooking by id
 // @Param	id		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecoursebookingById/:id [get]
 func (c *OnlinecoursebookingController) GetOne() {
 	idStr := c.Ctx.Input.Params[":id"]
@@ -65,12 +65,14 @@ func (c *OnlinecoursebookingController) GetOne() {
 	c.ServeJson()
 }
 
-//6根据老师主键查询预约课程信息
+//6
 // @Title GetOnlinecoursebookingByTid
-// @Description GetOnlinecoursebookingByTid Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据老师主键查询预约课程信息
+// @Param	userid path int true 用户信息主键id
+// @Param	page path int true 获取第几页
+// @Param	size path int true 获取多少行
+// @Success 200 {object} models.OnlinecoursebookingList
+// @Failure Error
 // @router /GetOnlinecoursebookingByTid/:userid/:page/:size [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -91,12 +93,12 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingByTid() {
 	c.ServeJson()
 }
 
-//6根据老师主键查询预约课程信息总条数
+//6
 // @Title GetOnlinecoursebookingByTidCount
-// @Description GetOnlinecoursebookingByTidCount Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据老师主键查询预约课程信息总条数
+// @Param	userid path int true 用户信息主键id
+// @Success 200 {int} json
+// @Failure Error
 // @router /GetOnlinecoursebookingByTidCount/:userid [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -110,12 +112,14 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingByTidCount() {
 	c.ServeJson()
 }
 
-//20根据学生主键查询预约课程信息
+//20
 // @Title GetOnlinecoursebookingByUid
-// @Description GetOnlinecoursebookingByUid Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据学生主键查询预约课程信息
+// @Param	userid path int true 用户信息主键id
+// @Param	page path int true 获取第几页
+// @Param	size path int true 获取多少行
+// @Success 200 {object} models.OnlinecoursebookingList
+// @Failure Error
 // @router /GetOnlinecoursebookingByUid/:userid/:page/:size [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingByUid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -136,12 +140,12 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingByUid() {
 	c.ServeJson()
 }
 
-//20根据学生主键查询预约课程信息
+//20
 // @Title GetOnlinecoursebookingByUidCount
-// @Description GetOnlinecoursebookingByUidCount Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据学生主键查询预约课程信息总条数
+// @Param	userid path int true 用户信息主键id
+// @Success 200 {int} json
+// @Failure Error
 // @router /GetOnlinecoursebookingByUidCount/:userid [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingByUidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -155,12 +159,14 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingByUidCount() {
 	c.ServeJson()
 }
 
-//20查询学生没有上过的预约课程
+//20
 // @Title GetOnlinecoursebookingBySidNotOn
-// @Description GetOnlinecoursebookingBySidNotOn Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 查询学生没有上过的预约课程
+// @Param	userid path int true 用户信息主键id
+// @Param	page path int true 获取第几页
+// @Param	size path int true 获取多少行
+// @Success 200 {object} models.OnlinecoursebookingList
+// @Failure Error
 // @router /GetOnlinecoursebookingBySidNotOn/:userid/:page/:size [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySidNotOn() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -181,12 +187,12 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySidNotOn() {
 	c.ServeJson()
 }
 
-//20查询学生没有上过的预约课程总条数
+//20
 // @Title GetOnlinecoursebookingBySidNotOnCount
-// @Description GetOnlinecoursebookingBySidNotOnCount Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 查询学生没有上过的预约课程总条数
+// @Param	userid path int true 用户信息主键id
+// @Success 200 {int} json
+// @Failure Error
 // @router /GetOnlinecoursebookingBySidNotOnCount/:userid [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySidNotOnCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -200,12 +206,15 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySidNotOnCount() 
 	c.ServeJson()
 }
 
-//查询学生预约某个老师某天预约了几次课程
+//
 // @Title GetOnlinecoursebookingBySTidTime
-// @Description GetOnlinecoursebookingBySTidTime Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 查询学生预约某个老师某天预约了几次课程
+// @Param	sid path int true 学生用户主键id
+// @Param	tid path int true 老师用户主键id
+// @Param	time1 path string true 开始时间
+// @Param	time2 path string true 结束时间
+// @Success 200 {int} json
+// @Failure Error
 // @router /GetOnlinecoursebookingBySTidTime/:sid/:tid/:time1/:time2 [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySTidTime() {
 	sidStr := c.Ctx.Input.Params[":sid"]
@@ -223,12 +232,13 @@ func (c *OnlinecoursebookingController) GetOnlinecoursebookingBySTidTime() {
 	c.ServeJson()
 }
 
-// 38.根据老师主键id，和时间段查询此时间段预约课程信息
+// 38.
 // @Title GetOnlinecoursebookingByTidTime
-// @Description GetOnlinecoursebookingByTidTime Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据老师主键id，和时间段查询此时间段预约课程信息
+// @Param	userid path int true 老师用户主键id
+// @Param	time1 path string true 开始时间
 // @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecoursebookingByTidTime/:userid/:time1 [get]
 func (c *OnlinecoursebookingController) GetOnlinecoursebookingByTidTime() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -371,10 +381,10 @@ func (c *OnlinecoursebookingController) DeleteOnlinecoursebookingMeeting() {
 }
 
 // @Title Get
-// @Description get Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据预约信息主键id查询此信息老师是否可以进入课堂
+// @Param	onlineid		path 	string	true		预约信息主键id
+// @Success url {string} url
+// @Failure Error
 // @router /GetBHtecher/:onlineid [get]
 func (c *OnlinecoursebookingController) GetOss() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
@@ -394,10 +404,10 @@ func (c *OnlinecoursebookingController) GetOss() {
 }
 
 // @Title GetOnlineClassTeacherurl
-// @Description GetOnlineClassTeacherurl Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 获取老师进入白板的路径
+// @Param	onlineid		path 	string	true		预约信息主键
+// @Success url {string} url
+// @Failure Error
 // @router /GetOnlineClassTeacherurl/:onlineid [get]
 func (c *OnlinecoursebookingController) GetOnlineClassTeacherurl() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
@@ -413,10 +423,10 @@ func (c *OnlinecoursebookingController) GetOnlineClassTeacherurl() {
 }
 
 // @Title Get
-// @Description get Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 获取学生进入白板的url
+// @Param	onlineid		path 	string	true		预约信息主键id
+// @Success json {string} url
+// @Failure Error
 // @router /GetBstudent/:onlineid [get]
 func (c *OnlinecoursebookingController) GetOe() {
 	idStr := c.Ctx.Input.Params[":onlineid"]
@@ -434,12 +444,12 @@ func (c *OnlinecoursebookingController) GetOe() {
 	c.ServeJson()
 }
 
-//根据预约表主键id结算此次课程
+//
 // @Title ClassPay
-// @Description ClassPay Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据预约表主键id结算此次课程
+// @Param	onlineid		path 	string	true		预约信息主键id
+// @Success json {string} resultshow
+// @Failure Error
 // @router /ClassPay/:onlineid [get]
 func (c *OnlinecoursebookingController) ClassPay() {
 	idStr := c.Ctx.Input.Params[":onlineid"] //预约表主键id
@@ -557,19 +567,16 @@ func SetUserClassPay(onlineid int) (resultmsg string, err error) {
 	return
 }
 
-//测试方法
+//
 // @Title ClassPay
-// @Description ClassPay Onlinecoursebooking by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebooking
-// @Failure 403 :id is empty
+// @Description 根据预约主键id计算此次预约课程共计上了多少分钟课程
+// @Param	oid		path 	string	true		预约信息主键id
+// @Success allminutes {int} resultshow
 // @router /GetALLtimeminute/:oid [get]
 func (c *OnlinecoursebookingController) GetALLtimeminute() {
 	oidStr := c.Ctx.Input.Params[":oid"] //预约表主键id
 	oid, _ := strconv.Atoi(oidStr)
 	resultshow := models.GetALLtimeminute(oid)
-
 	c.Data["json"] = resultshow
-
 	c.ServeJson()
 }

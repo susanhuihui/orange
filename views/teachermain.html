@@ -809,18 +809,18 @@
             //if (document.getElementById("txtlistenState").innerText == "已开启") {
             //    alert("试听已开启！");
             //} else {
-            var addlisten = '{"Tid":' + userid + ',"StartTime": "' + getInsertNowDate() + '"}';
-            $.post("http://{{.Website}}/orange/onlinetrylisten/AddOnlinetrylistenOnline/", addlisten,
-                function (data) {
-                    if (data["id"] > 0) {
-                        //alert("试听课堂已开启！");
-                        //window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
-                        document.getElementById("txtlistenState").innerHTML = "已开启";
-                        window.open("http://{{.Website}}/orange/Teacher/TeacherTryListenClass/" + onlineid);
-                    } else {
-                        alert("开启失败！");
-                    }
-                });
+            //var addlisten = '{"Tid":' + userid + ',"StartTime": "' + getInsertNowDate() + '"}';
+            //$.post("http://{{.Website}}/orange/onlinetrylisten/AddOnlinetrylisten/", addlisten,
+            //    function (data) {
+            //        if (data["id"] > 0) {
+            //            //alert("试听课堂已开启！");
+            //            //window.location.href = "http://{{.Website}}/orange/Main/UserTeacher/0";
+            //            document.getElementById("txtlistenState").innerHTML = "已开启";
+            //            window.open("http://{{.Website}}/orange/Teacher/TeacherTryListenClass/" + onlineid);
+            //        } else {
+            //            alert("开启失败！");
+            //        }
+            //    });
             //}
         }
         //结束试听
@@ -861,7 +861,7 @@
                         });
                     } else {//没有，先创建一条试听信息
                         var addlisten = '{"Tid":' + userid + ',"StartTime": "' + getInsertNowDate() + '"}';
-                        $.post("http://{{.Website}}/orange/onlinetrylisten/AddOnlinetrylistenOnline/", addlisten,
+                        $.post("http://{{.Website}}/orange/onlinetrylisten/AddOnlinetrylisten/", addlisten,
                             function (data) {
                                 if (data["id"] > 0) {
 

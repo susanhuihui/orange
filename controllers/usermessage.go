@@ -51,7 +51,7 @@ func (c *UsermessageController) Post() {
 }
 
 // @Title Post
-// @Description create Usermessage
+// @Description 添加留言
 // @Param	body		body 	models.Usermessage	true		"body for Usermessage content"
 // @Success 200 {int} models.Usermessage.Id
 // @Failure 403 body is empty
@@ -76,7 +76,7 @@ func (c *UsermessageController) AddUsermessageOther() {
 }
 
 // @Title Post
-// @Description create Usermessage
+// @Description 老师详情页调用的添加留言
 // @Param	body		body 	models.Usermessage	true		"body for Usermessage content"
 // @Success 200 {int} models.Usermessage.Id
 // @Failure 403 body is empty
@@ -120,10 +120,11 @@ func (c *UsermessageController) GetOne() {
 }
 
 // @Title GetUsermessageBymuid
-// @Description GetUsermessageBymuid Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 老师使用，根据主留言信息主键id和主留言用户id查询留言信息,并更新其都为已查看
+// @Param	mid		path 	string	true		主留言信息id
+// @Param	userid		path 	string	true		用户主键id
+// @Success 200 {string} OK
+// @Failure 403 NO
 // @router /GetUsermessageBymuid/:mid/:userid [get]
 func (c *UsermessageController) GetUsermessageBymuid() {
 	midStr := c.Ctx.Input.Params[":mid"]
@@ -148,10 +149,11 @@ func (c *UsermessageController) GetUsermessageBymuid() {
 }
 
 // @Title GetUsermessageBymuidByStudent
-// @Description GetUsermessageBymuidByStudent Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 学生使用，根据主留言信息主键id和主留言用户id查询留言信息,并更新其都为已查看
+// @Param	mid		path 	string	true		主留言信息id
+// @Param	userid		path 	string	true		用户主键id
+// @Success 200 {string} OK
+// @Failure 403 NO
 // @router /GetUsermessageBymuidByStudent/:mid/:userid [get]
 func (c *UsermessageController) GetUsermessageBymuidByStudent() {
 	midStr := c.Ctx.Input.Params[":mid"]
@@ -198,32 +200,34 @@ func (c *UsermessageController) GetUsermessageBymuidByStudent() {
 //	c.ServeJson()
 //}
 
-// @Title UpdateUsermessageBypiduid
-// @Description UpdateUsermessageBypiduid Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
-// @router /UpdateUsermessageBypiduid/:mid/:userid [get]
-func (c *UsermessageController) UpdateUsermessageBypiduid() {
-	midStr := c.Ctx.Input.Params[":mid"]
-	mid, _ := strconv.Atoi(midStr)
-	useridStr := c.Ctx.Input.Params[":userid"]
-	userid, _ := strconv.Atoi(useridStr)
-	v, err := models.UpdateUsermessageBypiduid(mid, userid)
-	if err != nil {
-		c.Data["json"] = err.Error()
-	} else {
-		c.Data["json"] = v
-	}
-	c.ServeJson()
-}
+//// @Title UpdateUsermessageBypiduid
+//// @Description UpdateUsermessageBypiduid Usermessage by id
+//// @Param	id		path 	string	true		"The key for staticblock"
+//// @Success 200 {object} models.Usermessage
+//// @Failure 403 :id is empty
+//// @router /UpdateUsermessageBypiduid/:mid/:userid [get]
+//func (c *UsermessageController) UpdateUsermessageBypiduid() {
+//	midStr := c.Ctx.Input.Params[":mid"]
+//	mid, _ := strconv.Atoi(midStr)
+//	useridStr := c.Ctx.Input.Params[":userid"]
+//	userid, _ := strconv.Atoi(useridStr)
+//	v, err := models.UpdateUsermessageBypiduid(mid, userid)
+//	if err != nil {
+//		c.Data["json"] = err.Error()
+//	} else {
+//		c.Data["json"] = v
+//	}
+//	c.ServeJson()
+//}
 
 //7老师看学生留言
 // @Title GetUsermessageByTid
-// @Description GetUsermessageByTid Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 老师看全部学生留言
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取页数
+// @Param	size		path 	string	true		获取行数
+// @Success 200 {object} models.UsermessageFStu
+// @Failure Error
 // @router /GetUsermessageByTid/:userid/:page/:size [get]
 func (c *UsermessageController) GetUsermessageByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -246,10 +250,10 @@ func (c *UsermessageController) GetUsermessageByTid() {
 
 //7老师看学生留言总条数
 // @Title GetUsermessageByTidCount
-// @Description GetUsermessageByTidCount Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 老师看学生留言总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success 200 {int} json
+// @Failure 403 Error
 // @router /GetUsermessageByTidCount/:userid [get]
 func (c *UsermessageController) GetUsermessageByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -265,10 +269,12 @@ func (c *UsermessageController) GetUsermessageByTidCount() {
 
 //25.学生查看自己的全部留言信息
 // @Title GetUsermessageBySid
-// @Description GetUsermessageBySid Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 学生查看自己的全部留言信息
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取页数
+// @Param	size		path 	string	true		获取行数
+// @Success 200 {object} models.UsermessageFStu
+// @Failure 403 Error
 // @router /GetUsermessageBySid/:userid/:page/:size [get]
 func (c *UsermessageController) GetUsermessageBySid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -294,10 +300,10 @@ func (c *UsermessageController) GetUsermessageBySid() {
 
 //25.学生查看自己的全部留言信息总条数
 // @Title GetUsermessageBySidCount
-// @Description GetUsermessageBySidCount Usermessage by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Usermessage
-// @Failure 403 :id is empty
+// @Description 学生查看自己的全部留言信息总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success 200 {int} json
+// @Failure 403 Error
 // @router /GetUsermessageBySidCount/:userid [get]
 func (c *UsermessageController) GetUsermessageBySidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]

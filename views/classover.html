@@ -60,8 +60,6 @@
 
         //设置结束时间
         function setonlineovertime() {
-            //var getblack = "http://{{.Website}}/orange/onlinecoursebookingrecord/GetOnlinecoursebookingrecordByTwoid/" + onlineid;
-            //$.getJSON(getblack, function (data) {
                 var payurl = "http://{{.Website}}/orange/onlinecoursebooking/ClassPay/" + onlineid;
                 $.getJSON(payurl, function (data) {
 
@@ -71,7 +69,6 @@
                         document.getElementById("resultcontent").innerHTML = "";
                     }
                 });
-            //});
         }
 
         //课程完成调用结算

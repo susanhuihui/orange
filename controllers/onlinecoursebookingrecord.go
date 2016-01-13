@@ -64,10 +64,11 @@ func (c *OnlinecoursebookingrecordController) GetOne() {
 }
 
 // @Title GetOnlinecoursebookingrecordByUid
-// @Description GetOnlinecoursebookingrecordByUid Onlinecoursebookingrecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询老师或学生一条课堂时间记录，一条时间最近且结束时间为null的记录 并记录结束时间
+// @Param	userid path int true 用户主键id
+// @Param	bookid path int true 预约信息主键id
 // @Success 200 {object} models.Onlinecoursebookingrecord
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecoursebookingrecordByUid/:userid/:bookid [get]
 func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -85,10 +86,11 @@ func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid(
 }
 
 // @Title GetOnlinecoursebookingrecordByUid2
-// @Description GetOnlinecoursebookingrecordByUid2 Onlinecoursebookingrecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询老师或学生一条课堂时间记录，一条时间最近且结束时间为null的记录 并记录结束时间
+// @Param	userid path int true 用户主键id
+// @Param	bookid path int true 预约信息主键id
 // @Success 200 {object} models.Onlinecoursebookingrecord
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecoursebookingrecordByUid2/:userid/:bookid [get]
 func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid2() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -105,30 +107,12 @@ func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByUid2
 	c.ServeJson()
 }
 
-// @Title GetOnlinecoursebookingrecordByTwoid
-// @Description GetOnlinecoursebookingrecordByTwoid Onlinecoursebookingrecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecoursebookingrecord
-// @Failure 403 :id is empty
-// @router /GetOnlinecoursebookingrecordByTwoid/:bookid [get]
-func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordByTwoid() {
-	bookidStr := c.Ctx.Input.Params[":bookid"]
-	bookid, _ := strconv.Atoi(bookidStr)
-	v, err := models.GetOnlinecoursebookingrecordByTwoid(bookid)
-
-	if err != nil {
-		c.Data["json"] = err.Error()
-	} else {
-		c.Data["json"] = v
-	}
-	c.ServeJson()
-}
-
 // @Title GetOnlinecoursebookingrecordBybookiduid
-// @Description GetOnlinecoursebookingrecordBybookiduid Onlinecoursebookingrecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询老师或学生关于某次课程的全部课程时间记录信息
+// @Param	userid path int true 用户主键id
+// @Param	bookid path int true 预约信息主键id
 // @Success 200 {object} models.Onlinecoursebookingrecord
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecoursebookingrecordBybookiduid/:userid/:bookid [get]
 func (c *OnlinecoursebookingrecordController) GetOnlinecoursebookingrecordBybookiduid() {
 	idStr := c.Ctx.Input.Params[":userid"]

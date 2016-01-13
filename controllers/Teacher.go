@@ -17,22 +17,12 @@ type TeacherController struct {
 func (c *TeacherController) Get() {
 	c.Data["Website"] = models.OnlineUrl
 	c.Data["allUserscount"] = 200
-
 	c.TplNames = "teacher_Model.html" //
 }
 
-//展示
-//func (c *TeacherController) Get() {
-//	c.Data["Website"] = OnlineUrl
-//	c.TplNames = "teacher.html" //
-//}
-
-// 老师
 // @Title TeacherList
-// @Description TeacherList the Userinformation
-// @Param			"The id you want to TeacherList"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 展示找老师页面
+// @Param seltype query int true 查询类型，排序类型
 // @router /TeacherList/:seltype [get]
 func (c *TeacherController) TeacherList() {
 	c.Data["Website"] = models.OnlineUrl
@@ -155,12 +145,9 @@ func (c *TeacherController) TeacherList() {
 	c.TplNames = "teacher_Model.html" //
 }
 
-// 查看老师
 // @Title TeacherInformation
-// @Description TeacherInformation the Userinformation
-// @Param			"The id you want to TeacherInformation"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到查看老师
+// @Param tid query int true 老师主键id
 // @router /TeacherInformation/:tid [get]
 func (c *TeacherController) TeacherInformation() {
 	c.Data["Website"] = models.OnlineUrl
@@ -217,12 +204,9 @@ func (c *TeacherController) TeacherInformation() {
 	c.TplNames = "teacherlist.html" //跳到老师个人中心
 }
 
-// 给他留言
 // @Title TeacherMessage
-// @Description TeacherMessage the Userinformation
-// @Param			"The id you want to TeacherMessage"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到给老师留言页面
+// @Param tid query int true 老师主键id
 // @router /TeacherMessage/:tid [get]
 func (c *TeacherController) TeacherMessage() {
 	c.Data["Website"] = models.OnlineUrl
@@ -240,12 +224,9 @@ func (c *TeacherController) TeacherMessage() {
 	c.TplNames = "message.html" //跳到给老师留言页面
 }
 
-// 查看一条问答
 // @Title ProblemModel
-// @Description ProblemModel the Userinformation
-// @Param			"The id you want to ProblemModel"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到查看一条问答
+// @Param adkid query int true 问答主键id
 // @router /ProblemModel/:adkid [get]
 func (c *TeacherController) ProblemModel() {
 	c.Data["Website"] = models.OnlineUrl
@@ -271,12 +252,9 @@ func (c *TeacherController) ProblemModel() {
 	c.TplNames = "problem_main.html" //
 }
 
-// 查看一条精彩问答值展示问答
 // @Title ProblemModel
-// @Description ProblemModel the Userinformation
-// @Param			"The id you want to ProblemModel"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到查看一条精彩问答值展示问答
+// @Param adkid query int true 问答主键id
 // @router /ProblemModelShow/:adkid [get]
 func (c *TeacherController) ProblemModelshow() {
 	c.Data["Website"] = models.OnlineUrl
@@ -302,12 +280,9 @@ func (c *TeacherController) ProblemModelshow() {
 	c.TplNames = "problem_show.html" //
 }
 
-// 老师回答一条问题
 // @Title ProblemAnswer
-// @Description ProblemAnswer the Userinformation
-// @Param			"The id you want to ProblemAnswer"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到老师回答一条问题
+// @Param adkid query int true 问答主键id
 // @router /ProblemAnswer/:adkid [get]
 func (c *TeacherController) ProblemAnswer() {
 	c.Data["Website"] = models.OnlineUrl
@@ -333,25 +308,17 @@ func (c *TeacherController) ProblemAnswer() {
 	c.TplNames = "problem_answer.html" //
 }
 
-// 我要提问
 // @Title UserAskQuestion
-// @Description UserAskQuestion the Userinformation
-// @Param			"The id you want to UserAskQuestion"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 跳页到我要提问页面
 // @router /UserAskQuestion/ [get]
 func (c *TeacherController) UserAskQuestion() {
 	c.Data["Website"] = models.OnlineUrl
-
 	c.TplNames = "problem.html" //
 }
 
-// 我要提问
 // @Title UserAskQuestion
-// @Description UserAskQuestion the Userinformation
-// @Param			"The id you want to UserAskQuestion"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 添加一条提问信息
+// @Param Questionask form models.Questionask true 一条提问实体
 // @router /UserAskQuestion/ [Post]
 func (c *TeacherController) UserAskQuestion2() {
 	c.Data["Website"] = models.OnlineUrl
@@ -400,24 +367,17 @@ func (c *TeacherController) UserAskQuestion2() {
 	c.Redirect("/orange/Main/UserStudent/3", 302)
 }
 
-// 老师从个人中心进入编辑预约
 // @Title TeacherSetMeet
-// @Description TeacherSetMeet the Userinformation
-// @Param			"The id you want to TeacherSetMeet"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师从个人中心进入编辑预约
 // @router /TeacherSetMeet/ [get]
 func (c *TeacherController) TeacherSetMeet() {
 	c.Data["Website"] = models.OnlineUrl
 	c.TplNames = "reservationteacher.html" //
 }
 
-// 学生点击老师，预约此老师课程
 // @Title StudentSetTeacherMeet
-// @Description StudentSetTeacherMeet the Userinformation
-// @Param			"The id you want to StudentSetTeacherMeet"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生点击老师，预约此老师课程
+// @Param tid query int true 老师主键id
 // @router /StudentSetTeacherMeet/:tid [get]
 func (c *TeacherController) StudentSetTeacherMeet() {
 	c.Data["Website"] = models.OnlineUrl
@@ -435,12 +395,9 @@ func (c *TeacherController) StudentSetTeacherMeet() {
 	c.TplNames = "reservation.html" //
 }
 
-// 老师跳页，跳到听课页面
 // @Title TeacherOnlineClass
-// @Description TeacherOnlineClass the Userinformation
-// @Param			"The id you want to TeacherOnlineClass"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师跳页，跳到听课页面
+// @Param onlineid query int true 预约信息主键id
 // @router /TeacherOnlineClass/:onlineid [get]
 func (c *TeacherController) TeacherOnlineClass() {
 	c.Data["Website"] = models.OnlineUrl
@@ -451,12 +408,9 @@ func (c *TeacherController) TeacherOnlineClass() {
 	c.TplNames = "tk.html"                       //
 }
 
-// 学生跳页，跳到听课页面
 // @Title StudentOnlineClass
-// @Description StudentOnlineClass the Userinformation
-// @Param			"The id you want to StudentOnlineClass"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生跳页，跳到听课页面
+// @Param onlineid query int true 预约信息主键id
 // @router /StudentOnlineClass/:onlineid [get]
 func (c *TeacherController) StudentOnlineClass() {
 	c.Data["Website"] = models.OnlineUrl
@@ -467,12 +421,9 @@ func (c *TeacherController) StudentOnlineClass() {
 	c.TplNames = "tk_student.html" //
 }
 
-// 老师进入试听课程
 // @Title TeacherTryListenClass
-// @Description TeacherTryListenClass the Userinformation
-// @Param			"The id you want to TeacherTryListenClass"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 老师进入试听课程
+// @Param listenid query int true 试听信息主键id
 // @router /TeacherTryListenClass/:listenid [get]
 func (c *TeacherController) TeacherTryListenClass() {
 	c.Data["Website"] = models.OnlineUrl
@@ -483,12 +434,9 @@ func (c *TeacherController) TeacherTryListenClass() {
 	c.TplNames = "listenteacher.html"              //
 }
 
-// 学生进入试听
 // @Title StudentTryListenClass
-// @Description StudentTryListenClass the Userinformation
-// @Param			"The id you want to StudentTryListenClass"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 学生进入试听
+// @Param listenid query int true 试听信息主键id
 // @router /StudentTryListenClass/:listenid [get]
 func (c *TeacherController) StudentTryListenClass() {
 	c.Data["Website"] = models.OnlineUrl
@@ -498,25 +446,16 @@ func (c *TeacherController) StudentTryListenClass() {
 	c.TplNames = "listenstudent.html"              //
 }
 
-// 在线课堂结束后进入的页面
 // @Title ClassOverHtml
-// @Description ClassOverHtml the Userinformation
-// @Param			"The id you want to ClassOverHtml"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 在线课堂结束后进入的页面
 // @router /ClassOverHtml/ [get]
 func (c *TeacherController) ClassOverHtml() {
 	c.Data["Website"] = models.OnlineUrl
-
 	c.TplNames = "classover.html" //
 }
 
-// 在线试听结束后进入的页面
 // @Title ListenOverHtml
-// @Description ListenOverHtml the Userinformation
-// @Param			"The id you want to ListenOverHtml"
-// @Success 200 {object} models.Userinformation
-// @Failure 403
+// @Description 在线试听结束后进入的页面
 // @router /ListenOverHtml/ [get]
 func (c *TeacherController) ListenOverHtml() {
 	c.Data["Website"] = models.OnlineUrl

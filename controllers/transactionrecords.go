@@ -66,10 +66,12 @@ func (c *TransactionrecordsController) GetOne() {
 
 //14查询用户交易记录
 // @Title GetTransactionrecordsByTid
-// @Description GetTransactionrecordsByTid Transactionrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Transactionrecords
-// @Failure 403 :id is empty
+// @Description 查询用户交易记录
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取页数
+// @Param	size		path 	string	true		获取行数
+// @Success 200 {object} models.TransactionrecordsUserList
+// @Failure Error
 // @router /GetTransactionrecordsByTid/:userid/:page/:size [get]
 func (c *TransactionrecordsController) GetTransactionrecordsByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -92,10 +94,10 @@ func (c *TransactionrecordsController) GetTransactionrecordsByTid() {
 
 //14查询用户交易记录
 // @Title GetTransactionrecordsByTidCount
-// @Description GetTransactionrecordsByTidCount Transactionrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Transactionrecords
-// @Failure 403 :id is empty
+// @Description 查询用户交易记录总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetTransactionrecordsByTidCount/:userid [get]
 func (c *TransactionrecordsController) GetTransactionrecordsByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -111,10 +113,12 @@ func (c *TransactionrecordsController) GetTransactionrecordsByTidCount() {
 
 //23.查询学生消费记录
 // @Title GetTransactionrecordsBySid
-// @Description GetTransactionrecordsBySid Transactionrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Transactionrecords
-// @Failure 403 :id is empty
+// @Description 查询学生消费记录
+// @Param	userid		path 	string	true		用户主键id
+// @Param	page		path 	string	true		获取页数
+// @Param	size		path 	string	true		获取行数
+// @Success 200 {object} models.TransactionrecordsUserList
+// @Failure Error
 // @router /GetTransactionrecordsBySid/:userid/:page/:size [get]
 func (c *TransactionrecordsController) GetTransactionrecordsBySid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -137,10 +141,10 @@ func (c *TransactionrecordsController) GetTransactionrecordsBySid() {
 
 //23.查询学生消费记录总条数
 // @Title GetTransactionrecordsBySidCount
-// @Description GetTransactionrecordsBySidCount Transactionrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Transactionrecords
-// @Failure 403 :id is empty
+// @Description 查询学生消费记录总条数
+// @Param	userid		path 	string	true		用户主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetTransactionrecordsBySidCount/:userid [get]
 func (c *TransactionrecordsController) GetTransactionrecordsBySidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]

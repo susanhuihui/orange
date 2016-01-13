@@ -66,10 +66,10 @@ func (c *OnlinecourserecordController) GetOne() {
 }
 
 // @Title GetOnlinecourserecordByBookid
-// @Description GetOnlinecourserecordByBookid Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据预约课程主键查询一条课程信息
+// @Param	bookid		path 	string	true		预约课程主键
 // @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetOnlinecourserecordByBookid/:bookid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordByBookid() {
 	idStr := c.Ctx.Input.Params[":bookid"]
@@ -85,10 +85,12 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordByBookid() {
 
 //4查询老师全部课程信息
 // @Title GetOnlinecourserecordByTid
-// @Description GetOnlinecourserecordByTid Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Description 查询老师全部课程信息
+// @Param	userid		path 	string	true		用户信息主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.OnlinecourserecordByT
+// @Failure Error
 // @router /GetOnlinecourserecordByTid/:userid/:page/:size [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordByTid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -111,10 +113,10 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordByTid() {
 
 //4查询老师全部课程信息总条数
 // @Title GetOnlinecourserecordByTidCount
-// @Description GetOnlinecourserecordByTidCount Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Description 查询老师全部课程信息总条数
+// @Param	userid		path 	string	true		用户信息主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetOnlinecourserecordByTidCount/:userid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordByTidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -130,10 +132,12 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordByTidCount() {
 
 //18.查询学生全部课程
 // @Title GetOnlinecourserecordByUid
-// @Description GetOnlinecourserecordByUid Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Description 查询学生全部课程
+// @Param	userid		path 	string	true		用户信息主键id
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.OnlinecourserecordByT
+// @Failure Error
 // @router /GetOnlinecourserecordByUid/:userid/:page/:size [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordByUid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -154,12 +158,12 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordByUid() {
 	c.ServeJson()
 }
 
-//18.查询学生全部课程
+//18.查询学生全部课程总条数
 // @Title GetOnlinecourserecordByUidCount
-// @Description GetOnlinecourserecordByUidCount Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Description 查询学生全部课程总条数
+// @Param	userid		path 	string	true		用户信息主键id
+// @Success json {int} json
+// @Failure Error
 // @router /GetOnlinecourserecordByUidCount/:userid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordByUidCount() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -175,10 +179,10 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordByUidCount() {
 
 //40.查询给我上过课的老师们
 // @Title GetOnlinecourserecordTeacherByUid
-// @Description GetOnlinecourserecordTeacherByUid Onlinecourserecord by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403 :id is empty
+// @Description 查询给我上过课的老师们
+// @Param	userid		path 	string	true		用户信息主键id
+// @Success 200 {object} models.OnlinecourserecordByU
+// @Failure Error
 // @router /GetOnlinecourserecordTeacherByUid/:userid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -193,12 +197,12 @@ func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUid() {
 }
 
 //40.查询给我上过课的老师们
-
 // @Title Get All
-// @Description get Onlinecourserecord
-// @Param	userid		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Onlinecourserecord
-// @Failure 403
+// @Description 根据学科选择教过自己的老师
+// @Param	userid		path 	string	true	用户主键id
+// @Param	classid		path 	string	true	课程主键id
+// @Success 200 {object} models.OnlinecourserecordByU
+// @Failure Error
 // @router /GetOnlinecourserecordTeacherByUCid/:userid/:classid [get]
 func (c *OnlinecourserecordController) GetOnlinecourserecordTeacherByUCid() {
 	idStr := c.Ctx.Input.Params[":userid"]
@@ -312,7 +316,7 @@ func (c *OnlinecourserecordController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteOnlinecourserecord/:id [delete]
+// @router /DeleteOnlinecourserecord/:id [get]
 func (c *OnlinecourserecordController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

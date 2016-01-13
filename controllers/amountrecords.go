@@ -48,8 +48,8 @@ func (c *AmountrecordsController) Post() {
 }
 
 // @Title Post
-// @Description create Amountrecords
-// @Param	body		body 	models.Amountrecords	true		"body for Amountrecords content"
+// @Description 新增一条提现记录
+// @Param Amountrecords form models.Amountrecords true 提现记录实体
 // @Success 200 {int} models.Amountrecords.Id
 // @Failure 403 body is empty
 // @router /AddAmountrecordsStudent/ [post]
@@ -109,11 +109,14 @@ func (c *AmountrecordsController) GetOne() {
 	c.ServeJson()
 }
 
-//15.查询用户（提现/充值）记录状态都为1的情况
+//15.
 // @Title GetAmountrecordsByUserid
-// @Description GetAmountrecordsByUserid Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Amountrecords
+// @Description 查询用户（提现/充值）记录状态都为1的情况
+// @Param	recordtype query int true 充值提现类型
+// @Param	userid query int true 用户主键id
+// @Param	page query int true 获取页码数
+// @Param	size query int true 获取行数
+// @Success 200 {object} models.AmountrecordsUserList
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsByUserid/:recordtype/:userid/:page/:size [get]
 func (c *AmountrecordsController) GetAmountrecordsByUserid() {
@@ -137,10 +140,11 @@ func (c *AmountrecordsController) GetAmountrecordsByUserid() {
 	c.ServeJson()
 }
 
-//15.查询用户（提现/充值）记录总条数
+//15.
 // @Title GetAmountrecordsByUseridCount
-// @Description GetAmountrecordsByUseridCount Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询用户（提现/充值）记录总条数
+// @Param	recordtype query int true 充值提现类型
+// @Param	userid query int true 用户主键id
 // @Success 200 {object} models.Amountrecords
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsByUseridCount/:recordtype/:userid [get]
@@ -158,11 +162,13 @@ func (c *AmountrecordsController) GetAmountrecordsByUseridCount() {
 	c.ServeJson()
 }
 
-//15.查询用户（提现recordtype = 1）全部提现记录 **/
+//15.
 // @Title GetAmountrecordsTixianByUserid
-// @Description GetAmountrecordsTixianByUserid Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Amountrecords
+// @Description 查询用户（提现recordtype = 1）全部提现记录
+// @Param	userid query int true 用户主键id
+// @Param	page query int true 获取页码数
+// @Param	size query int true 获取行数
+// @Success 200 {object} models.AmountrecordsUserList
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsTixianByUserid/:userid/:page/:size [get]
 func (c *AmountrecordsController) GetAmountrecordsTixianByUserid() {
@@ -184,10 +190,10 @@ func (c *AmountrecordsController) GetAmountrecordsTixianByUserid() {
 	c.ServeJson()
 }
 
-//15.查询用户（提现recordtype = 1）全部提现记录 **/
+//15.
 // @Title GetAmountrecordsTixianByUseridCount
-// @Description GetAmountrecordsTixianByUseridCount Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询用户（提现recordtype = 1）全部提现记录
+// @Param	userid query int true 用户主键id
 // @Success 200 {object} models.Amountrecords
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsTixianByUseridCount/:userid [get]
@@ -203,10 +209,10 @@ func (c *AmountrecordsController) GetAmountrecordsTixianByUseridCount() {
 	c.ServeJson()
 }
 
-//15.查询用户正在提现的全部金额，继续提现的时候根据此值判断是否可继续提现
+//15.
 // @Title GetAmountrecordsTMcountByUid
-// @Description GetAmountrecordsTMcountByUid Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询用户正在提现的全部金额，继续提现的时候根据此值判断是否可继续提现
+// @Param	userid path int true 用户主键id
 // @Success 200 {object} models.Amountrecords
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsTMcountByUid/:userid [get]
@@ -222,11 +228,12 @@ func (c *AmountrecordsController) GetAmountrecordsTMcountByUid() {
 	c.ServeJson()
 }
 
-//15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录
+//15.
 // @Title GetAmountrecordsAllT
-// @Description GetAmountrecordsAllT Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Amountrecords
+// @Description 管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录
+// @Param	page path int true 获取页码数
+// @Param	size path int true 获取行数
+// @Success 200 {object} models.AmountrecordsUserAllT
 // @Failure 403 :id is empty
 // @router /GetAmountrecordsAllT/:page/:size [get]
 func (c *AmountrecordsController) GetAmountrecordsAllT() {
@@ -246,12 +253,11 @@ func (c *AmountrecordsController) GetAmountrecordsAllT() {
 	c.ServeJson()
 }
 
-//15.管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录总条数
+//15.
 // @Title GetAmountrecordsAllTCount
-// @Description GetAmountrecordsAllTCount Amountrecords by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 管理员查询全部用户正在申请的（提现recordtype = 1）全部提现记录总条数
 // @Success 200 {object} models.Amountrecords
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetAmountrecordsAllTCount/ [get]
 func (c *AmountrecordsController) GetAmountrecordsAllTCount() {
 	v, err := models.GetAmountrecordsAllTCount()
@@ -357,11 +363,11 @@ func (c *AmountrecordsController) Put() {
 }
 
 // @Title Update
-// @Description update the Amountrecords
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Amountrecords	true		"body for Amountrecords content"
-// @Success 200 {object} models.Amountrecords
-// @Failure 403 :id is not int
+// @Description 给用户发放自己资金
+// @Param	id		path 	int	true		提现主键id
+// @Param	identityid		path 	int	true		用户身份id
+// @Success OK {string} success!
+// @Failure error
 // @router /FaFang/:id/:identityid [post]
 func (c *AmountrecordsController) FaFang() {
 	idStr := c.Ctx.Input.Params[":id"]

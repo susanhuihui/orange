@@ -222,6 +222,7 @@ func init() {
 
 	beego.SetStaticPath("/orange/Teacher/UserAskQuestion/b/fonts", "views/b/fonts")
 	beego.SetStaticPath("/orange/Main/GetOnlineCourseBooking/views/images", "views/images")
+	beego.SetStaticPath("/default.pdf", "views/default.pdf")
 
 	beego.Router("/", &controllers.MainController{})
 	beego.Router("/Teacher", &controllers.TeacherController{})

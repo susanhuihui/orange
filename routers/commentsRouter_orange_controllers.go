@@ -570,7 +570,7 @@ func init() {
 		beego.ControllerComments{
 			"Put",
 			`/UpdateFrozenfundsById/:id`,
-			[]string{"put"},
+			[]string{"post"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:FrozenfundsController"] = append(beego.GlobalControllerRouter["orange/controllers:FrozenfundsController"],
@@ -1065,13 +1065,6 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"],
 		beego.ControllerComments{
-			"GetOnlinecoursebookingrecordByTwoid",
-			`/GetOnlinecoursebookingrecordByTwoid/:bookid`,
-			[]string{"get"},
-			nil})
-
-	beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinecoursebookingrecordController"],
-		beego.ControllerComments{
 			"GetOnlinecoursebookingrecordBybookiduid",
 			`/GetOnlinecoursebookingrecordBybookiduid/:userid/:bookid`,
 			[]string{"get"},
@@ -1249,20 +1242,13 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteOnlinecourserecord/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
 		beego.ControllerComments{
 			"Post",
 			`/AddOnlinetrylisten/`,
-			[]string{"post"},
-			nil})
-
-	beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"] = append(beego.GlobalControllerRouter["orange/controllers:OnlinetrylistenController"],
-		beego.ControllerComments{
-			"AddOnlinetrylistenOnline",
-			`/AddOnlinetrylistenOnline/`,
 			[]string{"post"},
 			nil})
 
@@ -1802,7 +1788,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteSchools/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:TeacherController"] = append(beego.GlobalControllerRouter["orange/controllers:TeacherController"],
@@ -2213,20 +2199,6 @@ func init() {
 
 	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
 		beego.ControllerComments{
-			"UpdateUserimg",
-			`/UpdateUserimg/:userid`,
-			[]string{"post"},
-			nil})
-
-	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
-		beego.ControllerComments{
-			"UpdateUserimg2",
-			`/UpdateUserimg2/`,
-			[]string{"post"},
-			nil})
-
-	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
-		beego.ControllerComments{
 			"GetUserinformationTeacherAll",
 			`/GetUserinformationTeacherAll/:page/:size`,
 			[]string{"get"},
@@ -2313,13 +2285,6 @@ func init() {
 		beego.ControllerComments{
 			"GetUsermessageBymuidByStudent",
 			`/GetUsermessageBymuidByStudent/:mid/:userid`,
-			[]string{"get"},
-			nil})
-
-	beego.GlobalControllerRouter["orange/controllers:UsermessageController"] = append(beego.GlobalControllerRouter["orange/controllers:UsermessageController"],
-		beego.ControllerComments{
-			"UpdateUsermessageBypiduid",
-			`/UpdateUsermessageBypiduid/:mid/:userid`,
 			[]string{"get"},
 			nil})
 

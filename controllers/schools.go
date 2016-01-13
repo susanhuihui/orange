@@ -59,17 +59,18 @@ func (c *SchoolsController) GetOne() {
 }
 
 // @Title GetSchoolsByCity
-// @Description GetSchoolsByCity Countys by pid
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据类型查询相应类型的学校（0小学，2初中，3高中，大学1）
+// @Param	cid		path 	string	true		城市主键id
+// @Param	typeid		path 	string	true		学生类型
 // @Success 200 {object} models.Countys
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetSchoolsByCity/:cid/:typeid [get]
 func (c *SchoolsController) GetSchoolsByCity() {
 	idStr := c.Ctx.Input.Params[":cid"]
 	cid, _ := strconv.Atoi(idStr)
 	typeidStr := c.Ctx.Input.Params[":typeid"]
 	typeid, _ := strconv.Atoi(typeidStr)
-	v, err := models.GetSchoolsByCity(cid,typeid)
+	v, err := models.GetSchoolsByCity(cid, typeid)
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
@@ -95,13 +96,13 @@ func (c *SchoolsController) GetAll() {
 	var order []string
 	var query map[string]string = make(map[string]string)
 
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.ParseInt(page, 0, 0)//传来的页数
-	rows, _ := strconv.ParseInt(size, 0, 0) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
+	page := c.Ctx.Input.Param(":page")       //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size")       //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.ParseInt(page, 0, 0) //传来的页数
+	rows, _ := strconv.ParseInt(size, 0, 0)  //传来的显示行数
+	truepages := (pages - 1) * rows          //计算舍弃多少行
+	limit := rows                            //显示行数
+	offset := truepages                      //舍弃行数	//新加--------结束--------
 
 	// fields: col1,col2,entity.col3
 	if v := c.GetString("fields"); v != "" {
@@ -171,7 +172,7 @@ func (c *SchoolsController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteSchools/:id [delete]
+// @router /DeleteSchools/:id [get]
 func (c *SchoolsController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

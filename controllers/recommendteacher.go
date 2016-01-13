@@ -67,10 +67,11 @@ func (c *RecommendteacherController) GetOne() {
 }
 
 // @Title GetRecommendteacherAll
-// @Description GetRecommendteacherAll Recommendteacher by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Recommendteacher
-// @Failure 403 :id is empty
+// @Description 查询全部学生推荐信息
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.RecommendteacherAll
+// @Failure Error
 // @router /GetRecommendteacherAll/:page/:size [get]
 func (c *RecommendteacherController) GetRecommendteacherAll() {
 	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
@@ -84,16 +85,17 @@ func (c *RecommendteacherController) GetRecommendteacherAll() {
 	if err != nil {
 		c.Data["json"] = err.Error()
 	} else {
+		fmt.Println("获取全部推荐信息：")
+		fmt.Println(v)
 		c.Data["json"] = v
 	}
 	c.ServeJson()
 }
 
 // @Title GetRecommendteacherAllCount
-// @Description GetRecommendteacherAllCount Recommendteacher by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Recommendteacher
-// @Failure 403 :id is empty
+// @Description 查询全部学生推荐信息总条数
+// @Success json {int} json
+// @Failure Error
 // @router /GetRecommendteacherAllCount/ [get]
 func (c *RecommendteacherController) GetRecommendteacherAllCount() {
 	v, err := models.GetRecommendteacherAllCount()

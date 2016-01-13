@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
-	"strconv"
 	"strings"
 	"time"
 
@@ -139,7 +138,7 @@ func GetUsermessageBySidCount(userid int) (allcount int, err error) {
 }
 
 //
-//
+//根据主留言信息主键id和主留言用户id查询留言信息
 func GetUsermessageBymuid(mid int, userid int) (usermess []Usermessage, err error) {
 	o := orm.NewOrm()
 	var rs orm.RawSeter
@@ -170,21 +169,21 @@ func GetUsermessageBymuid(mid int, userid int) (usermess []Usermessage, err erro
 //	return
 //}
 
-//更改一条留言下的所有回复为已读(错误方法)
-func UpdateUsermessageBypiduid(mid int, userid int) (num int, err error) {
-	o := orm.NewOrm()
-	usermesg, _ := GetUsermessageBymuid(mid, userid)
-	fmt.Println(usermesg)
-	var rs orm.RawSeter
-	for i := 0; i < len(usermesg); i++ {
-		var upstr string = `update usermessage set states='1' where PKId=` + strconv.Itoa(usermesg[i].Id) + `; SELECT ROW_COUNT() as roocount;`
-		fmt.Println(upstr)
-		rs = o.Raw(upstr)
-		err = rs.QueryRow(&num)
-		fmt.Println(err)
-	}
-	return num, err
-}
+////更改一条留言下的所有回复为已读(错误方法)
+//func UpdateUsermessageBypiduid(mid int, userid int) (num int, err error) {
+//	o := orm.NewOrm()
+//	usermesg, _ := GetUsermessageBymuid(mid, userid)
+//	fmt.Println(usermesg)
+//	var rs orm.RawSeter
+//	for i := 0; i < len(usermesg); i++ {
+//		var upstr string = `update usermessage set states='1' where PKId=` + strconv.Itoa(usermesg[i].Id) + `; SELECT ROW_COUNT() as roocount;`
+//		fmt.Println(upstr)
+//		rs = o.Raw(upstr)
+//		err = rs.QueryRow(&num)
+//		fmt.Println(err)
+//	}
+//	return num, err
+//}
 
 // AddUsermessage insert a new Usermessage into database and returns
 // last inserted Id on success.

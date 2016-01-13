@@ -81,10 +81,10 @@ func (c *UserinformationController) GetOne() {
 }
 
 // @Title GetUserinformationByPhone
-// @Description GetUserinformationByPhone Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 根据手机号查询用户信息是否存在信息
+// @Param	phone		path 	string	true		手机号码
+// @Success result {int} 0
+// @Failure result 1 已存在
 // @router /GetUserinformationByPhone/:phone [get]
 func (c *UserinformationController) GetUserinformationByPhone() {
 	phoneStr := c.Ctx.Input.Params[":phone"]
@@ -101,10 +101,10 @@ func (c *UserinformationController) GetUserinformationByPhone() {
 }
 
 // @Title GetUserinformationByUserName
-// @Description GetUserinformationByUserName Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 根据姓名查询用户信息是否存在信息
+// @Param	name		path 	string	true		用户姓名
+// @Success result {int} 0
+// @Failure result 1 已存在
 // @router /GetUserinformationByUserName/:name [get]
 func (c *UserinformationController) GetUserinformationByUserName() {
 	nameStr := c.Ctx.Input.Params[":name"]
@@ -119,10 +119,10 @@ func (c *UserinformationController) GetUserinformationByUserName() {
 }
 
 // @Title GetUserinformationOneByName
-// @Description GetUserinformationOneByName Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据姓名查询一条用户信息
+// @Param	name		path 	string	true		用户姓名
 // @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetUserinformationOneByName/:name [get]
 func (c *UserinformationController) GetUserinformationOneByName() {
 	nameStr := c.Ctx.Input.Params[":name"]
@@ -137,10 +137,10 @@ func (c *UserinformationController) GetUserinformationOneByName() {
 }
 
 // @Title GetUserinformationPhone
-// @Description GetUserinformationPhone Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据电话号码查询一条用户信息
+// @Param	phone		path 	string	true		电话号码
 // @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /GetUserinformationPhone/:phone [get]
 func (c *UserinformationController) GetUserinformationPhone() {
 	phoneStr := c.Ctx.Input.Params[":phone"]
@@ -156,10 +156,12 @@ func (c *UserinformationController) GetUserinformationPhone() {
 
 //根据用户验证密码是否正确(仅用于修改密码时调用，登录时不可调用)
 // @Title GetUserinformationByIdPass
-// @Description GetUserinformationByIdPass Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 根据用户验证密码是否正确(仅用于修改密码时调用，登录时不可调用)
+// @Param	id		path 	string	true		用户主键id
+// @Param	pass		path 	string	true		密码
+// @Success true {string} true
+// @Failure Error
+// @Failure false false 不正确
 // @router /GetUserinformationByIdPass/:id/:pass [get]
 func (c *UserinformationController) GetUserinformationByIdPass() {
 	idStr := c.Ctx.Input.Params[":id"]
@@ -181,10 +183,10 @@ func (c *UserinformationController) GetUserinformationByIdPass() {
 }
 
 // @Title Get
-// @Description get Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 查询首页老师图片轮换
+// @Param	count		path 	string	true		获取几个图片
+// @Success 200 {object} models.UserinformationPic
+// @Failure Error
 // @router /GetUserinformationPicMove/:count [get]
 func (c *UserinformationController) GetUserinformationPicMove() {
 	idStr := c.Ctx.Input.Params[":count"]
@@ -199,9 +201,16 @@ func (c *UserinformationController) GetUserinformationPicMove() {
 }
 
 // @Title GetUserinformationAllTeacher
-// @Description GetUserinformationAllTeacher Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
+// @Description 检索老师全部信息
+// @Param	seltype		path 	string	true		排序条件
+// @Param	nianji		path 	string	true		年级条件
+// @Param	kecheng		path 	string	true		课程条件
+// @Param	jibie		path 	string	true		级别条件
+// @Param	shengfen		path 	string	true		省份条件
+// @Param	shiqu		path 	string	true		市区条件
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success 200 {object} models.UserinformationModels
 // @Failure 403 :id is empty
 // @router /GetUserinformationAllTeacher/:seltype/:nianji/:kecheng/:jibie/:shengfen/:shiqu/:page/:size [get]
 func (c *UserinformationController) GetUserinformationAllTeacher() {
@@ -269,10 +278,17 @@ func (c *UserinformationController) GetUserinformationAllTeacher() {
 }
 
 // @Title GetUserinformationAllTeacherCount
-// @Description GetUserinformationAllTeacherCount Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 检索老师全部信息总条数
+// @Param	seltype		path 	string	true		排序条件
+// @Param	nianji		path 	string	true		年级条件
+// @Param	kecheng		path 	string	true		课程条件
+// @Param	jibie		path 	string	true		级别条件
+// @Param	shengfen		path 	string	true		省份条件
+// @Param	shiqu		path 	string	true		市区条件
+// @Param	page		path 	string	true		获取第几页
+// @Param	size		path 	string	true		获取多少行
+// @Success json {int} json
+// @Failure Error
 // @router /GetUserinformationAllTeacherCount/:seltype/:nianji/:kecheng/:jibie/:shengfen/:shiqu [get]
 func (c *UserinformationController) GetUserinformationAllTeacherCount() {
 	seltypestr := c.Ctx.Input.Params[":seltype"]
@@ -450,77 +466,78 @@ func (c *UserinformationController) DeleteUserinformation() {
 	c.ServeJson()
 }
 
-// @Title Update
-// @Description update the Userinformation
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is not int
-// @router /UpdateUserimg/:userid [post]
-func (c *UserinformationController) UpdateUserimg() {
-	request := c.Ctx.Request
-	fmt.Println("是否调到")
-	jsons, imgstr := models.GetImganddata2(request, Headurl)
-	var v models.Userinformation
-	json.Unmarshal([]byte(jsons), &v)
-	fmt.Println(jsons)
-	//保存用户头像
-	idStr := c.Ctx.Input.Params[":userid"]
-	userid, _ := strconv.Atoi(idStr)
-	fmt.Println(imgstr)
-	if imgstr != "" {
-		updateuser, _ := models.GetUserinformationById(userid)
-		updateuser.AvatarPath = imgstr
-		upresulterr := models.UpdateUserinformationById(updateuser)
-		if upresulterr == nil {
-			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
-		} else {
-			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
-		}
-	} else {
-		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
-	}
-	c.ServeJson()
-}
+//// @Title Update
+//// @Description update the Userinformation
+//// @Param	id		path 	string	true		"The id you want to update"
+//// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
+//// @Success 200 {object} models.Userinformation
+//// @Failure 403 :id is not int
+//// @router /UpdateUserimg/:userid [post]
+//func (c *UserinformationController) UpdateUserimg() {
+//	request := c.Ctx.Request
+//	fmt.Println("是否调到")
+//	jsons, imgstr := models.GetImganddata2(request, Headurl)
+//	var v models.Userinformation
+//	json.Unmarshal([]byte(jsons), &v)
+//	fmt.Println(jsons)
+//	//保存用户头像
+//	idStr := c.Ctx.Input.Params[":userid"]
+//	userid, _ := strconv.Atoi(idStr)
+//	fmt.Println(imgstr)
+//	if imgstr != "" {
+//		updateuser, _ := models.GetUserinformationById(userid)
+//		updateuser.AvatarPath = imgstr
+//		upresulterr := models.UpdateUserinformationById(updateuser)
+//		if upresulterr == nil {
+//			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
+//		} else {
+//			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
+//		}
+//	} else {
+//		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
+//	}
+//	c.ServeJson()
+//}
 
-// @Title Update
-// @Description update the Userinformation
-// @Param	id		path 	string	true		"The id you want to update"
-// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is not int
-// @router /UpdateUserimg2/ [post]
-func (c *UserinformationController) UpdateUserimg2() {
-	request := c.Ctx.Request
-	fmt.Println("是否调到")
-	jsons, imgstr := models.GetImganddata2(request, Headurl)
-	var v models.Userinformation
-	json.Unmarshal([]byte(jsons), &v)
-	fmt.Println(jsons)
-	//保存用户头像
-	userid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
-	fmt.Println(imgstr)
-	if imgstr != "" {
-		updateuser, _ := models.GetUserinformationById(userid)
-		updateuser.AvatarPath = imgstr
-		upresulterr := models.UpdateUserinformationById(updateuser)
-		if upresulterr == nil {
-			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
-		} else {
-			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
-		}
-	} else {
-		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
-	}
-	//c.ServeJson()
-	c.TplNames = "personal.html" //跳到
-}
+//// @Title Update
+//// @Description update the Userinformation
+//// @Param	id		path 	string	true		"The id you want to update"
+//// @Param	body		body 	models.Userinformation	true		"body for Userinformation content"
+//// @Success 200 {object} models.Userinformation
+//// @Failure 403 :id is not int
+//// @router /UpdateUserimg2/ [post]
+//func (c *UserinformationController) UpdateUserimg2() {
+//	request := c.Ctx.Request
+//	fmt.Println("是否调到")
+//	jsons, imgstr := models.GetImganddata2(request, Headurl)
+//	var v models.Userinformation
+//	json.Unmarshal([]byte(jsons), &v)
+//	fmt.Println(jsons)
+//	//保存用户头像
+//	userid, _ := strconv.Atoi(c.Ctx.GetCookie("userid"))
+//	fmt.Println(imgstr)
+//	if imgstr != "" {
+//		updateuser, _ := models.GetUserinformationById(userid)
+//		updateuser.AvatarPath = imgstr
+//		upresulterr := models.UpdateUserinformationById(updateuser)
+//		if upresulterr == nil {
+//			c.Data["json"] = map[string]interface{}{"state": 1} //修改成功
+//		} else {
+//			c.Data["json"] = map[string]interface{}{"state": 0} //修改失败
+//		}
+//	} else {
+//		c.Data["json"] = map[string]interface{}{"state": -1} //上传失败
+//	}
+//	//c.ServeJson()
+//	c.TplNames = "personal.html" //跳到
+//}
 
 // @Title GetUserinformationTeacherAll
-// @Description GetUserinformationTeacherAll Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 管理员查询全部老师信息
+// @Param	page		path 	string	true		获取页数
+// @Param	size		path 	string	true		获取行数
+// @Success 200 {object} models.UserinformationAdmin
+// @Failure Error
 // @router /GetUserinformationTeacherAll/:page/:size [get]
 func (c *UserinformationController) GetUserinformationTeacherAll() {
 	page := c.Ctx.Input.Param(":page") //获取页数	//新加--------开始--------
@@ -540,10 +557,9 @@ func (c *UserinformationController) GetUserinformationTeacherAll() {
 }
 
 // @Title GetUserinformationTeacherAll
-// @Description GetUserinformationTeacherAll Userinformation by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Userinformation
-// @Failure 403 :id is empty
+// @Description 管理员查询全部老师信息总条数
+// @Success 200 {int} json
+// @Failure 403 Error
 // @router /GetUserinformationTeacherAllCount/ [get]
 func (c *UserinformationController) GetUserinformationTeacherAllCount() {
 	v, err := models.GetUserinformationTeacherAllCount()

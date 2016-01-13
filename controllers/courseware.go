@@ -107,10 +107,10 @@ func (c *CoursewareController) GetOne() {
 	c.ServeJson()
 }
 
-//37.查询预约课程附件信息
+//37.
 // @Title GetCoursewareByOCBID
-// @Description GetCoursewareByOCBID Courseware by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 查询预约课程附件信息
+// @Param	ocbrid path int true 预约课程信息主键id
 // @Success 200 {object} models.Courseware
 // @Failure 403 :id is empty
 // @router /GetCoursewareByOCBID/:ocbrid [get]
@@ -126,12 +126,12 @@ func (c *CoursewareController) GetCoursewareByOCBID() {
 	c.ServeJson()
 }
 
-//根据预约信息主键删除附件信息
+//
 // @Title DeleteCoursewareByOCBID
-// @Description DeleteCoursewareByOCBID Courseware by id
-// @Param	id		path 	string	true		"The key for staticblock"
+// @Description 根据预约信息主键删除附件信息
+// @Param	ocbrid path int true 预约课程信息主键id
 // @Success 200 {object} models.Courseware
-// @Failure 403 :id is empty
+// @Failure Error
 // @router /DeleteCoursewareByOCBID/:ocbrid [get]
 func (c *CoursewareController) DeleteCoursewareByOCBID() {
 	ocbridStr := c.Ctx.Input.Params[":ocbrid"]

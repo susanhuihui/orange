@@ -66,10 +66,10 @@ func (c *VerificationController) GetOne() {
 
 /**36.根据手机号码获取一条最新的验证码信息**/
 // @Title GetVerificationByPhone
-// @Description GetVerificationByPhone Verification by phone
-// @Param	phone		path 	string	true		"The key for staticblock"
+// @Description 根据手机号码获取一条最新的验证码信息
+// @Param	phone		path 	string	true		手机号
 // @Success 200 {object} models.Verification
-// @Failure 403 :phone is empty
+// @Failure 403 Error
 // @router /GetVerificationByPhone/:phone [get]
 func (c *VerificationController) GetVerificationByPhone() {
 	phoneStr := c.Ctx.Input.Params[":phone"]
@@ -83,10 +83,10 @@ func (c *VerificationController) GetVerificationByPhone() {
 }
 
 // @Title GetVerificationListByPhone
-// @Description GetVerificationListByPhone Verification by phone
-// @Param	phone		path 	string	true		"The key for staticblock"
+// @Description 查询手机号下的所有验证码信息
+// @Param	phone		path 	string	true		手机号码
 // @Success 200 {object} models.Verification
-// @Failure 403 :phone is empty
+// @Failure 403 Error
 // @router /GetVerificationListByPhone/:phone [get]
 func (c *VerificationController) GetVerificationListByPhone() {
 	phoneStr := c.Ctx.Input.Params[":phone"] //查询手机号下的所有验证码信息
@@ -210,8 +210,8 @@ func (c *VerificationController) DeleteVerification() {
 }
 
 // @Title DeleteVerificationByPhone
-// @Description DeleteVerificationByPhone the Verification
-// @Param	id		path 	string	true		"The id you want to DeleteVerificationByPhone"
+// @Description 根据手机号码删除其下的全部验证码信息
+// @Param	phone		path 	string	true		手机号码
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
 // @router /DeleteVerificationByPhone/:phone [get]
@@ -236,10 +236,10 @@ func (c *VerificationController) DeleteVerificationByPhone() {
 }
 
 // @Title Get
-// @Description get Verification by id
-// @Param	id		path 	string	true		"The key for staticblock"
-// @Success 200 {object} models.Verification
-// @Failure 403 :id is empty
+// @Description 给手机号码发送验证码
+// @Param	phone		path 	string	true		手机号
+// @Success 200 {string} 0
+// @Failure 403 1
 // @router /GetVerification/:phone [get]
 func (c *VerificationController) GetOnees() {
 	idStr := c.Ctx.Input.Params[":phone"]
