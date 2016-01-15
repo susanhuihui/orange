@@ -80,7 +80,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteAccounttypes/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:AmountrecordsController"],
@@ -178,7 +178,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteAmountrecords/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:AnswersController"] = append(beego.GlobalControllerRouter["orange/controllers:AnswersController"],
@@ -213,7 +213,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteAnswers/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:BrowsecollectionController"] = append(beego.GlobalControllerRouter["orange/controllers:BrowsecollectionController"],
@@ -248,7 +248,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteBrowsecollection/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:CitysController"] = append(beego.GlobalControllerRouter["orange/controllers:CitysController"],
@@ -290,7 +290,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteCitys/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:CountysController"] = append(beego.GlobalControllerRouter["orange/controllers:CountysController"],
@@ -332,7 +332,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteCountys/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:CourseController"] = append(beego.GlobalControllerRouter["orange/controllers:CourseController"],
@@ -367,7 +367,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteCourse/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:CoursewareController"] = append(beego.GlobalControllerRouter["orange/controllers:CoursewareController"],
@@ -458,7 +458,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteDegree/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:EnclosuresController"] = append(beego.GlobalControllerRouter["orange/controllers:EnclosuresController"],
@@ -493,7 +493,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteEnclosures/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:FrozenfundsController"] = append(beego.GlobalControllerRouter["orange/controllers:FrozenfundsController"],
@@ -577,7 +577,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteFrozenfunds/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:FunctionController"] = append(beego.GlobalControllerRouter["orange/controllers:FunctionController"],
@@ -612,7 +612,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteFunction/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:GradeController"] = append(beego.GlobalControllerRouter["orange/controllers:GradeController"],
@@ -647,7 +647,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteGrade/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:GradecurriculumController"] = append(beego.GlobalControllerRouter["orange/controllers:GradecurriculumController"],
@@ -682,7 +682,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteGradecurriculum/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:IdentityController"] = append(beego.GlobalControllerRouter["orange/controllers:IdentityController"],
@@ -717,7 +717,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteIdentity/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:MainController"] = append(beego.GlobalControllerRouter["orange/controllers:MainController"],
@@ -1389,7 +1389,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeletePermission/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:ProvinceController"] = append(beego.GlobalControllerRouter["orange/controllers:ProvinceController"],
@@ -1424,7 +1424,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteProvince/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:QuestionaskController"] = append(beego.GlobalControllerRouter["orange/controllers:QuestionaskController"],
@@ -1746,7 +1746,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteSchoolages/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:SchoolsController"] = append(beego.GlobalControllerRouter["orange/controllers:SchoolsController"],
@@ -1935,7 +1935,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteTradingway/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:TransactionrecordsController"] = append(beego.GlobalControllerRouter["orange/controllers:TransactionrecordsController"],
@@ -1998,7 +1998,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteTransactionrecords/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:TreatysController"] = append(beego.GlobalControllerRouter["orange/controllers:TreatysController"],
@@ -2033,7 +2033,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteTreatys/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UsercollectionController"] = append(beego.GlobalControllerRouter["orange/controllers:UsercollectionController"],
@@ -2068,7 +2068,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteUsercollection/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UsercourseController"] = append(beego.GlobalControllerRouter["orange/controllers:UsercourseController"],
@@ -2103,7 +2103,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteUsercourse/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UserinformationController"] = append(beego.GlobalControllerRouter["orange/controllers:UserinformationController"],
@@ -2243,7 +2243,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteUserlevel/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 	beego.GlobalControllerRouter["orange/controllers:UsermessageController"] = append(beego.GlobalControllerRouter["orange/controllers:UsermessageController"],
@@ -2432,7 +2432,7 @@ func init() {
 		beego.ControllerComments{
 			"Delete",
 			`/DeleteWanderfulqa/:id`,
-			[]string{"delete"},
+			[]string{"get"},
 			nil})
 
 }

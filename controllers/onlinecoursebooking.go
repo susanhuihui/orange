@@ -364,9 +364,9 @@ func (c *OnlinecoursebookingController) DeleteOnlinecoursebooking() {
 }
 
 // @Title DeleteOnlinecoursebookingMeeting
-// @Description DeleteOnlinecoursebookingMeeting the Onlinecoursebooking
-// @Param	id		path 	string	true		"The id you want to DeleteOnlinecoursebookingMeeting"
-// @Success 200 {string} DeleteOnlinecoursebookingMeeting success!
+// @Description 删除释放此次课程的白板更新此条预约信息的白板字段为空
+// @Param	id		path 	string	true		预约信息主键id
+// @Success 200 {string} success!
 // @Failure 403 id is empty
 // @router /DeleteOnlinecoursebookingMeeting/:id [get]
 func (c *OnlinecoursebookingController) DeleteOnlinecoursebookingMeeting() {

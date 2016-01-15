@@ -25,9 +25,9 @@ func main() {
 	beego.SessionAutoSetCookie = true
 	beego.SessionSavePath = "/"
 
-	if beego.RunMode == "dev" {
-		beego.DirectoryIndex = true
-		beego.StaticDir["/swagger"] = "swagger"
-	}
+	//if beego.RunMode == "dev" {
+	beego.DirectoryIndex = true
+	beego.StaticDir["/swagger"] = "swagger"
+	//}
 	beego.Run()
 }

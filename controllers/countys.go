@@ -169,7 +169,7 @@ func (c *CountysController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteCountys/:id [delete]
+// @router /DeleteCountys/:id [get]
 func (c *CountysController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

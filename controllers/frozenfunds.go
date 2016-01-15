@@ -405,7 +405,7 @@ func (c *FrozenfundsController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteFrozenfunds/:id [delete]
+// @router /DeleteFrozenfunds/:id [get]
 func (c *FrozenfundsController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

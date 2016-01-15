@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"fmt"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"orange/models"
 	"strconv"
 	"strings"
@@ -30,19 +30,19 @@ func (c *GradeController) URLMapping() {
 // @Success 200 {int} models.Grade.Id
 // @Failure 403 body is empty
 // @router /AddGrade/ [post]
-func (c *GradeController) Post() {	
-//	var name []string = c.Ctx.Input.Request.Form["gradename"]//获取年级名字
-//	textname := name[0]
-//	var addGrade models.Grade
-//	addGrade.GradeName = textname
+func (c *GradeController) Post() {
+	//	var name []string = c.Ctx.Input.Request.Form["gradename"]//获取年级名字
+	//	textname := name[0]
+	//	var addGrade models.Grade
+	//	addGrade.GradeName = textname
 
-	var jsonS string 
+	var jsonS string
 	for k, v := range c.Ctx.Request.Form {
-        fmt.Printf("k=%v, v=%v\n", k, v)
+		fmt.Printf("k=%v, v=%v\n", k, v)
 		jsonS = k
-    }
+	}
 	var v models.Grade
-	json.Unmarshal([] byte(jsonS),&v)
+	json.Unmarshal([]byte(jsonS), &v)
 	if id, err := models.AddGrade(&v); err == nil {
 		c.Data["json"] = map[string]int64{"id": id}
 	} else {
@@ -86,13 +86,13 @@ func (c *GradeController) GetAll() {
 	var order []string
 	var query map[string]string = make(map[string]string)
 
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.ParseInt(page, 0, 0)//传来的页数
-	rows, _ := strconv.ParseInt(size, 0, 0) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
+	page := c.Ctx.Input.Param(":page")       //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size")       //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.ParseInt(page, 0, 0) //传来的页数
+	rows, _ := strconv.ParseInt(size, 0, 0)  //传来的显示行数
+	truepages := (pages - 1) * rows          //计算舍弃多少行
+	limit := rows                            //显示行数
+	offset := truepages                      //舍弃行数	//新加--------结束--------
 
 	// fields: col1,col2,entity.col3
 	if v := c.GetString("fields"); v != "" {
@@ -162,7 +162,7 @@ func (c *GradeController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteGrade/:id [delete]
+// @router /DeleteGrade/:id [get]
 func (c *GradeController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

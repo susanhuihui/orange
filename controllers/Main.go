@@ -380,7 +380,7 @@ func (c *MainController) OwnerUser() {
 	} else {
 		c.Data["tixiancount"] = 0
 	}
-	tuijiancount, errt := models.GetAmountrecordsAllTCount()
+	tuijiancount, errt := models.GetRecommendteacherAllCount()
 	if errt == nil && tuijiancount > 0 {
 		c.Data["tuijiancount"] = tuijiancount
 	} else {

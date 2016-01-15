@@ -419,7 +419,7 @@ func (c *AmountrecordsController) FaFang() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteAmountrecords/:id [delete]
+// @router /DeleteAmountrecords/:id [get]
 func (c *AmountrecordsController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

@@ -162,7 +162,7 @@ func (c *AnswersController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteAnswers/:id [delete]
+// @router /DeleteAnswers/:id [get]
 func (c *AnswersController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

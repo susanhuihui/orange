@@ -162,7 +162,7 @@ func (c *WanderfulqaController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteWanderfulqa/:id [delete]
+// @router /DeleteWanderfulqa/:id [get]
 func (c *WanderfulqaController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

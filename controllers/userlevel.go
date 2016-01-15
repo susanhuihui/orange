@@ -75,13 +75,13 @@ func (c *UserlevelController) GetAll() {
 	var order []string
 	var query map[string]string = make(map[string]string)
 
-	page := c.Ctx.Input.Param(":page")		//获取页数	//新加--------开始--------
-	size := c.Ctx.Input.Param(":size")		//获取每页显示条数 //SAdd 20151027
-	pages, _ := strconv.ParseInt(page, 0, 0)//传来的页数
-	rows, _ := strconv.ParseInt(size, 0, 0) //传来的显示行数
-	truepages := (pages - 1) * rows         //计算舍弃多少行
-	limit := rows                           //显示行数
-	offset := truepages                     //舍弃行数	//新加--------结束--------
+	page := c.Ctx.Input.Param(":page")       //获取页数	//新加--------开始--------
+	size := c.Ctx.Input.Param(":size")       //获取每页显示条数 //SAdd 20151027
+	pages, _ := strconv.ParseInt(page, 0, 0) //传来的页数
+	rows, _ := strconv.ParseInt(size, 0, 0)  //传来的显示行数
+	truepages := (pages - 1) * rows          //计算舍弃多少行
+	limit := rows                            //显示行数
+	offset := truepages                      //舍弃行数	//新加--------结束--------
 
 	// fields: col1,col2,entity.col3
 	if v := c.GetString("fields"); v != "" {
@@ -151,7 +151,7 @@ func (c *UserlevelController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteUserlevel/:id [delete]
+// @router /DeleteUserlevel/:id [get]
 func (c *UserlevelController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)

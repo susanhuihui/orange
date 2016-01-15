@@ -256,7 +256,7 @@ func (c *TransactionrecordsController) Put() {
 // @Param	id		path 	string	true		"The id you want to delete"
 // @Success 200 {string} delete success!
 // @Failure 403 id is empty
-// @router /DeleteTransactionrecords/:id [delete]
+// @router /DeleteTransactionrecords/:id [get]
 func (c *TransactionrecordsController) Delete() {
 	idStr := c.Ctx.Input.Params[":id"]
 	id, _ := strconv.Atoi(idStr)
