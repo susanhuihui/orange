@@ -223,7 +223,7 @@
                                             </div>-->
                                             <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
                                         </div>
-                                        <div id="editor" style="margin-top:15px; height:200px;" ></div>
+                                        <div id="editor" style="margin-top:15px; height:200px;"  onclick="cleartishicontent()" onblur="huifutishicontent()"><p id="tishicontent" style="color:#cccccc;">您可以用文字描述问题，也可以将问题拍成照片点击上面选择图片，将问题发送给老师。</p></div>
                                     </div>
                                     <script>
                                         $(function () {
@@ -549,6 +549,20 @@
             if (timesave < timenows) { alert("提问截止日期必须大于当前日期！"); return false; }
             if (title == "") { alert("提问标题不能为空，请输入提问标题！"); return false; }
             if (trim(contents) == "") { alert("提问内容不能为空，请输入提问内容！"); return false; }
+        }
+
+        function cleartishicontent() {
+            var wenti = document.getElementById("editor").innerHTML;
+            if (wenti.trim() == '<p id="tishicontent" style="color:#cccccc;">您可以用文字描述问题，也可以将问题拍成照片点击上面选择图片，将问题发送给老师。</p>') {
+                document.getElementById("editor").innerHTML = "";
+            }
+        }
+
+        function huifutishicontent() {
+            var wenti = document.getElementById("editor").innerHTML;
+            if (wenti.trim() == "") {
+                document.getElementById("editor").innerHTML = '<p id="tishicontent" style="color:#cccccc;">您可以用文字描述问题，也可以将问题拍成照片点击上面选择图片，将问题发送给老师。</p>';
+            }
         }
     </script>
 
