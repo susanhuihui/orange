@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="zh-CN">
+<!--<html lang="zh-CN">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
@@ -12,9 +12,8 @@
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
 </head>
-<body>
-    {{template "menutop.html" .}}
-   
+<body>-->
+    {{template "menutop.html" .}}   
     <div id="pagetopb">
         <!--个人资料-->
         <div class="container">
@@ -37,16 +36,13 @@
                     <div class="col-sm-8">
                         <div class="row teamain">
                             <div class=" col-xs-4">
-                                <span>{{.AllPerson}}</span>个                             
-                           
+                                <span>{{.AllPerson}}</span>个  
                             </div>
                             <div class=" col-xs-4">
-                                <span>{{.AllTime}}</span>小时                             
-                           
+                                <span>{{.AllTime}}</span>小时  
                             </div>
                             <div class=" col-xs-4">
-                                <span>{{.AllTimeMouth}}</span>小时                              
-                           
+                                <span>{{.AllTimeMouth}}</span>小时         
                             </div>
                         </div>
                     </div>
@@ -67,20 +63,16 @@
                 <div class="col-sm-2 teachmen">
                     <div class="row">
                         <span>{{.UnitPrice}}</span>元/小时
-                     
-                   
                     </div>
                     <div class="row" style="margin-top: 10px;">
                         <a id="listenNow" style="display: none;">
                             <input id="btnlisten" type="button" class="teacbtn" value="立即试听" onclick="trylisten()"></a>
                     </div>
                     <div class="row" style="margin-top: 10px; display: none;" id="yuyuelist">
-                        <a href="http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}">
-                            <input id="btnyuyue" type="button" class="teacbtn" value="预约课程"></a>
+                        <input id="btnyuyue" type="button" class="teacbtn" value="预约课程" onclick="yuyueclass()">
                     </div>
                 </div>
             </div>
-
             <div class='row teachermain'>
                 <div class="col-sm-9" style="border-right: 10px solid #f5f5f5;">
                     <ul class="ull nav nav-tabs" role="tablist">
@@ -88,7 +80,6 @@
                         <li role="presentation"><a href="#divtap2">教学记录</a></li>
                         <li role="presentation"><a href="#divtap3">教学评价</a></li>
                     </ul>
-
                     <div id="menu">
                         <!--二级菜单-->
                         <div id="menu_con">
@@ -154,35 +145,30 @@
                                     </table>
                                     <div id="Paginationcourse" class="pagination"></div>
                                 </div>
-                            
-                            <div id="divtap3" style="display: block;">
-                                <table class="stutabtops">
-                                    <tr>
-                                        <td>
-                                            <img src="images/jxjl.png" />
-                                        </td>
-                                        <td>
-                                            <span>教学评价</span>
-                                        </td>
-                                    </tr>
-                                </table>
+                                <div id="divtap3" style="display: block;">
+                                    <table class="stutabtops">
+                                        <tr>
+                                            <td>
+                                                <img src="images/jxjl.png" />
+                                            </td>
+                                            <td>
+                                                <span>教学评价</span>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div id="xfjl1">
+                                    <table class="teamesstabs" cellspacing="0" id="TeacherAllPingjia">
+                                    </table>
+                                    <div id="Pagination2" class="pagination"></div>
+                                </div>
                             </div>
-                            <div id="xfjl1">
-                                <table class="teamesstabs" cellspacing="0" id="TeacherAllPingjia">
-                                </table>
-                                <div id="Pagination2" class="pagination"></div>
-
-                            </div>
-                    </div>
-
-
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3 tearightbottom">
                     <div>
                     </div>
-
                     <div class="tearightbottom" style="margin-top: 29px;" id="setTeacherLiuyan">
                         <table class="rightbottomtab">
                             <tr>
@@ -199,32 +185,27 @@
                                 您可以在输入框里填写您想学的课程，目前的学习状况等信息，老师看到会第一时间进行回复。                  
                             </p>
                             <form id="form_memo" method="post" action="http://{{.Website}}/orange/usermessage/AddUsermessageTeacherlist/" onsubmit="return check()">
-                                <textarea class="form-control teaarea" id="messcount"  name="Contents" form="form_memo"></textarea>
+                                <textarea class="form-control teaarea" id="messcount" name="Contents" form="form_memo"></textarea>
                                 <input type="hidden" name="ActiveUserId" id="ActiveUserId" value="" />
                                 <input type="hidden" name="PassiveUserId" id="PassiveUserId" value="{{.Teacheruserid}}" />
                                 <input type="submit" class="teachersbtn" value="提交">
                             </form>
                         </div>
                     </div>
-
                     <div class="liulan" style="text-align: left;">
-                    <img src="images/pjjl.png" width="25" /><span>&nbsp;谁浏览过我</span>
+                        <img src="images/pjjl.png" width="25" /><span>&nbsp;谁浏览过我</span>
+                    </div>
+                    <div class="" id="anserSee" style="">
+                        <p id="nowallclasscount" style="display: none;">{{.nowallclasscount}}</p>
+                        <p id="nowallPingjia" style="display: none;">{{.nowallPingjia}}</p>
+                    </div>
                 </div>
-                <div class="" id="anserSee" style="">
-                    <p id="nowallclasscount" style="display: none;">{{.nowallclasscount}}</p>
-                    <p id="nowallPingjia" style="display: none;">{{.nowallPingjia}}</p>
-                </div>
-
-                </div>
-                
             </div>
         </div>
     </div>
-
     {{template "footer.html" .}}    
    
     <script src="b/js/jquery.min.js"></script>
-    <!--<script src="b/js/bootstrap.min.js"></script>-->
     <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
     <script type="text/javascript" src="js/jquery.pagination.js"></script>
     <script type="text/javascript" src="js/indexjs.js"></script>
@@ -240,6 +221,8 @@
         window.onload = function () {
             getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate(); getuserhead();
         }
+
+        //初始老师头像
         function getuserhead() {
             var srcurl = "{{.AvatarPath}}";
             if (srcurl == null || srcurl + "" == "") {
@@ -261,17 +244,16 @@
             });
         }
 
+        //初始加载页面时，是否加载立即试听，预约课程，关注/取消关注按钮
         function setListenYuyuebtn() {
             var identityid = getCookie("identityid");
-            if (identityid == null || identityid == 0 || identityid + "" == "" || identityid + "" == "undefined" || identityid == 1) {
+            if (identityid == 1) {//老师隐藏两个按钮
                 document.getElementById("listenNow").style.display = "none";
                 document.getElementById("yuyuelist").style.display = "none";
-                //document.getElementById("setTeacherLiuyan").style.display = "none";
                 document.getElementById("guanzhuTeachercontent").style.display = "none";
             } else if (identityid > 1) {
                 document.getElementById("listenNow").style.display = "block";
                 document.getElementById("yuyuelist").style.display = "block";
-                //document.getElementById("setTeacherLiuyan").style.display = "block";
                 document.getElementById("guanzhuTeachercontent").style.display = "block";
 
                 var sid = getCookie("userid");
@@ -279,29 +261,32 @@
                 var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
                 $.getJSON(geturl, function (datarela) {
                     if (datarela != null && datarela["Id"] > 0) {
-                        //document.getElementById("guanzhushow").innerHTML = '<img src="images/zcimg.png" width="18" height="18"/> 取消关注';guanzhuimg guanzhutxt
                         document.getElementById("guanzhutxt").innerHTML = '取消关注';
                         document.getElementById("guanzhutxt").style.color = "#666666";
                         document.getElementById("guanzhuimg").src = "images/zcimgs.png";
                     } else {
-                        //document.getElementById("guanzhushow").innerHTML = '<img src="images/zcimg.png" width="18" height="18"/> 关注';
                         document.getElementById("guanzhutxt").innerHTML = '关注';
                         document.getElementById("guanzhutxt").style.color = "#fea130";
                         document.getElementById("guanzhuimg").src = "images/zcimg.png";
                     }
                 });
+            } else {
+                document.getElementById("listenNow").style.display = "block";
+                document.getElementById("yuyuelist").style.display = "block";
             }
         }
 
-        //教学记录
+        //教学记录列表分页回调方法
         function pageselectCallback(page_id, jq) {
             getallCourse((page_id + 1));
-            //alert(page_id + 1);
         }
-        //评价
+
+        //教学评价列表分页回调方法
         function pageselectCallback2(page_id, jq) {
-            //alert(page_id + 1);
+            getallPingjia((page_id + 1));
         }
+
+        //初始分页控件
         $(document).ready(function () {
             var allclass = document.getElementById("nowallclasscount").innerHTML;
             if (allclass > 0) {
@@ -327,52 +312,12 @@
             }
         });
 
-        ////获取教学记录总页数
-        //function getallkechengCount() {
-        //    var allteachercount = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTidCount/" + userid + "/";
-        //    $.getJSON(allteachercount, function (data) {
-        //        if (data > 0) {
-        //            allrowscount = data;
-        //            // 创建分页元素
-        //            $("#Paginationcourse").pagination(allrowscount, {
-        //                num_edge_entries: 2,
-        //                num_display_entries: 5,
-        //                callback: pageselectCallback  //回调函数
-        //            });
-        //            return data;
-        //        } else {
-        //            document.getElementById("Pagination2").style.display = "none";
-        //        }
-        //    });
-        //}
-
-        ////获取评价总页数
-        //function getallPingjiaCount() {
-        //    var allteachercount = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTidCount/" + userid + "/";
-        //    $.getJSON(allteachercount, function (data) {
-        //        if (data > 0) {
-        //            allrowscount2 = data;
-        //            // 创建分页元素
-        //            $("#Pagination2").pagination(allrowscount2, {
-        //                num_edge_entries: 2,
-        //                num_display_entries: 5,
-        //                callback: pageselectCallback2  //回调函数
-        //            });
-        //            return data;
-        //        } else {
-        //            document.getElementById("Pagination2").style.display = "none";
-        //        }
-        //    });
-        //}
-
         //获取课程列表信息
         function getallCourse(page) {
             var allteacherlist = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTid/" + userid + "/" + page + "/" + pubRows;
-            //alert(allteacherlist);
             $.getJSON(allteacherlist, function (data) {
                 var allteacherstr = '<tr class="stuth"><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时（分钟）</th></tr>';
                 if (data != null) {
-                    //alert(data);
                     for (var i = 0; i < data.length ; i++) {
                         var itemse = '<tr>' +
                                      '<td>' + data[i]["CourseName"] + '</td>' +
@@ -395,7 +340,6 @@
         //获取评价列表信息
         function getallPingjia(page) {
             var allteacherlist = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTid/" + userid + "/" + page + "/" + pubRows;
-            //alert(allteacherlist);
             $.getJSON(allteacherlist, function (data) {
                 var allpingjia = '';
                 if (data != null) {
@@ -432,6 +376,7 @@
             });
         }
 
+        //关注老师方法（关注或取消对老师的操作）
         function guanzhuTeacher() {
             var showtext = document.getElementById("guanzhutxt").innerHTML;
             var sid = getCookie("userid");
@@ -441,8 +386,6 @@
                 $.getJSON(addguanzhu, function (data) {
                     if (data["id"] > 0) {
                         alert("关注成功！");
-                        //document.getElementById("guanzhutxt").innerHTML = '<img src="images/zcimg.png" width="18" height="18"/> 取消关注';
-
                         document.getElementById("guanzhutxt").innerHTML = '取消关注';
                         document.getElementById("guanzhutxt").style.color = "#666666";
                         document.getElementById("guanzhuimg").src = "images/zcimgs.png";
@@ -457,7 +400,6 @@
                         $.getJSON(del, function (data) {
                             if (data != null && data + "" == "OK") {
                                 alert("取消关注成功！");
-                                //document.getElementById("guanzhutxt").innerHTML = '<img src="images/zcimg.png" width="18" height="18"/> 关注';
                                 document.getElementById("guanzhutxt").innerHTML = '关注';
                                 document.getElementById("guanzhutxt").style.color = "#fea130";
                                 document.getElementById("guanzhuimg").src = "images/zcimg.png";
@@ -471,81 +413,69 @@
             }
         }
 
-
-        function addmessage() {
+        //跳转到预约课程
+        function yuyueclass() {
             var sid = getCookie("userid");
             var identityid = getCookie("identityid");
-            var tid = document.getElementById("userid").innerHTML;
             if (sid > 0) {
-                if (identityid != null && identityid >= 2 && identityid <= 3) {
-                    var mess = document.getElementById("messcount").value;
-                    //alert(sid + "" + tid + mess);
-                    var addmess = '{"ActiveUserId":' + sid +
-                                            ',"PassiveUserId":' + tid +
-                                            ',"MessageId":' + 0 +
-                                            ',"Contents":"' + mess +
-                                            '","States":' + 0 +
-                                            ',"MesTime":"' + getInsertNowDate() +
-                                            '"}';
-                    $.post("http://{{.Website}}/orange/usermessage/AddUsermessage/", addmess,
-                        function (data) {
-                            if (data["id"] > 0) {
-                                alert("留言成功！");
-                                document.getElementById("messcount").value = "";
-                            } else {
-                                alert("留言失败！");
-                            }
-                        });
-                } else if (identityid != null && identityid == 1) {
-                    alert("老师不允许留言！");
+                if (identityid > 1 && identityid < 4) {
+                    window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}";
+                } else {
+                    alert("您无权预约此老师课程！");
                 }
             } else {
-                alert("请先登录在留言！");
+                alert("请您先登录再预约课程！");
             }
         }
 
         //试听该老师的课程
         function trylisten() {
             var sid = getCookie("userid");
+            var identityid = getCookie("identityid");
             if (sid > 0) {
-                var identityid = getCookie("identityid");
-                if (identityid > 1 && identityid != "underfined") {
-                    var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + userid + "/" + sid;
-                    $.getJSON(getstucount, function (trycount) {
-                        if (trycount < 2) {
-                            var btntry = document.getElementById("btnlisten").className;
-                            if (btntry == "teacbtn") {
-                                var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
-                                $.getJSON(getstate, function (data) {
-                                    if (data != null && data["Id"] > 0) {
-                                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
-                                        $.getJSON(getblack, function (dataurl) {
-                                            if (dataurl == "0") {
-                                                alert("老师暂时离开不在线，请稍后刷新网页重试！");
-                                            } else if (dataurl == "1") {
-                                                alert("其他人正在试听，请稍后刷新网页重试！");
-                                            }
-                                            else {
-                                                window.open("http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"]);
-                                                //window.open(dataurl);
-                                            }
-                                        });
-                                    }
-                                });
+                if (identityid > 1 && identityid < 4) {
+                    var identityid = getCookie("identityid");
+                    if (identityid > 1 && identityid != "underfined") {
+                        var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + userid + "/" + sid;
+                        $.getJSON(getstucount, function (trycount) {
+                            if (trycount < 2) {
+                                var btntry = document.getElementById("btnlisten").className;
+                                if (btntry == "teacbtn") {
+                                    var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+                                    $.getJSON(getstate, function (data) {
+                                        if (data != null && data["Id"] > 0) {
+                                            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
+                                            $.getJSON(getblack, function (dataurl) {
+                                                if (dataurl == "0") {
+                                                    alert("老师暂时离开不在线，请稍后刷新网页重试！");
+                                                } else if (dataurl == "1") {
+                                                    alert("其他人正在试听，请稍后刷新网页重试！");
+                                                }
+                                                else {
+                                                    window.open("http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"]);
+                                                    //window.open(dataurl);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            } else {
+                                alert("您已经试听过两次，不能继续试听！");
                             }
-                        } else {
-                            alert("您已经试听过两次，不能继续试听！");
-                        }
-                    });
-                } else {
-                    if (identityid != "" && identityid != "underfined" && identityid == 1) {
-                        alert("老师不能试听！");
+                        });
                     } else {
-                        alert("请您先登录！");
+                        if (identityid != "" && identityid != "underfined" && identityid == 1) {
+                            alert("老师不能试听！");
+                        } else {
+                            alert("请您先登录！");
+                        }
                     }
                 }
+                else {
+                    alert("您无权试听此老师的课程！");
+                }
             } else {
-                alert("请先登录！");
+                alert("请您先登录在试听课程！");
             }
         }
 
@@ -553,13 +483,9 @@
         function getZuiJinSee() {
             if (userid != null && userid > 0) {
                 var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByTid/" + userid + "/浏览/1/4";
-                //alert(allseestr);
                 $.getJSON(allseestr, function (data) {
-                    var allseelist = "";//'<div class="rightbottomtab" style="text-align: left;">' +
-                    //'<img src="images/pjjl.png" /><span>谁浏览过我</span>' +
-                    //'</div>';
+                    var allseelist = "";
                     if (data != null) {
-                        //alert(data);
                         for (var i = 0; i < data.length ; i++) {
                             var userhead = "";
                             if (data[i]["AvatarPath"] == null || data[i]["AvatarPath"] + "" == "") {
@@ -608,11 +534,11 @@
             } else {
                 alert("请先登录在留言！");
                 return false;
-            }            
+            }
         }
     </script>
-</body>
-</html>
+<!--</body>
+</html>-->
 
 
 
