@@ -1,23 +1,9 @@
 ﻿<!doctype html>
-<!--<html lang="zh-CN">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="images/C_132.png">
-    <title>在线教育</title>
-    <link href="b/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
-</head>
-<body>-->
-    {{template "menutop.html" .}}   
+{{template "menutop.html" .}}   
     <div id="pagetopb">
         <!--个人资料-->
         <div class="container">
-            <div class="row topbottomdivs">
+            <div class="row topbottomdivs" id="divteachertitle">
                 <div class="col-sm-2 floatleft">
                     <img style="height: 120px; width: 120px;" id="teacherhead" />
                     <p>ID:{{.userid}}</p>
@@ -203,342 +189,348 @@
             </div>
         </div>
     </div>
-    {{template "footer.html" .}}    
+{{template "footer.html" .}}    
    
     <script src="b/js/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery-1.3.1.js"></script>
-    <script type="text/javascript" src="js/jquery.pagination.js"></script>
-    <script type="text/javascript" src="js/indexjs.js"></script>
-    <script type="text/javascript" src="js/main.js"></script>
-    <script type="text/javascript" src="js/orange.js"></script>
-    <script type="text/javascript" src="js/indexjs.js"></script>
-    <script type="text/javascript">
-        var pubRows = 10;//每页显示行数
-        var allrowscount = 0;//总课程总页数
-        var allrowscount2 = 0;//总评价页数
-        var userid = document.getElementById("userid").innerHTML;//当前显示的老师的主键id
+<script type="text/javascript" src="js/jquery-1.3.1.js"></script>
+<script type="text/javascript" src="js/jquery.pagination.js"></script>
+<script type="text/javascript" src="js/indexjs.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+<script type="text/javascript" src="js/orange.js"></script>
+<script type="text/javascript" src="js/indexjs.js"></script>
+<script type="text/javascript">
+    var pubRows = 10;//每页显示行数
+    var allrowscount = 0;//总课程总页数
+    var allrowscount2 = 0;//总评价页数
+    var userid = document.getElementById("userid").innerHTML;//当前显示的老师的主键id
 
-        window.onload = function () {
-            getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate(); getuserhead();
+    window.onload = function () {
+        panduane();
+        getuser(); setTitleOnSelect(2); setListenYuyuebtn(); getallCourse(1); getallPingjia(1); getZuiJinSee(); getonlinestate(); getuserhead();
+    }
+    
+    function panduane() {
+        if (!!window.ActiveXObject || "ActiveXObject" in window)
+            document.getElementById("divteachertitle").className = "row topbottomdivsie";
+        else
+            document.getElementById("divteachertitle").className = "row topbottomdivs";
+    }
+
+    //初始老师头像
+    function getuserhead() {
+        var srcurl = "{{.AvatarPath}}";
+        if (srcurl == null || srcurl + "" == "") {
+            document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+        } else {
+            document.getElementById("teacherhead").src = srcurl;
         }
+    }
 
-        //初始老师头像
-        function getuserhead() {
-            var srcurl = "{{.AvatarPath}}";
-            if (srcurl == null || srcurl + "" == "") {
-                document.getElementById("teacherhead").src = "images/PersonHeadImg/moren.png";
+    //查询此老师是否在线
+    function getonlinestate() {
+        var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+        $.getJSON(getstate, function (data) {
+            if (data != null && data["Tid"] == userid) {
+                document.getElementById("btnlisten").className = "teacbtn";
             } else {
-                document.getElementById("teacherhead").src = srcurl;
-            }
-        }
-
-        //查询此老师是否在线
-        function getonlinestate() {
-            var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
-            $.getJSON(getstate, function (data) {
-                if (data != null && data["Tid"] == userid) {
-                    document.getElementById("btnlisten").className = "teacbtn";
-                } else {
-                    document.getElementById("btnlisten").className = "teacbtn2";
-                }
-            });
-        }
-
-        //初始加载页面时，是否加载立即试听，预约课程，关注/取消关注按钮
-        function setListenYuyuebtn() {
-            var identityid = getCookie("identityid");
-            if (identityid == 1) {//老师隐藏两个按钮
-                document.getElementById("listenNow").style.display = "none";
-                document.getElementById("yuyuelist").style.display = "none";
-                document.getElementById("guanzhuTeachercontent").style.display = "none";
-            } else if (identityid > 1) {
-                document.getElementById("listenNow").style.display = "block";
-                document.getElementById("yuyuelist").style.display = "block";
-                document.getElementById("guanzhuTeachercontent").style.display = "block";
-
-                var sid = getCookie("userid");
-                var tid = userid;
-                var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
-                $.getJSON(geturl, function (datarela) {
-                    if (datarela != null && datarela["Id"] > 0) {
-                        document.getElementById("guanzhutxt").innerHTML = '取消关注';
-                        document.getElementById("guanzhutxt").style.color = "#666666";
-                        document.getElementById("guanzhuimg").src = "images/zcimgs.png";
-                    } else {
-                        document.getElementById("guanzhutxt").innerHTML = '关注';
-                        document.getElementById("guanzhutxt").style.color = "#fea130";
-                        document.getElementById("guanzhuimg").src = "images/zcimg.png";
-                    }
-                });
-            } else {
-                document.getElementById("listenNow").style.display = "block";
-                document.getElementById("yuyuelist").style.display = "block";
-            }
-        }
-
-        //教学记录列表分页回调方法
-        function pageselectCallback(page_id, jq) {
-            getallCourse((page_id + 1));
-        }
-
-        //教学评价列表分页回调方法
-        function pageselectCallback2(page_id, jq) {
-            getallPingjia((page_id + 1));
-        }
-
-        //初始分页控件
-        $(document).ready(function () {
-            var allclass = document.getElementById("nowallclasscount").innerHTML;
-            if (allclass > 0) {
-                // 创建分页元素
-                $("#Paginationcourse").pagination(allclass, {
-                    num_edge_entries: 2,
-                    num_display_entries: 5,
-                    callback: pageselectCallback  //回调函数
-                });
-            } else {
-                document.getElementById("Paginationcourse").style.display = "none";
-            }
-            var allpingjia = document.getElementById("nowallPingjia").innerHTML;
-            if (allpingjia > 0) {
-                // 创建分页元素
-                $("#Pagination2").pagination(allpingjia, {
-                    num_edge_entries: 2,
-                    num_display_entries: 5,
-                    callback: pageselectCallback2  //回调函数
-                });
-            } else {
-                document.getElementById("Pagination2").style.display = "none";
+                document.getElementById("btnlisten").className = "teacbtn2";
             }
         });
+    }
 
-        //获取课程列表信息
-        function getallCourse(page) {
-            var allteacherlist = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTid/" + userid + "/" + page + "/" + pubRows;
-            $.getJSON(allteacherlist, function (data) {
-                var allteacherstr = '<tr class="stuth"><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时（分钟）</th></tr>';
-                if (data != null) {
-                    for (var i = 0; i < data.length ; i++) {
-                        var itemse = '<tr>' +
-                                     '<td>' + data[i]["CourseName"] + '</td>' +
-                                     '<td>' + data[i]["UserName"] + '</td>' +
-                                     '<td>' + data[i]["AgeName"] + '</td>' +
-                                     '<td>' + data[i]["ClassNumber"] + '</td>' +
-                                     '</tr>';
-                        allteacherstr += itemse;
-                    }
-                    document.getElementById("TeacherAllClass").innerHTML = "";
-                    $("#TeacherAllClass").append(allteacherstr);
-                }
-                else {
-                    document.getElementById("TeacherAllClass").innerHTML = "";
-                }
-                getallkechengCount();
-            });
-        }
+    //初始加载页面时，是否加载立即试听，预约课程，关注/取消关注按钮
+    function setListenYuyuebtn() {
+        var identityid = getCookie("identityid");
+        if (identityid == 1) {//老师隐藏两个按钮
+            document.getElementById("listenNow").style.display = "none";
+            document.getElementById("yuyuelist").style.display = "none";
+            document.getElementById("guanzhuTeachercontent").style.display = "none";
+        } else if (identityid > 1) {
+            document.getElementById("listenNow").style.display = "block";
+            document.getElementById("yuyuelist").style.display = "block";
+            document.getElementById("guanzhuTeachercontent").style.display = "block";
 
-        //获取评价列表信息
-        function getallPingjia(page) {
-            var allteacherlist = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTid/" + userid + "/" + page + "/" + pubRows;
-            $.getJSON(allteacherlist, function (data) {
-                var allpingjia = '';
-                if (data != null) {
-                    for (var i = 0; i < data.length ; i++) {
-                        var startcount = "";//星星图片个数
-                        var count = data[i]["StartClear"] + data[i]["StartEfficiency"];
-                        for (var a = 0; a < count; a++) {
-                            startcount += '<img class="starimg" src="images/look.png" />';
-                        }
-                        var outcount = 10 - (data[i]["StartClear"] + data[i]["StartEfficiency"]);
-                        for (var a = 0; a < outcount; a++) {
-                            startcount += '<img class="starimg" src="images/looked.png" />';
-                        }
-                        var itemse = '<tr>' +
-                                     '<td rowspan="2" class="teamesstd">' +
-                                     '<img class="headimg" src="' + data[i]["AvatarPath"] + '" />' +
-                                     '</td>' +
-                                     '<td>' + data[i]["UserName"] + '</td>' +
-                                     '<td>' + startcount + '</td>' +
-                                     '<td>' + getSimpDate(data[i]["ReviewTime"]) + " " + getSimpTime(data[i]["ReviewTime"]) + '</td>' +
-                                     '</tr>' +
-                                     '<tr>' +
-                                     '<td colspan="3" class="teamesstd">' + data[i]["ReviewContent"] + '</td>' +
-                                     '</tr>';
-                        allpingjia += itemse;
-                    }
-                    document.getElementById("TeacherAllPingjia").innerHTML = "";
-                    $("#TeacherAllPingjia").append(allpingjia);
-                }
-                else {
-                    document.getElementById("TeacherAllPingjia").innerHTML = "";
-                }
-                getallPingjiaCount();
-            });
-        }
-
-        //关注老师方法（关注或取消对老师的操作）
-        function guanzhuTeacher() {
-            var showtext = document.getElementById("guanzhutxt").innerHTML;
             var sid = getCookie("userid");
             var tid = userid;
-            if (showtext == "关注") {
-                var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/关注";
-                $.getJSON(addguanzhu, function (data) {
-                    if (data["id"] > 0) {
-                        alert("关注成功！");
-                        document.getElementById("guanzhutxt").innerHTML = '取消关注';
-                        document.getElementById("guanzhutxt").style.color = "#666666";
-                        document.getElementById("guanzhuimg").src = "images/zcimgs.png";
-                    }
-                    else if (data["id"] == 0) { alert("关注失败！"); }
-                });
-            } else if (showtext == "取消关注") {
-                var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
-                $.getJSON(geturl, function (datarela) {
-                    if (datarela != null && datarela["Id"] > 0) {
-                        var del = "http://{{.Website}}/orange/relations/DeleteRelations/" + datarela["Id"];
-                        $.getJSON(del, function (data) {
-                            if (data != null && data + "" == "OK") {
-                                alert("取消关注成功！");
-                                document.getElementById("guanzhutxt").innerHTML = '关注';
-                                document.getElementById("guanzhutxt").style.color = "#fea130";
-                                document.getElementById("guanzhuimg").src = "images/zcimg.png";
-                            }
-                        });
-                    }
-                    else {
-
-                    }
-                });
-            }
-        }
-
-        //跳转到预约课程
-        function yuyueclass() {
-            var sid = getCookie("userid");
-            var identityid = getCookie("identityid");
-            if (sid > 0) {
-                if (identityid > 1 && identityid < 4) {
-                    window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}";
+            var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
+            $.getJSON(geturl, function (datarela) {
+                if (datarela != null && datarela["Id"] > 0) {
+                    document.getElementById("guanzhutxt").innerHTML = '取消关注';
+                    document.getElementById("guanzhutxt").style.color = "#666666";
+                    document.getElementById("guanzhuimg").src = "images/zcimgs.png";
                 } else {
-                    alert("您无权预约此老师课程！");
+                    document.getElementById("guanzhutxt").innerHTML = '关注';
+                    document.getElementById("guanzhutxt").style.color = "#fea130";
+                    document.getElementById("guanzhuimg").src = "images/zcimg.png";
                 }
-            } else {
-                alert("请您先登录再预约课程！");
-            }
+            });
+        } else {
+            document.getElementById("listenNow").style.display = "block";
+            document.getElementById("yuyuelist").style.display = "block";
         }
+    }
 
-        //试听该老师的课程
-        function trylisten() {
-            var sid = getCookie("userid");
-            var identityid = getCookie("identityid");
-            if (sid > 0) {
-                if (identityid > 1 && identityid < 4) {
-                    var identityid = getCookie("identityid");
-                    if (identityid > 1 && identityid != "underfined") {
-                        var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + userid + "/" + sid;
-                        $.getJSON(getstucount, function (trycount) {
-                            if (trycount < 2) {
-                                var btntry = document.getElementById("btnlisten").className;
-                                if (btntry == "teacbtn") {
-                                    var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
-                                    $.getJSON(getstate, function (data) {
-                                        if (data != null && data["Id"] > 0) {
-                                            var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
-                                            $.getJSON(getblack, function (dataurl) {
-                                                if (dataurl == "0") {
-                                                    alert("老师暂时离开不在线，请稍后刷新网页重试！");
-                                                } else if (dataurl == "1") {
-                                                    alert("其他人正在试听，请稍后刷新网页重试！");
-                                                }
-                                                else {
-                                                    window.open("http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"]);
-                                                    //window.open(dataurl);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            } else {
-                                alert("您已经试听过两次，不能继续试听！");
-                            }
-                        });
-                    } else {
-                        if (identityid != "" && identityid != "underfined" && identityid == 1) {
-                            alert("老师不能试听！");
-                        } else {
-                            alert("请您先登录！");
-                        }
-                    }
-                }
-                else {
-                    alert("您无权试听此老师的课程！");
-                }
-            } else {
-                alert("请您先登录在试听课程！");
-            }
+    //教学记录列表分页回调方法
+    function pageselectCallback(page_id, jq) {
+        getallCourse((page_id + 1));
+    }
+
+    //教学评价列表分页回调方法
+    function pageselectCallback2(page_id, jq) {
+        getallPingjia((page_id + 1));
+    }
+
+    //初始分页控件
+    $(document).ready(function () {
+        var allclass = document.getElementById("nowallclasscount").innerHTML;
+        if (allclass > 0) {
+            // 创建分页元素
+            $("#Paginationcourse").pagination(allclass, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback  //回调函数
+            });
+        } else {
+            document.getElementById("Paginationcourse").style.display = "none";
         }
+        var allpingjia = document.getElementById("nowallPingjia").innerHTML;
+        if (allpingjia > 0) {
+            // 创建分页元素
+            $("#Pagination2").pagination(allpingjia, {
+                num_edge_entries: 2,
+                num_display_entries: 5,
+                callback: pageselectCallback2  //回调函数
+            });
+        } else {
+            document.getElementById("Pagination2").style.display = "none";
+        }
+    });
 
-        //获取最近浏览信息
-        function getZuiJinSee() {
-            if (userid != null && userid > 0) {
-                var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByTid/" + userid + "/浏览/1/4";
-                $.getJSON(allseestr, function (data) {
-                    var allseelist = "";
-                    if (data != null) {
-                        for (var i = 0; i < data.length ; i++) {
-                            var userhead = "";
-                            if (data[i]["AvatarPath"] == null || data[i]["AvatarPath"] + "" == "") {
-                                userhead = "images/PersonHeadImg/moren.png";
-                            } else {
-                                userhead = data[i]["AvatarPath"]
-                            }
-                            var itemse = '<div class="teaimgimg" style=" padding-top:20px;">' +
-                                         '<img class="teaheadimgimg" src="' + userhead + '" />' +
-                                         '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + '</a></p>' +
-                                         '</div>';
-                            allseelist += itemse;
-                        }
-                        document.getElementById("anserSee").innerHTML = "";
-                        $("#anserSee").append(allseelist);
-                    }
-                    else {
-                        document.getElementById("anserSee").innerHTML = "";
-                    }
-                    getallkechengCount();
-                });
+    //获取课程列表信息
+    function getallCourse(page) {
+        var allteacherlist = "http://{{.Website}}/orange/onlinecourserecord/GetOnlinecourserecordByTid/" + userid + "/" + page + "/" + pubRows;
+        $.getJSON(allteacherlist, function (data) {
+            var allteacherstr = '<tr class="stuth"><th>课程类型</th><th>辅导学生</th><th>年级</th><th>课时（分钟）</th></tr>';
+            if (data != null) {
+                for (var i = 0; i < data.length ; i++) {
+                    var itemse = '<tr>' +
+                                 '<td>' + data[i]["CourseName"] + '</td>' +
+                                 '<td>' + data[i]["UserName"] + '</td>' +
+                                 '<td>' + data[i]["AgeName"] + '</td>' +
+                                 '<td>' + data[i]["ClassNumber"] + '</td>' +
+                                 '</tr>';
+                    allteacherstr += itemse;
+                }
+                document.getElementById("TeacherAllClass").innerHTML = "";
+                $("#TeacherAllClass").append(allteacherstr);
             }
             else {
-                document.getElementById("anserSee").innerHTML = "";
+                document.getElementById("TeacherAllClass").innerHTML = "";
             }
-        }
+            //getallkechengCount();
+        });
+    }
 
-        //提交前验证是否输入留言内容
-        function check() {
-            var sid = getCookie("userid");
-            var identityid = getCookie("identityid");
-            var message = trim(document.getElementById("messcount").value);
-            if (sid > 0) {
-                if (identityid != null && identityid >= 2 && identityid <= 3) {
-                    if (message == "") {
-                        alert("留言内容不能为空，请输入留言信息！");
-                        return false;
-                    } else {
-                        document.getElementById("ActiveUserId").value = sid;
-                        return true;
+    //获取评价列表信息
+    function getallPingjia(page) {
+        var allteacherlist = "http://{{.Website}}/orange/onlinecourseevaluation/GetOnlinecourseevaluationByTid/" + userid + "/" + page + "/" + pubRows;
+        $.getJSON(allteacherlist, function (data) {
+            var allpingjia = '';
+            if (data != null) {
+                for (var i = 0; i < data.length ; i++) {
+                    var startcount = "";//星星图片个数
+                    var count = data[i]["StartClear"] + data[i]["StartEfficiency"];
+                    for (var a = 0; a < count; a++) {
+                        startcount += '<img class="starimg" src="images/look.png" />';
                     }
-                } else if (identityid != null && identityid == 1) {
-                    alert("老师不允许留言！");
-                    return false;
+                    var outcount = 10 - (data[i]["StartClear"] + data[i]["StartEfficiency"]);
+                    for (var a = 0; a < outcount; a++) {
+                        startcount += '<img class="starimg" src="images/looked.png" />';
+                    }
+                    var itemse = '<tr>' +
+                                 '<td rowspan="2" class="teamesstd">' +
+                                 '<img class="headimg" src="' + data[i]["AvatarPath"] + '" />' +
+                                 '</td>' +
+                                 '<td>' + data[i]["UserName"] + '</td>' +
+                                 '<td>' + startcount + '</td>' +
+                                 '<td>' + getSimpDate(data[i]["ReviewTime"]) + " " + getSimpTime(data[i]["ReviewTime"]) + '</td>' +
+                                 '</tr>' +
+                                 '<tr>' +
+                                 '<td colspan="3" class="teamesstd">' + data[i]["ReviewContent"] + '</td>' +
+                                 '</tr>';
+                    allpingjia += itemse;
                 }
+                document.getElementById("TeacherAllPingjia").innerHTML = "";
+                $("#TeacherAllPingjia").append(allpingjia);
+            }
+            else {
+                document.getElementById("TeacherAllPingjia").innerHTML = "";
+            }
+            //getallPingjiaCount();
+        });
+    }
+
+    //关注老师方法（关注或取消对老师的操作）
+    function guanzhuTeacher() {
+        var showtext = document.getElementById("guanzhutxt").innerHTML;
+        var sid = getCookie("userid");
+        var tid = userid;
+        if (showtext == "关注") {
+            var addguanzhu = "http://{{.Website}}/orange/relations/AddRelationsBySTGuanxi/" + sid + "/" + tid + "/关注";
+            $.getJSON(addguanzhu, function (data) {
+                if (data["id"] > 0) {
+                    alert("关注成功！");
+                    document.getElementById("guanzhutxt").innerHTML = '取消关注';
+                    document.getElementById("guanzhutxt").style.color = "#666666";
+                    document.getElementById("guanzhuimg").src = "images/zcimgs.png";
+                }
+                else if (data["id"] == 0) { alert("关注失败！"); }
+            });
+        } else if (showtext == "取消关注") {
+            var geturl = "http://{{.Website}}/orange/relations/GetRelationsByST/" + sid + "/" + tid + "/关注";
+            $.getJSON(geturl, function (datarela) {
+                if (datarela != null && datarela["Id"] > 0) {
+                    var del = "http://{{.Website}}/orange/relations/DeleteRelations/" + datarela["Id"];
+                    $.getJSON(del, function (data) {
+                        if (data != null && data + "" == "OK") {
+                            alert("取消关注成功！");
+                            document.getElementById("guanzhutxt").innerHTML = '关注';
+                            document.getElementById("guanzhutxt").style.color = "#fea130";
+                            document.getElementById("guanzhuimg").src = "images/zcimg.png";
+                        }
+                    });
+                }
+                else {
+
+                }
+            });
+        }
+    }
+
+    //跳转到预约课程
+    function yuyueclass() {
+        var sid = getCookie("userid");
+        var identityid = getCookie("identityid");
+        if (sid > 0) {
+            if (identityid > 1 && identityid < 4) {
+                window.location.href = "http://{{.Website}}/orange/Teacher/StudentSetTeacherMeet/{{.Teacheruserid}}";
             } else {
-                alert("请先登录在留言！");
+                alert("您无权预约此老师课程！");
+            }
+        } else {
+            alert("请您先登录再预约课程！");
+        }
+    }
+
+    //试听该老师的课程
+    function trylisten() {
+        var sid = getCookie("userid");
+        var identityid = getCookie("identityid");
+        if (sid > 0) {
+            if (identityid > 1 && identityid < 4) {
+                var identityid = getCookie("identityid");
+                if (identityid > 1 && identityid != "underfined") {
+                    var getstucount = "http://{{.Website}}/orange/onlinetrylisten/OnlineTryListenByTidSid/" + userid + "/" + sid;
+                    $.getJSON(getstucount, function (trycount) {
+                        if (trycount < 2) {
+                            var btntry = document.getElementById("btnlisten").className;
+                            if (btntry == "teacbtn") {
+                                var getstate = "http://{{.Website}}/orange/onlinetrylisten/GetOnlinetrylistenOneByTid/" + userid;
+                                $.getJSON(getstate, function (data) {
+                                    if (data != null && data["Id"] > 0) {
+                                        var getblack = "http://{{.Website}}/orange/onlinetrylisten/GetListenStudent/" + data["Id"];
+                                        $.getJSON(getblack, function (dataurl) {
+                                            if (dataurl == "0") {
+                                                alert("老师暂时离开不在线，请稍后刷新网页重试！");
+                                            } else if (dataurl == "1") {
+                                                alert("其他人正在试听，请稍后刷新网页重试！");
+                                            }
+                                            else {
+                                                window.open("http://{{.Website}}/orange/Teacher/StudentTryListenClass/" + data["Id"]);
+                                                //window.open(dataurl);
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        } else {
+                            alert("您已经试听过两次，不能继续试听！");
+                        }
+                    });
+                } else {
+                    if (identityid != "" && identityid != "underfined" && identityid == 1) {
+                        alert("老师不能试听！");
+                    } else {
+                        alert("请您先登录！");
+                    }
+                }
+            }
+            else {
+                alert("您无权试听此老师的课程！");
+            }
+        } else {
+            alert("请您先登录在试听课程！");
+        }
+    }
+
+    //获取最近浏览信息
+    function getZuiJinSee() {
+        if (userid != null && userid > 0) {
+            var allseestr = "http://{{.Website}}/orange/relations/GetRelationsByTid/" + userid + "/浏览/1/4";
+            $.getJSON(allseestr, function (data) {
+                var allseelist = "";
+                if (data != null) {
+                    for (var i = 0; i < data.length ; i++) {
+                        var userhead = "";
+                        if (data[i]["AvatarPath"] == null || data[i]["AvatarPath"] + "" == "") {
+                            userhead = "images/PersonHeadImg/moren.png";
+                        } else {
+                            userhead = data[i]["AvatarPath"]
+                        }
+                        var itemse = '<div class="teaimgimg" style=" padding-top:20px;">' +
+                                     '<img class="teaheadimgimg" src="' + userhead + '" />' +
+                                     '<p><a>' + data[i]["UserName"] + ' | ' + data[i]["SchoolName"] + '</a></p>' +
+                                     '</div>';
+                        allseelist += itemse;
+                    }
+                    document.getElementById("anserSee").innerHTML = "";
+                    $("#anserSee").append(allseelist);
+                }
+                else {
+                    document.getElementById("anserSee").innerHTML = "";
+                }
+                //getallkechengCount();
+            });
+        }
+        else {
+            document.getElementById("anserSee").innerHTML = "";
+        }
+    }
+
+    //提交前验证是否输入留言内容
+    function check() {
+        var sid = getCookie("userid");
+        var identityid = getCookie("identityid");
+        var message = trim(document.getElementById("messcount").value);
+        if (sid > 0) {
+            if (identityid != null && identityid >= 2 && identityid <= 3) {
+                if (message == "") {
+                    alert("留言内容不能为空，请输入留言信息！");
+                    return false;
+                } else {
+                    document.getElementById("ActiveUserId").value = sid;
+                    return true;
+                }
+            } else if (identityid != null && identityid == 1) {
+                alert("老师不允许留言！");
                 return false;
             }
+        } else {
+            alert("请先登录在留言！");
+            return false;
         }
-    </script>
-<!--</body>
-</html>-->
+    }
+</script>
 
 
 
