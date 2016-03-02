@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/C_132.png">
-    <title>在线教育</title>
+    <title>互联网家教平台</title>
     <link href="b/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/otherstyle.css" />
 </head>
@@ -224,20 +224,22 @@
         var timetwo2a = '10:50';
         var timethree1a = '11:00';
         var timethree2a = '11:50';
-        var timefour1a = '13:00';
-        var timefour2a = '13:50';
-        var timefive1a = '14:00';
-        var timefive2a = '14:50';
-        var timesex1a = '15:00';
-        var timesex2a = '15:50';
-        var timeseven1a = '16:00';
-        var timeseven2a = '16:50';
-        var timeeight1a = '17:00';
-        var timeeight2a = '17:50';
-        var timenine1a = '18:00';
-        var timenine2a = '18:50';
-        var timelist1a = [timeone1a, timetwo1a, timethree1a, timefour1a, timefive1a, timesex1a, timeseven1a, timeeight1a, timenine1a];
-        var timelist2a = [timeone2a, timetwo2a, timethree2a, timefour2a, timefive2a, timesex2a, timeseven2a, timeeight2a, timenine2a];
+        var timefour1a = '14:00';
+        var timefour2a = '14:50';
+        var timefive1a = '15:00';
+        var timefive2a = '15:50';
+        var timesex1a = '16:00';
+        var timesex2a = '16:50';
+        var timeseven1a = '17:00';
+        var timeseven2a = '17:50';
+        var timeeight1a = '19:00';
+        var timeeight2a = '19:50';
+        var timenine1a = '20:00';
+        var timenine2a = '20:50';
+        var timeten1a = '21:00';
+        var timeten2a = '21:50';
+        var timelist1a = [timeone1a, timetwo1a, timethree1a, timefour1a, timefive1a, timesex1a, timeseven1a, timeeight1a, timenine1a, timeten1a];
+        var timelist2a = [timeone2a, timetwo2a, timethree2a, timefour2a, timefive2a, timesex2a, timeseven2a, timeeight2a, timenine2a, timeten2a];
 
         //设置预约状态
         function setMeetState() {
@@ -316,10 +318,10 @@
                         var texttime = getInsertDate(data[a]["StartTime"]);
                         var text2 = getSimpDate(data[a]["StartTime"]) + ' ' + getSimpTime(data[a]["StartTime"]) + ":00";
                         var endtime = getSimpDate(data[a]["EndTime"]);
-                        for (var j = 0; j < timelist1.length; j++) {//外层循环时间节点
+                        for (var j = 0; j < timelist1a.length; j++) {//外层循环时间节点
                             for (var i = 0; i < list1.length; i++) {//循环第一周
-                                var nowstarttime = getInsertDate((list1[i] + " " + timelist1[j] + ":00").replace(/-/g, "/"));
-                                var nowstartimetwotable = getInsertDate((list3[i] + ' ' + timelist1[j] + ':00').replace(/-/g, "/"));//第二周第一个日期
+                                var nowstarttime = getInsertDate((list1[i] + " " + timelist1a[j] + ":00").replace(/-/g, "/"));
+                                var nowstartimetwotable = getInsertDate((list3[i] + ' ' + timelist1a[j] + ':00').replace(/-/g, "/"));//第二周第一个日期
                                 if (texttime == nowstarttime) {
                                     if (data[a]["UserIdActive"] == null || data[a]["UserIdActive"] + "" == "0") {
                                         document.getElementById("divtableone" + i + j).className = "arrow-ups";
@@ -362,7 +364,7 @@
         var timeListIndex = 0;//第一个时间段索引：0-8
         var istorf = 0;//是否可以退约
         function getvalue(txtname, yearmd, timelistindex) {
-            var datetime = new Date((yearmd + " " + timelist1[timelistindex] + ":00").replace(/-/g, "/"));
+            var datetime = new Date((yearmd + " " + timelist1a[timelistindex] + ":00").replace(/-/g, "/"));
             var now = new Date();
             if (now <= setHours(datetime, 12)) {//今天之前的日子不能再操作
                 //alert("dianji:" + txtname + document.getElementById(txtname).innerText + document.getElementById(txtname).tag + yearmd + "," + timelistindex);
@@ -398,7 +400,7 @@
                     $.getJSON(ongetonline, function (datacount) {
                         if (datacount >= 3) {//超过三次不能再预约
                             document.getElementById("yuyuedate").innerText = yearmd;
-                            document.getElementById("yuyuetime").innerText = timelist1[timeListIndex] + "--" + timelist2a[timeListIndex];
+                            document.getElementById("yuyuetime").innerText = timelist1a[timeListIndex] + "--" + timelist2a[timeListIndex];
                             document.getElementById("showtext1").style.display = "none";//此时段已过期，不可再操作！
                             document.getElementById("showtext2").style.display = "block";
                             document.getElementById("tishicontent").innerText = "一天不能预约超过三个课时！";
@@ -406,7 +408,7 @@
                             nowName = "";
                         } else {
                             document.getElementById("yuyuedate").innerText = yearmd;
-                            document.getElementById("yuyuetime").innerText = timelist1[timeListIndex] + "--" + timelist2a[timeListIndex];
+                            document.getElementById("yuyuetime").innerText = timelist1a[timeListIndex] + "--" + timelist2a[timeListIndex];
                             document.getElementById("showtext1").style.display = "block";
                             document.getElementById("showtext2").style.display = "none";
                             document.getElementById("btnSetMeet").innerText = "确定"; //去缴费
